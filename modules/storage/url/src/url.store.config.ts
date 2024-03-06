@@ -1,5 +1,6 @@
 import { ErrorsAnd, mapErrors, NameAnd } from "@laoban/utils";
 import { isNamedUrl, NamedOrIdentityUrl, NamedUrl, parseUrl } from "./identity.and.name.url";
+import { PathAndDetails, urlStorePathAndDetailsFn } from "./url.pathops";
 
 
 export type UrlStoreParser = ( id: string, s: string ) => any
@@ -30,7 +31,6 @@ export type OrganisationUrlStoreConfig = {
   nameSpaceDetails: AllNamespaceDetails
 }
 
-export type PathAndDetails = {path: string, details: NameSpaceDetails }
 export function repoFrom ( config: OrganisationUrlStoreConfig, url: NamedOrIdentityUrl ): string {
   return config.baseDir + '/' + url.organisation;
 }
@@ -40,11 +40,12 @@ export function urlToDetails ( config: OrganisationUrlStoreConfig, url: NamedOrI
   if ( !details ) return [ `Don't know how to handle namespace ${url.namespace}. Legal namespaces are ${Object.keys ( nsLookup )}` ];
   return details
 }
-export const namedUrlToPathAndDetails = ( config: OrganisationUrlStoreConfig ) => ( named: NamedUrl ): ErrorsAnd<PathAndDetails> => {
-  if ( !isNamedUrl ( named ) ) return [ `${JSON.stringify ( named )} is not a NamedUrl` ]
-  const nsLookup = config.nameSpaceDetails
-  const details = nsLookup[ named.namespace ];
-  if ( !details ) return [ `Don't know how to handle namespace ${named.namespace}. Legal namespaces are ${Object.keys ( nsLookup )}` ];
-  const path = `${config.baseDir}/${named.organisation}/${details.pathInGitRepo}/${named.name}.${details.extension}`;
-  return { path, details }
+export const namedUrlToPathAndDetails = ( config: OrganisationUrlStoreConfig ) => {
+  const pathFn = urlStorePathAndDetailsFn ( config )
+  return ( named: NamedUrl ): ErrorsAnd<PathAndDetails> => {
+    if ( !isNamedUrl ( named ) ) return [ `${JSON.stringify ( named )} is not a NamedUrl` ]
+    return mapErrors ( pathFn ( named.organisation, named.namespace ),
+      ( { path, details } ) =>
+        ({ path: `${path}/${named.name}.${details.extension}`, details }) )
+  }
 }

@@ -1,4 +1,4 @@
-import { AllIdStoreDetails } from "@intellimaintain/idstore";
+import { AllIdStoreDetails } from "@itsmworkbench/idstore";
 import { ListIds } from "./listids";
 import * as fs from "fs";
 

@@ -1,8 +1,8 @@
-import { DomainPlugin } from "@intellimaintain/domain";
+import { DomainPlugin } from "@itsmworkbench/domain";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
-import { addVariables, extractVariablesFromMarkdown, Variables } from "@intellimaintain/variables";
-import { ParserStoreParser } from "@intellimaintain/parser";
-import { IdAndName, SelectedAndList } from "@intellimaintain/utils";
+import { addVariables, extractVariablesFromMarkdown, Variables } from "@itsmworkbench/variables";
+import { ParserStoreParser } from "@itsmworkbench/parser";
+import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
 
 export interface Ticket extends IdAndName {
   severity: string

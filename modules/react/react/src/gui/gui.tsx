@@ -1,12 +1,12 @@
 import { LensProps, LensState2 } from "@focuson/state";
-import { CommonState } from "@intellimaintain/react_core";
+import { CommonState } from "@itsmworkbench/react_core";
 import React from "react";
-import { DisplayTickets } from "@intellimaintain/react_ticket";
-import { DisplayDebug, SimpleTabPanel, StateDisplay, TabPanelDetails, TabsContainer, TabWithSideEffects, TemplateFn } from "@intellimaintain/components";
-import { DisplayKnowledgeArticles } from "@intellimaintain/react_knowledge_articles";
-import { DisplaySoftwareCatalogs } from "@intellimaintain/react_softwarecatalog";
-import { DisplayTemplates } from "@intellimaintain/react_templates";
-import { DisplayVariables } from "@intellimaintain/react_variables";
+import { DisplayTickets } from "@itsmworkbench/react_ticket";
+import { DisplayDebug, SimpleTabPanel, StateDisplay, TabPanelDetails, TabsContainer, TabWithSideEffects, TemplateFn } from "@itsmworkbench/components";
+import { DisplayKnowledgeArticles } from "@itsmworkbench/react_knowledge_articles";
+import { DisplaySoftwareCatalogs } from "@itsmworkbench/react_softwarecatalog";
+import { DisplayTemplates } from "@itsmworkbench/react_templates";
+import { DisplayVariables } from "@itsmworkbench/react_variables";
 
 
 export interface ChatAreaProps<S, CS extends CommonState> extends LensProps<S, CS, any> {

@@ -1,23 +1,11 @@
-import { IdStore, isBadIdStoreResult } from "@intellimaintain/idstore";
+import { IdStore, isBadIdStoreResult } from "@itsmworkbench/idstore";
 import { AppendEvent, BaseEvent, ErrorEvent, Event, EventNameAnd, isErrorEvent, isLensPathEvent, SetIdEvent, SetValueEvent, ZeroEvent } from "./events";
-import { Lenses, Optional } from "@focuson/lens";
+import { pathToLens, PathToLensFn } from "@itsmworkbench/optics";
 
 /** Why a promise? Because the IdEvent goes to the id store to get the data. The id store is async. */
 export type EventProcessorFn<S, E extends BaseEvent> = ( p: EventProcessor<S>, event: E, s: S ) => Promise<S>
 
 export type EventProcessorListener<S> = ( event: Event, startS: S, newS: S ) => void
-export type PathToLensFn<S> = ( path: string ) => Optional<S, any>
-
-export function pathToLens<S> (): PathToLensFn<S> {
-  return path => {
-    const parts = path.split ( '.' ).map ( p => p.trim () ).filter ( p => p.length > 0 )
-    let lens: Optional<S, S> = Lenses.identity<S> ()
-    for ( let part of parts ) {
-      lens = lens.focusQuery ( part as any ) as any
-    }
-    return lens
-  }
-}
 export interface EventProcessor<S> {
   zero: S
   pathPrefix: string

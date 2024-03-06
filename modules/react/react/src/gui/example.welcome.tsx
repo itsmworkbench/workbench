@@ -1,7 +1,7 @@
-import { EditAttributesTable } from "@intellimaintain/components";
+import { EditAttributesTable } from "@itsmworkbench/components";
 import { lensState } from "@focuson/state";
-import { splitAndCapitalize, uppercaseFirstLetter } from "@intellimaintain/utils";
-import { AccordionExplicitList, AccordionList } from "@intellimaintain/components";
+import { splitAndCapitalize, uppercaseFirstLetter } from "@itsmworkbench/utils";
+import { AccordionExplicitList, AccordionList } from "@itsmworkbench/components";
 import { NameAnd } from "@laoban/utils";
 
 export interface WelcomeState {

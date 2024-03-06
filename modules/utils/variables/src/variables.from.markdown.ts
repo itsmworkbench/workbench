@@ -1,6 +1,6 @@
 import { ErrorsAnd, hasErrors, NameAnd } from "@laoban/utils";
 import { Variables } from "./variables";
-import { transformKeysToCamelCase } from "@intellimaintain/utils";
+import { transformKeysToCamelCase } from "@itsmworkbench/utils";
 
 function extractVariablesSection ( markdown: string ): ErrorsAnd<string> {
   const variablesStart = markdown.indexOf ( '# Variables' );

@@ -1,7 +1,7 @@
 {
-  "name": "@intellimaintain/react_softwarecatalog",
+  "name": "@itsmworkbench/react_softwarecatalog",
   "description": "The react plugin for software catalog",
-  "version": "0.1.1",
+  "version": "0.0.3",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,9 +15,9 @@
     ]
   },
   "dependencies": {
-    "@intellimaintain/domain": "0.1.1",
-    "@intellimaintain/components": "0.1.1",
-    "@intellimaintain/softwarecatalog": "0.1.1",
+    "@itsmworkbench/domain": "0.0.3",
+    "@itsmworkbench/components": "0.0.3",
+    "@itsmworkbench/softwarecatalog": "0.0.3",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

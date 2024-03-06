@@ -1,7 +1,7 @@
-import { BeforeAfterComponent, DisplayMessagePlugin, MessageButton, messageMatches, MessagePlugInParams } from "@intellimaintain/components";
+import { BeforeAfterComponent, DisplayMessagePlugin, MessageButton, messageMatches, MessagePlugInParams } from "@itsmworkbench/components";
 import React from "react";
 import { SqlDataAndTest } from "./SqlData";
-import { Message } from "@intellimaintain/domain";
+import { Message } from "@itsmworkbench/domain";
 
 const beforeAndAfterRegex = /^(.*?)\[SqlData:([^\]]+)\](.*)$/;
 export const sqlDataDisplayMessagePlugin: DisplayMessagePlugin = {

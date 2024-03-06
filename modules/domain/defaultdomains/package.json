@@ -1,7 +1,7 @@
 {
-  "name": "@intellimaintain/defaultdomains",
+  "name": "@itsmworkbench/defaultdomains",
   "description": "Code that extras variables from the domain objects",
-  "version": "0.1.1",
+  "version": "0.0.3",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,14 +22,15 @@
   "dependencies": {
     "node": "^v14.4.0",
     "@laoban/utils": "1.4.45",
-    "@intellimaintain/domain": "0.1.1",
-    "@intellimaintain/git": "0.1.1",
-    "@intellimaintain/knowledge_articles": "0.1.1",
-    "@intellimaintain/softwarecatalog": "0.1.1",
-    "@intellimaintain/templates": "0.1.1",
-    "@intellimaintain/tickets": "0.1.1",
-    "@intellimaintain/utils": "0.1.1",
-    "@intellimaintain/yaml": "0.1.1",
+    "@laoban/variables": "1.4.45",
+    "@itsmworkbench/domain": "0.0.3",
+    "@itsmworkbench/git": "0.0.3",
+    "@itsmworkbench/knowledge_articles": "0.0.3",
+    "@itsmworkbench/softwarecatalog": "0.0.3",
+    "@itsmworkbench/templates": "0.0.3",
+    "@itsmworkbench/tickets": "0.0.3",
+    "@itsmworkbench/utils": "0.0.3",
+    "@itsmworkbench/yaml": "0.0.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {

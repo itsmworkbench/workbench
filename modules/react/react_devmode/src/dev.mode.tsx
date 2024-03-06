@@ -1,7 +1,7 @@
 import React from "react";
 import { LensProps, LensState2 } from "@focuson/state";
-import { DebugState } from "@intellimaintain/react_core";
-import { DisplayJson, SimpleTabPanel, TabPanelDetails, TabsContainer } from "@intellimaintain/components";
+import { DebugState } from "@itsmworkbench/react_core";
+import { DisplayJson, SimpleTabPanel, TabPanelDetails, TabsContainer } from "@itsmworkbench/components";
 import { toArray } from "@laoban/utils";
 
 export interface DevModeProps<S> extends LensProps<S, DebugState, any> {

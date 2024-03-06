@@ -6,7 +6,7 @@ import { NameAnd } from "@laoban/utils";
 import { LensProps, LensState } from "@focuson/state";
 import ReactMarkdown from "react-markdown";
 import children = ReactMarkdown.propTypes.children;
-import { splitAndCapitalize } from "@intellimaintain/utils";
+import { splitAndCapitalize } from "@itsmworkbench/utils";
 
 export interface AttributeValueProps<S, T> extends LensProps<S, T, any> {
   attributes?: Record<keyof T, AttributeDetails>

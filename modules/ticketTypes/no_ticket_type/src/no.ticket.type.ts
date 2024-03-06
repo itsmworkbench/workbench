@@ -1,4 +1,4 @@
-import { TicketType } from "@intellimaintain/domain";
+import { TicketType } from "@itsmworkbench/domain";
 
 export const noTicketType: TicketType = {
   name: 'NoTicketType',

@@ -1,7 +1,7 @@
 import { findFileUp } from "@laoban/fileops";
 import * as fs from "fs";
 import { shellGitsops } from "./shellgit.domain";
-import { GitOps } from "@intellimaintain/git";
+import { GitOps } from "@itsmworkbench/git";
 
 
 const laobanDir = findFileUp ( process.cwd (), async f => {

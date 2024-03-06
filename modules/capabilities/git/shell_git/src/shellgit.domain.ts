@@ -1,4 +1,4 @@
-import { GitOps, GitResult, isSuccessfulGitResult, OrganisationGitData } from "@intellimaintain/git";
+import { GitOps, GitResult, isSuccessfulGitResult, OrganisationGitData } from "@itsmworkbench/git";
 import cp from "child_process";
 import * as fs from "fs";
 

@@ -1,7 +1,7 @@
 {
-  "name": "@intellimaintain/utils",
+  "name": "@itsmworkbench/utils",
   "description": "The usual utility functions",
-  "version": "0.1.1",
+  "version": "0.0.3",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {

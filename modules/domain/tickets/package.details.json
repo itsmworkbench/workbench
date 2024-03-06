@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/tickets",
+  "name":        "@itsmworkbench/tickets",
   "description": "The tickets plugin. Everything except react",
   "packageJson": {
     "dependencies":    {},
@@ -9,7 +9,7 @@
       "child_process": false
     }
   },
-  "links":       ["@intellimaintain/domain", "@intellimaintain/yaml"],
+  "links":       ["@itsmworkbench/domain", "@itsmworkbench/yaml"],
   "guards":      {
     "compile": true,
     "publish": true,

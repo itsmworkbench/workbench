@@ -1,4 +1,4 @@
-import { JSONObject } from "@intellimaintain/utils";
+import { JSONObject } from "@itsmworkbench/utils";
 import { Paper, Typography } from "@mui/material";
 import React from "react";
 

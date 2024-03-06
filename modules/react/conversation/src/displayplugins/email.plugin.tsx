@@ -1,7 +1,7 @@
-import { BeforeAfterComponent, DisplayMessagePlugin, HighlightedAndMessageButton, messageMatches, MessagePlugInParams } from "@intellimaintain/components";
+import { BeforeAfterComponent, DisplayMessagePlugin, HighlightedAndMessageButton, messageMatches, MessagePlugInParams } from "@itsmworkbench/components";
 import React from "react";
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
-import { Message } from "@intellimaintain/domain";
+import { Message } from "@itsmworkbench/domain";
 
 const beforeAndAfterRegex = /^(.*)\[Email (approval)](.*)$/;
 export const emailDisplayPlugin: DisplayMessagePlugin = {

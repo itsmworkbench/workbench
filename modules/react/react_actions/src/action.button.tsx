@@ -1,6 +1,6 @@
-import { Action } from "@intellimaintain/actions";
+import { Action } from "@itsmworkbench/actions";
 import { Button } from "@mui/material";
-import { uppercaseFirstLetter } from "@intellimaintain/utils";
+import { uppercaseFirstLetter } from "@itsmworkbench/utils";
 import React from "react";
 import { LensProps } from "@focuson/state";
 import { SelectionStateForActions } from "./action.selection.state";

@@ -1,9 +1,9 @@
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
-import { camelCaseAndIdYamlParser, DomainPlugin, } from "@intellimaintain/domain";
-import { Variables } from "@intellimaintain/variables";
-import { IdAndName, SelectedAndList } from "@intellimaintain/utils";
-import { Action } from "@intellimaintain/actions";
-import { YamlCapability } from "@intellimaintain/yaml";
+import { camelCaseAndIdYamlParser, DomainPlugin, } from "@itsmworkbench/domain";
+import { Variables } from "@itsmworkbench/variables";
+import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
+import { Action } from "@itsmworkbench/actions";
+import { YamlCapability } from "@itsmworkbench/yaml";
 
 
 export interface ButtonData {

@@ -1,7 +1,7 @@
 {
-  "name": "@intellimaintain/questions",
+  "name": "@itsmworkbench/questions",
   "description": "The chat client has some initial questions it needs to ask",
-  "version": "0.1.1",
+  "version": "0.0.3",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,8 +23,8 @@
     "@laoban/utils": "1.4.45",
     "@focuson/lens": "1.44.3",
     "@focuson/state": "1.44.3",
-    "@intellimaintain/domain": "0.1.1",
-    "@intellimaintain/tickets": "0.1.1",
+    "@itsmworkbench/domain": "0.0.3",
+    "@itsmworkbench/tickets": "0.0.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {

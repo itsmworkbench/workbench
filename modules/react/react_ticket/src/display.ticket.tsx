@@ -2,9 +2,9 @@ import React from 'react';
 import { LensProps, LensProps2 } from "@focuson/state";
 import { Box, Typography } from "@mui/material";
 import ReactMarkdown from 'react-markdown';
-import { DropdownAsTitle } from "@intellimaintain/components";
-import { SideEffect } from "@intellimaintain/react_core";
-import { Ticket, Tickets } from "@intellimaintain/tickets";
+import { DropdownAsTitle } from "@itsmworkbench/components";
+import { SideEffect } from "@itsmworkbench/react_core";
+import { Ticket, Tickets } from "@itsmworkbench/tickets";
 
 
 export function DisplayTicket<S> ( { state }: LensProps<S, Ticket, any> ) {

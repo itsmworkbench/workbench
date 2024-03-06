@@ -1,5 +1,5 @@
-import { IdStore } from "@intellimaintain/idstore";
-import { ParserStore, parseUsingStore } from "@intellimaintain/parser";
+import { IdStore } from "@itsmworkbench/idstore";
+import { ParserStore, parseUsingStore } from "@itsmworkbench/parser";
 
 export interface ApiIdStore {
   url: string;

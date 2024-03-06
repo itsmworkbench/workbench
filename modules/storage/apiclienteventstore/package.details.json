@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/apiclienteventstore",
+  "name":        "@itsmworkbench/apiclienteventstore",
   "description": "A event source library for a browser backed with a call to an api",
   "packageJson": {
     "dependencies":    {
@@ -13,13 +13,13 @@
     }
   },
   "links":       [
-    "@intellimaintain/domain",
-    "@intellimaintain/defaultdomains",
-    "@intellimaintain/events",
-    "@intellimaintain/eventstore",
-    "@intellimaintain/idstore",
-    "@intellimaintain/parser",
-    "@intellimaintain/utils"
+    "@itsmworkbench/domain",
+    "@itsmworkbench/defaultdomains",
+    "@itsmworkbench/events",
+    "@itsmworkbench/eventstore",
+    "@itsmworkbench/idstore",
+    "@itsmworkbench/parser",
+    "@itsmworkbench/utils"
   ],
   "guards":      {
     "compile": true,

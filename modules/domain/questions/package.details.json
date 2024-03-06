@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/questions",
+  "name":        "@itsmworkbench/questions",
   "description": "The chat client has some initial questions it needs to ask",
   "packageJson": {
     "dependencies":    {
@@ -14,8 +14,8 @@
     }
   },
   "links":       [
-    "@intellimaintain/domain",
-    "@intellimaintain/tickets"
+    "@itsmworkbench/domain",
+    "@itsmworkbench/tickets"
   ],
   "guards":      {
     "compile": true,

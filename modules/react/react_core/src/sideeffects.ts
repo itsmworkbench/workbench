@@ -1,6 +1,6 @@
 import { ErrorsAnd, mapK } from "@laoban/utils";
-import { sendEvent, SendEvents } from "@intellimaintain/apiclienteventstore";
-import { Event } from "@intellimaintain/events";
+import { sendEvent, SendEvents } from "@itsmworkbench/apiclienteventstore";
+import { Event } from "@itsmworkbench/events";
 import { Lens } from "@focuson/lens";
 
 export type SideEffectType = 'event'

@@ -1,10 +1,10 @@
-import { ParserStoreParser } from "@intellimaintain/parser";
-import { camelCaseAndIdAndNameParser, DomainPlugin, } from "@intellimaintain/domain";
+import { ParserStoreParser } from "@itsmworkbench/parser";
+import { camelCaseAndIdAndNameParser, DomainPlugin, } from "@itsmworkbench/domain";
 import { ErrorsAnd, mapErrors, NameAnd } from "@laoban/utils";
-import { findRelevant, Variables } from "@intellimaintain/variables";
-import { findIdKeyAndPath, IdAndName, SelectedAndList, transformKeysToCamelCase } from "@intellimaintain/utils";
+import { findRelevant, Variables } from "@itsmworkbench/variables";
+import { findIdKeyAndPath, IdAndName, SelectedAndList, transformKeysToCamelCase } from "@itsmworkbench/utils";
 import { DatabaseAndEnvironments } from "./database.config";
-import { YamlCapability } from "@intellimaintain/yaml";
+import { YamlCapability } from "@itsmworkbench/yaml";
 import { Simulate } from "react-dom/test-utils";
 import input = Simulate.input;
 

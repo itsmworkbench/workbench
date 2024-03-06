@@ -1,4 +1,4 @@
-import { appendEventProcessor, defaultEventProcessor, EventProcessor, pathToLens, setIdEventProcessor, setValueEventProcessor, zeroEventProcessor } from "./event.processor";
+import { appendEventProcessor, defaultEventProcessor, EventProcessor, setIdEventProcessor, setValueEventProcessor, zeroEventProcessor } from "./event.processor";
 import { EventContext } from "./events";
 
 const data = {
@@ -9,19 +9,6 @@ const data = {
   }
 }
 type Data = typeof data
-const p2Lens = pathToLens<Data> ()
-describe ( "pathToLens", () => {
-  it ( "should return identity for empty path", () => {
-    let lens = p2Lens ( "" );
-    expect ( lens.description ).toEqual ( "I" )
-    expect ( lens.getOption ( data ) ).toEqual ( data )
-  } )
-  it ( "should return lens for a.b.c", () => {
-    let lens = p2Lens ( "a.b.c" );
-    expect ( lens.getOption ( data ) ).toEqual ( 1 )
-  } )
-} )
-
 const eventProcessor: EventProcessor<Data> = defaultEventProcessor<Data> ( '', {} as Data, async ( id: string ) =>
   ({ id: id, result: `from ${id}`, mimeType: 'something' }) )
 let context: EventContext = { some: "metadata" };

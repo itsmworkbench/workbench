@@ -1,4 +1,4 @@
-import { ResultAndNewStart } from "@intellimaintain/eventstore";
+import { ResultAndNewStart } from "@itsmworkbench/eventstore";
 
 export interface ApiLoading {
   url: string;

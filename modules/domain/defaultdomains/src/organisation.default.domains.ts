@@ -1,7 +1,7 @@
-import { nameSpaceDetails, OrganisationUrlStoreConfig } from "@intellimaintain/url";
-import { YamlCapability } from "@intellimaintain/yaml";
-import { camelCaseAndIdAndNameParser, camelCaseAndIdYamlParser } from "@intellimaintain/domain";
-import { ticketParser, ticketWriter } from "@intellimaintain/tickets";
+import { nameSpaceDetails, OrganisationUrlStoreConfig } from "@itsmworkbench/url";
+import { YamlCapability } from "@itsmworkbench/yaml";
+import { camelCaseAndIdAndNameParser, camelCaseAndIdYamlParser } from "@itsmworkbench/domain";
+import { ticketParser, ticketWriter } from "@itsmworkbench/tickets";
 
 
 export function kaNs ( yaml: YamlCapability ) {

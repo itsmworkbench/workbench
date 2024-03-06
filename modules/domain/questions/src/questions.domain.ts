@@ -1,7 +1,7 @@
 import { Optional } from "@focuson/lens";
-import { composePartialFunctionK, optionalNotTherePfK } from "@intellimaintain/utils";
-import { ChatDisplayData, Operator, QuestionPFK } from "@intellimaintain/domain";
-import { Ticket } from "@intellimaintain/tickets";
+import { composePartialFunctionK, optionalNotTherePfK } from "@itsmworkbench/utils";
+import { ChatDisplayData, Operator, QuestionPFK } from "@itsmworkbench/domain";
+import { Ticket } from "@itsmworkbench/tickets";
 
 
 const emptyOperatorDetails: ChatDisplayData<Operator> = ({ type: 'operatorDetails' });

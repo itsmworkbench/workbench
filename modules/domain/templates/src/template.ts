@@ -1,8 +1,8 @@
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
-import { ParserStoreParser } from "@intellimaintain/parser";
-import { DomainPlugin } from "@intellimaintain/domain";
-import { Variables } from "@intellimaintain/variables";
-import { IdAndName, SelectedAndList } from "@intellimaintain/utils";
+import { ParserStoreParser } from "@itsmworkbench/parser";
+import { DomainPlugin } from "@itsmworkbench/domain";
+import { Variables } from "@itsmworkbench/variables";
+import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
 
 
 export interface Template extends IdAndName {

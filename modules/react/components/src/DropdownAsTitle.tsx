@@ -2,10 +2,10 @@ import React, { ReactNode } from "react";
 import { Box, Card, CardContent, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { LensProps, LensProps2, LensState } from "@focuson/state";
 
-import { SetIdEvent, SetValueEvent } from "@intellimaintain/events";
-import { Loading } from "@intellimaintain/components";
-import { SideEffect } from "@intellimaintain/react_core";
-import { IdAndName, SelectedAndList } from "@intellimaintain/utils";
+import { SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
+import { Loading } from "@itsmworkbench/components";
+import { SideEffect } from "@itsmworkbench/react_core";
+import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
 
 
 //observations... it will take time to load the selected item

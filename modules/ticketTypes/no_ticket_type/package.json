@@ -1,7 +1,7 @@
 {
-  "name": "@intellimaintain/no_ticket_type",
+  "name": "@itsmworkbench/no_ticket_type",
   "description": "The code needed for the update value in database ticket type",
-  "version": "0.1.1",
+  "version": "0.0.3",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@laoban/variables": "1.4.45",
-    "@intellimaintain/domain": "0.1.1",
-    "@intellimaintain/components": "0.1.1",
-    "@intellimaintain/react_core": "0.1.1",
+    "@itsmworkbench/domain": "0.0.3",
+    "@itsmworkbench/components": "0.0.3",
+    "@itsmworkbench/react_core": "0.0.3",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

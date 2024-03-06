@@ -1,16 +1,16 @@
 import { LensState } from "@focuson/state";
 import { WorkSpacePlugin, WorkspaceStateFn } from "./workspace";
 import React from "react";
-import { calculateActionDetails, CommonState } from "@intellimaintain/react_core";
-import { isAdjustDatabaseSqlKS } from "@intellimaintain/knowledge_articles";
+import { calculateActionDetails, CommonState } from "@itsmworkbench/react_core";
+import { isAdjustDatabaseSqlKS } from "@itsmworkbench/knowledge_articles";
 import { SqlDataTable } from "../displayplugins/SqlData";
-import { findSqlDataDetails } from "@intellimaintain/defaultdomains";
+import { findSqlDataDetails } from "@itsmworkbench/defaultdomains";
 import { Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { FakeSendButton } from "@intellimaintain/components";
+import { FakeSendButton } from "@itsmworkbench/components";
 
 export interface SqlTempSpace<S, S1> {
   state: LensState<S, S1, any>

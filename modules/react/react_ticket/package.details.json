@@ -1,6 +1,6 @@
 {
   "template":    "react_library",
-  "name":        "@intellimaintain/react_ticket",
+  "name":        "@itsmworkbench/react_ticket",
   "description": "The react plugin for tickets",
   "packageJson": {
     "files":        ["build/"],
@@ -8,12 +8,12 @@
     }
   },
   "links":       [
-    "@intellimaintain/components",
-    "@intellimaintain/tickets"
+    "@itsmworkbench/components",
+    "@itsmworkbench/tickets"
   ],
   "guards":      {
     "compile": true,
-    "publish": false,
+    "publish": true,
     "test":    false,
     "react":   true
   }

@@ -1,9 +1,9 @@
-import { ParserStoreParser } from "@intellimaintain/parser";
+import { ParserStoreParser } from "@itsmworkbench/parser";
 import { ErrorsAnd, mapErrors, NameAnd } from "@laoban/utils";
-import { transformKeysToCamelCase } from "@intellimaintain/utils";
-import { Variables } from "@intellimaintain/variables";
+import { transformKeysToCamelCase } from "@itsmworkbench/utils";
+import { Variables } from "@itsmworkbench/variables";
 import { DomainPlugin } from "./domain.plugin";
-import { YamlCapability } from "@intellimaintain/yaml";
+import { YamlCapability } from "@itsmworkbench/yaml";
 import { camelCaseAndIdYamlParser } from "./domain";
 
 const yaml = require ( 'js-yaml' );

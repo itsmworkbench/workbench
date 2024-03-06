@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/urlstorenode",
+  "name":        "@itsmworkbench/urlstorenode",
   "description": "loads and saves itsm schema urls used with intellimaintain using node",
   "packageJson": {
     "dependencies":    {
@@ -14,9 +14,9 @@
     }
   },
   "links":       [
-    "@intellimaintain/domain",
-    "@intellimaintain/url",
-    "@intellimaintain/git"
+    "@itsmworkbench/domain",
+    "@itsmworkbench/url",
+    "@itsmworkbench/git"
   ],
   "guards":      {
     "compile": true,

@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
-import { AttributeTable } from "@intellimaintain/components";
-import { findSqlDataDetails, SqlDataDetails } from "@intellimaintain/defaultdomains";
+import { AttributeTable } from "@itsmworkbench/components";
+import { findSqlDataDetails, SqlDataDetails } from "@itsmworkbench/defaultdomains";
 
 export interface SqlDataProps {
   sql?: string

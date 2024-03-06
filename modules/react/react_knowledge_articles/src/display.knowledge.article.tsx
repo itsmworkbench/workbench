@@ -1,8 +1,8 @@
 import React from "react";
 import { LensProps, LensProps2 } from "@focuson/state";
-import { SideEffect } from '@intellimaintain/react_core';
-import { KnowledgeArticle, KnowledgeArticles } from "@intellimaintain/knowledge_articles";
-import { DisplayYaml, DropdownAsTitle } from "@intellimaintain/components";
+import { SideEffect } from '@itsmworkbench/react_core';
+import { KnowledgeArticle, KnowledgeArticles } from "@itsmworkbench/knowledge_articles";
+import { DisplayYaml, DropdownAsTitle } from "@itsmworkbench/components";
 
 
 export function DisplayKnowledgeArticle<S> ( { state }: LensProps<S, KnowledgeArticle, any> ) {

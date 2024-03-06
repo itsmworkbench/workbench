@@ -1,9 +1,9 @@
 import React, { ReactNode } from "react";
 import { Typography } from "@mui/material";
-import { BaseMessage, isMessage } from "@intellimaintain/domain";
+import { BaseMessage, isMessage } from "@itsmworkbench/domain";
 import { LensState2 } from "@focuson/state";
-import { JSONObject } from "@intellimaintain/utils";
-import { SideEffect } from "@intellimaintain/react_core";
+import { JSONObject } from "@itsmworkbench/utils";
+import { SideEffect } from "@itsmworkbench/react_core";
 
 export type TemplateFn<S> = ( state: S, templateName: string ) => string
 export interface MessagePlugInParams<S> {

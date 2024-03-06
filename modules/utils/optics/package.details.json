@@ -1,0 +1,20 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/optics",
+  "description": "The usual utility functions",
+  "packageJson": {
+    "dependencies":    {
+      "@focuson/lens": "1.44.3"
+    },
+    "devDependencies": {},
+    "browser":         {
+      "child_process": false
+    }
+  },
+  "links":       [],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

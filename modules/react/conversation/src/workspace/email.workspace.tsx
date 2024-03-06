@@ -9,8 +9,8 @@ import TestIcon from "@mui/icons-material/SettingsEthernet";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-import { calculateActionDetails, CommonState } from "@intellimaintain/react_core";
-import { FakeSendButton } from "@intellimaintain/components";
+import { calculateActionDetails, CommonState } from "@itsmworkbench/react_core";
+import { FakeSendButton } from "@itsmworkbench/components";
 
 
 export interface EmailTempSpace<S, S1 extends CommonState> {

@@ -1,7 +1,7 @@
 import { LensState, LensState2 } from "@focuson/state";
-import { BaseMessage, ChatDisplayData } from "@intellimaintain/domain";
+import { BaseMessage, ChatDisplayData } from "@itsmworkbench/domain";
 import React from "react";
-import { SideEffect } from "@intellimaintain/react_core";
+import { SideEffect } from "@itsmworkbench/react_core";
 
 export interface ConversationPlugin<S> {
   type: string;

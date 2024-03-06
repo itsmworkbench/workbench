@@ -1,9 +1,9 @@
-import { addManyVariablesFromSelectedAndList, Variables, VariablesExtractor } from "@intellimaintain/variables";
+import { addManyVariablesFromSelectedAndList, Variables, VariablesExtractor } from "@itsmworkbench/variables";
 import { NameAnd } from "@laoban/utils";
-import { Operator } from "@intellimaintain/domain";
-import { KnowledgeArticles } from "@intellimaintain/knowledge_articles";
-import { Tickets } from "@intellimaintain/tickets";
-import { SoftwareCatalogs } from "@intellimaintain/softwarecatalog";
+import { Operator } from "@itsmworkbench/domain";
+import { KnowledgeArticles } from "@itsmworkbench/knowledge_articles";
+import { Tickets } from "@itsmworkbench/tickets";
+import { SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";
 
 export function extractVariablesForAllDomain ( ve: VariablesExtractor,
                                                operator: Operator,

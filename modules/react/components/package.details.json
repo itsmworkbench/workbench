@@ -1,6 +1,6 @@
 {
   "template":    "react_library",
-  "name":        "@intellimaintain/components",
+  "name":        "@itsmworkbench/components",
   "description": "",
   "packageJson": {
     "files":        ["build/"],
@@ -12,16 +12,16 @@
     "scripts":      {"start": "react-scripts start"}
   },
   "links":       [
-    "@intellimaintain/apiclienteventstore",
-    "@intellimaintain/events",
-    "@intellimaintain/eventstore",
-    "@intellimaintain/react_core",
-    "@intellimaintain/variables",
-    "@intellimaintain/yaml"
+    "@itsmworkbench/apiclienteventstore",
+    "@itsmworkbench/events",
+    "@itsmworkbench/eventstore",
+    "@itsmworkbench/react_core",
+    "@itsmworkbench/variables",
+    "@itsmworkbench/yaml"
   ],
   "guards":      {
     "compile": true,
-    "publish": false,
+    "publish": true,
     "test":    false,
     "react":   true
   }

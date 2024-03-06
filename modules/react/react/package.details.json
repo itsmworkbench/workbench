@@ -1,6 +1,6 @@
 {
   "template":    "react",
-  "name":        "@intellimaintain/react",
+  "name":        "@itsmworkbench/react",
   "description": "A second go at the react application",
   "packageJson": {
     "files":        ["build/"],
@@ -9,29 +9,29 @@
     "scripts":      {"start": "react-scripts start"}
   },
   "links":       [
-    "@intellimaintain/apiclienteventstore",
-    "@intellimaintain/components",
-    "@intellimaintain/domain",
-    "@intellimaintain/events",
-    "@intellimaintain/questions",
-    "@intellimaintain/eventstore",
-     "@intellimaintain/jsyaml",
-    "@intellimaintain/react_core",
-    "@intellimaintain/react_conversation",
-    "@intellimaintain/react_devmode",
-    "@intellimaintain/react_knowledge_articles",
-    "@intellimaintain/react_ldap",
-    "@intellimaintain/react_softwarecatalog",
-    "@intellimaintain/react_sql",
-    "@intellimaintain/react_templates",
-    "@intellimaintain/react_ticket",
-    "@intellimaintain/react_variables",
-    "@intellimaintain/update_value_in_database_ticket_type",
-    "@intellimaintain/variables"
+    "@itsmworkbench/apiclienteventstore",
+    "@itsmworkbench/components",
+    "@itsmworkbench/domain",
+    "@itsmworkbench/events",
+    "@itsmworkbench/questions",
+    "@itsmworkbench/eventstore",
+     "@itsmworkbench/jsyaml",
+    "@itsmworkbench/react_core",
+    "@itsmworkbench/react_conversation",
+    "@itsmworkbench/react_devmode",
+    "@itsmworkbench/react_knowledge_articles",
+    "@itsmworkbench/react_ldap",
+    "@itsmworkbench/react_softwarecatalog",
+    "@itsmworkbench/react_sql",
+    "@itsmworkbench/react_templates",
+    "@itsmworkbench/react_ticket",
+    "@itsmworkbench/react_variables",
+    "@itsmworkbench/update_value_in_database_ticket_type",
+    "@itsmworkbench/variables"
   ],
   "guards":      {
     "compile": true,
-    "publish": false,
+    "publish": true,
     "test":    false,
     "react":   true
   }

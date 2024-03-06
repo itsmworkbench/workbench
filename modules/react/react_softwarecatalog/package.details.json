@@ -1,6 +1,6 @@
 {
   "template":    "react_library",
-  "name":        "@intellimaintain/react_softwarecatalog",
+  "name":        "@itsmworkbench/react_softwarecatalog",
   "description": "The react plugin for software catalog",
   "packageJson": {
     "files":        ["build/"],
@@ -9,13 +9,13 @@
     "scripts":      {"start": "react-scripts start"}
   },
   "links":       [
-    "@intellimaintain/domain",
-    "@intellimaintain/components",
-    "@intellimaintain/softwarecatalog"
+    "@itsmworkbench/domain",
+    "@itsmworkbench/components",
+    "@itsmworkbench/softwarecatalog"
   ],
   "guards":      {
     "compile": true,
-    "publish": false,
+    "publish": true,
     "test":    false,
     "react":   true
   }

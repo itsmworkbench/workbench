@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/idstore",
+  "name":        "@itsmworkbench/idstore",
   "description": "A simple id => value store",
   "packageJson": {
     "dependencies":    {
@@ -8,7 +8,7 @@
     },
     "devDependencies": {}
   },
-  "links":       ["@intellimaintain/utils"],
+  "links":       ["@itsmworkbench/utils"],
   "guards":      {
     "compile": true,
     "publish": true,

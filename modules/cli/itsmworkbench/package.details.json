@@ -1,0 +1,40 @@
+{
+  "template":    "typescript",
+  "name":        "itsmworkbench",
+  "description": "",
+  "packageJson": {
+    "dependencies":    {
+      "node":                  "^v16.0.0",
+      "@laoban/utils":         "1.4.45",
+      "@laoban/filesops-node": "1.4.45"
+    },
+    "devDependencies": {},
+    "bin":             {
+      "itsm": "dist/index.js"
+    },
+    "browser":         {
+      "child_process": false
+    }
+  },
+  "links":       [
+    "@itsmworkbench/api",
+    "@itsmworkbench/cli",
+    "@itsmworkbench/commander12",
+    "@itsmworkbench/config",
+    "@itsmworkbench/domain",
+    "@itsmworkbench/defaultdomains",
+    "@itsmworkbench/events",
+    "@itsmworkbench/eventstore",
+    "@itsmworkbench/fileeventstore",
+    "@itsmworkbench/idstore",
+    "@itsmworkbench/listids",
+    "@itsmworkbench/jsyaml",
+    "@itsmworkbench/shell_git",
+    "@itsmworkbench/utils"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

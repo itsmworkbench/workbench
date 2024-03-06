@@ -1,4 +1,4 @@
-import { escapeSqlParameters, extractSqlString } from "@intellimaintain/utils";
+import { escapeSqlParameters, extractSqlString } from "@itsmworkbench/utils";
 import { fromEntries, NameAnd } from "@laoban/utils";
 import { derefence, VariableDefn } from "@laoban/variables";
 

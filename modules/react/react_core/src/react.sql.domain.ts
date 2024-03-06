@@ -1,4 +1,4 @@
-import { ActionStatus } from "@intellimaintain/actions";
+import { ActionStatus } from "@itsmworkbench/actions";
 import { LensState } from "@focuson/state";
 import { calculateActionDetails, CommonStateForActionDetails } from "./common.state";
 

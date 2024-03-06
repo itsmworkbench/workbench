@@ -1,6 +1,6 @@
-import { ListIds } from "@intellimaintain/listids";
-import { parseUsingStore } from "@intellimaintain/parser";
-import { IdStore } from "@intellimaintain/idstore";
+import { ListIds } from "@itsmworkbench/listids";
+import { parseUsingStore } from "@itsmworkbench/parser";
+import { IdStore } from "@itsmworkbench/idstore";
 import { ApiIdStore } from "./idstore.loading";
 
 export function listidsFromFetch ( apiIdStore: ApiIdStore ): ListIds {

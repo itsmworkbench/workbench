@@ -1,5 +1,5 @@
-import { BaseMessage, Message } from "@intellimaintain/domain";
-import { Event } from "@intellimaintain/events";
+import { BaseMessage, Message } from "@itsmworkbench/domain";
+import { Event } from "@itsmworkbench/events";
 
 export interface SendEvents {
   url: string;

@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/softwarecatalog",
+  "name":        "@itsmworkbench/softwarecatalog",
   "description": "The softwarecatalog plugin. Everything except react",
   "packageJson": {
     "dependencies":    {"@laoban/utils": "1.4.45"},
@@ -9,7 +9,7 @@
       "child_process": false
     }
   },
-  "links":       ["@intellimaintain/domain", "@intellimaintain/yaml"],
+  "links":       ["@itsmworkbench/domain", "@itsmworkbench/yaml"],
   "guards":      {
     "compile": true,
     "publish": true,

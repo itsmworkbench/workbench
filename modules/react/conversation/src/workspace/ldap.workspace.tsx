@@ -1,14 +1,14 @@
 import { LensState } from "@focuson/state";
 import { WorkSpacePlugin, WorkspaceStateFn } from "./workspace";
 import React from "react";
-import { calculateActionDetails, CommonState } from "@intellimaintain/react_core";
+import { calculateActionDetails, CommonState } from "@itsmworkbench/react_core";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import TestIcon from "@mui/icons-material/SettingsEthernet";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { dollarsBracesVarDefn, replaceVar } from "@laoban/variables";
-import { FakeSendButton } from "@intellimaintain/components";
+import { FakeSendButton } from "@itsmworkbench/components";
 
 export interface LdapTempSpace<S, S1 extends CommonState> {
   state: LensState<S, S1, any>

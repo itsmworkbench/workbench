@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/fileeventstore",
+  "name":        "@itsmworkbench/fileeventstore",
   "description": "A event source library for node.js backed with a file",
   "packageJson": {
     "dependencies":    {
@@ -13,7 +13,7 @@
       "child_process": false
     }
   },
-  "links":       ["@intellimaintain/utils", "@intellimaintain/events","@intellimaintain/eventstore"],
+  "links":       ["@itsmworkbench/utils", "@itsmworkbench/events","@itsmworkbench/eventstore"],
   "guards":      {
     "compile": true,
     "publish": true,

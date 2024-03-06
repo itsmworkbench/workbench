@@ -3,10 +3,10 @@ import { DisplayChatArea } from "./conversation.chatarea";
 import { UserTypingBox } from "./userTypingBox";
 import React, { ReactNode } from "react";
 import { LensProps2 } from "@focuson/state";
-import { Conversation } from "@intellimaintain/domain";
-import { SideEffect } from "@intellimaintain/react_core";
+import { Conversation } from "@itsmworkbench/domain";
+import { SideEffect } from "@itsmworkbench/react_core";
 import { ConversationPlugin } from "./conversation.plugin";
-import { MainAndTypingLayout } from "@intellimaintain/components";
+import { MainAndTypingLayout } from "@itsmworkbench/components";
 
 export interface ConversationHistoryAndChatProps<S> extends LensProps2<S, Conversation, SideEffect[], any> {
   plugins: ConversationPlugin<S>[]

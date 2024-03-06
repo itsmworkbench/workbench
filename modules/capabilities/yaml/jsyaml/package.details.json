@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/jsyaml",
+  "name":        "@itsmworkbench/jsyaml",
   "description": "",
   "packageJson": {
     "files":        ["build/"],
@@ -9,11 +9,11 @@
     }
   },
   "links":       [
-    "@intellimaintain/yaml"
+    "@itsmworkbench/yaml"
   ],
   "guards":      {
     "compile": true,
-    "publish": false,
+    "publish": true,
     "test":    false,
     "react":   true
   }

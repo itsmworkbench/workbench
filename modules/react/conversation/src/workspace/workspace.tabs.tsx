@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { LensProps, LensProps2 } from "@focuson/state";
-import { TabPanelDetails, TabsContainer } from "@intellimaintain/components";
+import { TabPanelDetails, TabsContainer } from "@itsmworkbench/components";
 import { HasWorkspacePlugins, WorkSpacePlugin } from "./workspace";
 import { safeArray, toArray } from "@laoban/utils";
 

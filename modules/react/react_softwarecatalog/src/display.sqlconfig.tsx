@@ -1,7 +1,7 @@
 import React from "react";
 import { LensProps, LensState } from "@focuson/state";
-import { DatabaseConfig } from "@intellimaintain/softwarecatalog";
-import { EditAttributesTable, FocusedTextInput } from "@intellimaintain/components";
+import { DatabaseConfig } from "@itsmworkbench/softwarecatalog";
+import { EditAttributesTable, FocusedTextInput } from "@itsmworkbench/components";
 import { Button, Typography } from "@mui/material";
 import { TestConnectionButton } from "./test.connection.button";
 

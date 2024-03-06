@@ -3,11 +3,11 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { CommonState, onClickAction, SideEffect } from "@intellimaintain/react_core";
+import { CommonState, onClickAction, SideEffect } from "@itsmworkbench/react_core";
 import { LensProps, LensState } from "@focuson/state";
-import { ActionStatus } from "@intellimaintain/actions";
-import { makeSideeffectForMessage } from "@intellimaintain/components";
-import { Message } from '@intellimaintain/domain';
+import { ActionStatus } from "@itsmworkbench/actions";
+import { makeSideeffectForMessage } from "@itsmworkbench/components";
+import { Message } from '@itsmworkbench/domain';
 
 export interface InPlaceMenuProps<S, S1 extends CommonState> extends LensProps<S, S1, any> {
   actionStatus: ActionStatus

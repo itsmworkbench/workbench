@@ -1,5 +1,5 @@
 import { LensProps2 } from "@focuson/state";
-import { SideEffect } from "@intellimaintain/react_core";
+import { SideEffect } from "@itsmworkbench/react_core";
 import { WorkspaceSideEffectPlugin, WorkspaceStateSideEffectFn } from "./workspace";
 import React from "react";
 import { UserTypingBox } from "../conversation/userTypingBox";

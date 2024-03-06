@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/variables",
+  "name":        "@itsmworkbench/variables",
 
   "description": "Each of the artifacts we have needs to be scanned for variables (software catalogs/knowledge models)",
   "packageJson": {
@@ -14,7 +14,7 @@
       "child_process": false
     }
   },
-  "links":       ["@intellimaintain/utils", "@intellimaintain/idstore","@intellimaintain/parser"],
+  "links":       ["@itsmworkbench/utils", "@itsmworkbench/idstore","@itsmworkbench/parser"],
   "guards":      {
     "compile": true,
     "publish": true,

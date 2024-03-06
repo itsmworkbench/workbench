@@ -1,7 +1,7 @@
 import fs from "fs";
-import { GitOps } from "@intellimaintain/git";
-import { shellGitsops } from "@intellimaintain/shell_git";
-import { orThrow, parseIdentityUrl, parseNamedUrl } from "@intellimaintain/url";
+import { GitOps } from "@itsmworkbench/git";
+import { shellGitsops } from "@itsmworkbench/shell_git";
+import { orThrow, parseIdentityUrl, parseNamedUrl } from "@itsmworkbench/url";
 import { orgToDetails, testDir } from "./integration.fixture";
 import { loadFromIdentityUrl, loadFromNamedUrl, loadFromUrlStore } from "./node.urlstore.load";
 import { saveNamedUrl } from "./node.urlstore.save";

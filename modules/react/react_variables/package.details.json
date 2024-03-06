@@ -1,6 +1,6 @@
 {
   "template":    "react_library",
-  "name":        "@intellimaintain/react_variables",
+  "name":        "@itsmworkbench/react_variables",
   "description": "The react plugin for displaying the variables",
   "packageJson": {
     "files":        ["build/"],
@@ -9,11 +9,11 @@
     "scripts":      {"start": "react-scripts start"}
   },
   "links":       [
-    "@intellimaintain/components"
+    "@itsmworkbench/components"
   ],
   "guards":      {
     "compile": true,
-    "publish": false,
+    "publish": true,
     "test":    false,
     "react":   true
   }

@@ -1,9 +1,9 @@
-import { BeforeAfterComponent, DisplayMessagePlugin, MessageButton, messageMatches, MessagePlugInParams } from "@intellimaintain/components";
+import { BeforeAfterComponent, DisplayMessagePlugin, MessageButton, messageMatches, MessagePlugInParams } from "@itsmworkbench/components";
 import { NameAnd } from "@laoban/utils";
 import React, { ReactNode } from "react";
-import { uppercaseFirstLetter } from "@intellimaintain/utils";
+import { uppercaseFirstLetter } from "@itsmworkbench/utils";
 import { Typography } from "@mui/material";
-import { Message } from "@intellimaintain/domain";
+import { Message } from "@itsmworkbench/domain";
 
 
 export interface GenericSqlPlugin {

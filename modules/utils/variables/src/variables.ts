@@ -1,5 +1,5 @@
 import { deepCombineTwoObjects, ErrorsAnd, hasErrors, mapErrors, NameAnd, safeArray } from "@laoban/utils";
-import { findIdKeyAndPath, IdAndName, JSONObject, SelectedAndList, toCamelCase } from "@intellimaintain/utils";
+import { findIdKeyAndPath, IdAndName, JSONObject, SelectedAndList, toCamelCase } from "@itsmworkbench/utils";
 
 export type Variables = {
   variables: JSONObject

@@ -1,7 +1,7 @@
 {
-  "name": "@intellimaintain/components",
+  "name": "@itsmworkbench/components",
   "description": "",
-  "version": "0.1.1",
+  "version": "0.0.3",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -18,12 +18,12 @@
     "react-markdown": "^8.0.7",
     "rehype-raw": "^7.0.0",
     "rehype-sanitize": "^6.0.0",
-    "@intellimaintain/apiclienteventstore": "0.1.1",
-    "@intellimaintain/events": "0.1.1",
-    "@intellimaintain/eventstore": "0.1.1",
-    "@intellimaintain/react_core": "0.1.1",
-    "@intellimaintain/variables": "0.1.1",
-    "@intellimaintain/yaml": "0.1.1",
+    "@itsmworkbench/apiclienteventstore": "0.0.3",
+    "@itsmworkbench/events": "0.0.3",
+    "@itsmworkbench/eventstore": "0.0.3",
+    "@itsmworkbench/react_core": "0.0.3",
+    "@itsmworkbench/variables": "0.0.3",
+    "@itsmworkbench/yaml": "0.0.3",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

@@ -1,16 +1,1 @@
-{"event":"setValue","path":"tickets.selected","value":"ticket:pa123","context":{}}
-{"event":"setId","id":"ticket:pa123","path":"tickets.item","parser":"ticket","context":{}}
-{"event":"setId","id":"ka:adustDatabaseSql","path":"kas.item","parser":"ka","context":{}}
-{"event":"setValue","path":"kas.selected","value":"ka:adustDatabaseSql","context":{}}
-{"event":"setValue","path":"scs.selected","value":"sc:EPX","context":{}}
-{"event":"setId","id":"sc:EPX","path":"scs.item","parser":"sc","context":{}}
-{"event":"setValue","path":"templates.selected","value":"template:delete.project.request.approval","context":{}}
-{"event":"setId","id":"template:delete.project.request.approval","path":"templates.item","parser":"template","context":{}}
-{"event":"setValue","path":"kas.selected","value":"ka:deleteproject","context":{}}
-{"event":"setId","id":"ka:deleteproject","path":"kas.item","parser":"ka","context":{}}
-{{"event":"append","path":"conversation.messages","value":{"type":"message","message":"[checkSql]","who":"fake"},"context":{}}
-{"event":"setValue","path":"ticketState.checkIssueExists","value":true,"context":{}}
-{"event":"append","path":"conversation.messages","value":{"type":"message","message":"Need to make pretty gui... Checked phil@example.com","who":"fake"},"context":{}}
-{"event":"setValue","path":"ticketState.checkUser","value":true,"context":{}}
-{"event":"append","path":"conversation.messages","value":{"type":"message","message":"Need to make pretty gui... Checked mr.approver@example.com","who":"fake"},"context":{}}
-{"event":"setValue","path":"ticketState.checkApprover","value":true,"context":{}}
+{"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"message"},"context":{}}

@@ -1,10 +1,10 @@
 import { LensProps } from "@focuson/state";
-import { SideEffect } from "@intellimaintain/react_core";
+import { SideEffect } from "@itsmworkbench/react_core";
 
 import React from "react";
 import { Typography } from "@mui/material";
 import { MessageButton } from "./messageButton";
-import { BaseMessage } from "@intellimaintain/domain";
+import { BaseMessage } from "@itsmworkbench/domain";
 
 export interface HighlightedAndMessageButtonProps<S> extends LensProps<S, SideEffect[], any> {
   buttonText: string

@@ -1,6 +1,6 @@
 import { NameAnd } from "@laoban/utils";
-import { ErrorEvent, Event, isAppendEvent, isSetIdEvent, isSetValueEvent, isZeroEvent } from "@intellimaintain/events";
-import { JSONPrimitive } from "@intellimaintain/utils";
+import { ErrorEvent, Event, isAppendEvent, isSetIdEvent, isSetValueEvent, isZeroEvent } from "@itsmworkbench/events";
+import { JSONPrimitive } from "@itsmworkbench/utils";
 
 
 export const parseEvent = ( extraContext: NameAnd<JSONPrimitive> ) => ( s: string ): Event => {

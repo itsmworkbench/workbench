@@ -1,6 +1,6 @@
-import { findIdKeyAndPath, PartialFunctionK, transformKeysToCamelCase } from "@intellimaintain/utils";
-import { YamlCapability } from "@intellimaintain/yaml";
-import { ParserStoreParser } from "@intellimaintain/parser";
+import { findIdKeyAndPath, PartialFunctionK, transformKeysToCamelCase } from "@itsmworkbench/utils";
+import { YamlCapability } from "@itsmworkbench/yaml";
+import { ParserStoreParser } from "@itsmworkbench/parser";
 import { ErrorsAnd, mapErrors } from "@laoban/utils";
 
 export interface BaseMessage {

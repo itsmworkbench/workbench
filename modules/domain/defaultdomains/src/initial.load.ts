@@ -1,23 +1,20 @@
-import { ListIds } from "@intellimaintain/listids";
-import { KnowledgeArticle, KnowledgeArticles } from "@intellimaintain/knowledge_articles";
-import { SoftwareCatalog, SoftwareCatalogs } from "@intellimaintain/softwarecatalog";
-import { Ticket, Tickets } from "@intellimaintain/tickets";
-import { Template, Templates } from "@intellimaintain/templates";
-import { IdAndName, SelectedAndList } from "@intellimaintain/utils";
-import { IdStore, isGoodIdStoreResult } from "@intellimaintain/idstore";
-import { Operator } from "@intellimaintain/domain";
+import { ListIds } from "@itsmworkbench/listids";
+import { KnowledgeArticle, KnowledgeArticles } from "@itsmworkbench/knowledge_articles";
+import { SoftwareCatalog, SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";
+import { Ticket, Tickets } from "@itsmworkbench/tickets";
+import { Template, Templates } from "@itsmworkbench/templates";
+import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
+import { IdStore, isGoodIdStoreResult } from "@itsmworkbench/idstore";
+import { Operator } from "@itsmworkbench/domain";
+import { UrlLoadFn, UrlLoadResult } from "@itsmworkbench/url";
+import { ErrorsAnd, hasErrors } from "@laoban/utils";
 
 export type InitialLoadDataResult = {
-  operator?: Operator
-  error?: string[]
+  operator?: ErrorsAnd<UrlLoadResult<Operator>>
 }
-export async function loadInitialData ( idStore: IdStore ): Promise<InitialLoadDataResult> {
-  const operator = await idStore ( 'operator:me', 'operator' )
-  if ( isGoodIdStoreResult ( operator ) ) {
-    return { operator: operator.result as any }
-  } else {
-    return { error: [ operator.error ] }
-  }
+export async function loadInitialData ( urlLoader: UrlLoadFn ): Promise<InitialLoadDataResult> {
+  const operator = await urlLoader<Operator> ( 'itsm:me:operator:me' )
+  return { operator };
 }
 export type InitialLoadIdResult = {
   kas: KnowledgeArticles

@@ -1,21 +1,21 @@
 import { LensProps } from "@focuson/state";
 import { ThemeProvider, Toolbar } from "@mui/material";
-import { ColumnLeftMainBottom, DisplayDebug, SilentTabsContainer, SimpleTabPanel, theme } from "@intellimaintain/components";
+import { ColumnLeftMainBottom, DisplayDebug, SilentTabsContainer, SimpleTabPanel, theme } from "@itsmworkbench/components";
 import React from "react";
-import { CommonState, SideEffect } from "@intellimaintain/react_core";
+import { CommonState, SideEffect } from "@itsmworkbench/react_core";
 import { ItsmState } from "../state/itsm.state";
-import { ConversationHistoryAndChat, ConversationPlugin } from "@intellimaintain/react_conversation";
+import { ConversationHistoryAndChat, ConversationPlugin } from "@itsmworkbench/react_conversation";
 import { GuiNav } from "./gui.nav";
-import { DevMode } from "@intellimaintain/react_devmode";
-import { Conversation } from "@intellimaintain/domain";
+import { DevMode } from "@itsmworkbench/react_devmode";
+import { Conversation } from "@itsmworkbench/domain";
 import { NameAnd } from "@laoban/utils";
-import { Variables } from "@intellimaintain/variables";
-import { Tickets } from "@intellimaintain/tickets";
-import { Templates } from "@intellimaintain/templates";
-import { SoftwareCatalogs } from "@intellimaintain/softwarecatalog";
-import { KnowledgeArticles } from "@intellimaintain/knowledge_articles";
+import { Variables } from "@itsmworkbench/variables";
+import { Tickets } from "@itsmworkbench/tickets";
+import { Templates } from "@itsmworkbench/templates";
+import { SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";
+import { KnowledgeArticles } from "@itsmworkbench/knowledge_articles";
 
-export interface AppProps<S, CS extends CommonState> extends LensProps<S, CS, any> {
+export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
 }
 

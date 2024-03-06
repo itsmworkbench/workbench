@@ -1,4 +1,4 @@
-import { CommandDetails, ContextConfigAndCommander, SubCommandDetails } from "@intellimaintain/cli";
+import { CommandDetails, ContextConfigAndCommander, SubCommandDetails } from "@itsmworkbench/cli";
 
 
 export function viewConfigCommand<Commander,Context, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander,Context, Config, CleanConfig> ): CommandDetails<Commander> {

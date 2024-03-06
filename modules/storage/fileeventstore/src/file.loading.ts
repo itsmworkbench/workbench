@@ -1,7 +1,7 @@
 import { fileLocking, LockFileDetails, withFileLock } from "./with.lock";
 import fs from "fs";
 import { promisify } from "util";
-import { ResultAndNewStart } from "@intellimaintain/eventstore";
+import { ResultAndNewStart } from "@itsmworkbench/eventstore";
 
 const stat = promisify ( fs.stat );
 

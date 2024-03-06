@@ -1,10 +1,10 @@
-import { Variables } from "@intellimaintain/variables";
+import { Variables } from "@itsmworkbench/variables";
 import { Card, CardContent, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
-import { DisplayYaml } from "@intellimaintain/components";
+import { DisplayYaml } from "@itsmworkbench/components";
 import ErrorIcon from "@mui/icons-material/Error";
 import { LensProps2 } from "@focuson/state";
 import { NameAnd } from "@laoban/utils";
-import { SideEffect } from "@intellimaintain/react_core";
+import { SideEffect } from "@itsmworkbench/react_core";
 import React from "react";
 
 export type DisplayVariablesProps = {

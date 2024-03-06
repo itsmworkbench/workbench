@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { LensProps } from "@focuson/state";
-import { BaseMessage, Conversation } from "@intellimaintain/domain";
+import { BaseMessage, Conversation } from "@itsmworkbench/domain";
 import { safeArray, toArray } from "@laoban/utils";
 import { Lenses } from "@focuson/lens";
 import { ConversationPlugin } from "./conversation.plugin";

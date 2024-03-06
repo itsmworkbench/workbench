@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import { Box, IconButton, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { SideEffect } from "@intellimaintain/react_core";
+import { SideEffect } from "@itsmworkbench/react_core";
 import { LensProps2 } from "@focuson/state";
-import { makeSideeffectForMessage } from '@intellimaintain/components';
-import { Message } from "@intellimaintain/domain";
+import { makeSideeffectForMessage } from '@itsmworkbench/components';
+import { Message } from "@itsmworkbench/domain";
 
 
 interface UserTypingBoxProps<S, C> extends LensProps2<S, string, SideEffect[], C> {

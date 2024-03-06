@@ -1,11 +1,11 @@
 import React, { ReactElement } from "react";
 import { LensState, LensState2 } from "@focuson/state";
-import { AttributeTable, EditAttributesTable, FocusedTextInput, makeSideeffectForMessage } from "@intellimaintain/components";
-import { BaseMessage, ChatDisplayData, Operator } from "@intellimaintain/domain";
+import { AttributeTable, EditAttributesTable, FocusedTextInput, makeSideeffectForMessage } from "@itsmworkbench/components";
+import { BaseMessage, ChatDisplayData, Operator } from "@itsmworkbench/domain";
 import { Lens } from "@focuson/lens";
-import { ConversationPlugin } from "@intellimaintain/react_conversation";
+import { ConversationPlugin } from "@itsmworkbench/react_conversation";
 import { Button, Paper } from "@mui/material";
-import { SideEffect } from "@intellimaintain/react_core";
+import { SideEffect } from "@itsmworkbench/react_core";
 import { NameAnd } from "@laoban/utils";
 
 const pleaseString = `Please tell me about yourself so that when I send emails and messages for you I can use your correct details`

@@ -3,7 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { NameAnd, safeArray } from "@laoban/utils";
 import { LensProps, LensProps2, LensState } from "@focuson/state";
-import { splitAndCapitalize } from "@intellimaintain/utils";
+import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { Lenses } from "@focuson/lens";
 
 export type AccordionState = string

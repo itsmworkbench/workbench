@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/shell_git",
+  "name":        "@itsmworkbench/shell_git",
   "description": "git operations. This implements git by calling out to the shell",
   "packageJson": {
     "dependencies":    {
@@ -13,7 +13,7 @@
       "child_process": false
     }
   },
-  "links":       ["@intellimaintain/domain", "@intellimaintain/git"],
+  "links":       ["@itsmworkbench/domain", "@itsmworkbench/git"],
   "guards":      {
     "compile": true,
     "publish": true,

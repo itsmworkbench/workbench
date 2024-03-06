@@ -1,17 +1,17 @@
 import { LensProps, LensState } from "@focuson/state";
 import { WorkSpacePlugin, WorkspaceStateFn } from "./workspace";
 import React from "react";
-import { KnowledgeArticle } from "@intellimaintain/knowledge_articles";
+import { KnowledgeArticle } from "@itsmworkbench/knowledge_articles";
 import { NameAnd } from "@laoban/utils";
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
-import { ActionStatus, calcStatusForAll } from "@intellimaintain/actions";
+import { ActionStatus, calcStatusForAll } from "@itsmworkbench/actions";
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
-import { extractPathFromDescription, splitAndCapitalize } from "@intellimaintain/utils";
+import { extractPathFromDescription, splitAndCapitalize } from "@itsmworkbench/utils";
 
 import { StatusIndicator } from "./status.indicator";
 import ErrorIcon from '@mui/icons-material/Error';
 import { InPlaceMenu } from "./inPlaceMenu";
-import { CommonState, onClickAction } from "@intellimaintain/react_core";
+import { CommonState, onClickAction } from "@itsmworkbench/react_core";
 
 export interface DashBoardData<S, S1 extends CommonState> {
   state: LensState<S, S1, any>

@@ -1,15 +1,15 @@
 import { LensProps2, LensState2 } from "@focuson/state";
-import { SideEffect } from "@intellimaintain/react_core";
+import { SideEffect } from "@itsmworkbench/react_core";
 import { WorkSpacePlugin, WorkspaceStateFn } from "./workspace";
 import React from "react";
-import { KnowledgeArticle } from "@intellimaintain/knowledge_articles";
+import { KnowledgeArticle } from "@itsmworkbench/knowledge_articles";
 import { NameAnd } from "@laoban/utils";
-import { Variables } from "@intellimaintain/variables";
+import { Variables } from "@itsmworkbench/variables";
 import { ChatButtons } from "../chatbuttons/chatbuttons";
-import { Ticket } from "@intellimaintain/tickets";
+import { Ticket } from "@itsmworkbench/tickets";
 import { Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import ReactMarkdown from "react-markdown";
-import { TicketStateDefinition } from "@intellimaintain/actions";
+import { TicketStateDefinition } from "@itsmworkbench/actions";
 
 
 export interface QuickData<S> {

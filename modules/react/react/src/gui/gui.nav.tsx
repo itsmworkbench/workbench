@@ -1,6 +1,6 @@
 import { LensProps } from "@focuson/state";
 import { ItsmState } from "../state/itsm.state";
-import { FocusOnSetValueButton, FocusOnToggleButton } from "@intellimaintain/components";
+import { FocusOnSetValueButton, FocusOnToggleButton } from "@itsmworkbench/components";
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import SettingsIcon from '@mui/icons-material/Settings';
 import React from "react";

@@ -1,10 +1,10 @@
 import React from "react";
-import { FocusedTextArea, QueryResponseLayout } from "@intellimaintain/components";
+import { FocusedTextArea, QueryResponseLayout } from "@itsmworkbench/components";
 import { LensProps } from "@focuson/state";
-import { isActionSqlWorkbenchState, RawSqlWorkbenchState, SqlWorkbenchState } from "@intellimaintain/react_core";
-import { ActionSqlWorkbenchState } from "@intellimaintain/react_core";
+import { isActionSqlWorkbenchState, RawSqlWorkbenchState, SqlWorkbenchState } from "@itsmworkbench/react_core";
+import { ActionSqlWorkbenchState } from "@itsmworkbench/react_core";
 import { Button } from "@mui/material";
-import { TestConnectionButton } from "@intellimaintain/react_softwarecatalog";
+import { TestConnectionButton } from "@itsmworkbench/react_softwarecatalog";
 
 export interface DisplaySqlWorkbenchProps<S, S1> extends LensProps<S, S1, any> {
   maxHeight?: string

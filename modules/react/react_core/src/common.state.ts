@@ -1,17 +1,17 @@
-import { Conversation } from "@intellimaintain/domain";
+import { Conversation } from "@itsmworkbench/domain";
 import { NameAnd } from "@laoban/utils";
-import { Variables } from "@intellimaintain/variables";
+import { Variables } from "@itsmworkbench/variables";
 
-import { Action, ActionStatus, calcStatusForWithBy } from "@intellimaintain/actions";
+import { Action, ActionStatus, calcStatusForWithBy } from "@itsmworkbench/actions";
 import { LensState } from "@focuson/state";
-import { KnowledgeArticle, KnowledgeArticles } from "@intellimaintain/knowledge_articles";
+import { KnowledgeArticle, KnowledgeArticles } from "@itsmworkbench/knowledge_articles";
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
 
-import { uppercaseFirstLetter } from "@intellimaintain/utils";
-import { Tickets } from "@intellimaintain/tickets";
-import { Templates } from "@intellimaintain/templates";
+import { uppercaseFirstLetter } from "@itsmworkbench/utils";
+import { Tickets } from "@itsmworkbench/tickets";
+import { Templates } from "@itsmworkbench/templates";
 import { SideEffect } from "./sideeffects";
-import { SoftwareCatalogs } from "@intellimaintain/softwarecatalog";
+import { SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";
 
 export interface WorkspaceSelectionState {
   workspaceTab?: string

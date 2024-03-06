@@ -12,11 +12,12 @@ describe ( 'parseUrl', () => {
       "scheme": "itsm",
       "url": "itsm:org1:space1:name1"
     });
+
   } );
 
   // Test for a valid IdentityUrl
-  it ( 'parses valid IdentityUrl correctly', () => {
-    const urlString = 'itsmid:org2:id:identifier1';
+  it ( 'parses valid IdentityUrl correctly when %3A for :', () => {
+    const urlString = 'itsmid%3Aorg2%3Aid%3Aidentifier1';
     const result = parseUrl ( urlString );
     expect ( result ).toEqual ( {
       "id": "identifier1",

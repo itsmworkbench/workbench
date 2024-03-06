@@ -1,7 +1,7 @@
 {
-  "name": "@intellimaintain/tickets",
+  "name": "@itsmworkbench/tickets",
   "description": "The tickets plugin. Everything except react",
-  "version": "0.1.1",
+  "version": "0.0.3",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -20,8 +20,8 @@
     ]
   },
   "dependencies": {
-    "@intellimaintain/domain": "0.1.1",
-    "@intellimaintain/yaml": "0.1.1",
+    "@itsmworkbench/domain": "0.0.3",
+    "@itsmworkbench/yaml": "0.0.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {

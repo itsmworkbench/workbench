@@ -1,0 +1,20 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/react_new_ticket",
+  "description": "The react gui around new tickets",
+  "packageJson": {
+    "files":        ["build/"],
+    "dependencies": {
+    }
+  },
+  "links":       [
+    "@itsmworkbench/components",
+    "@itsmworkbench/tickets"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false,
+    "react":   true
+  }
+}

@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/templates",
+  "name":        "@itsmworkbench/templates",
   "description": "Stored templates that can be used for emails or ticket comments or...",
   "packageJson": {
     "dependencies":    {},
@@ -9,7 +9,7 @@
       "child_process": false
     }
   },
-  "links":       ["@intellimaintain/domain"],
+  "links":       ["@itsmworkbench/domain"],
   "guards":      {
     "compile": true,
     "publish": true,

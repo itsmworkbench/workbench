@@ -2,7 +2,7 @@ import React from "react";
 
 import { LensProps } from "@focuson/state";
 import { Button } from "@mui/material";
-import { CommonState, SideEffect } from "@intellimaintain/react_core";
+import { CommonState, SideEffect } from "@itsmworkbench/react_core";
 import { makeSideeffectForMessage } from "../messages/messaging";
 
 

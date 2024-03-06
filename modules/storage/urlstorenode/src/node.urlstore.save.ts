@@ -1,7 +1,7 @@
 import { ErrorsAnd, mapErrorsK } from "@laoban/utils";
-import { isNamedUrl, namedUrlToPathAndDetails, OrganisationUrlStoreConfig, parseUrl, repoFrom, UrlSaveFn, UrlStoreResult } from "@intellimaintain/url";
+import { isNamedUrl, namedUrlToPathAndDetails, OrganisationUrlStoreConfig, parseUrl, repoFrom, UrlSaveFn, UrlStoreResult } from "@itsmworkbench/url";
 import * as fs from "fs";
-import { GitOps } from "@intellimaintain/git";
+import { GitOps } from "@itsmworkbench/git";
 import path from "path";
 
 

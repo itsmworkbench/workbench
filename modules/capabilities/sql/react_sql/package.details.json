@@ -1,6 +1,6 @@
 {
   "template":    "react",
-  "name":        "@intellimaintain/react_sql",
+  "name":        "@itsmworkbench/react_sql",
   "description": "",
   "packageJson": {
     "files":        ["build/"],
@@ -8,15 +8,15 @@
     }
   },
   "links":       [
-    "@intellimaintain/components",
-    "@intellimaintain/domain",
-    "@intellimaintain/react_core",
-    "@intellimaintain/variables",
-    "@intellimaintain/react_softwarecatalog"
+    "@itsmworkbench/components",
+    "@itsmworkbench/domain",
+    "@itsmworkbench/react_core",
+    "@itsmworkbench/variables",
+    "@itsmworkbench/react_softwarecatalog"
   ],
   "guards":      {
     "compile": true,
-    "publish": false,
+    "publish": true,
     "test":    false,
     "react":   true
   }

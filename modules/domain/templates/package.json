@@ -1,7 +1,7 @@
 {
-  "name": "@intellimaintain/templates",
+  "name": "@itsmworkbench/templates",
   "description": "Stored templates that can be used for emails or ticket comments or...",
-  "version": "0.1.1",
+  "version": "0.0.3",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -20,7 +20,7 @@
     ]
   },
   "dependencies": {
-    "@intellimaintain/domain": "0.1.1",
+    "@itsmworkbench/domain": "0.0.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {

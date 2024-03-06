@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/cli",
+  "name":        "@itsmworkbench/cli",
   "description": "How to do a cli",
   "packageJson": {
     "dependencies":    {
@@ -12,7 +12,7 @@
       "child_process": false
     }
   },
-  "links":       ["@intellimaintain/utils"],
+  "links":       ["@itsmworkbench/utils"],
   "guards":      {
     "compile": true,
     "publish": true,

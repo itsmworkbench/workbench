@@ -1,6 +1,6 @@
 import { LensProps, LensProps2, LensState, LensState2 } from "@focuson/state";
-import { SideEffect } from "@intellimaintain/react_core";
-import { TabPanelDetails } from "@intellimaintain/components";
+import { SideEffect } from "@itsmworkbench/react_core";
+import { TabPanelDetails } from "@itsmworkbench/components";
 import React from "react";
 
 export type WorkspaceStateFn<Mid, WSLens> = ( state: LensState<any, Mid, any> ) => WSLens

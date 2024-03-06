@@ -1,4 +1,4 @@
-import { YamlCapability } from "@intellimaintain/yaml";
+import { YamlCapability } from "@itsmworkbench/yaml";
 import { ErrorsAnd } from "@laoban/utils";
 
 const js = require ( 'js-yaml' );

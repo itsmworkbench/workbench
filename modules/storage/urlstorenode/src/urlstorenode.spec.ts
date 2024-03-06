@@ -1,4 +1,4 @@
-import { NamedUrl, namedUrlToPathAndDetails, nameSpaceDetails, OrganisationUrlStoreConfig, parseNamedUrl } from "@intellimaintain/url";
+import { NamedUrl, namedUrlToPathAndDetails, nameSpaceDetails, OrganisationUrlStoreConfig, parseNamedUrl } from "@itsmworkbench/url";
 import { ns1,  orgToDetails } from "./integration.fixture";
 
 

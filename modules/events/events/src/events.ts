@@ -1,5 +1,5 @@
 import { NameAnd } from "@laoban/utils";
-import { JSONPrimitive } from "@intellimaintain/utils";
+import { JSONPrimitive } from "@itsmworkbench/utils";
 
 export type EventContext = NameAnd<JSONPrimitive> //meta data about the event. Like source/line number/ etc.
 

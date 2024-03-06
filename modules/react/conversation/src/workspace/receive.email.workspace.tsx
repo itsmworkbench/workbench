@@ -1,11 +1,11 @@
 import { LensState } from "@focuson/state";
 import { WorkSpacePlugin, WorkspaceStateFn } from "./workspace";
 import React from "react";
-import { calculateActionDetails, CommonState } from "@intellimaintain/react_core";
+import { calculateActionDetails, CommonState } from "@itsmworkbench/react_core";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { FakeSendButton } from "@intellimaintain/components";
+import { FakeSendButton } from "@itsmworkbench/components";
 
 
 export interface ReceiveEmailWorkspace<S, S1 extends CommonState> {

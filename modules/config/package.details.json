@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/config",
+  "name":        "@itsmworkbench/config",
   "description": "The configuration for the Intellimaintain project",
   "packageJson": {
     "dependencies":    {
@@ -11,7 +11,7 @@
       "child_process": false
     }
   },
-  "links":       ["@intellimaintain/utils", "@intellimaintain/cli"],
+  "links":       ["@itsmworkbench/utils", "@itsmworkbench/cli"],
   "guards":      {
     "compile": true,
     "publish": true,

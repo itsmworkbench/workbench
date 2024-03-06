@@ -1,8 +1,8 @@
 import { NameAnd } from "@laoban/utils";
 import { promises } from "fs";
 import { IdStore, IdStoreResult } from "./id.store";
-import { ParserStore, parseUsingStore } from "@intellimaintain/parser";
-import { findIdKeyAndPath } from "@intellimaintain/utils";
+import { ParserStore, parseUsingStore } from "@itsmworkbench/parser";
+import { findIdKeyAndPath } from "@itsmworkbench/utils";
 
 export interface IdStoreDetails {
   extension: string

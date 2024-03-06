@@ -1,5 +1,5 @@
 import { LensProps } from "@focuson/state";
-import { BaseMessage, isMessage } from "@intellimaintain/domain";
+import { BaseMessage, isMessage } from "@itsmworkbench/domain";
 import { Typography } from "@mui/material";
 import React from "react";
 

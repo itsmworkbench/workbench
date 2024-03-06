@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { Box, Grid, List, ListItem, Typography } from '@mui/material';
 import { LensProps3 } from "@focuson/state";
 import { UserTypingBox } from "./userTypingBox";
-import { Conversation } from "@intellimaintain/domain";
-import { SideEffect } from '@intellimaintain/react_core';
-import { displayMessage, DisplayMessagePlugin, TemplateFn } from '@intellimaintain/components';
-import { Variables } from "@intellimaintain/variables";
+import { Conversation } from "@itsmworkbench/domain";
+import { SideEffect } from '@itsmworkbench/react_core';
+import { displayMessage, DisplayMessagePlugin, TemplateFn } from '@itsmworkbench/components';
+import { Variables } from "@itsmworkbench/variables";
 import { NameAnd } from "@laoban/utils";
 import { Lenses } from "@focuson/lens";
 

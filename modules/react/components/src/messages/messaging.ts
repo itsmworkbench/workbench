@@ -1,6 +1,6 @@
-import { AppendEvent } from "@intellimaintain/events";
-import { SideEffect } from "@intellimaintain/react_core";
-import { BaseMessage } from "@intellimaintain/domain";
+import { AppendEvent } from "@itsmworkbench/events";
+import { SideEffect } from "@itsmworkbench/react_core";
+import { BaseMessage } from "@itsmworkbench/domain";
 
 
 export function makeSideeffectForMessage<M extends BaseMessage> ( message: M ): SideEffect {

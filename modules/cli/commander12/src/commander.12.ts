@@ -1,4 +1,4 @@
-import { cliTc, CliTc, CommandDetails, ContextConfigAndCommander, ExecuteFn, HasNameAndVersion, ListOfCommandDetails, SubCommandDetails } from "@intellimaintain/cli";
+import { cliTc, CliTc, CommandDetails, ContextConfigAndCommander, ExecuteFn, HasNameAndVersion, ListOfCommandDetails, SubCommandDetails } from "@itsmworkbench/cli";
 import { Command } from "commander";
 
 const { program } = require ( 'commander' );

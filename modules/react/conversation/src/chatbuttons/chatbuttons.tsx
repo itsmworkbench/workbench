@@ -1,14 +1,14 @@
 import React from 'react';
-import { ButtonData, KnowledgeArticle } from "@intellimaintain/knowledge_articles";
+import { ButtonData, KnowledgeArticle } from "@itsmworkbench/knowledge_articles";
 import { LensProps2 } from "@focuson/state";
-import { SideEffect } from "@intellimaintain/react_core";
-import { Variables } from "@intellimaintain/variables";
+import { SideEffect } from "@itsmworkbench/react_core";
+import { Variables } from "@itsmworkbench/variables";
 import { NameAnd } from "@laoban/utils";
 import { Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import SecurityIcon from '@mui/icons-material/Security';
-import { Ticket } from "@intellimaintain/tickets";
-import { makeSideeffectForMessage } from "@intellimaintain/components";
+import { Ticket } from "@itsmworkbench/tickets";
+import { makeSideeffectForMessage } from "@itsmworkbench/components";
 
 export interface ChatButtonProps<S> extends LensProps2<S, NameAnd<Variables>, SideEffect[], any> {
 

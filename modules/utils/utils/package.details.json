@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@intellimaintain/utils",
+  "name":        "@itsmworkbench/utils",
   "description": "The usual utility functions",
   "packageJson": {
     "dependencies":    {"node": "^v14.4.0", "@focuson/lens": "1.44.3"},

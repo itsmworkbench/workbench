@@ -1,6 +1,6 @@
 {
   "template":    "react_library",
-  "name":        "@intellimaintain/react_operator",
+  "name":        "@itsmworkbench/react_operator",
   "description": "The react plugin for the operator details",
   "packageJson": {
     "files":        ["build/"],
@@ -9,12 +9,12 @@
     "scripts":      {"start": "react-scripts start"}
   },
   "links":       [
-    "@intellimaintain/components",
-    "@intellimaintain/react_conversation"
+    "@itsmworkbench/components",
+    "@itsmworkbench/react_conversation"
   ],
   "guards":      {
     "compile": true,
-    "publish": false,
+    "publish": true,
     "test":    false,
     "react":   true
   }

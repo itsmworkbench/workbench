@@ -1,4 +1,4 @@
-import { JSONValue } from "@intellimaintain/utils";
+import { JSONValue } from "@itsmworkbench/utils";
 
 
 export type  IdStore = ( id: string , parser: string) => Promise<IdStoreResult>
