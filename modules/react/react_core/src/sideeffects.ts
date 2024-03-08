@@ -1,7 +1,8 @@
-import { ErrorsAnd, mapK } from "@laoban/utils";
+import { ErrorsAnd, mapK, toArray, flatMap } from "@laoban/utils";
 import { sendEvent, SendEvents } from "@itsmworkbench/apiclienteventstore";
 import { Event } from "@itsmworkbench/events";
-import { Lens } from "@focuson/lens";
+import { Lens, Transform } from "@focuson/lens";
+import { massTransform } from "@focuson/lens/dist/src/optics";
 
 export type SideEffectType = string
 export interface SideEffect {
@@ -22,53 +23,80 @@ export interface HasSideeffects {
   sideeffects: SideEffect[]
 
 }
+export interface SideeffectAndResult<R> {
+  sideeffect: SideEffect
+  result: ErrorsAnd<R>
+}
 export interface SideeffectResult<R> {
   sideeffect: SideEffect
   result: ErrorsAnd<R>
 }
 
-export interface ISideEffectProcessor<S extends SideEffect, R> {
-  accept: ( s: SideEffect ) => s is S
-  process: ( s: S ) => Promise<ErrorsAnd<R>>
+export type ResultsAndTransforms<S, R> = {
+  result: ErrorsAnd<R>
+  txs?: Transform<S, any> []
+
+}
+export type SideEffectResultsAndTransforms<S, R> = {
+  sideeffect: SideEffect
+  resultsAndTransforms: ResultsAndTransforms<S, R>
+}
+export interface ISideEffectProcessor<S, SE extends SideEffect, R> {
+  accept: ( se: SideEffect ) => se is SE
+  process: ( state: S, se: SE ) => Promise<ResultsAndTransforms<S, R>>
 }
 
-export function eventSideeffectProcessor ( es: SendEvents, path: string ): ISideEffectProcessor<EventSideEffect, boolean> {
+export function eventSideeffectProcessor<S> ( es: SendEvents, path: string ): ISideEffectProcessor<S, EventSideEffect, boolean> {
   return {
     accept: isEventSideEffect,
-    process: async ( s ) => {
-      console.log ( 'sending event', s.event )
-      await sendEvent ( es, s.event )
-      return true
+    process: async ( state, se ) => {
+      console.log ( 'sending event', se.event )
+      await sendEvent ( es, se.event )
+      return { result: true }
     }
   }
 }
 
-export const processSideEffect = ( processors: ISideEffectProcessor<any, any>[] ): ISideEffectProcessor<SideEffect, any> => ({
-  accept: ( s: SideEffect ): s is any => processors.find ( sp => sp.accept ( s ) ) !== undefined,
-  process: async ( sideeffect: SideEffect ): Promise<ErrorsAnd<any>> => {
-    for ( const p of processors )
-      if ( p.accept ( sideeffect ) )
-        return await p.process ( sideeffect )
-    return [ `No processor for sideeffect ${sideeffect.command}` ]
-  }
-})
+export function processSideEffect<S> ( processors: ISideEffectProcessor<S, any, any>[] ): ISideEffectProcessor<S, SideEffect, any> {
+  return {
+    accept: ( se: SideEffect ): se is any => processors.find ( sp => sp.accept ( se ) ) !== undefined,
+    process: async ( state, sideeffect: SideEffect ): Promise<ErrorsAnd<any>> => {
+      for ( const p of processors )
+        if ( p.accept ( sideeffect ) )
+          return await p.process ( state, sideeffect )
+      return [ `No processor for sideeffect ${sideeffect.command}` ]
+    }
+  };
+}
 
 
-export const processSideEffectsInState = <S> ( sep: ISideEffectProcessor<SideEffect, any>, seLens: Lens<S, SideEffect[]>, logL: Lens<S, SideeffectResult<any>[]>, debug?: boolean ) =>
-  async ( oldState: S, state: S, ) => {
+export function processSideEffectsInState<S> ( sep: ISideEffectProcessor<S, SideEffect, any>, seLens: Lens<S, SideEffect[]>, logL: Lens<S, SideeffectAndResult<any>[]>, debug?: boolean ) {
+  return async ( oldState: S, state: S, ) => {
     const sideeffects = seLens.getOption ( state ) || []
     if ( sideeffects.length === 0 ) {
       if ( debug ) console.log ( 'processSideEffectsInState', 'no sideeffects' )
       return state
     }
     if ( debug ) console.log ( 'processSideEffectsInState', 'sideeffects', sideeffects )
-    const results: SideeffectResult<any>[] = await mapK ( sideeffects, async ( sideeffect ) => {
-      let result = { sideeffect, result: await sep.process ( sideeffect ) };
-      if ( debug ) console.log ( 'processSideEffectsInState', 'sideeffect result', result )
-      return result;
+    const resultsAndTxs: SideEffectResultsAndTransforms<S, any>[] = await mapK ( sideeffects, async ( sideeffect ) => {
+      let resultsAndTransforms: ResultsAndTransforms<S, any> = await sep.process ( state, sideeffect )
+      if ( debug ) console.log ( 'processSideEffectsInState', 'sideeffect resultsAndTransforms', resultsAndTransforms )
+       console.log ( 'processSideEffectsInState', 'sideeffect resultsAndTransforms', resultsAndTransforms )
+      return { sideeffect, resultsAndTransforms }
     } )
-    const existingLog = logL.getOption ( state ) || []
+    console.log('resultsAndTxs', resultsAndTxs)
+    const results: SideeffectAndResult<any>[] = resultsAndTxs.map ( r =>
+      ({ sideeffect: r.sideeffect, result: r.resultsAndTransforms.result }) )
+    console.log ( 'just results1', results )
+    const txs: Transform<S, any>[] = flatMap ( resultsAndTxs, r => toArray ( r.resultsAndTransforms.txs ) );
+    console.log ( 'txs', txs )
+    const existingLog: SideeffectAndResult<any>[] = logL.getOption ( state ) || []
     const newLog = [ ...existingLog, ...results ]
     if ( debug ) console.log ( 'processSideEffectsInState', 'newLog', newLog )
-    return seLens.set ( logL.set ( state, newLog ), [] )
+    let withLog = seLens.set ( logL.set ( state, newLog ), [] );
+ console.log ( 'processSideEffectsInState', 'txs', txs )
+    const final = massTransform ( withLog, ...txs )
+    if ( debug ) console.log ( 'processSideEffectsInState', 'final', final )
+    return final
   };
+}

@@ -1,5 +1,5 @@
 import { ErrorsAnd, mapErrorsK } from "@laoban/utils";
-import { isNamedUrl, namedUrlToPathAndDetails, NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit, parseUrl, repoFrom, UrlSaveFn, UrlStoreResult } from "@itsmworkbench/url";
+import { isNamedUrl, namedUrlToPathAndDetails, NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit, parseUrl, repoFrom, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
 import * as fs from "fs";
 import { GitOps } from "@itsmworkbench/git";
 import path from "path";
@@ -15,12 +15,12 @@ export const saveNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfig
             console.log ( 'saveNamedUrl', s, thePath )
             console.log ( '  --content', content )
             console.log ( '  --asString', string )
-            if ( string === undefined ) return [ `Failed to turn this into string ${JSON.stringify(named)}\n${content}` ]
+            if ( string === undefined ) return [ `Failed to turn this into string ${JSON.stringify ( named )}\n${content}` ]
             await fs.promises.mkdir ( path.dirname ( thePath ), { recursive: true } )
             await fs.promises.writeFile ( thePath, string, { encoding: details.encoding } )
             const repo = repoFrom ( config, named )
             const hash = await gitOps.hashFor ( repo, path.relative ( repo, thePath ) )
-            const id = `itsmid:${named.organisation}:${named.namespace}:${hash}`
+            const id = writeUrl ( { scheme: 'itsmid', organisation: named.organisation, namespace: named.namespace, id: hash } )
             await gitOps.init ( repo ) // creates a new repo if needed including the directory.
             await gitOps.commit ( repo, `Saving ${named.name} as ${id}` )
             const fileSize = await gitOps.sizeForHash ( repo, hash )

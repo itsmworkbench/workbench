@@ -36,6 +36,7 @@ export const startAppState: ItsmState = {
 
 export const itsmIdL: Lens<ItsmState, ItsmState> = Lenses.identity ()
 export const operatorL: Lens<ItsmState, ErrorsAnd<UrlLoadResult<Operator>>> = itsmIdL.focusOn ( 'operator' )
+export const setPageL: Lens<ItsmState, string|undefined> = itsmIdL.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> =
                itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )

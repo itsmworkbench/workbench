@@ -34,13 +34,14 @@ export const getUrls = ( load: UrlLoadFn ): KoaPartialFunction => ({
 });
 export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails> ): KoaPartialFunction => ({
   isDefinedAt: ( ctx ) => {
-    const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
+    const match = /\/url\/itsm/.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'PUT';
     return match && isMethodMatch;
   },
   apply: async ( ctx ) => {
     console.log('putUrls', ctx.context.request.path)
-    const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
+    const match = /\/url\/(itsm.*)/.exec ( ctx.context.request.path );
+    console.log('match', match)
     const url = match[ 1 ];
     try {
       console.log ( `${'PUT'}Urls`, url );

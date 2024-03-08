@@ -1,6 +1,7 @@
 import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
-import { ErrorsAnd, mapErrors, mapErrorsK } from "@laoban/utils";
+import { ErrorsAnd, hasErrors, mapErrors, mapErrorsK } from "@laoban/utils";
 import { UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
+import { Optional } from "@focuson/lens";
 
 //OK Gritting our teeth we aren't worrying about the errors for now. We are just going to assume that everything is going to work.
 //This is so that we can test out the happy path of the gui. We want to see what it will look like. We will come back to the errors later.
@@ -18,10 +19,10 @@ export interface TicketAndTicketEvents {
   ticket: UrlStoreResult
   ticketevents: UrlStoreResult
 }
-export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn ): ISideEffectProcessor<AddNewTicketSideEffect, ErrorsAnd<TicketAndTicketEvents>> {
+export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPage: Optional<S, string | undefined> ): ISideEffectProcessor<S, AddNewTicketSideEffect, TicketAndTicketEvents> {
   return ({
     accept: ( s: SideEffect ): s is AddNewTicketSideEffect => s.command === 'addNewTicket',
-    process: async ( se: AddNewTicketSideEffect ) => {
+    process: async ( s: S, se: AddNewTicketSideEffect ) => {
       const ticketUrl = writeUrl ( { scheme: 'itsm', organisation: se.organisation, namespace: 'ticket', name: se.name } )
       const ticketeventsUrl = writeUrl ( { scheme: 'itsm', organisation: se.organisation, namespace: 'ticketevents', name: se.name } )
 
@@ -31,13 +32,15 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn ): ISi
       //if error, add to the errors... how do we specify this? Do we have global errors?
       //if not error we want to change the page. How do we do that? How do we say where we want to go? We shouldn't know...we should be told...
 
-      return mapErrorsK ( await urlSaveFn ( ticketUrl, { description: se.ticket } ), async ticket => {
+      const res: ErrorsAnd<TicketAndTicketEvents> = await mapErrorsK ( await urlSaveFn ( ticketUrl, { description: se.ticket } ), async ticket => {
         console.log ( 'addNewTicketSideeffectProcessor - ticket ', ticketUrl, ticket )
         return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [] ), async ticketevents => {
           console.log ( 'addNewTicketSideeffectProcessor - ticketevents ', ticketeventsUrl, ticketevents )
           return { ticket, ticketevents }
         } )
       } )
+      return hasErrors ( res ) ? { result: res } : { result: res, txs: [[ setPage, _ => 'abc' ]] };
     }
   })
 }
+

@@ -12,7 +12,7 @@ import { IdStore } from "@itsmworkbench/idstore";
 import { ListIds } from "@itsmworkbench/listids";
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, defaultParserStore, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { ItsmState, logsL, sideEffectsL, startAppState } from "./state/itsm.state";
+import { ItsmState, logsL, setPageL, sideEffectsL, startAppState } from "./state/itsm.state";
 
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
@@ -70,7 +70,7 @@ addEventStoreModifier ( container,
   processSideEffectsInState<ItsmState> (
     processSideEffect ( [
       eventSideeffectProcessor ( saveDetails, 'conversation.messages' ),
-      addNewTicketSideeffectProcessor ( saveToUrlStore )
+      addNewTicketSideeffectProcessor ( saveToUrlStore ,setPageL)
     ] ),
     sideEffectsL, logsL ) )
 
