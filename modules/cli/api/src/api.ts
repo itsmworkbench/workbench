@@ -1,11 +1,12 @@
-import { ContextAndStats, defaultShowsError, KoaPartialFunction, notFoundIs404 } from "@runbook/koa";
+import { ContextAndStats, defaultShowsError, KoaPartialFunction, notFoundIs404 } from "@itsmworkbench/koa";
 import { chainOfResponsibility } from "@runbook/utils";
 import { fileLoading, fileLocking, loadStringIncrementally, withFileLock } from "@itsmworkbench/fileeventstore";
 import { promises as fs } from 'fs';
 import { IdStore, IdStoreResult, isBadIdStoreResult } from "@itsmworkbench/idstore";
 import { ListIds } from "@itsmworkbench/listids";
 import { getUrls, listUrls, putUrls } from "./api.for.url.store";
-import { UrlLoadFn, UrlSaveFn, UrlStore } from "@itsmworkbench/url";
+import { NameSpaceDetails, UrlStore } from "@itsmworkbench/url";
+import { NameAnd } from "@laoban/utils";
 
 
 export const ids = ( idstore: IdStore, debug: boolean ): KoaPartialFunction => ({
@@ -82,14 +83,14 @@ export const appendPostPF: KoaPartialFunction = {
   }
 }
 
-export const wizardOfOzApiHandlers = ( idStore: IdStore, getIds: ListIds, debug: boolean, urlStore: UrlStore, ...handlers: KoaPartialFunction[] ): ( from: ContextAndStats ) => Promise<void> =>
+export const wizardOfOzApiHandlers = ( idStore: IdStore, getIds: ListIds, debug: boolean, details: NameAnd<NameSpaceDetails>,urlStore: UrlStore, ...handlers: KoaPartialFunction[] ): ( from: ContextAndStats ) => Promise<void> =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
     ids ( idStore, debug ),
     eventsPF,
     getIdsPF ( getIds ),
     listUrls ( urlStore.list ),
     getUrls ( urlStore.load ),
-    putUrls ( urlStore.save ),
+    putUrls ( urlStore.save, details ),
     appendPostPF,
     ...handlers,
     notFoundIs404,

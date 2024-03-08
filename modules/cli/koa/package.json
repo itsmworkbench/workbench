@@ -1,12 +1,9 @@
 {
-  "name": "@itsmworkbench/api",
-  "description": "The api that supports the Wizard of Oz",
+  "name": "@itsmworkbench/koa",
+  "description": "",
   "version": "0.0.3",
   "main": "dist/index",
   "types": "dist/index",
-  "browser": {
-    "child_process": false
-  },
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -20,20 +17,13 @@
     ]
   },
   "dependencies": {
-    "@runbook/utils": "0.3.15",
-    "@laoban/utils": "1.4.45",
-    "@itsmworkbench/cli": "0.0.3",
-    "@itsmworkbench/domain": "0.0.3",
-    "@itsmworkbench/defaultdomains": "0.0.3",
-    "@itsmworkbench/fileeventstore": "0.0.3",
-    "@itsmworkbench/koa": "0.0.3",
-    "@itsmworkbench/shell_git": "0.0.3",
-    "@itsmworkbench/url": "0.0.3",
-    "@itsmworkbench/urlstorenode": "0.0.3",
+    "koa": "^2.14.2",
+    "@koa/cors": "^5.0.0",
     "@itsmworkbench/utils": "0.0.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {
+    "supertest": "^6.3.3",
     "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.0.0",

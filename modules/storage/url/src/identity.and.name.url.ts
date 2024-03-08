@@ -1,7 +1,7 @@
-import { ErrorsAnd, flatMap, mapErrors } from "@laoban/utils";
+import { ErrorsAnd, mapErrors } from "@laoban/utils";
 
 export type IdentityUrl = {
-  url: string
+  url?: string // This is the original url that was parsed. Useful for debugging
   scheme: 'itsmid',
   organisation: string,
   namespace: string,
@@ -11,7 +11,7 @@ export function isIdentityUrl ( x: NamedOrIdentityUrl ): x is IdentityUrl {
   return x.scheme === 'itsmid';
 }
 export type NamedUrl = {
-  url: string
+  url?: string // This is the original url that was parsed. Might not be here. Useful for debugging
   scheme: 'itsm',
   organisation: string,
   namespace: string,
@@ -25,6 +25,13 @@ export type NamedOrIdentityUrl = NamedUrl | IdentityUrl;
 
 
 const validPartRegex = /^[a-zA-Z0-9/_\-.]+$/;
+
+export function writeUrl ( url: NamedOrIdentityUrl ): string {
+  if ( isNamedUrl ( url ) ) return `${url.scheme}:${url.organisation}:${url.namespace}:${url.name}`;
+  if ( isIdentityUrl ( url ) ) return `${url.scheme}:${url.organisation}:${url.namespace}:${url.id}`;
+  throw new Error ( `Unexpected url type ${url}` );
+}
+
 export function parseUrl ( url: string ): ErrorsAnd<NamedOrIdentityUrl> {
   let decodedUrl = url.replace ( /%3A/g, ':' );
   const parts = decodedUrl.split ( ':' );
@@ -39,7 +46,7 @@ export function parseUrl ( url: string ): ErrorsAnd<NamedOrIdentityUrl> {
 
   if ( scheme === 'itsmid' ) {
     const identityUrl: IdentityUrl = {
-      url:decodedUrl,
+      url: decodedUrl,
       scheme,
       organisation,
       namespace,
@@ -48,7 +55,7 @@ export function parseUrl ( url: string ): ErrorsAnd<NamedOrIdentityUrl> {
     return identityUrl;
   } else if ( scheme === 'itsm' ) {
     const namedUrl: NamedUrl = {
-      url:decodedUrl,
+      url: decodedUrl,
       scheme,
       organisation,
       namespace,

@@ -1,19 +1,12 @@
 import { LensProps } from "@focuson/state";
 import { ThemeProvider, Toolbar } from "@mui/material";
-import { ColumnLeftMainBottom, DisplayDebug, SilentTabsContainer, SimpleTabPanel, theme } from "@itsmworkbench/components";
+import { ColumnLeftMainBottom, SilentTabsContainer, SimpleTabPanel, theme } from "@itsmworkbench/components";
 import React from "react";
-import { CommonState, SideEffect } from "@itsmworkbench/react_core";
 import { ItsmState } from "../state/itsm.state";
 import { ConversationHistoryAndChat, ConversationPlugin } from "@itsmworkbench/react_conversation";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
-import { Conversation } from "@itsmworkbench/domain";
-import { NameAnd } from "@laoban/utils";
-import { Variables } from "@itsmworkbench/variables";
-import { Tickets } from "@itsmworkbench/tickets";
-import { Templates } from "@itsmworkbench/templates";
-import { SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";
-import { KnowledgeArticles } from "@itsmworkbench/knowledge_articles";
+import { DisplayNewTicket } from "@itsmworkbench/react_new_ticket";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -29,15 +22,15 @@ export function App<S> ( { state, plugins }: AppProps<S, ItsmState> ) {
                           layout={{ drawerWidth: '240px', height: '100vh' }}
                           state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
                           Nav={<GuiNav state={state}/>}>
+      <Toolbar/>
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )}>
-        <SimpleTabPanel title='chat'><ConversationHistoryAndChat state={convState}
-                                                                 plugins={plugins}/></SimpleTabPanel>
+        <SimpleTabPanel title='chat'><ConversationHistoryAndChat state={convState} plugins={plugins}/></SimpleTabPanel>
         <SimpleTabPanel title='settings'>
-          <div><Toolbar/>
-            Settings go here
-          </div>
+          <div><Toolbar/> Settings go here</div>
         </SimpleTabPanel>
+        <SimpleTabPanel title='newTicket'><DisplayNewTicket state={state.doubleUp ().focus1On ( 'newTicket' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
       </SilentTabsContainer>
+
       {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', "conversation", "variables", "tickets", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}
     </ColumnLeftMainBottom>
   </ThemeProvider>

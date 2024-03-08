@@ -1,11 +1,11 @@
 import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
-import { IdentityUrl, isIdentityUrl, isNamedUrl, NamedUrl, namedUrlToPathAndDetails, OrganisationUrlStoreConfig, parseUrl, repoFrom, UrlLoadFn, UrlLoadResult, urlToDetails } from "@itsmworkbench/url";
+import { IdentityUrl, isIdentityUrl, isNamedUrl, NamedUrl, namedUrlToPathAndDetails, NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit, parseUrl, repoFrom, UrlLoadFn, UrlLoadResult, urlToDetails } from "@itsmworkbench/url";
 import * as fs from "fs";
 import { GitOps } from "@itsmworkbench/git";
 import path from "path";
 
 
-export const loadFromNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfig ) => <T>( named: NamedUrl ): Promise<ErrorsAnd<UrlLoadResult<T>>> => {
+export const loadFromNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfigForGit ) => <T>( named: NamedUrl ): Promise<ErrorsAnd<UrlLoadResult<T>>> => {
   return mapErrorsK ( namedUrlToPathAndDetails ( config ) ( named ), async ( { path:p, details } ) => {
     console.log('loadFromNamedUrl path', p)
     let stats = await fs.promises.stat ( p )
@@ -20,9 +20,9 @@ export const loadFromNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreCo
   } )
 }
 
-export const loadFromIdentityUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfig ) => async<T> ( identity: IdentityUrl ): Promise<ErrorsAnd<UrlLoadResult<T>>> => {
+export const loadFromIdentityUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfigForGit ) => async<T> ( identity: IdentityUrl ): Promise<ErrorsAnd<UrlLoadResult<T>>> => {
   if ( !isIdentityUrl ( identity ) ) return [ `${JSON.stringify ( identity )} is not a IdentityUrl` ]
-  return mapErrorsK ( urlToDetails ( config, identity ), async ( details ) => {
+  return mapErrorsK ( urlToDetails ( config.nameSpaceDetails, identity ), async ( details ) => {
     const repo = repoFrom ( config, identity )
     const fileSize = await gitOps.sizeForHash ( repo, identity.id )
     const string = await gitOps.fileFor ( repo, identity.id )
@@ -31,7 +31,7 @@ export const loadFromIdentityUrl = ( gitOps: GitOps, config: OrganisationUrlStor
   } )
 }
 
-export const loadFromUrlStore = ( gitOps: GitOps, config: OrganisationUrlStoreConfig ): UrlLoadFn => async <T>( url: string ): Promise<ErrorsAnd<UrlLoadResult<T>>> => {
+export const loadFromUrlStore = ( gitOps: GitOps, config: OrganisationUrlStoreConfigForGit ): UrlLoadFn => async <T>( url: string ): Promise<ErrorsAnd<UrlLoadResult<T>>> => {
   const namedOrIdentity = parseUrl ( url )
   if ( hasErrors ( namedOrIdentity ) ) return namedOrIdentity
   if ( isNamedUrl ( namedOrIdentity ) ) return loadFromNamedUrl ( gitOps, config ) ( namedOrIdentity )

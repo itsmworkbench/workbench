@@ -1,5 +1,5 @@
 import { CommandFn, HasCurrentDirectory } from "@itsmworkbench/cli";
-import { startKoa } from "@runbook/koa";
+import { startKoa } from "@itsmworkbench/koa";
 import { wizardOfOzApiHandlers } from "./api";
 import { loadFromIdStore } from "@itsmworkbench/idstore";
 import { defaultIdStoreDetails, defaultParserStore } from "@itsmworkbench/defaultdomains";
@@ -30,7 +30,7 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory, Confi
       const urlStore = nodeUrlstore ( gitOps, orgs )
 
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,
-        wizardOfOzApiHandlers ( idStore, allIds, opts.debug === true, urlStore ) )
+        wizardOfOzApiHandlers ( idStore, allIds, opts.debug === true, orgs.nameSpaceDetails, urlStore ) )
     }
   })
 

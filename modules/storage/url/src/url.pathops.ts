@@ -1,10 +1,10 @@
 import { ErrorsAnd } from "@laoban/utils";
-import { NameSpaceDetails, OrganisationUrlStoreConfig } from "./url.store.config";
+import { NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit } from "./url.store.config";
 
 export type UrlStorePathFn = ( org: string, namespace: string ) => ErrorsAnd<string>;
 export type UrlStorePathAndDetailsFn = ( org: string, namespace: string ) => ErrorsAnd<PathAndDetails>;
-export type PathAndDetails = { path: string, details: NameSpaceDetails }
-export const urlStorePathAndDetailsFn = ( config: OrganisationUrlStoreConfig ): UrlStorePathAndDetailsFn =>
+export type PathAndDetails = { path: string, details: NameSpaceDetailsForGit }
+export const urlStorePathAndDetailsFn =  ( config: OrganisationUrlStoreConfigForGit ): UrlStorePathAndDetailsFn =>
   ( org, namespace ) => {
     const nsLookup = config.nameSpaceDetails
     const details = nsLookup[ namespace ];
@@ -13,7 +13,7 @@ export const urlStorePathAndDetailsFn = ( config: OrganisationUrlStoreConfig ): 
     return { path: `${config.baseDir}/${org}/${details.pathInGitRepo}`, details }
   }
 
-export const urlStorePathFn = ( config: OrganisationUrlStoreConfig ): UrlStorePathFn =>
+export const urlStorePathFn = ( config: OrganisationUrlStoreConfigForGit ): UrlStorePathFn =>
   ( org, namespace ) => {
     const nsLookup = config.nameSpaceDetails
     const details = nsLookup[ namespace ];

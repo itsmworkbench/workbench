@@ -2,31 +2,22 @@ import { DomainPlugin } from "@itsmworkbench/domain";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { addVariables, extractVariablesFromMarkdown, Variables } from "@itsmworkbench/variables";
 import { ParserStoreParser } from "@itsmworkbench/parser";
-import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
 
-export interface Ticket extends IdAndName {
-  severity: string
+export interface Ticket {
+  id: string
   description: string
 }
-export type Tickets = SelectedAndList<Ticket>
 
 
 export function variablesFromTicket ( sofar: NameAnd<any>, t: Ticket ): ErrorsAnd<Variables> {
-  return addVariables ( extractVariablesFromMarkdown ( t.description ), { ticketId: t.id, severity: t.severity } )
+  return addVariables ( extractVariablesFromMarkdown ( t.description ), { id: t.id } )
 }
 
 export const ticketParser: ParserStoreParser = ( id, s ) => {
-  const index1 = s.indexOf ( '\n' )
-  if ( index1 < 0 ) return { error: 'No newline found' }
-  const index2 = s.indexOf ( '\n', index1 + 1 )
-  if ( index2 < 0 ) return { error: 'No second newline found' }
-  const name = s.slice ( 0, index1 ).trim ()
-  const priority = s.slice ( index1 + 1, index2 ).trim ()
-  const description = s.slice ( index2 + 1 ).trim ()
-  let ticket: Ticket = { id, name, severity: priority, description }
+  let ticket: Ticket = { id, description: s }
   return ticket
 }
-export const ticketWriter = ( ticket: Ticket ) => `${ticket.name}\n${ticket.severity}\n${ticket.description}`;
+export const ticketWriter = ( ticket: Ticket ) => ticket.description;
 export function ticketsPlugin ( rootPath: string ): DomainPlugin<Ticket> {
   return {
     prefix: 'ticket',

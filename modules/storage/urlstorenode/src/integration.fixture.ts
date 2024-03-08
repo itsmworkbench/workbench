@@ -1,6 +1,7 @@
 import { findFileUp } from "@laoban/fileops";
 import fs from "fs";
-import { NameSpaceDetails, AllNamespaceDetails, OrganisationUrlStoreConfig } from "@itsmworkbench/url";
+import { NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit } from "@itsmworkbench/url";
+import { NameAnd } from "@laoban/utils";
 
 const laobanDir = findFileUp ( process.cwd (), async f => {
   try {
@@ -11,7 +12,7 @@ export const testDir = laobanDir.then ( d => d + '/tests/git' )
 
 const parser = ( id: string, s: string ) => s + "_parsed";
 const writer = ( s: any ) => s + "_written";
-export const ns1: NameSpaceDetails = {
+export const ns1: NameSpaceDetailsForGit = {
   pathInGitRepo: "namespace/path",
   extension: "txt",
   mimeType: "text/plain",
@@ -19,8 +20,8 @@ export const ns1: NameSpaceDetails = {
   writer,
   encoding: "utf8"
 };
-export const allNameSpaceDetails: AllNamespaceDetails = { ns1 }
-export const orgToDetails = ( baseDir: string ): OrganisationUrlStoreConfig => ({
+export const allNameSpaceDetails: NameAnd<NameSpaceDetailsForGit> = { ns1 }
+export const orgToDetails = ( baseDir: string ): OrganisationUrlStoreConfigForGit => ({
   baseDir,
-  nameSpaceDetails:allNameSpaceDetails
+  nameSpaceDetails: allNameSpaceDetails
 });

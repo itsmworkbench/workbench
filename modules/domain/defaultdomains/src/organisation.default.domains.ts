@@ -1,44 +1,51 @@
-import { nameSpaceDetails, OrganisationUrlStoreConfig } from "@itsmworkbench/url";
+import { nameSpaceDetails, NameSpaceDetailsForGit, nameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit } from "@itsmworkbench/url";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { camelCaseAndIdAndNameParser, camelCaseAndIdYamlParser } from "@itsmworkbench/domain";
 import { ticketParser, ticketWriter } from "@itsmworkbench/tickets";
+import { NameAnd } from "@laoban/utils";
 
 
 export function kaNs ( yaml: YamlCapability ) {
-  return nameSpaceDetails ( 'ka', {
+  return nameSpaceDetailsForGit ( 'ka', {
     parser: camelCaseAndIdYamlParser ( yaml ),
     writer: yaml.writer
   } );
 }
 
 export function scNs ( yaml: YamlCapability ) {
-  return nameSpaceDetails ( 'sc', {
+  return nameSpaceDetailsForGit ( 'sc', {
     parser: camelCaseAndIdAndNameParser ( yaml ),
     writer: yaml.writer,
   } );
 }
 
 export function ticketNs () {
-  return nameSpaceDetails ( 'ticket', {
+  return nameSpaceDetailsForGit ( 'ticket', {
     extension: 'md',
+    mimeType: 'text/markdown; charset=UTF-8',
     parser: ticketParser,
     writer: ticketWriter,
   } );
 }
 export function operatorNs ( yaml: YamlCapability ) {
-  return nameSpaceDetails ( 'operator', {
+  return nameSpaceDetailsForGit ( 'operator', {
     parser: camelCaseAndIdYamlParser ( yaml ),
     writer: yaml.writer,
   } );
 }
-export function defaultOrganisationUrlStoreConfig ( yaml: YamlCapability ): OrganisationUrlStoreConfig {
+
+//Even though this is 'for git' it can be safely used by the 'for api' version
+export function defaultNameSpaceDetails ( yaml: YamlCapability ): NameAnd<NameSpaceDetailsForGit> {
+  return {
+    ks: kaNs ( yaml ),
+    sc: scNs ( yaml ),
+    ticket: ticketNs (),
+    operator: operatorNs ( yaml )
+  }
+}
+export function defaultOrganisationUrlStoreConfig ( yaml: YamlCapability ): OrganisationUrlStoreConfigForGit {
   return {
     baseDir: 'organisations',
-    nameSpaceDetails: {
-      ks: kaNs ( yaml ),
-      sc: scNs ( yaml ),
-      ticket: ticketNs (),
-      operator: operatorNs ( yaml )
-    }
+    nameSpaceDetails: defaultNameSpaceDetails ( yaml )
   }
 }

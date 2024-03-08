@@ -8,7 +8,6 @@ import { KnowledgeArticle, KnowledgeArticles } from "@itsmworkbench/knowledge_ar
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
 
 import { uppercaseFirstLetter } from "@itsmworkbench/utils";
-import { Tickets } from "@itsmworkbench/tickets";
 import { Templates } from "@itsmworkbench/templates";
 import { SideEffect } from "./sideeffects";
 import { SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";
@@ -31,7 +30,6 @@ export interface CommonState extends CommonStateForActionDetails {
   sideeffects: SideEffect[]
   conversation: Conversation
   variables: NameAnd<Variables>
-  tickets: Tickets
   templates: Templates
   scs: SoftwareCatalogs
   kas: KnowledgeArticles

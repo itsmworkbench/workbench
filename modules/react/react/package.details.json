@@ -21,10 +21,11 @@
     "@itsmworkbench/react_devmode",
     "@itsmworkbench/react_knowledge_articles",
     "@itsmworkbench/react_ldap",
+    "@itsmworkbench/react_new_ticket",
     "@itsmworkbench/react_softwarecatalog",
     "@itsmworkbench/react_sql",
     "@itsmworkbench/react_templates",
-    "@itsmworkbench/react_ticket",
+
     "@itsmworkbench/react_variables",
     "@itsmworkbench/update_value_in_database_ticket_type",
     "@itsmworkbench/variables"

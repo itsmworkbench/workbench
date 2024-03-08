@@ -4,8 +4,9 @@ import { FocusOnSetValueButton, FocusOnToggleButton } from "@itsmworkbench/compo
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import SettingsIcon from '@mui/icons-material/Settings';
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Toolbar } from "@mui/material";
 import ChatIcon from '@mui/icons-material/Chat';
+import AddIcon from '@mui/icons-material/Add';
 
 export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
   const buttonSx = {
@@ -22,9 +23,9 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
       p: 1, // Adds padding around the entire container
     }}
   >
-    <div>Settings/tickets</div>
     <FocusOnSetValueButton aria-label='Resolve Tickets' startIcon={<ChatIcon/>} valueToSet='chat' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Resolve Tickets</FocusOnSetValueButton>
     <FocusOnSetValueButton aria-label='Show settings' startIcon={<SettingsIcon/>} valueToSet='settings' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Settings</FocusOnSetValueButton>
+    <FocusOnSetValueButton aria-label='New ticket' startIcon={<AddIcon/>} valueToSet='newTicket' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>New Ticket</FocusOnSetValueButton>
     <FocusOnToggleButton aria-label='Toggle Developer Mode' startIcon={<DeveloperModeIcon/>} state={state.focusOn ( 'debug' ).focusOn ( 'showDevMode' )} sx={buttonSx}>Developer Mode</FocusOnToggleButton>
   </Box>
 }

@@ -48,5 +48,4 @@ export type UrlStore = {
   load: UrlLoadFn
   save: UrlSaveFn
   list: UrlListFn
-
 }

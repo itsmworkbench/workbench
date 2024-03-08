@@ -1,4 +1,4 @@
-import { NamedUrl, namedUrlToPathAndDetails, nameSpaceDetails, OrganisationUrlStoreConfig, parseNamedUrl } from "@itsmworkbench/url";
+import { NamedUrl, namedUrlToPathAndDetails, nameSpaceDetails, NameSpaceDetailsForGit, nameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit, parseNamedUrl } from "@itsmworkbench/url";
 import { ns1,  orgToDetails } from "./integration.fixture";
 
 
@@ -24,7 +24,7 @@ describe ( "nameSpaceDetails", () => {
   // Test that provided values override defaults
   it ( 'uses provided values for properties over defaults', () => {
     const name = 'customName';
-    const result = nameSpaceDetails ( name, {
+    const result = nameSpaceDetailsForGit ( name, {
       pathInGitRepo: 'custom/path',
       extension: 'json',
       mimeType: 'application/json',
@@ -45,7 +45,7 @@ describe ( "nameSpaceDetails", () => {
 } )
 
 describe ( 'namedUrlToPath', () => {
-  const mockOrgToDetails: OrganisationUrlStoreConfig = orgToDetails ( '/repo' );
+  const mockOrgToDetails: OrganisationUrlStoreConfigForGit = orgToDetails ( '/repo' );
 
 
   it ( 'returns the correct path for a valid NamedUrl', () => {

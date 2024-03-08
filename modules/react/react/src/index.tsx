@@ -11,13 +11,14 @@ import { TemplateFn } from '@itsmworkbench/components';
 import { IdStore } from "@itsmworkbench/idstore";
 import { ListIds } from "@itsmworkbench/listids";
 import { App } from './gui/app';
-import { defaultParserStore, InitialLoadDataResult, InitialLoadIdResult, loadInitialData, loadInitialIds } from "@itsmworkbench/defaultdomains";
-import { ItsmState, logsL, operatorL, sideEffectsL, startAppState } from "./state/itsm.state";
-import { operatorConversationPlugin } from "@itsmworkbench/react_operator";
+import { defaultParserStore, InitialLoadDataResult, loadInitialData, defaultNameSpaceDetails } from "@itsmworkbench/defaultdomains";
+import { ItsmState, logsL, sideEffectsL, startAppState } from "./state/itsm.state";
 
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
-import { loadFromApi, UrlStoreApiClientConfig } from "@itsmworkbench/urlstoreapi";
+import { loadFromApi, saveToApi, UrlStoreApiClientConfig } from "@itsmworkbench/urlstoreapi";
+import { addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
+import { UrlLoadFn, UrlSaveFn } from "@itsmworkbench/url";
 
 
 const templateFn: TemplateFn<any> = ( state, templateName ) => {
@@ -32,10 +33,11 @@ const yaml: YamlCapability = jsYaml ()
 const apiDetails: ApiLoading = apiLoading ( "http://localhost:1235/file1" )
 const saveDetails: SendEvents = sendEvents ( "http://localhost:1235/file1" )
 const idStoreDetails = apiIdStore ( "http://localhost:1235", defaultParserStore ( yaml ) )
-const urlStoreconfig: UrlStoreApiClientConfig = { apiUrlPrefix: "http://localhost:1235/url" }
+const urlStoreconfig: UrlStoreApiClientConfig = { apiUrlPrefix: "http://localhost:1235/url", details: defaultNameSpaceDetails ( yaml ) }
 const idStore: IdStore = idStoreFromApi ( idStoreDetails )
 const listIds: ListIds = listidsFromFetch ( idStoreDetails )
-const loadFromUrlStore = loadFromApi ( urlStoreconfig )
+const loadFromUrlStore: UrlLoadFn = loadFromApi ( urlStoreconfig )
+const saveToUrlStore: UrlSaveFn = saveToApi ( urlStoreconfig )
 
 const container = eventStore<ItsmState> ()
 const setJson = setEventStoreValue ( container );
@@ -66,7 +68,10 @@ const pollingDetails = polling ( 1000, async s => {
 
 addEventStoreModifier ( container,
   processSideEffectsInState<ItsmState> (
-    processSideEffect ( [ eventSideeffectProcessor ( saveDetails, 'conversation.messages' ) ] ),
+    processSideEffect ( [
+      eventSideeffectProcessor ( saveDetails, 'conversation.messages' ),
+      addNewTicketSideeffectProcessor ( saveToUrlStore )
+    ] ),
     sideEffectsL, logsL ) )
 
 loadFromUrlStore ( "itsm:me:operator:me" ).then ( async ( res ) => {

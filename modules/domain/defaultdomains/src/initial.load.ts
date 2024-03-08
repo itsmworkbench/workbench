@@ -1,13 +1,11 @@
 import { ListIds } from "@itsmworkbench/listids";
 import { KnowledgeArticle, KnowledgeArticles } from "@itsmworkbench/knowledge_articles";
 import { SoftwareCatalog, SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";
-import { Ticket, Tickets } from "@itsmworkbench/tickets";
 import { Template, Templates } from "@itsmworkbench/templates";
 import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
-import { IdStore, isGoodIdStoreResult } from "@itsmworkbench/idstore";
 import { Operator } from "@itsmworkbench/domain";
 import { UrlLoadFn, UrlLoadResult } from "@itsmworkbench/url";
-import { ErrorsAnd, hasErrors } from "@laoban/utils";
+import { ErrorsAnd } from "@laoban/utils";
 
 export type InitialLoadDataResult = {
   operator?: ErrorsAnd<UrlLoadResult<Operator>>
@@ -19,7 +17,6 @@ export async function loadInitialData ( urlLoader: UrlLoadFn ): Promise<InitialL
 export type InitialLoadIdResult = {
   kas: KnowledgeArticles
   scs: SoftwareCatalogs
-  tickets: Tickets
   templates: Templates
 }
 
@@ -29,8 +26,6 @@ export async function loadInitialIds ( listIds: ListIds ): Promise<InitialLoadId
   console.log ( 'kaIds', kaIds )
   const scIds = await listIds ( 'sc' )
   console.log ( 'scIds', scIds )
-  const ticketIds = await listIds ( 'ticket' )
-  console.log ( 'ticketIds', ticketIds )
   const templateIds = await listIds ( 'template' )
   console.log ( 'template', templateIds )
   function make<T extends SelectedAndList<T1>, T1 extends IdAndName> ( ids: string[], fn: ( s: SelectedAndList<T1> ) => T ): T {
@@ -39,7 +34,6 @@ export async function loadInitialIds ( listIds: ListIds ): Promise<InitialLoadId
   return {
     kas: make<KnowledgeArticles, KnowledgeArticle> ( kaIds, s => s ),
     scs: make<SoftwareCatalogs, SoftwareCatalog> ( scIds, s => s ),
-    tickets: make<Tickets, Ticket> ( ticketIds, s => s ),
     templates: make<Templates, Template> ( templateIds, s => s )
   }
 }

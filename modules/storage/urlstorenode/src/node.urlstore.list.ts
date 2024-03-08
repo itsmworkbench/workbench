@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { applyPaging, ListNamesOrder, OrganisationUrlStoreConfig, PageQuery, UrlListFn } from "@itsmworkbench/url";
+import { applyPaging, ListNamesOrder, NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit, PageQuery, UrlListFn } from "@itsmworkbench/url";
 import { ErrorsAnd, mapErrors, mapErrorsK } from "@laoban/utils";
 import { urlStorePathFn } from "@itsmworkbench/url/dist/src/url.pathops";
 
@@ -47,7 +47,7 @@ export const listNamesInPath = ( nameFn: ( name: string ) => string ) =>
   }
 
 export const listJustNamesInPath = listNamesInPath ( s => path.parse ( s ).name );
-export const listInStoreFn = ( config: OrganisationUrlStoreConfig ): UrlListFn => {
+export const listInStoreFn = ( config: OrganisationUrlStoreConfigForGit ): UrlListFn => {
   const orgAndNsToPath = urlStorePathFn ( config )
   return async ( org, namespace, query, order ) =>
     mapErrorsK ( orgAndNsToPath ( org, namespace ), async ( path: string ) =>

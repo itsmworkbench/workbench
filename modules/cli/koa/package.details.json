@@ -1,0 +1,23 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/koa",
+  "description": "",
+  "packageJson": {
+    "dependencies":    {
+      "koa":       "^2.14.2",
+      "@koa/cors": "^5.0.0"
+    },
+    "devDependencies": {
+      "supertest": "^6.3.3"
+    },
+    "scripts":         {
+    }
+  },
+  "links":       ["@itsmworkbench/utils"],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    true,
+    "react":   true
+  }
+}

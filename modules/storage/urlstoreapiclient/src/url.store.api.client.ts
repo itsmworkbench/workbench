@@ -1,8 +1,9 @@
-import { ErrorsAnd, mapErrorsK } from "@laoban/utils";
-import { isUrlLoadResult, isUrlStoreResult, parseUrl, UrlLoadFn, UrlLoadResult, UrlStoreResult } from "@itsmworkbench/url";
+import { ErrorsAnd, hasErrors, mapErrorsK, NameAnd } from "@laoban/utils";
+import { isUrlLoadResult, isUrlStoreResult, NameSpaceDetails, parseUrl, UrlLoadFn, UrlLoadResult, UrlSaveFn, UrlStoreResult, urlToDetails } from "@itsmworkbench/url";
 
 export type UrlStoreApiClientConfig = {
   apiUrlPrefix: string // we place our url at the end of this
+  details: NameAnd<NameSpaceDetails>
 }
 
 export const loadFromApi = ( config: UrlStoreApiClientConfig ): UrlLoadFn => async <T> ( urlAsString: string ): Promise<ErrorsAnd<UrlLoadResult<T>>> =>
@@ -19,25 +20,33 @@ export const loadFromApi = ( config: UrlStoreApiClientConfig ): UrlLoadFn => asy
     } catch ( e ) {return [ `Failed to load ${urlAsString}`, e ] }
   } );
 
-export async function saveToApi ( config: UrlStoreApiClientConfig, urlAsString: string, content: any ): Promise<ErrorsAnd<UrlStoreResult>> {
-  return mapErrorsK ( parseUrl ( urlAsString ), async _ => {
-      try {
-        const fullUrl = `${config.apiUrlPrefix}/${encodeURIComponent ( urlAsString )}`
-        const response = await fetch ( fullUrl, {
-          method: 'PUT',
-          body: JSON.stringify ( content ),
-          headers: {
-            'Content-Type': 'application/json '
-          }
-        } )
-        if ( response.status < 400 ) {
-          const result = await response.json ()
-          if ( isUrlStoreResult ( result ) ) return result
-          return [ `Failed to save ${urlAsString}. Expected a UrlStoreResult but got ${JSON.stringify ( result )}` ]
+export const saveToApi = ( config: UrlStoreApiClientConfig ): UrlSaveFn => async ( urlAsString: string, content: any ): Promise<ErrorsAnd<UrlStoreResult>> => {
+  return mapErrorsK ( parseUrl ( urlAsString ), async namedOrIdentityUrl =>
+    mapErrorsK ( urlToDetails ( config.details, namedOrIdentityUrl ), async details => {
+        {
+          try {
+            const fullUrl = `${config.apiUrlPrefix}/${encodeURIComponent ( urlAsString )}`
+            let body = details.writer ( content );
+            if ( hasErrors ( body ) ) return body
+            console.log ( 'saveToApi url', namedOrIdentityUrl )
+            console.log ( 'saveToApi content', content )
+            console.log ( 'saveToApi body', body )
+            const response = await fetch ( fullUrl, {
+              method: 'PUT',
+              body,
+              headers: {
+                'Content-Type': details.mimeType
+              }
+            } )
+            if ( response.status < 400 ) {
+              const result = await response.json ()
+              if ( isUrlStoreResult ( result ) ) return result
+              return [ `Failed to save ${urlAsString}. Expected a UrlStoreResult but got ${JSON.stringify ( result )}` ]
+            }
+            return [ `Failed to save ${urlAsString}. Status ${response.status}\n${await response.text ()}` ]
+          } catch
+            ( e ) {return [ `Failed to save ${urlAsString}`, e ] }
         }
-        return [ `Failed to save ${urlAsString}. Status ${response.status}\n${await response.text ()}` ]
-      } catch
-        ( e ) {return [ `Failed to save ${urlAsString}`, e ] }
-    }
-  )
+      }
+    ) )
 }

@@ -1,38 +1,72 @@
-import { ListNamesOrder, UrlListFn, UrlLoadFn, UrlSaveFn } from "@itsmworkbench/url";
-import { KoaPartialFunction } from "@runbook/koa";
-import { ErrorsAnd, hasErrors } from "@laoban/utils";
+import { ListNamesOrder, NameSpaceDetails, parseNamedUrl, UrlListFn, UrlLoadFn, UrlLoadResult, UrlSaveFn, UrlStoreResult, urlToDetails } from "@itsmworkbench/url";
 
-export function handleUrls<Res> ( methodType: string, actionFn: ( url: string, requestBody: string ) => Promise<ErrorsAnd<Res>> ): KoaPartialFunction {
-  return {
-    isDefinedAt: ( ctx ) => {
-      const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
-      const isMethodMatch = ctx.context.request.method === methodType;
-      return match && isMethodMatch;
-    },
-    apply: async ( ctx ) => {
-      const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
-      const url = match[ 1 ];
-      try {
-        console.log ( `${methodType}Urls`, url );
-        // The actionFn is either 'load' for GET or 'save' for PUT
-        const result: ErrorsAnd<Res> = await actionFn ( url, ctx.context.request.body )
-        if ( hasErrors ( result ) ) {
-          ctx.context.status = 500;
-          ctx.context.body = result.join ( '\n' );
-          return;
-        }
-        ctx.context.body = JSON.stringify ( result );
-        ctx.context.set ( 'Content-Type', 'application/json' );
-      } catch ( e ) {
-        ctx.context.status = 404;
-        ctx.context.body = e.toString ();
+import { ErrorsAnd, hasErrors, mapErrors, mapErrorsK, NameAnd } from "@laoban/utils";
+import { KoaPartialFunction } from "@itsmworkbench/koa";
+
+export const getUrls = ( load: UrlLoadFn ): KoaPartialFunction => ({
+  isDefinedAt: ( ctx ) => {
+    const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
+    const isMethodMatch = ctx.context.request.method === 'GET';
+    return match && isMethodMatch;
+  },
+  apply: async ( ctx ) => {
+    const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
+    const url = match[ 1 ];
+    try {
+      console.log ( `${'GET'}Urls`, url );
+      // The actionFn is either 'load' for GET or 'save' for PUT
+      let requestBody = ctx.context.request.rawBody;
+      console.log ( 'requestBody', requestBody )
+      const result: ErrorsAnd<UrlLoadResult<any>> = await load ( url )
+      if ( hasErrors ( result ) ) {
+        console.log ( `${'GET'}Urls - errors`, result )
+        ctx.context.status = 500;
+        ctx.context.body = result.join ( '\n' );
+        return;
       }
+      ctx.context.body = JSON.stringify ( result );
+      ctx.context.set ( 'Content-Type', 'application/json' );
+    } catch ( e ) {
+      ctx.context.status = 404;
+      ctx.context.body = e.toString ();
     }
-  };
-}
-
-export const getUrls = ( load: UrlLoadFn ): KoaPartialFunction => handleUrls ( 'GET', load );
-export const putUrls = ( save: UrlSaveFn ): KoaPartialFunction => handleUrls ( 'PUT', save );
+  }
+});
+export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails> ): KoaPartialFunction => ({
+  isDefinedAt: ( ctx ) => {
+    const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
+    const isMethodMatch = ctx.context.request.method === 'PUT';
+    return match && isMethodMatch;
+  },
+  apply: async ( ctx ) => {
+    const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
+    const url = match[ 1 ];
+    try {
+      console.log ( `${'PUT'}Urls`, url );
+      // The actionFn is either 'load' for GET or 'save' for PUT
+      let requestBody = ctx.context.request.rawBody;
+      console.log ( 'requestBody', requestBody )
+      const named = parseNamedUrl ( url )
+      const details = urlToDetails ( nsToDetails, named )
+      const result: ErrorsAnd<UrlStoreResult> = await mapErrorsK ( details, async d => {
+        const parsed = d.parser ( url, requestBody )
+        console.log('parsed', parsed  )
+        return await save ( url, parsed );
+      } )
+      if ( hasErrors ( result ) ) {
+        console.log ( `${'PUT'}Urls - errors`, result )
+        ctx.context.status = 500;
+        ctx.context.body = result.join ( '\n' );
+        return;
+      }
+      ctx.context.body = JSON.stringify ( result );
+      ctx.context.set ( 'Content-Type', 'application/json' );
+    } catch ( e ) {
+      ctx.context.status = 404;
+      ctx.context.body = e.toString ();
+    }
+  }
+});
 
 const listUrlRegex = /^\/url\/list\/([^\/]+)\/([^\/]+)$/;
 
@@ -73,7 +107,7 @@ export const listUrls = ( list: UrlListFn ): KoaPartialFunction => ({
 
         const result = await list ( org, ns, { page, pageSize }, order )
         if ( hasErrors ( result ) ) {
-          console.log('listUrls - errors', result)
+          console.log ( 'listUrls - errors', result )
           ctx.context.status = 500;
           ctx.context.body = result.join ( '\n' );
           return;
@@ -81,7 +115,7 @@ export const listUrls = ( list: UrlListFn ): KoaPartialFunction => ({
         ctx.context.body = JSON.stringify ( result );
         ctx.context.set ( 'Content-Type', 'application/json' );
       } catch ( e ) {
-        ctx.context.status = 404;
+        ctx.context.status = 500;
         ctx.context.body = e.toString ();
       }
     } else {

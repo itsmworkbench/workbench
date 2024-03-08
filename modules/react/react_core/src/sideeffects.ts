@@ -3,33 +3,32 @@ import { sendEvent, SendEvents } from "@itsmworkbench/apiclienteventstore";
 import { Event } from "@itsmworkbench/events";
 import { Lens } from "@focuson/lens";
 
-export type SideEffectType = 'event'
-export interface BaseSideeffect {
+export type SideEffectType = string
+export interface SideEffect {
   command: SideEffectType
 }
 
 
-export interface EventSideEffect extends BaseSideeffect {
+export interface EventSideEffect extends SideEffect {
   command: 'event'
   event: Event
 }
-export function isEventSideEffect ( x: BaseSideeffect ): x is EventSideEffect {
+export function isEventSideEffect ( x: SideEffect ): x is EventSideEffect {
   return x.command === 'event'
 }
 
-export type SideEffect = EventSideEffect
 
 export interface HasSideeffects {
   sideeffects: SideEffect[]
 
 }
 export interface SideeffectResult<R> {
-  sideeffect: BaseSideeffect
+  sideeffect: SideEffect
   result: ErrorsAnd<R>
 }
 
-export interface ISideEffectProcessor<S extends BaseSideeffect, R> {
-  accept: ( s: BaseSideeffect ) => s is S
+export interface ISideEffectProcessor<S extends SideEffect, R> {
+  accept: ( s: SideEffect ) => s is S
   process: ( s: S ) => Promise<ErrorsAnd<R>>
 }
 
@@ -44,8 +43,8 @@ export function eventSideeffectProcessor ( es: SendEvents, path: string ): ISide
   }
 }
 
-export const processSideEffect = ( processors: ISideEffectProcessor<SideEffect, any>[] ): ISideEffectProcessor<SideEffect, any> => ({
-  accept: ( s: BaseSideeffect ): s is any => processors.find ( sp => sp.accept ( s ) ) !== undefined,
+export const processSideEffect = ( processors: ISideEffectProcessor<any, any>[] ): ISideEffectProcessor<SideEffect, any> => ({
+  accept: ( s: SideEffect ): s is any => processors.find ( sp => sp.accept ( s ) ) !== undefined,
   process: async ( sideeffect: SideEffect ): Promise<ErrorsAnd<any>> => {
     for ( const p of processors )
       if ( p.accept ( sideeffect ) )
