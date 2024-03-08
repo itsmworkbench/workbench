@@ -9,7 +9,7 @@ export type UrlStoreApiClientConfig = {
 export const loadFromApi = ( config: UrlStoreApiClientConfig ): UrlLoadFn => async <T> ( urlAsString: string, offset?: number ): Promise<ErrorsAnd<UrlLoadResult<T>>> =>
   mapErrorsK ( parseUrl ( urlAsString ), async _ => {//This is just error checking//validation
     try {
-      const base = `${config.apiUrlPrefix}/${encodeURIComponent ( urlAsString )}`
+      const base = `${config.apiUrlPrefix}/${urlAsString}`
       const fullUrl = offset ? `${base}?offset=${offset}` : base
       const response = await fetch ( fullUrl )
       if ( response.status < 400 ) {
@@ -26,7 +26,7 @@ export const saveToApi = ( config: UrlStoreApiClientConfig ): UrlSaveFn => async
     mapErrorsK ( urlToDetails ( config.details, namedOrIdentityUrl ), async details => {
         {
           try {
-            const fullUrl = `${config.apiUrlPrefix}/${encodeURIComponent ( urlAsString )}`
+            const fullUrl = `${config.apiUrlPrefix}/${urlAsString}`
             let body = details.writer ( content );
             if ( hasErrors ( body ) ) return body
             console.log ( 'saveToApi url', namedOrIdentityUrl )

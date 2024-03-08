@@ -24,29 +24,28 @@ export function isNamedUrl ( x: NamedOrIdentityUrl ): x is NamedUrl {
 export type NamedOrIdentityUrl = NamedUrl | IdentityUrl;
 
 
-const validPartRegex = /^[a-zA-Z0-9/_\-.]+$/;
+const validPartRegex = /^[a-zA-Z0-9_\-.]+$/;
 
 export function writeUrl ( url: NamedOrIdentityUrl ): string {
-  if ( isNamedUrl ( url ) ) return `${url.scheme}:${url.organisation}:${url.namespace}:${url.name}`;
-  if ( isIdentityUrl ( url ) ) return `${url.scheme}:${url.organisation}:${url.namespace}:${url.id}`;
+  if ( isNamedUrl ( url ) ) return `${url.scheme}/${url.organisation}/${url.namespace}/${url.name}`;
+  if ( isIdentityUrl ( url ) ) return `${url.scheme}/${url.organisation}/${url.namespace}/${url.id}`;
   throw new Error ( `Unexpected url type ${url}` );
 }
 
 export function parseUrl ( url: string ): ErrorsAnd<NamedOrIdentityUrl> {
-  let decodedUrl = url.replace ( /%3A/g, ':' );
-  const parts = decodedUrl.split ( ':' );
-  if ( parts.length < 4 ) return [ `${decodedUrl} is not a valid itsm url. It only has ${parts.length} parts` ];
+  const parts = url.split ( '/' );
+  if ( parts.length < 4 ) return [ `${url} is not a valid itsm url. It only has ${parts.length} parts` ];
   for ( let i = 0; i < parts.length; i++ )
     if ( !validPartRegex.test ( parts[ i ] ) )
-      return [ `Part [${i} (${parts[ i ]}) of ${decodedUrl} contains invalid characters. Only a-z, A-Z, 0-9, and /_-. are allowed.` ];
+      return [ `Part [${i} (${parts[ i ]}) of ${url} contains invalid characters. Only a-z, A-Z, 0-9, and _-. are allowed.` ];
   const [ scheme, organisation, namespace, fourthPart ] = parts;
 
   // Adjust scheme check for both 'itsm' and 'itsmid'
-  if ( scheme !== 'itsm' && scheme !== 'itsmid' ) return [ `${decodedUrl} is not a valid itsm url. It has the wrong scheme ${scheme}. Legal values are 'itsm' and 'itsmid'` ];
+  if ( scheme !== 'itsm' && scheme !== 'itsmid' ) return [ `${url} is not a valid itsm url. It has the wrong scheme ${scheme}. Legal values are 'itsm' and 'itsmid'` ];
 
   if ( scheme === 'itsmid' ) {
     const identityUrl: IdentityUrl = {
-      url: decodedUrl,
+      url,
       scheme,
       organisation,
       namespace,
@@ -55,7 +54,7 @@ export function parseUrl ( url: string ): ErrorsAnd<NamedOrIdentityUrl> {
     return identityUrl;
   } else if ( scheme === 'itsm' ) {
     const namedUrl: NamedUrl = {
-      url: decodedUrl,
+      url,
       scheme,
       organisation,
       namespace,

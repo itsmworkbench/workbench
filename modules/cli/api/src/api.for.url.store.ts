@@ -39,6 +39,7 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
     return match && isMethodMatch;
   },
   apply: async ( ctx ) => {
+    console.log('putUrls', ctx.context.request.path)
     const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
     const url = match[ 1 ];
     try {
