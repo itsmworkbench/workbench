@@ -1,11 +1,11 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/questions",
-  "description": "The chat client has some initial questions it needs to ask",
+  "name":        "@itsmworkbench/operator",
+  "description": "Information about the operator",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils": "1.4.45",
-      "@focuson/lens": "1.44.3",
+      "@laoban/utils":  "1.4.45",
+      "@focuson/lens":  "1.44.3",
       "@focuson/state": "1.44.3"
     },
     "devDependencies": {},
@@ -14,9 +14,7 @@
     }
   },
   "links":       [
-    "@itsmworkbench/domain",
-    "@itsmworkbench/operator",
-    "@itsmworkbench/tickets"
+    "@itsmworkbench/domain"
   ],
   "guards":      {
     "compile": true,

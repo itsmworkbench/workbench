@@ -1,5 +1,5 @@
 import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
-import { ErrorsAnd } from "@laoban/utils";
+import { ErrorsAnd, mapErrors, mapErrorsK } from "@laoban/utils";
 import { UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
 
 //OK Gritting our teeth we aren't worrying about the errors for now. We are just going to assume that everything is going to work.
@@ -14,20 +14,30 @@ export interface AddNewTicketSideEffect extends SideEffect, NewTicketData {
   command: 'addNewTicket';
 }
 
-export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn ): ISideEffectProcessor<AddNewTicketSideEffect, ErrorsAnd<UrlStoreResult>> {
+export interface TicketAndTicketEvents {
+  ticket: UrlStoreResult
+  ticketevents: UrlStoreResult
+}
+export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn ): ISideEffectProcessor<AddNewTicketSideEffect, ErrorsAnd<TicketAndTicketEvents>> {
   return ({
     accept: ( s: SideEffect ): s is AddNewTicketSideEffect => s.command === 'addNewTicket',
     process: async ( se: AddNewTicketSideEffect ) => {
-      const url = writeUrl ( { scheme: 'itsm', organisation: se.organisation, namespace: 'ticket', name: se.name } )
-      console.log('addNewTicketSideeffectProcessor', url, se.ticket)
-      const saveResult = await urlSaveFn ( url, {description: se.ticket} )
-      console.log ( 'addNewTicketSideeffectProcessor ', url, saveResult )
-      return saveResult
-      //what we should do...
+      const ticketUrl = writeUrl ( { scheme: 'itsm', organisation: se.organisation, namespace: 'ticket', name: se.name } )
+      const ticketeventsUrl = writeUrl ( { scheme: 'itsm', organisation: se.organisation, namespace: 'ticketevents', name: se.name } )
+
+      //what we should do instead of this
       //add to the ticket. (should have a flag that says 'error if doing it again')
       //so this is easy so far
       //if error, add to the errors... how do we specify this? Do we have global errors?
       //if not error we want to change the page. How do we do that? How do we say where we want to go? We shouldn't know...we should be told...
+
+      return mapErrorsK ( await urlSaveFn ( ticketUrl, { description: se.ticket } ), async ticket => {
+        console.log ( 'addNewTicketSideeffectProcessor - ticket ', ticketUrl, ticket )
+        return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [] ), async ticketevents => {
+          console.log ( 'addNewTicketSideeffectProcessor - ticketevents ', ticketeventsUrl, ticketevents )
+          return { ticket, ticketevents }
+        } )
+      } )
     }
-  });
+  })
 }

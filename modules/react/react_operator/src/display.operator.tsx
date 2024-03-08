@@ -1,17 +1,18 @@
 import React, { ReactElement } from "react";
 import { LensState, LensState2 } from "@focuson/state";
 import { AttributeTable, EditAttributesTable, FocusedTextInput, makeSideeffectForMessage } from "@itsmworkbench/components";
-import { BaseMessage, ChatDisplayData, Operator } from "@itsmworkbench/domain";
+import { BaseMessage, ChatDisplayData } from "@itsmworkbench/domain";
 import { Lens } from "@focuson/lens";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
 import { Button, Paper } from "@mui/material";
 import { SideEffect } from "@itsmworkbench/react_core";
+import { Operator } from "@itsmworkbench/operator";
 import { NameAnd } from "@laoban/utils";
 
 const pleaseString = `Please tell me about yourself so that when I send emails and messages for you I can use your correct details`
 
 export type OperatorDetailsMessage = { type: 'operatorDetails', operator: Operator, who: string }
-export function isOperatorDetailsMessage ( message: BaseMessage|undefined ): message is OperatorDetailsMessage {
+export function isOperatorDetailsMessage ( message: BaseMessage | undefined ): message is OperatorDetailsMessage {
   return message?.type === 'operatorDetails'
 
 }

@@ -7,6 +7,7 @@ import { DatabaseAndEnvironments } from "./database.config";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { Simulate } from "react-dom/test-utils";
 import input = Simulate.input;
+import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
 
 const yaml = require ( 'js-yaml' );
 
@@ -33,4 +34,11 @@ export function softwareCatalogPlugin ( yaml: YamlCapability, rootPath: string )
     variablesExtractor: variablesFromSoftwareCatalog,
     idStoreDetails: { extension: 'yaml', rootPath, mimeType: 'text/markdown; charset=UTF-8' }
   }
+}
+
+export function softwareCatalogNameSpaceDetails ( yaml: YamlCapability ) {
+  return nameSpaceDetailsForGit ( 'sc', {
+    parser: camelCaseAndIdAndNameParser ( yaml ),
+    writer: yaml.writer,
+  } );
 }

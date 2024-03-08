@@ -1,6 +1,6 @@
 import { NameAnd } from "@laoban/utils";
-import { ErrorEvent, Event, isAppendEvent, isSetIdEvent, isSetValueEvent, isZeroEvent } from "@itsmworkbench/events";
 import { JSONPrimitive } from "@itsmworkbench/utils";
+import { ErrorEvent, Event, isAppendEvent, isSetIdEvent, isSetValueEvent, isZeroEvent } from "./events";
 
 
 export const parseEvent = ( extraContext: NameAnd<JSONPrimitive> ) => ( s: string ): Event => {
@@ -23,7 +23,7 @@ export const parseEvent = ( extraContext: NameAnd<JSONPrimitive> ) => ( s: strin
 };
 
 
-export  function stringToEvents ( extraContext: NameAnd<JSONPrimitive>, s: string ): Event [] {
+export function stringToEvents ( extraContext: NameAnd<JSONPrimitive>, s: string ): Event [] {
   const lines = s.split ( '\n' ).map ( s => s.trim () ).filter ( s => s.length > 0 )
   const result = lines.map ( parseEvent ( extraContext ) )
   return result

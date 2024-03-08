@@ -17,9 +17,11 @@
     "@itsmworkbench/domain",
     "@itsmworkbench/git",
     "@itsmworkbench/knowledge_articles",
+    "@itsmworkbench/operator",
     "@itsmworkbench/softwarecatalog",
     "@itsmworkbench/templates",
     "@itsmworkbench/tickets",
+    "@itsmworkbench/ticketevents",
     "@itsmworkbench/utils",
     "@itsmworkbench/yaml"
   ],

@@ -2,16 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { lensState } from "@focuson/state";
 
-import { addEventStoreListener, addEventStoreModifier, eventStore, polling, setEventStoreValue, startPolling, stringToEvents } from "@itsmworkbench/eventstore";
+import { addEventStoreListener, addEventStoreModifier, eventStore, polling, setEventStoreValue, startPolling } from "@itsmworkbench/eventstore";
 import { apiIdStore, apiLoading, ApiLoading, apiLoadingFromBrowser, idStoreFromApi, listidsFromFetch, sendEvents, SendEvents, } from "@itsmworkbench/apiclienteventstore";
-import { defaultEventProcessor, processEvents } from "@itsmworkbench/events";
+import { defaultEventProcessor, processEvents, stringToEvents } from "@itsmworkbench/events";
 
 import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { TemplateFn } from '@itsmworkbench/components';
 import { IdStore } from "@itsmworkbench/idstore";
 import { ListIds } from "@itsmworkbench/listids";
 import { App } from './gui/app';
-import { defaultParserStore, InitialLoadDataResult, loadInitialData, defaultNameSpaceDetails } from "@itsmworkbench/defaultdomains";
+import { defaultNameSpaceDetails, defaultParserStore, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
 import { ItsmState, logsL, sideEffectsL, startAppState } from "./state/itsm.state";
 
 import { YamlCapability } from '@itsmworkbench/yaml';

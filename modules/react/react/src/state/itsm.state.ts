@@ -1,12 +1,12 @@
 import { DebugState, SideEffect, SideeffectResult, WorkspaceSelectionState } from "@itsmworkbench/react_core";
 import { Lens, Lenses } from "@focuson/lens";
 import { ColumnLeftMainState } from "@itsmworkbench/components";
-import { Ticket } from "@itsmworkbench/tickets";
-import { ChatDisplayData, Conversation, Operator } from "@itsmworkbench/domain";
+import { ChatDisplayData, Conversation } from "@itsmworkbench/domain";
 import { UrlLoadResult } from "@itsmworkbench/url";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
 import { NewTicketData } from "@itsmworkbench/react_new_ticket";
+import { Operator } from "@itsmworkbench/operator";
 
 export interface ItsmSelectionState extends WorkspaceSelectionState {
   mainScreen?: ColumnLeftMainState

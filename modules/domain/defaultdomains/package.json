@@ -26,9 +26,11 @@
     "@itsmworkbench/domain": "0.0.3",
     "@itsmworkbench/git": "0.0.3",
     "@itsmworkbench/knowledge_articles": "0.0.3",
+    "@itsmworkbench/operator": "0.0.3",
     "@itsmworkbench/softwarecatalog": "0.0.3",
     "@itsmworkbench/templates": "0.0.3",
     "@itsmworkbench/tickets": "0.0.3",
+    "@itsmworkbench/ticketevents": "0.0.3",
     "@itsmworkbench/utils": "0.0.3",
     "@itsmworkbench/yaml": "0.0.3",
     "debug": "^4.3.4"

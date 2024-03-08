@@ -1,6 +1,6 @@
 import { SubCommandDetails } from "@itsmworkbench/cli";
-import { eventStore, polling, setEventStoreValue, startPolling, stringToEvents } from "@itsmworkbench/eventstore";
-import { processEvents } from "@itsmworkbench/events";
+import { eventStore, polling, setEventStoreValue, startPolling, } from "@itsmworkbench/eventstore";
+import { processEvents, stringToEvents } from "@itsmworkbench/events";
 import { fileLoading, loadStringIncrementally } from "@itsmworkbench/fileloading";
 import { sep } from "./id.store.cli";
 import { YamlCapability } from "@itsmworkbench/yaml";

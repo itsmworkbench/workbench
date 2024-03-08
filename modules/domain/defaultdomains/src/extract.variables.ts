@@ -1,6 +1,6 @@
 import { addManyVariablesFromSelectedAndList, Variables, VariablesExtractor } from "@itsmworkbench/variables";
 import { ErrorsAnd, hasErrors, NameAnd } from "@laoban/utils";
-import { Operator } from "@itsmworkbench/domain";
+import { Operator } from "@itsmworkbench/operator";
 import { KnowledgeArticles } from "@itsmworkbench/knowledge_articles";
 import { Ticket, variablesFromTicket } from "@itsmworkbench/tickets";
 import { SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";

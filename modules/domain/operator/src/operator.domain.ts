@@ -1,18 +1,15 @@
-import { ParserStoreParser } from "@itsmworkbench/parser";
-import { ErrorsAnd, mapErrors, NameAnd } from "@laoban/utils";
-import { transformKeysToCamelCase } from "@itsmworkbench/utils";
+import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
-import { DomainPlugin } from "./domain.plugin";
-import { YamlCapability } from "@itsmworkbench/yaml";
-import { camelCaseAndIdYamlParser } from "./domain";
 
-const yaml = require ( 'js-yaml' );
+import { YamlCapability } from "@itsmworkbench/yaml";
+import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
+import { camelCaseAndIdYamlParser, DomainPlugin } from "@itsmworkbench/domain";
+
 
 export interface Operator {
   name: string
   email: string
 }
-
 
 
 export function variablesFromOperator ( sofar: NameAnd<any>, operator: Operator ): ErrorsAnd<Variables> {
@@ -27,4 +24,10 @@ export function operatorPlugin ( yaml: YamlCapability, rootPath: string ): Domai
     variablesExtractor: variablesFromOperator,
     idStoreDetails: { extension: 'yaml', rootPath, mimeType: 'text/yaml; charset=UTF-8' }
   }
+}
+export function operatorNameSpaceDetails ( yaml: YamlCapability ) {
+  return nameSpaceDetailsForGit ( 'operator', {
+    parser: camelCaseAndIdYamlParser ( yaml ),
+    writer: yaml.writer,
+  } );
 }

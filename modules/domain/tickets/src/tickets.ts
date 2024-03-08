@@ -2,6 +2,7 @@ import { DomainPlugin } from "@itsmworkbench/domain";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { addVariables, extractVariablesFromMarkdown, Variables } from "@itsmworkbench/variables";
 import { ParserStoreParser } from "@itsmworkbench/parser";
+import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
 
 export interface Ticket {
   id: string
@@ -26,4 +27,13 @@ export function ticketsPlugin ( rootPath: string ): DomainPlugin<Ticket> {
     variablesExtractor: variablesFromTicket,
     idStoreDetails: { extension: 'md', rootPath, mimeType: 'text/markdown; charset=UTF-8' }
   }
+}
+
+export function ticketNamespaceDetails () {
+  return nameSpaceDetailsForGit ( 'ticket', {
+    extension: 'md',
+    mimeType: 'text/markdown; charset=UTF-8',
+    parser: ticketParser,
+    writer: ticketWriter,
+  } );
 }

@@ -1,5 +1,5 @@
 import { VariablesExtractor } from "@itsmworkbench/variables";
-import { DomainPlugin, operatorPlugin } from "@itsmworkbench/domain";
+import { DomainPlugin } from "@itsmworkbench/domain";
 import { ParserStore } from "@itsmworkbench/parser";
 import { kaPlugin } from "@itsmworkbench/knowledge_articles";
 import { Ticket, ticketsPlugin } from "@itsmworkbench/tickets";
@@ -7,6 +7,7 @@ import { AllIdStoreDetails } from "@itsmworkbench/idstore";
 import { softwareCatalogPlugin } from "@itsmworkbench/softwarecatalog";
 import { Template, templatePlugin } from "@itsmworkbench/templates";
 import { YamlCapability } from "@itsmworkbench/yaml";
+import { operatorPlugin } from "@itsmworkbench/operator";
 
 
 // const operatorP: DomainPlugin<Operator> = operatorPlugin ( 'operator' )

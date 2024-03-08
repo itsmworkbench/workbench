@@ -4,6 +4,7 @@ import { Variables } from "@itsmworkbench/variables";
 import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
 import { Action } from "@itsmworkbench/actions";
 import { YamlCapability } from "@itsmworkbench/yaml";
+import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
 
 
 export interface ButtonData {
@@ -76,4 +77,11 @@ export function kaPlugin ( yaml: YamlCapability, rootPath: string ): DomainPlugi
     variablesExtractor: variablesFromKnowledgeArticle,
     idStoreDetails: { extension: 'yaml', rootPath, mimeType: 'text/markdown; charset=UTF-8' }
   }
+}
+
+export function knowledgeArticleNameSpaceDetails ( yaml: YamlCapability ) {
+  return nameSpaceDetailsForGit ( 'ka', {
+    parser: camelCaseAndIdYamlParser ( yaml ),
+    writer: yaml.writer
+  } );
 }
