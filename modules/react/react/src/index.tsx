@@ -70,7 +70,7 @@ addEventStoreModifier ( container,
   processSideEffectsInState<ItsmState> (
     processSideEffect ( [
       eventSideeffectProcessor ( saveDetails, 'conversation.messages' ),
-      addNewTicketSideeffectProcessor ( saveToUrlStore ,setPageL)
+      addNewTicketSideeffectProcessor ( saveToUrlStore ,setPageL, 'ticket')
     ] ),
     sideEffectsL, logsL ) )
 
