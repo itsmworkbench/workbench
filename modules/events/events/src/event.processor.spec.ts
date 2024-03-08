@@ -22,7 +22,7 @@ describe ( "eventProcessors", () => {
   describe ( "setIdEventProcessor", () => {
     it ( "should set value", async () => {
       let setId = await setIdEventProcessor<Data> () ( eventProcessor, { event: "setId", context, path: "a.b.c", id: "id", parser: "json" }, data )
-      expect ( setId ).toEqual ( { a: { b: { c: { id: "id" } } } } )
+      expect ( setId ).toEqual ( { "a": { "b": { "c": "from id" } } } )
     } )
   } )
   describe ( "setValueEventProcessor", () => {

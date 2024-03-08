@@ -12,6 +12,45 @@ describe ( "nameSpaceDetails", () => {
     const result = nameSpaceDetails ( name, { parser, writer } );
 
     expect ( result ).toEqual ( {
+      mimeType: 'text/yaml', // Default value
+      parser,
+      writer,
+      encoding: 'utf8' // Default value
+    } );
+  } );
+
+  // Test that provided values override defaults
+  it ( 'uses provided values for properties over defaults', () => {
+    const name = 'customName';
+    const result = nameSpaceDetailsForGit ( name, {
+      pathInGitRepo: 'custom/path',
+      extension: 'json',
+      mimeType: 'application/json',
+      parser,
+      writer,
+      encoding: 'utf16le'
+    } );
+
+    expect ( result ).toEqual ( {
+      pathInGitRepo: 'custom/path',
+      extension: 'json',
+      mimeType: 'application/json',
+      parser,
+      writer,
+      encoding: 'utf16le'
+    } );
+  } );
+} )
+describe ( "nameSpaceDetailsForGit", () => {
+  const parser = ( id: string, s: string ) => {};
+  const writer = ( s: string ) => s + "_written";
+
+  // Test that required fields must be provided and default values are used
+  it ( 'fills in default values for optional properties if they are not provided', () => {
+    const name = 'testName';
+    const result = nameSpaceDetailsForGit( name, { parser, writer } );
+
+    expect ( result ).toEqual ( {
       pathInGitRepo: name, // Default to the name provided
       extension: 'yaml', // Default value
       mimeType: 'text/yaml', // Default value
