@@ -18,7 +18,7 @@ export function DisplayNewTicket<S> ( { state }: NewTicketProps<S> ) {
     <p>Ticket name</p>
     <FocusedTextInput state={ticketState.focusOn ( 'name' )}/>
     <p>Ticket contents - please cut and paste it here</p>
-    <FocusedTextArea state={ticketState.focusOn ( 'ticket' )}/>
+    <FocusedTextArea state={ticketState.focusOn ( 'ticket' )}  rows={16}/>
     <Button variant="contained" color="primary" endIcon={<SendIcon/>} onClick={() => {
       const se: AddNewTicketSideEffect = {
         command: 'addNewTicket',

@@ -34,7 +34,7 @@
     "@itsmworkbench/defaultdomains": "0.0.3",
     "@itsmworkbench/events": "0.0.3",
     "@itsmworkbench/eventstore": "0.0.3",
-    "@itsmworkbench/fileeventstore": "0.0.3",
+    "@itsmworkbench/fileloading": "0.0.3",
     "@itsmworkbench/idstore": "0.0.3",
     "@itsmworkbench/listids": "0.0.3",
     "@itsmworkbench/jsyaml": "0.0.3",

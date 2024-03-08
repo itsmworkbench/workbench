@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/fileeventstore",
+  "name":        "@itsmworkbench/fileloading",
   "description": "A event source library for node.js backed with a file",
   "packageJson": {
     "dependencies":    {

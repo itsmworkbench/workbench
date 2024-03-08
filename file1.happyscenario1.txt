@@ -14,3 +14,4 @@
 {"event":"setValue","path":"ticketState.checkUser","value":true,"context":{}}
 {"event":"append","path":"conversation.messages","value":{"type":"message","message":"Need to make pretty gui... Checked mr.approver@example.com","who":"fake"},"context":{}}
 {"event":"setValue","path":"ticketState.checkApprover","value":true,"context":{}}
+

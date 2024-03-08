@@ -16,7 +16,7 @@
     "@itsmworkbench/cli",
     "@itsmworkbench/domain",
     "@itsmworkbench/defaultdomains",
-    "@itsmworkbench/fileeventstore",
+    "@itsmworkbench/fileloading",
     "@itsmworkbench/koa",
     "@itsmworkbench/shell_git",
     "@itsmworkbench/url",

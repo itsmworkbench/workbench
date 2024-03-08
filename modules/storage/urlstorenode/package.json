@@ -24,6 +24,7 @@
     "@laoban/fileops": "1.4.45",
     "node": "^v14.4.0",
     "@itsmworkbench/domain": "0.0.3",
+    "@itsmworkbench/fileloading": "0.0.3",
     "@itsmworkbench/url": "0.0.3",
     "@itsmworkbench/git": "0.0.3",
     "debug": "^4.3.4"

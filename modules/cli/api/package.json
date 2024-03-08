@@ -25,7 +25,7 @@
     "@itsmworkbench/cli": "0.0.3",
     "@itsmworkbench/domain": "0.0.3",
     "@itsmworkbench/defaultdomains": "0.0.3",
-    "@itsmworkbench/fileeventstore": "0.0.3",
+    "@itsmworkbench/fileloading": "0.0.3",
     "@itsmworkbench/koa": "0.0.3",
     "@itsmworkbench/shell_git": "0.0.3",
     "@itsmworkbench/url": "0.0.3",

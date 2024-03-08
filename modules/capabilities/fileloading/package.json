@@ -1,5 +1,5 @@
 {
-  "name": "@itsmworkbench/fileeventstore",
+  "name": "@itsmworkbench/fileloading",
   "description": "A event source library for node.js backed with a file",
   "version": "0.0.3",
   "main": "dist/index",

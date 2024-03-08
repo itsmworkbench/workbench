@@ -6,10 +6,11 @@ export type UrlStoreApiClientConfig = {
   details: NameAnd<NameSpaceDetails>
 }
 
-export const loadFromApi = ( config: UrlStoreApiClientConfig ): UrlLoadFn => async <T> ( urlAsString: string ): Promise<ErrorsAnd<UrlLoadResult<T>>> =>
+export const loadFromApi = ( config: UrlStoreApiClientConfig ): UrlLoadFn => async <T> ( urlAsString: string, offset?: number ): Promise<ErrorsAnd<UrlLoadResult<T>>> =>
   mapErrorsK ( parseUrl ( urlAsString ), async _ => {//This is just error checking//validation
     try {
-      const fullUrl = `${config.apiUrlPrefix}/${encodeURIComponent ( urlAsString )}`
+      const base = `${config.apiUrlPrefix}/${encodeURIComponent ( urlAsString )}`
+      const fullUrl = offset ? `${base}?offset=${offset}` : base
       const response = await fetch ( fullUrl )
       if ( response.status < 400 ) {
         let result: any = await response.json ();

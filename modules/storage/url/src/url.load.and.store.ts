@@ -10,7 +10,7 @@ export type UrlLoadResult<T> = {
 export function isUrlLoadResult<T> ( x: any ): x is UrlLoadResult<T> {
   return typeof x.url === 'string' && typeof x.mimeType === 'string' && typeof x.result === 'object' && typeof x.fileSize === 'number' && typeof x.id === 'string'
 }
-export type UrlLoadFn = <T>( url: string ) => Promise<ErrorsAnd<UrlLoadResult<T>>>
+export type UrlLoadFn = <T>( url: string, offset?: number ) => Promise<ErrorsAnd<UrlLoadResult<T>>>
 
 export type UrlStoreResult = {
   url: string
@@ -42,7 +42,7 @@ export type ListNamesResult = PageQuery & {
 }
 export type ListNamesOrder = 'name' | 'date'
 
-export type UrlListFn = ( org: string, namespace: string, query: PageQuery , order: ListNamesOrder) => Promise<ErrorsAnd<ListNamesResult>>
+export type UrlListFn = ( org: string, namespace: string, query: PageQuery, order: ListNamesOrder ) => Promise<ErrorsAnd<ListNamesResult>>
 
 export type UrlStore = {
   load: UrlLoadFn

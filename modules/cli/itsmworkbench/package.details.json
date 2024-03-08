@@ -25,7 +25,7 @@
     "@itsmworkbench/defaultdomains",
     "@itsmworkbench/events",
     "@itsmworkbench/eventstore",
-    "@itsmworkbench/fileeventstore",
+    "@itsmworkbench/fileloading",
     "@itsmworkbench/idstore",
     "@itsmworkbench/listids",
     "@itsmworkbench/jsyaml",

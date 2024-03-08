@@ -1,4 +1,4 @@
-Ticket price44
+Ticket 
 P4
 Customer: a.customer@example.com
 
@@ -8,13 +8,3 @@ Issue:
 * The price should be 44.44.
 
 Please remove this project from the EPX production.
-
-# Variables
-* customer: a.customer@example.com
-* service: EPX
-* itemId: 1234-44
-* itemName: discombobulator
-* oldPrice: 55.55
-* newPrice: 44.44
-* environment: Production
-```

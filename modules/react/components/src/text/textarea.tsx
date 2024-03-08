@@ -16,5 +16,5 @@ export function FocusedTextInput<S> ( props: FocusTextAreaProps<S> ) {
 }
 
 export function FocusedTextArea<S> ( props: FocusTextAreaProps<S> ) {
-  return <FocusedTextInput {...props} fullWidth variant='outlined' multiline rows={4}/>
+  return <FocusedTextInput {...props} fullWidth variant='outlined' multiline rows={props.rows}/>
 }

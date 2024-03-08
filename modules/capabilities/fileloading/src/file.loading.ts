@@ -16,8 +16,8 @@ export function fileLoading ( filePath: string ): FileLoading {
   return { ...fileLocking ( filePath ), filePath }
 }
 
-async function loadToEnd ( { filePath }: FileLoading, start: number ): Promise<string> {
-  const newEventsStream = fs.createReadStream ( filePath, { start, encoding: 'utf-8' } );
+async function loadToEnd ( { filePath }: FileLoading, start: number, encoding: BufferEncoding = 'utf-8' ): Promise<string> {
+  const newEventsStream = fs.createReadStream ( filePath, { start, encoding } );
   let newContent = '';
   try {
     for await ( const chunk of newEventsStream ) newContent += chunk;
@@ -29,9 +29,9 @@ async function loadToEnd ( { filePath }: FileLoading, start: number ): Promise<s
 }
 
 
-export const loadStringIncrementally = ( fileLoading: FileLoading ) => async ( start: number ): Promise<ResultAndNewStart> => {
+export const loadStringIncrementally = ( fileLoading: FileLoading ) => async ( start: number, encoding: BufferEncoding = 'utf-8' ): Promise<ResultAndNewStart> => {
   const fileSize = await getFileSize ( fileLoading.filePath );
   if ( fileSize === start ) return { newStart: start, result: '' };
   return withFileLock ( fileLoading, async () =>
-    ({ newStart: await getFileSize ( fileLoading.filePath ), result: await loadToEnd ( fileLoading, start ) }) )
+    ({ newStart: await getFileSize ( fileLoading.filePath ), result: await loadToEnd ( fileLoading, start, encoding ) }) )
 };

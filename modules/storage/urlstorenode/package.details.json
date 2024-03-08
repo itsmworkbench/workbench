@@ -15,6 +15,7 @@
   },
   "links":       [
     "@itsmworkbench/domain",
+    "@itsmworkbench/fileloading",
     "@itsmworkbench/url",
     "@itsmworkbench/git"
   ],
