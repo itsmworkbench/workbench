@@ -31,7 +31,7 @@ export function App<S> ( { state, plugins }: AppProps<S, ItsmState> ) {
         <SimpleTabPanel title='newTicket'><DisplayNewTicket state={state.doubleUp ().focus1On ( 'newTicket' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
       </SilentTabsContainer>
 
-      {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', "conversation", "variables", "tickets", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}
+      {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', "conversation", "variables", "ticket", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}
     </ColumnLeftMainBottom>
   </ThemeProvider>
   </>

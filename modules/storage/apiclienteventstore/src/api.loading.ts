@@ -7,8 +7,8 @@ export function apiLoading ( url: string ): ApiLoading {
   return { url }
 }
 
-export const apiLoadingFromBrowser = ( loading: ApiLoading ) => async ( start: number ): Promise<ResultAndNewStart> => {
-  const response = await fetch ( loading.url + "?start=" + start )
+export const apiLoadingFromBrowser = ( loading: ApiLoading ) => async ( id: string, start: number ): Promise<ResultAndNewStart> => {
+  const response = await fetch ( loading.url + id + "?start=" + start )
   if ( response.status < 400 ) {
     const text = await response.text ()
     const index = text.indexOf ( '\n' )

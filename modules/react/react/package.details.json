@@ -15,6 +15,7 @@
     "@itsmworkbench/events",
     "@itsmworkbench/questions",
     "@itsmworkbench/eventstore",
+    "@itsmworkbench/statestore",
      "@itsmworkbench/jsyaml",
     "@itsmworkbench/react_core",
     "@itsmworkbench/react_conversation",

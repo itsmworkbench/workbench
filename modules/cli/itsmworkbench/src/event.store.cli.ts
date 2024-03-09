@@ -4,8 +4,17 @@ import { processEvents, stringToEvents } from "@itsmworkbench/events";
 import { fileLoading, loadStringIncrementally } from "@itsmworkbench/fileloading";
 import { sep } from "./id.store.cli";
 import { YamlCapability } from "@itsmworkbench/yaml";
+import { NameAnd } from "@laoban/utils";
 
-export function eventStoreCommands<Commander, Context, Config> (yaml: YamlCapability): SubCommandDetails<Commander, Context, Config> {
+function makePollingDetails ( pollingInterval: number, file: string, pollingCallback: ( s: string ) => Promise<void> ) {
+  const pollingDetails = polling ( pollingInterval,
+    () => file,
+    async ( poll, start ) => loadStringIncrementally ( fileLoading ( file ) ) ( start ),
+    pollingCallback
+  )
+  return pollingDetails;
+}
+export function eventStoreCommands<Commander, Context, Config> ( yaml: YamlCapability ): SubCommandDetails<Commander, Context, Config> {
   return {
     cmd: 'polling',
     description: 'File messaging commands',
@@ -14,8 +23,8 @@ export function eventStoreCommands<Commander, Context, Config> (yaml: YamlCapabi
       options: { '-p,--poll <poll>': { description: "Polling interval", default: "1000" } },
       action: async ( commander, opts, file ) => {
         console.log ( `Listening to ${file} ${JSON.stringify ( opts )}` )
-        const pollingDetails = polling ( parseInt ( opts.poll.toString () ), async x => console.log ( x ), 0 )
-        startPolling ( pollingDetails, loadStringIncrementally ( fileLoading ( file ) ) )
+        const pollingDetails = makePollingDetails ( parseInt ( opts.poll.toString () ), file, async x => console.log ( x ) )
+        startPolling ( pollingDetails )
       }
     },
       {
@@ -23,11 +32,12 @@ export function eventStoreCommands<Commander, Context, Config> (yaml: YamlCapabi
         options: { "-p,--poll": { description: "Polling interval", default: "1000" } },
         action: async ( commander, opts, file ) => {
           console.log ( `Listening to ${file} ${JSON.stringify ( opts )}` )
-          const pollingDetails = polling ( parseInt ( opts.poll.toString () ), async s => {
-            const events = await stringToEvents ( { file }, s )
-            events.forEach ( e => console.log ( e ) )
-          } )
-          startPolling ( pollingDetails, loadStringIncrementally ( fileLoading ( file ) ) )
+          const pollingDetails = makePollingDetails ( parseInt ( opts.poll.toString () ), file,
+            async s => {
+              const events = await stringToEvents ( { file }, s )
+              events.forEach ( e => console.log ( e ) )
+            } );
+          startPolling ( pollingDetails )
         }
       }, {
         cmd: 'store <file>', description: 'Polls for changes in the files. processes events against a store',
@@ -41,15 +51,17 @@ export function eventStoreCommands<Commander, Context, Config> (yaml: YamlCapabi
           const store = eventStore<any> ( opts.debug === true )
           // addEventStoreListener( store, ( s, setJson ) => console.log ( s )  )
           const fl = fileLoading ( file )
-          const pollingDetails = polling ( parseInt ( opts.poll.toString () ), async s => {
-            const events = await stringToEvents ( { file }, s )
-            if ( store.debug ) console.log ( 'events', JSON.stringify ( events ) )
-            const { state, errors } = await processEvents ( sep ( opts.idstore.toString () , yaml), store.state, events )
-            errors.forEach ( e => console.log ( e ) )
-            setEventStoreValue ( store ) ( state )
-            console.log ( JSON.stringify ( store.state ) )
-          } )
-          startPolling ( pollingDetails, loadStringIncrementally ( fl ) )
+          const pollingDetails = makePollingDetails ( parseInt ( opts.poll.toString () ), file,
+
+            async s => {
+              const events = await stringToEvents ( { file }, s )
+              if ( store.debug ) console.log ( 'events', JSON.stringify ( events ) )
+              const { state, errors } = await processEvents ( sep ( opts.idstore.toString (), yaml ), store.state, events )
+              errors.forEach ( e => console.log ( e ) )
+              setEventStoreValue ( store ) ( state )
+              console.log ( JSON.stringify ( store.state ) )
+            } )
+          startPolling ( pollingDetails )
         }
       } ]
   }

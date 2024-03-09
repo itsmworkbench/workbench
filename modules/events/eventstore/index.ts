@@ -1,2 +1,2 @@
 export * from './src/event.store';
-export * from './src/polling';
+export * from './src/polling.with.change';

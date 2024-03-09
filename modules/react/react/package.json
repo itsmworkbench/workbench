@@ -21,6 +21,7 @@
     "@itsmworkbench/events": "0.0.3",
     "@itsmworkbench/questions": "0.0.3",
     "@itsmworkbench/eventstore": "0.0.3",
+    "@itsmworkbench/statestore": "0.0.3",
     "@itsmworkbench/jsyaml": "0.0.3",
     "@itsmworkbench/react_core": "0.0.3",
     "@itsmworkbench/react_conversation": "0.0.3",

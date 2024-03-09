@@ -2,6 +2,7 @@ import { ListNamesOrder, NameSpaceDetails, parseNamedUrl, UrlListFn, UrlLoadFn, 
 
 import { ErrorsAnd, hasErrors, mapErrors, mapErrorsK, NameAnd } from "@laoban/utils";
 import { KoaPartialFunction } from "@itsmworkbench/koa";
+import { fileLoading, loadStringIncrementally } from "@itsmworkbench/fileloading";
 
 export const getUrls = ( load: UrlLoadFn ): KoaPartialFunction => ({
   isDefinedAt: ( ctx ) => {
@@ -10,14 +11,16 @@ export const getUrls = ( load: UrlLoadFn ): KoaPartialFunction => ({
     return match && isMethodMatch;
   },
   apply: async ( ctx ) => {
-    const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
+    const match = /\/url\/(itsm.*)/.exec ( ctx.context.request.path );
     const url = match[ 1 ];
     try {
       console.log ( `${'GET'}Urls`, url );
       // The actionFn is either 'load' for GET or 'save' for PUT
       let requestBody = ctx.context.request.rawBody;
-      console.log ( 'requestBody', requestBody )
-      const result: ErrorsAnd<UrlLoadResult<any>> = await load ( url )
+      const query = ctx.context.request.query
+      const offset = Number.parseInt ( query.offset || "0" )
+      console.log ( 'start', offset, 'requestBody', requestBody )
+      const result: ErrorsAnd<UrlLoadResult<any>> = await load ( url, offset )
       if ( hasErrors ( result ) ) {
         console.log ( `${'GET'}Urls - errors`, result )
         ctx.context.status = 500;
@@ -39,9 +42,9 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
     return match && isMethodMatch;
   },
   apply: async ( ctx ) => {
-    console.log('putUrls', ctx.context.request.path)
+    console.log ( 'putUrls', ctx.context.request.path )
     const match = /\/url\/(itsm.*)/.exec ( ctx.context.request.path );
-    console.log('match', match)
+    console.log ( 'match', match )
     const url = match[ 1 ];
     try {
       console.log ( `${'PUT'}Urls`, url );
@@ -52,7 +55,7 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
       const details = urlToDetails ( nsToDetails, named )
       const result: ErrorsAnd<UrlStoreResult> = await mapErrorsK ( details, async d => {
         const parsed = d.parser ( url, requestBody )
-        console.log('parsed', parsed  )
+        console.log ( 'parsed', parsed )
         return await save ( url, parsed );
       } )
       if ( hasErrors ( result ) ) {

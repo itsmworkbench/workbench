@@ -1,5 +1,5 @@
 import { DebugState, SideEffect, SideeffectResult, WorkspaceSelectionState } from "@itsmworkbench/react_core";
-import { Lens, Lenses } from "@focuson/lens";
+import { Lens, Lenses, Optional } from "@focuson/lens";
 import { ColumnLeftMainState } from "@itsmworkbench/components";
 import { ChatDisplayData, Conversation } from "@itsmworkbench/domain";
 import { UrlLoadResult, UrlStoreResult } from "@itsmworkbench/url";
@@ -12,13 +12,14 @@ import { Ticket } from "@itsmworkbench/tickets";
 export interface ItsmSelectionState extends WorkspaceSelectionState {
   mainScreen?: ColumnLeftMainState
 }
+export type TicketAndId = { id?: string, ticket?: Ticket }
+
 export interface ItsmState {
   operator: ErrorsAnd<UrlLoadResult<Operator>>
   conversation: Conversation
   selectionState: ItsmSelectionState
   newTicket: NewTicketData
-  ticket?: Ticket,
-  ticketEvents: { fileSize: number, id: string | undefined },
+  ticket: TicketAndId,
   sideeffects: SideEffect[]
   log: SideeffectResult<any>[],
   variables: NameAnd<Variables>
@@ -33,14 +34,15 @@ export const startAppState: ItsmState = {
   log: [],
   conversation: { messages: [], chat: { type: '' } },
   variables: {},
+  ticket:{},
   newTicket,
-  ticketEvents: { fileSize: 0, id: undefined },
   selectionState: {},
 }
 
 export const itsmIdL: Lens<ItsmState, ItsmState> = Lenses.identity ()
 export const operatorL: Lens<ItsmState, ErrorsAnd<UrlLoadResult<Operator>>> = itsmIdL.focusOn ( 'operator' )
 export const setPageL: Lens<ItsmState, string | undefined> = itsmIdL.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )
+export const ticketIdL: Optional<ItsmState, string|undefined > = itsmIdL.focusQuery ( 'ticket' ).focusOn ( 'id' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> =
                itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )

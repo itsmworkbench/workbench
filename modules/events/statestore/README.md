@@ -45,3 +45,8 @@ When errors occur errors are passed to a callback.
 Because this state mutation with async is hard. Adding a queue decouples what is going to happen from when it's going to 
 happen. We can make sure that we control precisely when the mutations happen... and reduce the effort of reasoning about
 them
+
+
+# And... it's such a big change this that we should leave it for now...
+
+And just accept for POC that we will have state issues. We can fix them later.

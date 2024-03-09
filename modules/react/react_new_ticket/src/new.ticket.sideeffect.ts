@@ -20,7 +20,7 @@ export interface TicketAndTicketEvents {
   ticket: UrlStoreResult
   ticketevents: UrlStoreResult
 }
-export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPage: Optional<S, string | undefined>, ticketPath: string ): ISideEffectProcessor<S, AddNewTicketSideEffect, TicketAndTicketEvents> {
+export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPage: Optional<S, string | undefined>, ticketIdL: Optional<S, string|undefined>, ticketPath: string ): ISideEffectProcessor<S, AddNewTicketSideEffect, TicketAndTicketEvents> {
   return ({
     accept: ( s: SideEffect ): s is AddNewTicketSideEffect => s.command === 'addNewTicket',
     process: async ( s: S, se: AddNewTicketSideEffect ) => {
@@ -41,7 +41,12 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
           return { ticket, ticketevents }
         } )
       } )
-      return hasErrors ( res ) ? { result: res } : { result: res, txs: [ [ setPage, _ => 'abc' ] ] };
+      return hasErrors ( res ) ? { result: res } : {
+        result: res, txs: [
+          [ setPage, _ => 'abc' ],
+          [ ticketIdL, _ => ticketeventsUrl ]
+        ]
+      };
     }
   })
 }
