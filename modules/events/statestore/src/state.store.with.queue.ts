@@ -1,4 +1,4 @@
-import { InternalStateStore, StateStore, StateStoreErrorFn } from "./state.store";
+import { callListeners, EventStoreListener, InternalStateStore, StateStore, StateStoreErrorFn } from "./state.store";
 import { processQueueItem, StateStoreQueueItem } from "./state.store.queue.items";
 
 export interface StateStoreWithQueue<S> extends InternalStateStore<S> {
@@ -23,10 +23,16 @@ export function poll<S> ( s: StateStoreWithQueue<S> ) {
   }
 }
 export function stateStoreWithQueue<S> ( startStart: S, errors: StateStoreErrorFn<S>, pollInterval: number = 100 ): StateStoreWithQueue<S> {
+  let listeners: EventStoreListener<S>[] = []
   const result: StateStoreWithQueue<S> = {
     currentState: startStart,
     state: () => result.currentState,
-    setState: ( s: S ) => result.currentState = s,
+    setState: ( qi, state: S ) => {
+      const oldState = result.currentState
+      result.currentState = state
+      callListeners ( listeners, oldState, state, qi )
+    },
+    addListener: ( listener ) => listeners.push ( listener ),
     currentSequenceNumber: 0,
     sequenceNumber: () => result.currentSequenceNumber,
     incrementSequenceNumber: () => result.currentSequenceNumber++,

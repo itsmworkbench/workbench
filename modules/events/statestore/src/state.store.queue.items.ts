@@ -11,10 +11,7 @@ export interface BaseStateStoreQueueItem<Main, Child> {
   async: boolean
   description: string
   sequenceNumber: number // OK when we change significantly what we are doing, we change this. For example start processing events from another file
-  retry: boolean
-  count: number // A countdown, when get to zero abort with error... only matters if we retry
   optional: Optional<Main, Child>
-  startValue: Child | undefined
 }
 export interface SyncStateStoreQueueItem<Main, Child> extends BaseStateStoreQueueItem<Main, Child> {
   async: false
@@ -25,6 +22,9 @@ export function isSyncStateStoreQueueItem<Main, Child> ( x: StateStoreQueueItem<
 }
 export interface AsyncStateStoreQueueItem<Main, Child> extends BaseStateStoreQueueItem<Main, Child> {
   async: true
+  retry: boolean
+  count: number // A countdown, when get to zero abort with error... only matters if we retry
+  startValue: Child | undefined
   asyncFn: ( startValue: Child ) => Promise<Child>
 }
 export function isAsyncStateStoreQueueItem<Main, Child> ( x: StateStoreQueueItem<Main, Child> ): x is AsyncStateStoreQueueItem<Main, Child> {
@@ -33,27 +33,34 @@ export function isAsyncStateStoreQueueItem<Main, Child> ( x: StateStoreQueueItem
 export type StateStoreQueueItem<Main, Child> = SyncStateStoreQueueItem<Main, Child> | AsyncStateStoreQueueItem<Main, Child>
 
 
-export function syncQueueItem<Main, Child> ( stateStore: StateStore<Main>, optional: Optional<Main, Child>, syncFn: ( startValue: Child ) => Child, options?: QueueItemOptions ): SyncStateStoreQueueItem<Main, Child> {
-  const retry = options?.retry === undefined ? true : options.retry
+export function syncQueueItem<Main, Child> ( stateStore: StateStore<Main>, optional: Optional<Main, Child>, syncFn: ( startValue: Child ) => Child, description?: string ): SyncStateStoreQueueItem<Main, Child> {
   return {
-    sequenceNumber: stateStore.sequenceNumber (), optional, startValue: optional.getOption ( stateStore.state () ),
-    syncFn, description: options?.description,
-    async: false,
-    retry, count: options?.count ?? 3
+    sequenceNumber: stateStore.sequenceNumber (), optional,
+    syncFn,
+    description,
+    async: false
   }
 }
 export function asyncQueueItem<Main, Child> ( stateStore: StateStore<Main>, optional: Optional<Main, Child>, asyncFn: ( startValue: Child ) => Promise<Child>, options?: QueueItemOptions ): AsyncStateStoreQueueItem<Main, Child> {
   const retry = options?.retry === undefined ? true : options.retry
   return {
-    sequenceNumber: stateStore.sequenceNumber (), optional, startValue: optional.getOption ( stateStore.state () ),
-    asyncFn, description: options?.description,
+    sequenceNumber: stateStore.sequenceNumber (),
+    optional,
+    startValue: optional.getOption ( stateStore.state () ),
+    asyncFn,
+    description: options?.description,
     async: true,
     retry, count: options?.count ?? 3
   }
 }
 
-
-export function checkGuardsAndPutBackIfNeeded<Main, Child> ( store: InternalStateStore<Main>, queueItem: StateStoreQueueItem<Main, Child> ): boolean {
+export function checkGuardsAndPutBackIfNeededForSync<Main, Child> ( store: InternalStateStore<Main>, queueItem: StateStoreQueueItem<Main, Child> ): boolean {
+  const { sequenceNumber } = queueItem
+  let storeSequenceNumber = store.sequenceNumber ();
+  if ( sequenceNumber !== storeSequenceNumber ) return false // not an error just ignore
+  return true
+}
+export function checkGuardsAndPutBackIfNeededForAsync<Main, Child> ( store: InternalStateStore<Main>, queueItem: AsyncStateStoreQueueItem<Main, Child> ): boolean {
   const { count, sequenceNumber, optional, startValue, retry } = queueItem
   if ( count <= 0 ) {
     store.errors ( `Countdown reached zero`, queueItem );
@@ -69,26 +76,28 @@ export function checkGuardsAndPutBackIfNeeded<Main, Child> ( store: InternalStat
   }
   return true
 }
-export type CheckGuardsAndPutbackFn<Main, Child> = ( store: InternalStateStore<Main>, queueItem: StateStoreQueueItem<Main, Child> ) => boolean
+export type CheckGuardsAndPutbackFn<QI extends BaseStateStoreQueueItem<Main, Child>, Main, Child> = ( store: InternalStateStore<Main>, queueItem: QI ) => boolean
 
-export async function processAsyncQueueItem<Main, Child> ( store: StateStore<Main>, checkGuardsAndPutBackIfNeeded: CheckGuardsAndPutbackFn<Main, Child>, queueItem: AsyncStateStoreQueueItem<Main, Child> ) {
+export async function processAsyncQueueItem<Main, Child> ( store: StateStore<Main>, checkGuardsAndPutBackIfNeeded: CheckGuardsAndPutbackFn<AsyncStateStoreQueueItem<Main, Child>, Main, Child>, queueItem: AsyncStateStoreQueueItem<Main, Child> ) {
   if ( !isInternalStateStore ( store ) ) throw Error ( `store is not an InternalStateStore` )
   if ( !checkGuardsAndPutBackIfNeeded ( store, queueItem ) ) return
   const newValue = await queueItem.asyncFn ( queueItem.startValue )
   if ( checkGuardsAndPutBackIfNeeded ( store, queueItem ) ) {
-    store.setState ( queueItem.optional.set ( store.state (), newValue ) )
+    store.setState ( queueItem, queueItem.optional.set ( store.state (), newValue ) )
   }
 }
-export function processSyncQueueItem<Main, Child> ( store: InternalStateStore<Main>, checkGuardsAndPutBackIfNeeded: CheckGuardsAndPutbackFn<Main, Child>, queueItem: SyncStateStoreQueueItem<Main, Child> ) {
+export function processSyncQueueItem<Main, Child> ( store: InternalStateStore<Main>, checkGuardsAndPutBackIfNeeded: CheckGuardsAndPutbackFn<SyncStateStoreQueueItem<Main, Child>, Main, Child>, queueItem: SyncStateStoreQueueItem<Main, Child> ) {
   if ( !checkGuardsAndPutBackIfNeeded ( store, queueItem ) ) return
-  const newValue = queueItem.syncFn ( queueItem.startValue )
-  store.setState ( queueItem.optional.set ( store.state (), newValue ) )
+  const { optional, syncFn } = queueItem
+  const oldValue = optional.getOption ( store.state () )
+  const newValue = syncFn ( oldValue )
+  store.setState ( queueItem, optional.set ( store.state (), newValue ) )
 }
 
 export const processQueueItem = <Main> ( store: InternalStateStore<Main> ) => async <Child> ( queueItem: StateStoreQueueItem<Main, Child> ) => {
   try {
-    if ( isAsyncStateStoreQueueItem ( queueItem ) ) return await processAsyncQueueItem ( store, checkGuardsAndPutBackIfNeeded, queueItem )
-    if ( isSyncStateStoreQueueItem ( queueItem ) ) return processSyncQueueItem ( store, checkGuardsAndPutBackIfNeeded, queueItem )
+    if ( isAsyncStateStoreQueueItem ( queueItem ) ) return await processAsyncQueueItem ( store, checkGuardsAndPutBackIfNeededForAsync, queueItem )
+    if ( isSyncStateStoreQueueItem ( queueItem ) ) return processSyncQueueItem ( store, checkGuardsAndPutBackIfNeededForSync, queueItem )
     throw Error ( `Unknown queue item type ${JSON.stringify ( queueItem )}` )
   } catch ( e ) {
     store.errors ( e.toString (), queueItem )
