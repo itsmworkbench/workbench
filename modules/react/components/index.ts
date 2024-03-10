@@ -17,6 +17,7 @@ export * from './src/loading';
 export * from './src/layouts/column.left.main.bottom';
 export * from './src/layouts/column.left.main.row.bottom';
 export * from './src/layouts/main.and.typing.layout';
+export * from './src/layouts/selectable.size';
 export * from './src/layouts/TabPanel';
 export * from './src/layouts/TwoColumnLayout';
 export * from './src/layouts/silent.tab.panel';
@@ -26,6 +27,7 @@ export * from './src/layouts/WithTitle';
 export * from './src/messages/before.and.after.component';
 export * from './src/messages/messaging';
 export * from './src/messages/display.message.plugin';
+export * from './src/text/MicroCard';
 export * from './src/text/textarea';
 export * from './src/theme/mytheme';
 

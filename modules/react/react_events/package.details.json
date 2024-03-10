@@ -1,0 +1,21 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/react_events",
+  "description": "The react gui about displaying events",
+  "packageJson": {
+    "files":        ["build/"],
+    "dependencies": {
+    }
+  },
+  "links":       [
+    "@itsmworkbench/components",
+    "@itsmworkbench/events",
+    "@itsmworkbench/url"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false,
+    "react":   true
+  }
+}

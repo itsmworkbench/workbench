@@ -1,8 +1,9 @@
 import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
 import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
 import { NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
-import { Optional } from "@focuson/lens";
+import { Lens, Optional, Transform } from "@focuson/lens";
 import { SetIdEvent } from "@itsmworkbench/events";
+import { Event } from "@itsmworkbench/events";
 
 //OK Gritting our teeth we aren't worrying about the errors for now. We are just going to assume that everything is going to work.
 //This is so that we can test out the happy path of the gui. We want to see what it will look like. We will come back to the errors later.
@@ -20,7 +21,10 @@ export interface TicketAndTicketEvents {
   ticket: UrlStoreResult
   ticketevents: UrlStoreResult
 }
-export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPage: Optional<S, string | undefined>, ticketIdL: Optional<S, string | undefined>, ticketPath: string ): ISideEffectProcessor<S, AddNewTicketSideEffect, TicketAndTicketEvents> {
+export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPage: Optional<S, string>,
+                                                     eventL: Optional<S, Event[]>,
+                                                     ticketIdL: Optional<S, string>,
+                                                     ticketPath: string ): ISideEffectProcessor<S, AddNewTicketSideEffect, TicketAndTicketEvents> {
   return ({
     accept: ( s: SideEffect ): s is AddNewTicketSideEffect => s.command === 'addNewTicket',
     process: async ( s: S, se: AddNewTicketSideEffect ) => {
@@ -41,11 +45,13 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
           return { ticket, ticketevents }
         } )
       } )
+      const txs: Transform<S, any>[] = [
+        [ setPage, _ => 'abc' ],
+        [ eventL, _ => [] ], //clear all the events. The next line will trigger a reload via polling
+        [ ticketIdL, _ => writeUrl ( ticketeventsUrl ) ]
+      ]
       return hasErrors ( res ) ? { result: res } : {
-        result: res, txs: [
-          [ setPage, _ => 'abc' ],
-          [ ticketIdL, _ => writeUrl ( ticketeventsUrl ) ]
-        ]
+        result: res, txs
       };
     }
   })
