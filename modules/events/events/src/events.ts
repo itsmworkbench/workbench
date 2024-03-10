@@ -1,12 +1,11 @@
 import { NameAnd } from "@laoban/utils";
 import { JSONPrimitive } from "@itsmworkbench/utils";
 
-export type EventContext = NameAnd<JSONPrimitive> //meta data about the event. Like source/line number/ etc.
 
 export type EventType = 'zero' | 'setId' | 'setValue' | 'append' | 'error'
 
 export interface BaseEvent {
-  context: EventContext
+  context: any
   event: EventType
 }
 export interface ZeroEvent extends BaseEvent {
@@ -63,7 +62,7 @@ export interface ErrorEvent extends BaseEvent {
 export function isErrorEvent ( e: BaseEvent ): e is ErrorEvent {
   return e.event === 'error'
 }
-export type Event = ZeroEvent | SetIdEvent | SetValueEvent | AppendEvent  |ErrorEvent
+export type Event = ZeroEvent | SetIdEvent | SetValueEvent | AppendEvent | ErrorEvent
 export interface EventNameAnd<T> {
   zero: T
   setId: T

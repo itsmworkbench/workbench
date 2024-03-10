@@ -19,19 +19,19 @@ type SizeOption = 'micro' | 'mini' | 'full';
 
 // The HOC definition using generics for props
 export function SelectableSize<PROPS> ( {
-                                              MicroComponent,
-                                              MiniComponent,
-                                              FullComponent,
-                                              data,
-                                            }: WithSelectableSizeProps<PROPS> ): React.ReactElement {
+                                          MicroComponent,
+                                          MiniComponent,
+                                          FullComponent,
+                                          data,
+                                        }: WithSelectableSizeProps<PROPS> ): React.ReactElement {
   const [ size, setSize ] = useState<SizeOption> ( 'micro' );
   const icons = (
     <>
       <IconButton onClick={() => setSize ( 'micro' )} color="primary" aria-label="micro size">
         <ViewCompactIcon/>
       </IconButton>
-      {MiniComponent&&<IconButton onClick={() => setSize ( 'mini' )} color="primary" aria-label="mini size">
-        <ViewModuleIcon/>
+      {MiniComponent && <IconButton onClick={() => setSize ( 'mini' )} color="primary" aria-label="mini size">
+          <ViewModuleIcon/>
       </IconButton>}
       <IconButton onClick={() => setSize ( 'full' )} color="primary" aria-label="full size">
         <ViewQuiltIcon/>
@@ -39,7 +39,7 @@ export function SelectableSize<PROPS> ( {
     </>
   );
   function renderedComponent () {
-    if ( size === 'mini' ) return <MiniComponent {...data} icons={icons}/>;
+    if ( size === 'mini' && MiniComponent !== undefined ) return <MiniComponent {...data} icons={icons}/>;
     if ( size === 'full' ) return <FullComponent {...data} icons={icons}/>;
     return <MicroComponent {...data} icons={icons}/>;
   }

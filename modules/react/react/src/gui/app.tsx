@@ -7,7 +7,7 @@ import { ConversationHistoryAndChat, ConversationPlugin } from "@itsmworkbench/r
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { DisplayNewTicket } from "@itsmworkbench/react_new_ticket";
-import { DisplayEvents } from "@itsmworkbench/react_events";
+import { DisplayEnrichedEvent, DisplayEnrichedEvents, DisplayEvents } from "@itsmworkbench/react_events";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -27,13 +27,14 @@ export function App<S> ( { state, plugins }: AppProps<S, ItsmState> ) {
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )}>
         <SimpleTabPanel title='chat'><ConversationHistoryAndChat state={convState} plugins={plugins}/></SimpleTabPanel>
         <SimpleTabPanel title='events'><DisplayEvents state={state.focusOn ( 'events' )}/></SimpleTabPanel>
+        <SimpleTabPanel title='enrichedEvents'><DisplayEnrichedEvents state={state.focusOn ( 'enrichedEvents' )}/></SimpleTabPanel>
         <SimpleTabPanel title='settings'>
           <div><Toolbar/> Settings go here</div>
         </SimpleTabPanel>
         <SimpleTabPanel title='newTicket'><DisplayNewTicket state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicket' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
       </SilentTabsContainer>
 
-      {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', 'events', "conversation", "variables", "ticket", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}
+      {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', 'events', 'enrichedEvents', "conversation", "variables", "ticket", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}
     </ColumnLeftMainBottom>
   </ThemeProvider>
   </>

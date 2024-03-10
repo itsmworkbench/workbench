@@ -3,12 +3,13 @@ import { Lens, Lenses, Optional } from "@focuson/lens";
 import { ColumnLeftMainState } from "@itsmworkbench/components";
 import { ChatDisplayData, Conversation } from "@itsmworkbench/domain";
 import { ListNamesResult } from "@itsmworkbench/url";
-import { ErrorsAnd, NameAnd } from "@laoban/utils";
+import { NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
 import { NewTicketData } from "@itsmworkbench/react_new_ticket";
 import { Operator } from "@itsmworkbench/operator";
 import { Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
+import { EnrichedEvent } from "@itsmworkbench/eventenricher";
 
 export interface ItsmSelectionState extends WorkspaceSelectionState {
   mainScreen?: ColumnLeftMainState
@@ -24,6 +25,7 @@ export interface Blackboard {
 }
 export interface ItsmState {
   events: Event[],
+  enrichedEvents: EnrichedEvent<any, any>[]
   blackboard: Blackboard
   tempData: TempData
   ticketList: ListNamesResult
@@ -45,6 +47,7 @@ export const startAppState: ItsmState = {
   ticketList: undefined as any,
   sideeffects: [],
   events: [],
+  enrichedEvents: [],
   log: [],
   conversation: { messages: [], chat: { type: '' } },
   variables: {},

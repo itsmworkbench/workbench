@@ -10,6 +10,7 @@
   "links":       [
     "@itsmworkbench/components",
     "@itsmworkbench/events",
+    "@itsmworkbench/enrichedevents",
     "@itsmworkbench/url"
   ],
   "guards":      {

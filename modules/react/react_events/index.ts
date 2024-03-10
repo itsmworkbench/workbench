@@ -1,2 +1,5 @@
+export * from './src/display.event';
 export * from './src/display.events';
+export * from './src/display.enriched.event';
+export * from './src/display.enriched.events';
 

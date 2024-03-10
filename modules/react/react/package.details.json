@@ -21,6 +21,7 @@
     "@itsmworkbench/react_conversation",
     "@itsmworkbench/react_devmode",
     "@itsmworkbench/react_events",
+    "@itsmworkbench/enrichedevents",
     "@itsmworkbench/react_knowledge_articles",
     "@itsmworkbench/react_ldap",
     "@itsmworkbench/react_new_ticket",

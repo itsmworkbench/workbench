@@ -1,5 +1,5 @@
 import { appendEventProcessor, defaultEventProcessor, EventProcessor, setIdEventProcessor, setValueEventProcessor, zeroEventProcessor } from "./event.processor";
-import { EventContext } from "./events";
+import {  } from "./events";
 import { UrlLoadIdentityFn, writeUrl } from "@itsmworkbench/url";
 
 const data = {
@@ -13,7 +13,7 @@ type Data = typeof data
 let idLoadFn: UrlLoadIdentityFn = async ( url ) => ({ url: writeUrl ( url ), result: `from ${url}` as any, mimeType: 'something', id: 'someId' });
 
 const eventProcessor: EventProcessor<Data> = defaultEventProcessor<Data> ( '', {} as Data, idLoadFn )
-let context: EventContext = { some: "metadata" };
+let context: any = { some: "metadata" };
 describe ( "eventProcessors", () => {
   describe ( "zeroEventProcessor", () => {
     it ( "should return zero", async () => {

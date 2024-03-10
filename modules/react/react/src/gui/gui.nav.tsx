@@ -36,5 +36,6 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
     <DisplayTicketList state={displayTicketState}/>
     <FocusOnToggleButton aria-label='Toggle Developer Mode' startIcon={<DeveloperModeIcon/>} state={state.focusOn ( 'debug' ).focusOn ( 'showDevMode' )} sx={buttonSx}>Developer Mode</FocusOnToggleButton>
     <FocusOnSetValueButton aria-label='Debug Events' startIcon={<EventIcon/>} valueToSet='events' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Debug Events</FocusOnSetValueButton>
+    <FocusOnSetValueButton aria-label='Debug Enriched Events' startIcon={<EventIcon/>} valueToSet='enrichedEvents' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Debug Enriched Events</FocusOnSetValueButton>
   </Box>
 }

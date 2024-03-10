@@ -14,7 +14,8 @@ import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
 import { addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
-import { hasErrors, value } from "@laoban/utils";
+import { hasErrors, mapK, value } from "@laoban/utils";
+import { defaultEventEnricher, EnrichedEvent, enrichEvent } from "@itsmworkbench/enrichedevents";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -39,18 +40,22 @@ addEventStoreListener ( container, (( oldS, s, setJson ) =>
     // plugins={[ operatorConversationPlugin ( operatorL ) ]}
   /> )) );
 
+const enricher = defaultEventEnricher ( urlStore )
+
 const pollingDetails = polling<Event[]> ( 1000, () => container.state.selectionState.ticketId,
   async ( poll, offset ) => await urlStore.loadNamed ( poll, offset ),
   async ( events: Event[] ) => {
     console.log ( 'polling', typeof events, events )
     const { state: state, errors } = await processEvents ( sep1, container.state, events )
+    const enrichedEvents: EnrichedEvent<any, any>[] = await mapK<Event, EnrichedEvent<any, any>> ( events, enrichEvent ( enricher ) )
     console.log ( 'errors', errors )
     console.log ( 'state', state )
     if ( state ) {
-      // const result = extractVariablesForAllDomain ( defaultVariablesExtractor ( yaml ),
-      //   { name: 'Phil', email: 'phil@example.com' })
-      const newState = { ...state, variables: {}, events: [ ...(state.events), ...events ] }
-      // console.log ( 'result with variables', result )
+      const newState = {
+        ...state, variables: {},
+        events: [ ...(state.events), ...events ],
+        enrichedEvents: [ ...(state.enrichedEvents), ...enrichedEvents ]
+      }
       setJson ( newState )
     }
   }, 0, true
@@ -73,7 +78,7 @@ loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataRe
     ...startAppState, blackboard: {
       operator: operatorResult?.result || { name: 'Phil', email: 'phil@example.com' }
     },
-    ticketList: value(initialDataResult.ticketList) as any
+    ticketList: value ( initialDataResult.ticketList ) as any
   }
   setJson ( withInitialData )
   startPolling ( pollingDetails )
