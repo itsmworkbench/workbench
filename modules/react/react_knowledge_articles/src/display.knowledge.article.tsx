@@ -10,7 +10,7 @@ export function DisplayKnowledgeArticle<S> ( { state }: LensProps<S, KnowledgeAr
   return <DisplayYaml yamlContent={ka} />
 }
 export function DisplayKnowledgeArticles<S> ( { path, state }: LensProps2<S, KnowledgeArticles, SideEffect[], any> & { path: string } ) {
-  return <DropdownAsTitle path={path} state={state} purpose='Knowledge Article' parser='ka'>{
+  return <DropdownAsTitle path={path} state={state} purpose='Knowledge Article' >{
     state => <DisplayKnowledgeArticle state={state}/>
   }</DropdownAsTitle>
 }

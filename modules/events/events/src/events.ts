@@ -32,7 +32,6 @@ export function isLensPathEvent ( e: BaseEvent ): e is LensPathEvent {
 export interface SetIdEvent extends LensPathEvent {
   event: 'setId'
   id: string
-  parser: string
 }
 export function isSetIdEvent ( e: BaseEvent ): e is SetIdEvent {
   return e.event === 'setId'

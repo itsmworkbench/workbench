@@ -14,9 +14,8 @@ import { ItsmState, logsL, setPageL, sideEffectsL, startAppState, ticketIdL } fr
 
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
-import { loadFromApi, saveToApi, UrlStoreApiClientConfig } from "@itsmworkbench/urlstoreapi";
+import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
 import { addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
-import { UrlLoadFn, UrlSaveFn } from "@itsmworkbench/url";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -29,12 +28,11 @@ const saveDetails: SendEvents = sendEvents ( "http://localhost:1235/file1" )
 const idStoreDetails = apiIdStore ( "http://localhost:1235", defaultParserStore ( yaml ) )
 const urlStoreconfig: UrlStoreApiClientConfig = { apiUrlPrefix: "http://localhost:1235/url", details: defaultNameSpaceDetails ( yaml ) }
 const idStore: IdStore = idStoreFromApi ( idStoreDetails )
-const loadFromUrlStore: UrlLoadFn = loadFromApi ( urlStoreconfig )
-const saveToUrlStore: UrlSaveFn = saveToApi ( urlStoreconfig )
+const urlStore = urlStoreFromApi ( urlStoreconfig )
 
 const container = eventStore<ItsmState> ()
 const setJson = setEventStoreValue ( container );
-const sep1 = defaultEventProcessor<ItsmState> ( '', startAppState, idStore )
+const sep1 = defaultEventProcessor<ItsmState> ( '', startAppState, idStore, urlStore.loadIdentity )
 
 addEventStoreListener ( container, (( oldS, s, setJson ) =>
   root.render ( <App
@@ -44,7 +42,7 @@ addEventStoreListener ( container, (( oldS, s, setJson ) =>
   /> )) );
 
 const pollingDetails = polling<Event[]> ( 1000, () => container.state.ticket?.id,
-  async ( poll, offset ) => await loadFromApi ( urlStoreconfig )<any> ( poll, offset ),
+  async ( poll, offset ) => await urlStore.loadNamed ( poll, offset ),
   async events => {
     console.log ( 'polling', typeof events, events )
     const { state: state, errors } = await processEvents ( sep1, container.state, events )
@@ -65,14 +63,12 @@ addEventStoreModifier ( container,
   processSideEffectsInState<ItsmState> (
     processSideEffect ( [
       eventSideeffectProcessor ( saveDetails, 'conversation.messages' ),
-      addNewTicketSideeffectProcessor ( saveToUrlStore, setPageL, ticketIdL, 'ticket' )
+      addNewTicketSideeffectProcessor ( urlStore.save, setPageL, ticketIdL, 'ticket' )
     ] ),
     sideEffectsL, logsL ) )
 
-loadFromUrlStore ( "itsm:me:operator:me" ).then ( async ( res ) => {
-  console.log ( 'operator', res )
-} )
-loadInitialData ( loadFromUrlStore ).then ( async ( initialDataResult: InitialLoadDataResult ) => {
+
+loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataResult ) => {
   const withInitialData = { ...startAppState, ...initialDataResult }
   // loadInitialIds ( listIds ).then ( async ( res: InitialLoadIdResult ) => {
   //   const newState = { ...withInitialData, ...res }

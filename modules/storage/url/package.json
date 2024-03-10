@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.45",
-    "@itsmworkbench/domain": "0.0.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {

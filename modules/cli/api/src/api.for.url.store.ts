@@ -1,10 +1,10 @@
-import { ListNamesOrder, NameSpaceDetails, parseNamedUrl, UrlListFn, UrlLoadFn, UrlLoadResult, UrlSaveFn, UrlStoreResult, urlToDetails } from "@itsmworkbench/url";
+import { ListNamesOrder, loadFromString, NameSpaceDetails, parseNamedUrlOrThrow, parseUrl, UrlListFn, UrlLoaders, UrlSaveFn, UrlStoreResult, urlToDetails } from "@itsmworkbench/url";
 
-import { ErrorsAnd, hasErrors, mapErrors, mapErrorsK, NameAnd } from "@laoban/utils";
+import { ErrorsAnd, hasErrors, mapErrorsK, NameAnd } from "@laoban/utils";
 import { KoaPartialFunction } from "@itsmworkbench/koa";
-import { fileLoading, loadStringIncrementally } from "@itsmworkbench/fileloading";
 
-export const getUrls = ( load: UrlLoadFn ): KoaPartialFunction => ({
+
+export const getUrls = ( loader: UrlLoaders ): KoaPartialFunction => ({
   isDefinedAt: ( ctx ) => {
     const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'GET';
@@ -13,14 +13,20 @@ export const getUrls = ( load: UrlLoadFn ): KoaPartialFunction => ({
   apply: async ( ctx ) => {
     const match = /\/url\/(itsm.*)/.exec ( ctx.context.request.path );
     const url = match[ 1 ];
+    const identityOrNamedUrl = parseUrl ( url )
+    if ( hasErrors ( identityOrNamedUrl ) ) {
+      ctx.context.status = 40;
+      ctx.context.body = identityOrNamedUrl.join ( '\n' );
+      return;
+    }
     try {
       console.log ( `${'GET'}Urls`, url );
-      // The actionFn is either 'load' for GET or 'save' for PUT
+      // The actionFn is either 'loader' for GET or 'save' for PUT
       let requestBody = ctx.context.request.rawBody;
       const query = ctx.context.request.query
       const offset = Number.parseInt ( query.offset || "0" )
       console.log ( 'start', offset, 'requestBody', requestBody )
-      const result: ErrorsAnd<UrlLoadResult<any>> = await load ( url, offset )
+      const result = await loadFromString ( loader, url, offset );
       if ( hasErrors ( result ) ) {
         console.log ( `${'GET'}Urls - errors`, result )
         ctx.context.status = 500;
@@ -51,12 +57,12 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
       // The actionFn is either 'load' for GET or 'save' for PUT
       let requestBody = ctx.context.request.rawBody;
       console.log ( 'requestBody', requestBody )
-      const named = parseNamedUrl ( url )
+      const named = parseNamedUrlOrThrow ( url )
       const details = urlToDetails ( nsToDetails, named )
       const result: ErrorsAnd<UrlStoreResult> = await mapErrorsK ( details, async d => {
         const parsed = d.parser ( url, requestBody )
         console.log ( 'parsed', parsed )
-        return await save ( url, parsed );
+        return await save ( named, parsed );
       } )
       if ( hasErrors ( result ) ) {
         console.log ( `${'PUT'}Urls - errors`, result )

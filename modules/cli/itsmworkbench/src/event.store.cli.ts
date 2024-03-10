@@ -4,7 +4,6 @@ import { processEvents, stringToEvents } from "@itsmworkbench/events";
 import { fileLoading, loadStringIncrementally } from "@itsmworkbench/fileloading";
 import { sep } from "./id.store.cli";
 import { YamlCapability } from "@itsmworkbench/yaml";
-import { NameAnd } from "@laoban/utils";
 
 function makePollingDetails ( pollingInterval: number, file: string, pollingCallback: ( s: string ) => Promise<void> ) {
   const pollingDetails = polling ( pollingInterval,

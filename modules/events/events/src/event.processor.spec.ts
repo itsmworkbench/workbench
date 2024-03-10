@@ -1,5 +1,6 @@
 import { appendEventProcessor, defaultEventProcessor, EventProcessor, setIdEventProcessor, setValueEventProcessor, zeroEventProcessor } from "./event.processor";
 import { EventContext } from "./events";
+import { UrlLoadIdentityFn, writeUrl } from "@itsmworkbench/url";
 
 const data = {
   "a": {
@@ -9,8 +10,10 @@ const data = {
   }
 }
 type Data = typeof data
-const eventProcessor: EventProcessor<Data> = defaultEventProcessor<Data> ( '', {} as Data, async ( id: string ) =>
-  ({ id: id, result: `from ${id}`, mimeType: 'something' }) )
+let idStore = async ( id: string ) => {throw new Error ( 'not any more' )};
+let idLoadFn: UrlLoadIdentityFn = async ( url ) => ({ url: writeUrl ( url ), result: `from ${url}` as any, mimeType: 'something', id: 'someId' });
+
+const eventProcessor: EventProcessor<Data> = defaultEventProcessor<Data> ( '', {} as Data, idStore, idLoadFn )
 let context: EventContext = { some: "metadata" };
 describe ( "eventProcessors", () => {
   describe ( "zeroEventProcessor", () => {
@@ -21,7 +24,7 @@ describe ( "eventProcessors", () => {
   } )
   describe ( "setIdEventProcessor", () => {
     it ( "should set value", async () => {
-      let setId = await setIdEventProcessor<Data> () ( eventProcessor, { event: "setId", context, path: "a.b.c", id: "id", parser: "json" }, data )
+      let setId = await setIdEventProcessor<Data> () ( eventProcessor, { event: "setId", context, path: "a.b.c", id: "id" }, data )
       expect ( setId ).toEqual ( { "a": { "b": { "c": "from id" } } } )
     } )
   } )

@@ -27,6 +27,7 @@
     "@itsmworkbench/idstore": "0.0.3",
     "@itsmworkbench/optics": "0.0.3",
     "@itsmworkbench/parser": "0.0.3",
+    "@itsmworkbench/url": "0.0.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {

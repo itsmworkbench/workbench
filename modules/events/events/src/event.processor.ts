@@ -1,6 +1,8 @@
-import { IdStore, isBadIdStoreResult } from "@itsmworkbench/idstore";
+import { IdStore } from "@itsmworkbench/idstore";
 import { AppendEvent, BaseEvent, ErrorEvent, Event, EventNameAnd, isErrorEvent, isLensPathEvent, SetIdEvent, SetValueEvent, ZeroEvent } from "./events";
 import { pathToLens, PathToLensFn } from "@itsmworkbench/optics";
+import { parseIdentityUrlOrThrow, UrlLoadIdentityFn } from "@itsmworkbench/url";
+import { hasErrors } from "@laoban/utils";
 
 /** Why a promise? Because the IdEvent goes to the id store to get the data. The id store is async. */
 export type EventProcessorFn<S, E extends BaseEvent> = ( p: EventProcessor<S>, event: E, s: S ) => Promise<S>
@@ -12,17 +14,19 @@ export interface EventProcessor<S> {
   processors: EventNameAnd<EventProcessorFn<S, any>> // too hard to properly express the type of the processors in Typescript
   listeners: EventProcessorListener<S>[]
   pathToLens: PathToLensFn<S>
+  urlLoadFn: UrlLoadIdentityFn
   idStore: IdStore
 }
 
 
-export function defaultEventProcessor<S> ( pathPrefix: string, zero: S, idStore: IdStore ): EventProcessor<S> {
+export function defaultEventProcessor<S> ( pathPrefix: string, zero: S, idStore: IdStore, urlLoadFn: UrlLoadIdentityFn ): EventProcessor<S> {
   return {
     pathPrefix,
     zero,
     processors: defaultProcessors<S> (),
     listeners: [],
     pathToLens: pathToLens<S> (),
+    urlLoadFn,
     idStore
   }
 }
@@ -35,8 +39,8 @@ export function zeroEventProcessor<S> (): EventProcessorFn<S, ZeroEvent> {
 }
 export function setIdEventProcessor<S> (): EventProcessorFn<S, SetIdEvent> {
   return async ( p, e, s: S ) => {
-    let value = await p.idStore ( e.id, e.parser )
-    if (isBadIdStoreResult(value)) throw new Error(`Error in setIdEventProcessor. ${value.error}. Event was ${JSON.stringify(e)}\n${JSON.stringify(s)}`)
+    let value = await p.urlLoadFn ( parseIdentityUrlOrThrow ( e.id ) )
+    if ( hasErrors ( value ) ) throw new Error ( `Error in setIdEventProcessor. ${JSON.stringify ( value )}. Event was ${JSON.stringify ( e )}\n${JSON.stringify ( s )}` )
     let lens = p.pathToLens ( e.path )
     return lens.set ( s, value.result )
   }

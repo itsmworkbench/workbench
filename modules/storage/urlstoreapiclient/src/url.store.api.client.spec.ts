@@ -1,7 +1,7 @@
 import fetchMock from 'jest-fetch-mock';
-import { loadFromApi, UrlStoreApiClientConfig } from "./url.store.api.client";
+import { loadIdentityFromApi, UrlStoreApiClientConfig } from "./url.store.api.client";
 import { NameAnd } from "@laoban/utils";
-import { nameSpaceDetails, NameSpaceDetails } from "@itsmworkbench/url";
+import { nameSpaceDetails, NameSpaceDetails, parseIdentityUrl, parseIdentityUrlOrThrow } from "@itsmworkbench/url";
 
 fetchMock.enableMocks ();
 
@@ -29,44 +29,44 @@ describe ( 'loadFromApi', () => {
       mimeType: 'application/json',
       result: { some: 'data' },
       fileSize: 123,
-      id: 'itsmid:org:namespace:id'
+      id: 'itsmid/org/namespace/id'
     };
 
     fetchMock.mockResponseOnce ( JSON.stringify ( mockResult ) );
 
     const config: UrlStoreApiClientConfig = { apiUrlPrefix: 'http://api.example.com', details };
-    const urlAsString = 'itsmid:org:namespace:id';
+    const urlAsString = 'itsmid/org/namespace/id';
 
-    const result = await loadFromApi ( config ) ( urlAsString );
+    let identityUrl = parseIdentityUrlOrThrow ( urlAsString );
+    const result = await loadIdentityFromApi ( config ) ( identityUrl );
 
     expect ( result ).toEqual ( mockResult );
     expect ( fetchMock.mock.calls.length ).toEqual ( 1 );
-    expect ( fetchMock.mock.calls[ 0 ][ 0 ] ).toBe ( `${config.apiUrlPrefix}/${encodeURIComponent ( urlAsString )}` );
+    expect ( fetchMock.mock.calls[ 0 ][ 0 ] ).toBe ( `${config.apiUrlPrefix}/${urlAsString}` );
   } );
 
   it ( 'handles non-200 responses from the API', async () => {
     fetchMock.mockResponseOnce ( 'Not Found', { status: 404 } );
 
     const config = { apiUrlPrefix: 'http://api.example.com', details };
-    const urlAsString = 'itsmid:org:namespace:id';
+    const urlAsString = 'itsmid/org/namespace/id';
 
-    const result = await loadFromApi ( config ) ( urlAsString );
+    const result = await loadIdentityFromApi ( config ) ( parseIdentityUrlOrThrow ( urlAsString ) );
 
     expect ( Array.isArray ( result ) ).toBeTruthy ();
-    expect ( result[ 0 ] ).toContain ( `Failed to load ${urlAsString}. Status 404` );
+    expect ( result[ 0 ] ).toContain ( `Failed to fetch http://api.example.com/itsmid/org/namespace/id. Init is {}. Status 404` );
   } );
 
   it ( 'handles fetch errors', async () => {
     fetchMock.mockReject ( new Error ( 'Network error' ) );
 
     const config = { apiUrlPrefix: 'http://api.example.com', details };
-    const urlAsString = 'itsmid:org:namespace:id';
+    const urlAsString = 'itsmid/org/namespace/id';
 
-    const result = await loadFromApi ( config ) ( urlAsString );
+    const result = await loadIdentityFromApi ( config ) ( parseIdentityUrlOrThrow ( urlAsString ) );
 
     expect ( Array.isArray ( result ) ).toBeTruthy ();
-    expect ( result[ 0 ] ).toContain ( `Failed to load ${urlAsString}` );
-    expect ( result[ 1 ] ).toBeDefined (); // Expecting the error object
+    expect ( result[ 0 ] ).toContain ( "Failed to fetch http://api.example.com/itsmid/org/namespace/id. Init is {}" );
   } );
 
 

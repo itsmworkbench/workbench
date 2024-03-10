@@ -10,7 +10,7 @@ export function DisplayTemplate<S> ( { state }: LensProps<S, Template, any> ) {
   return <DisplayText text={template.template}/>
 }
 export function DisplayTemplates<S> ( { path, state }: LensProps2<S, Templates, SideEffect[], any> & { path: string } ) {
-  return <DropdownAsTitle path={path} state={state} purpose='Template' parser='template'>{
+  return <DropdownAsTitle path={path} state={state} purpose='Template'>{
     state => <DisplayTemplate state={state}/>
   }</DropdownAsTitle>
 }

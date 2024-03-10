@@ -4,14 +4,14 @@ import { SoftwareCatalog, SoftwareCatalogs } from "@itsmworkbench/softwarecatalo
 import { Template, Templates } from "@itsmworkbench/templates";
 import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
 import { Operator } from "@itsmworkbench/operator";
-import { UrlLoadFn, UrlLoadResult } from "@itsmworkbench/url";
+import { NamedLoadResult, parseNamedUrlOrThrow, UrlStore } from "@itsmworkbench/url";
 import { ErrorsAnd } from "@laoban/utils";
 
 export type InitialLoadDataResult = {
-  operator?: ErrorsAnd<UrlLoadResult<Operator>>
+  operator?: ErrorsAnd<NamedLoadResult<Operator>>
 }
-export async function loadInitialData ( urlLoader: UrlLoadFn ): Promise<InitialLoadDataResult> {
-  const operator = await urlLoader<Operator> ( 'itsm:me:operator:me' )
+export async function loadInitialData ( urlStore: UrlStore ): Promise<InitialLoadDataResult> {
+  const operator = await urlStore.loadNamed<Operator> ( parseNamedUrlOrThrow ( 'itsm/me/operator/me' ) )
   return { operator };
 }
 export type InitialLoadIdResult = {

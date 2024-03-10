@@ -18,17 +18,16 @@ import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
 export interface DropdownAsTitleProps<S, T extends IdAndName> extends LensProps2<S, SelectedAndList<T>, SideEffect[], any> {
   purpose: string
   path: string
-  parser?: string
   children: ( state: LensState<S, T, any> ) => React.ReactElement
 }
-export function DropdownAsTitle<S, T extends IdAndName> ( { state, children, path, purpose, parser }: DropdownAsTitleProps<S, T> ) {
+export function DropdownAsTitle<S, T extends IdAndName> ( { state, children, path, purpose }: DropdownAsTitleProps<S, T> ) {
   const { selected, options } = state.optJson1 () || { options: [], item: undefined, selected: undefined }
   function handleChange ( event: SelectChangeEvent<string>, child: ReactNode ): void {
     let id = event?.target?.value;
     if ( id ) {
       console.log ( 'handleChange', id, event?.target?.value, event?.target?.name, event.target )
       const setSelectedEvent: SetValueEvent = { event: 'setValue', path: path + '.selected', value: id, context: {} };
-      const loadItemEvent: SetIdEvent = { event: 'setId', id, path: path + '.item', parser: parser || 'string', context: {} };
+      const loadItemEvent: SetIdEvent = { event: 'setId', id, path: path + '.item', context: {} };
       state.transformJson (
         ( { options, selected, item } ) => ({ options, selected: id, item: undefined }),
         old => [ ...(old || []), { command: 'event', event: setSelectedEvent }, { command: 'event', event: loadItemEvent } ],
@@ -37,8 +36,8 @@ export function DropdownAsTitle<S, T extends IdAndName> ( { state, children, pat
   }
   console.log ( 'options', options )
 
-  return <Card sx={{height: '100%' }} variant="outlined">
-    <CardContent sx={{ display: 'flex', flexDirection: 'column' , height: '75vh' }}>
+  return <Card sx={{ height: '100%' }} variant="outlined">
+    <CardContent sx={{ display: 'flex', flexDirection: 'column', height: '75vh' }}>
       <Select
         value={selected || ''}
         onChange={handleChange}
@@ -62,6 +61,6 @@ export interface LoadingOrProps<S, T extends IdAndName> extends LensProps<S, Sel
 export function LoadingOr<S, T extends IdAndName> ( { state, children }: LoadingOrProps<S, T> ) {
   const item = state.optJson ();
   if ( item === undefined || item.selected === undefined ) return <></>
-  const newState: LensState<S, T , any> = state.focusOn ( 'item' )
+  const newState: LensState<S, T, any> = state.focusOn ( 'item' )
   return item.item === undefined ? <Loading/> : children ( newState );
 }

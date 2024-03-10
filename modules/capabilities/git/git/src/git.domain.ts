@@ -19,6 +19,6 @@ export interface GitOps {
   commit: ( repo: string, message: string ) => Promise<GitResult>
   hashFor: ( repo: string, fileName: string ) => Promise<string>
   sizeForHash: ( repo: string, hash: string ) => Promise<number>
-  fileFor: ( repo: string, hash: string ) => Promise<string>
+  fileFor: ( repo: string, hash: string, encoding: BufferEncoding ) => Promise<string>
   status: ( repo: string ) => Promise<GitResult>
 }

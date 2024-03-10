@@ -9,7 +9,7 @@
       "child_process": false
     }
   },
-  "links":       ["@itsmworkbench/domain"],
+  "links":       [],
   "guards":      {
     "compile": true,
     "publish": true,

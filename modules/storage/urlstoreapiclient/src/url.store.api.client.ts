@@ -1,55 +1,66 @@
 import { ErrorsAnd, hasErrors, mapErrorsK, NameAnd } from "@laoban/utils";
-import { isUrlLoadResult, isUrlStoreResult, NameSpaceDetails, parseUrl, UrlLoadFn, UrlLoadResult, UrlSaveFn, UrlStoreResult, urlToDetails } from "@itsmworkbench/url";
+import { IdentityUrl, IdentityUrlLoadResult, isIdentityUrlLoadResult, isNamedLoadResult, isUrlStoreResult, NamedLoadResult, NamedOrIdentityUrl, NamedUrl, NameSpaceDetails, UrlLoadIdentityFn, UrlLoadNamedFn, UrlSaveFn, UrlStore, UrlStoreResult, urlToDetails, writeUrl } from "@itsmworkbench/url";
 
 export type UrlStoreApiClientConfig = {
   apiUrlPrefix: string // we place our url at the end of this
   details: NameAnd<NameSpaceDetails>
+  debug?: boolean
 }
 
-export const loadFromApi = ( config: UrlStoreApiClientConfig ): UrlLoadFn => async <T> ( urlAsString: string, offset?: number ): Promise<ErrorsAnd<UrlLoadResult<T>>> =>
-  mapErrorsK ( parseUrl ( urlAsString ), namedOrIdentity =>
-    mapErrorsK ( urlToDetails ( config.details, namedOrIdentity ), async details => {//This is just error checking//validation
-      try {
-        const base = `${config.apiUrlPrefix}/${urlAsString}`
-        const fullUrl = offset ? `${base}?offset=${offset}` : base
-        const response = await fetch ( fullUrl )
-        if ( response.status < 400 ) {
-          let result: string = await response.json ();
-          if ( isUrlLoadResult<T> ( result ) ) return result
-          return [ `Failed to load ${urlAsString}. Expected a UrlLoadResult but got ${result}` ]
-        } // this should be UrlLoadResult
-        return [ `Failed to load ${urlAsString}. Status ${response.status}\n${await response.text ()}` ]
-      } catch ( e ) {return [ `Failed to load ${urlAsString}`, e ] }
-    } ) )
+export function baseFetch ( config: UrlStoreApiClientConfig, fullUrl: string, namedOrIdentity: NamedOrIdentityUrl, init?: RequestInit ): Promise<ErrorsAnd<any>> {
+  return mapErrorsK ( urlToDetails ( config.details, namedOrIdentity ), async details => {//This is 'just' error checking//validation
+    try {
+      const response = await fetch ( fullUrl, init )
+      if ( response.status < 400 ) return await response.json ();
+      return [ `Failed to fetch ${fullUrl}. Init is ${JSON.stringify ( init || {} )}. Status ${response.status}\n${await response.text ()}` ]
+    } catch ( e ) {return [ `Failed to fetch ${fullUrl}. Init is ${JSON.stringify ( init || {} )}\n${JSON.stringify ( e )}` ] }
+  } )
+
+}
+export function loadNamedFromApi ( config: UrlStoreApiClientConfig ): UrlLoadNamedFn {
+  return async <T> ( named: NamedUrl, offset?: number ): Promise<ErrorsAnd<NamedLoadResult<T>>> => {
+    const baseUrl = `${config.apiUrlPrefix}/${(writeUrl ( named ))}`
+    const fullUrl = offset ? `${baseUrl}?offset=${offset}` : baseUrl
+    return mapErrorsK ( await baseFetch ( config, fullUrl, named ), async rawResponse => {
+      if ( isNamedLoadResult<T> ( rawResponse ) ) return rawResponse;
+      return [ `Failed to load ${named.url}. Expected NamedLoadResult. ${JSON.stringify ( rawResponse )}` ]
 
 
-export const saveToApi = ( config: UrlStoreApiClientConfig ): UrlSaveFn => async ( urlAsString: string, content: any ): Promise<ErrorsAnd<UrlStoreResult>> => {
-  return mapErrorsK ( parseUrl ( urlAsString ), async namedOrIdentityUrl =>
-    mapErrorsK ( urlToDetails ( config.details, namedOrIdentityUrl ), async details => {
-        {
-          try {
-            const fullUrl = `${config.apiUrlPrefix}/${urlAsString}`
-            let body = details.writer ( content );
-            if ( hasErrors ( body ) ) return body
-            console.log ( 'saveToApi url', namedOrIdentityUrl )
-            console.log ( 'saveToApi content', content )
-            console.log ( 'saveToApi body', body )
-            const response = await fetch ( fullUrl, {
-              method: 'PUT',
-              body,
-              headers: {
-                'Content-Type': details.mimeType
-              }
-            } )
-            if ( response.status < 400 ) {
-              const result = await response.json ()
-              if ( isUrlStoreResult ( result ) ) return result
-              return [ `Failed to save ${urlAsString}. Expected a UrlStoreResult but got ${JSON.stringify ( result )}` ]
-            }
-            return [ `Failed to save ${urlAsString}. Status ${response.status}\n${await response.text ()}` ]
-          } catch
-            ( e ) {return [ `Failed to save ${urlAsString}`, e ] }
-        }
-      }
-    ) )
+    } )
+  }
+}
+export function loadIdentityFromApi ( config: UrlStoreApiClientConfig ): UrlLoadIdentityFn {
+  return async <T> ( identity: IdentityUrl ): Promise<ErrorsAnd<IdentityUrlLoadResult<T>>> =>
+    mapErrorsK ( await baseFetch ( config, `${config.apiUrlPrefix}/${(writeUrl ( identity ))}`, identity ), async rawResponse => {
+      if ( hasErrors ( rawResponse ) ) return rawResponse;
+      if ( isIdentityUrlLoadResult<T> ( rawResponse ) ) return rawResponse;
+      return [ `Failed to load ${identity.url}. Expected IdentityUrlLoadResult. ${JSON.stringify ( rawResponse )}` ]
+    } )
+}
+
+export const saveToApi = ( config: UrlStoreApiClientConfig ): UrlSaveFn =>
+  async ( namedOrIdentityUrl: NamedOrIdentityUrl, content: any ): Promise<ErrorsAnd<UrlStoreResult>> => {
+    return mapErrorsK ( urlToDetails ( config.details, namedOrIdentityUrl ), async details => {
+      return mapErrorsK ( details.writer ( content ), async body => {
+        const fullUrl = `${config.apiUrlPrefix}/${writeUrl ( namedOrIdentityUrl )}`
+        const rawResponse = await baseFetch ( config, fullUrl, namedOrIdentityUrl, {
+          method: 'PUT',
+          body,
+          headers: { 'Content-Type': details.mimeType }
+        } );
+        if ( isUrlStoreResult ( rawResponse ) ) return rawResponse;
+        return [ `Failed to save ${JSON.stringify ( namedOrIdentityUrl )}. Expected UrlStoreResult. ${JSON.stringify ( rawResponse )}` ]
+      } )
+    } )
+  }
+
+export function urlStoreFromApi ( config: UrlStoreApiClientConfig ): UrlStore {
+  return {
+    loadNamed: loadNamedFromApi ( config ),
+    loadIdentity: loadIdentityFromApi ( config ),
+    save: saveToApi ( config ),
+    list: async ( org: string, namespace: string, query: any, order: any ) => {
+      return [ `Not implemented` ]
+    }
+  }
 }
