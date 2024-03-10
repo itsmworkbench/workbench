@@ -16,6 +16,7 @@ import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstor
 import { addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
 import { hasErrors, mapK, value } from "@laoban/utils";
 import { defaultEventEnricher, EnrichedEvent, enrichEvent } from "@itsmworkbench/enrichedevents";
+import { displayTicketEventPlugin } from '@itsmworkbench/react_ticket';
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -37,8 +38,9 @@ addEventStoreListener ( container, (( oldS, s, setJson ) =>
   root.render ( <App
     state={lensState ( s, setJson, 'Container', {} )}
     plugins={[]}
+    eventPlugins={[displayTicketEventPlugin<ItsmState>()]}
     // plugins={[ operatorConversationPlugin ( operatorL ) ]}
-  /> )) );
+  /> )));
 
 const enricher = defaultEventEnricher ( urlStore )
 

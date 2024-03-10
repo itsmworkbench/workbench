@@ -11,7 +11,7 @@
   "links":       [
     "@itsmworkbench/components",
     "@itsmworkbench/tickets",
-    "@itsmworkbench/react_conversation"
+    "@itsmworkbench/react_events"
   ],
   "guards":      {
     "compile": true,

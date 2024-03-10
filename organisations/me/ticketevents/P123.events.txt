@@ -1,0 +1,1 @@
+{"event":"setId","id":"itsmid/me/ticket/69e497720942f074131be81eae17700f8465773d","path":"ticket","context":{"display":{"title":"New Ticket","type":"ticket","name":"P123"}}}

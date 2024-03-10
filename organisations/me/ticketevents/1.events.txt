@@ -1,1 +1,1 @@
-{"event":"setId","id":"itsmid/me/ticket/b39356075901abfb43d27aef2ae5b76b6aee19c4","path":"ticket","context":{"display": {"title": "New Ticket", "type": "ticket"}}}
+{"event":"setId","id":"itsmid/me/ticket/b39356075901abfb43d27aef2ae5b76b6aee19c4","path":"ticket","context":{"display": {"title": "New Ticket", "name": "1", "type": "ticket"}}}

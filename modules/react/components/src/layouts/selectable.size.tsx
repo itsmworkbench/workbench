@@ -11,7 +11,7 @@ export type PROPSAndIcons<Props> = Props & {
 export interface WithSelectableSizeProps<PROPS> {
   MicroComponent: ComponentType<PROPSAndIcons<PROPS>>;
   MiniComponent?: ComponentType<PROPSAndIcons<PROPS>>;
-  FullComponent: ComponentType<PROPSAndIcons<PROPS>>;
+  FullComponent?: ComponentType<PROPSAndIcons<PROPS>>;
   data: PROPS;
 }
 
@@ -33,16 +33,18 @@ export function SelectableSize<PROPS> ( {
       {MiniComponent && <IconButton onClick={() => setSize ( 'mini' )} color="primary" aria-label="mini size">
           <ViewModuleIcon/>
       </IconButton>}
-      <IconButton onClick={() => setSize ( 'full' )} color="primary" aria-label="full size">
-        <ViewQuiltIcon/>
-      </IconButton>
+      {FullComponent && <IconButton onClick={() => setSize ( 'full' )} color="primary" aria-label="full size">
+          <ViewQuiltIcon/>
+      </IconButton>}
     </>
   );
   function renderedComponent () {
     if ( size === 'mini' && MiniComponent !== undefined ) return <MiniComponent {...data} icons={icons}/>;
-    if ( size === 'full' ) return <FullComponent {...data} icons={icons}/>;
+    if ( size === 'full' && FullComponent !== undefined ) return <FullComponent {...data} icons={icons}/>;
     return <MicroComponent {...data} icons={icons}/>;
   }
 
-  return renderedComponent ()
+  let result = renderedComponent ();
+  console.log('size', size, 'result', result)
+  return result
 }

@@ -9,7 +9,7 @@ import { NewTicketData } from "@itsmworkbench/react_new_ticket";
 import { Operator } from "@itsmworkbench/operator";
 import { Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
-import { EnrichedEvent } from "@itsmworkbench/eventenricher";
+import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 
 export interface ItsmSelectionState extends WorkspaceSelectionState {
   mainScreen?: ColumnLeftMainState

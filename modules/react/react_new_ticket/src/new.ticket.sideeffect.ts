@@ -40,7 +40,7 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
       const res: ErrorsAnd<TicketAndTicketEvents> = await mapErrorsK ( await urlSaveFn ( ticketUrl, { description: se.ticket } ), async ticket => {
         console.log ( 'addNewTicketSideeffectProcessor - ticket ', ticketUrl, ticket )
         const event: SetIdEvent = { event: 'setId', id: ticket.id, path: ticketPath, context: {
-          display: {title: 'New Ticket', type: 'ticket'},
+          display: {title: 'New Ticket', type: 'ticket', name: se.name},
           } }
         return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ event ] ), async ticketevents => {
           console.log ( 'addNewTicketSideeffectProcessor - ticketevents ', ticketeventsUrl, ticketevents )

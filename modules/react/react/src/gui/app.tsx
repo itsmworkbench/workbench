@@ -7,13 +7,14 @@ import { ConversationHistoryAndChat, ConversationPlugin } from "@itsmworkbench/r
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { DisplayNewTicket } from "@itsmworkbench/react_new_ticket";
-import { DisplayEnrichedEvent, DisplayEnrichedEvents, DisplayEvents } from "@itsmworkbench/react_events";
+import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents } from "@itsmworkbench/react_events";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
+  eventPlugins: DisplayEnrichedEventPlugIn<S>[]
 }
 
-export function App<S> ( { state, plugins }: AppProps<S, ItsmState> ) {
+export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState> ) {
   let showDevMode = state.optJson ()?.debug?.showDevMode;
   console.log ( 'state', state.optJson () );
   const convState = state.doubleUp ().focus1On ( 'conversation' ).focus2On ( 'sideeffects' )
@@ -26,8 +27,9 @@ export function App<S> ( { state, plugins }: AppProps<S, ItsmState> ) {
       <Toolbar/>
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )}>
         <SimpleTabPanel title='chat'><ConversationHistoryAndChat state={convState} plugins={plugins}/></SimpleTabPanel>
-        <SimpleTabPanel title='events'><DisplayEvents state={state.focusOn ( 'events' )}/></SimpleTabPanel>
-        <SimpleTabPanel title='enrichedEvents'><DisplayEnrichedEvents state={state.focusOn ( 'enrichedEvents' )}/></SimpleTabPanel>
+        <SimpleTabPanel title='events'><DisplayEnrichedEventsUsingPlugin state={state.focusOn ( 'enrichedEvents' )} plugins={eventPlugins}/></SimpleTabPanel>
+        <SimpleTabPanel title='debugEvents'><DisplayEvents state={state.focusOn ( 'events' )}/></SimpleTabPanel>
+        <SimpleTabPanel title='debugEnrichedEvents'><DisplayEnrichedEvents state={state.focusOn ( 'enrichedEvents' )}/></SimpleTabPanel>
         <SimpleTabPanel title='settings'>
           <div><Toolbar/> Settings go here</div>
         </SimpleTabPanel>

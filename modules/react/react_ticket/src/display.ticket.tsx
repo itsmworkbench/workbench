@@ -1,5 +1,5 @@
 import React from "react";
-import { LensProps2, LensProps3 } from "@focuson/state";
+import { LensProps3 } from "@focuson/state";
 import { List, ListItem, ListItemText } from "@material-ui/core";
 import { Event } from "@itsmworkbench/events";
 
