@@ -1,5 +1,5 @@
 import { ErrorsAnd, mapErrors, NameAnd } from "@laoban/utils";
-import { isNamedUrl, NamedOrIdentityUrl, NamedUrl } from "./identity.and.name.url";
+import { HasNamespace, HasOrganisation, isNamedUrl, NamedOrIdentityUrl, NamedUrl, OrgAndNamespace } from "./identity.and.name.url";
 import { PathAndDetails, urlStorePathAndDetailsFn } from "./url.pathops";
 
 
@@ -38,10 +38,10 @@ export type OrganisationUrlStoreConfigForGit = {
 }
 
 
-export function repoFrom ( config: OrganisationUrlStoreConfigForGit, url: NamedOrIdentityUrl ): string {
+export function repoFrom ( config: OrganisationUrlStoreConfigForGit, url: HasOrganisation ): string {
   return config.baseDir + '/' + url.organisation;
 }
-export function urlToDetails<A extends NameSpaceDetails> ( nsToDetails: NameAnd<A>, url: NamedOrIdentityUrl ): ErrorsAnd<A> {
+export function urlToDetails<A extends NameSpaceDetails> ( nsToDetails: NameAnd<A>, url: HasNamespace ): ErrorsAnd<A> {
   const details = nsToDetails[ url.namespace ];
   if ( !details ) return [ `Don't know how to handle namespace ${url.namespace}. Legal namespaces are ${Object.keys ( nsToDetails )}` ];
   return details

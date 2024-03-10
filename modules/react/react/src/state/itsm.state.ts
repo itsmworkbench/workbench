@@ -2,7 +2,7 @@ import { DebugState, SideEffect, SideeffectResult, WorkspaceSelectionState } fro
 import { Lens, Lenses, Optional } from "@focuson/lens";
 import { ColumnLeftMainState } from "@itsmworkbench/components";
 import { ChatDisplayData, Conversation } from "@itsmworkbench/domain";
-import { NamedLoadResult } from "@itsmworkbench/url";
+import { ListNamesResult, NamedLoadResult } from "@itsmworkbench/url";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
 import { NewTicketData } from "@itsmworkbench/react_new_ticket";
@@ -14,8 +14,10 @@ export interface ItsmSelectionState extends WorkspaceSelectionState {
 }
 export type TicketAndId = { id?: string, ticket?: Ticket }
 
+
 export interface ItsmState {
   operator: ErrorsAnd<NamedLoadResult<Operator>>
+  ticketList: ErrorsAnd<ListNamesResult>
   conversation: Conversation
   selectionState: ItsmSelectionState
   newTicket: NewTicketData
@@ -28,13 +30,16 @@ export interface ItsmState {
 }
 
 const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '' };
+
+
 export const startAppState: ItsmState = {
   operator: undefined as any,
+  ticketList: undefined as any,
   sideeffects: [],
   log: [],
   conversation: { messages: [], chat: { type: '' } },
   variables: {},
-  ticket:{},
+  ticket: {},
   newTicket,
   selectionState: {},
 }
@@ -42,7 +47,7 @@ export const startAppState: ItsmState = {
 export const itsmIdL: Lens<ItsmState, ItsmState> = Lenses.identity ()
 export const operatorL: Lens<ItsmState, ErrorsAnd<NamedLoadResult<Operator>>> = itsmIdL.focusOn ( 'operator' )
 export const setPageL: Lens<ItsmState, string | undefined> = itsmIdL.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )
-export const ticketIdL: Optional<ItsmState, string|undefined > = itsmIdL.focusQuery ( 'ticket' ).focusOn ( 'id' )
+export const ticketIdL: Optional<ItsmState, string | undefined> = itsmIdL.focusQuery ( 'ticket' ).focusOn ( 'id' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> =
                itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )

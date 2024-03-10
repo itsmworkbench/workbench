@@ -16,7 +16,7 @@
     "@itsmworkbench/questions",
     "@itsmworkbench/eventstore",
     "@itsmworkbench/statestore",
-     "@itsmworkbench/jsyaml",
+    "@itsmworkbench/jsyaml",
     "@itsmworkbench/react_core",
     "@itsmworkbench/react_conversation",
     "@itsmworkbench/react_devmode",
@@ -26,7 +26,7 @@
     "@itsmworkbench/react_softwarecatalog",
     "@itsmworkbench/react_sql",
     "@itsmworkbench/react_templates",
-
+    "@itsmworkbench/react_ticket",
     "@itsmworkbench/react_variables",
     "@itsmworkbench/update_value_in_database_ticket_type",
     "@itsmworkbench/variables"

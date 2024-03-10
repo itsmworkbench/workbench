@@ -1,5 +1,5 @@
 import { ErrorsAnd, hasErrors, mapErrorsK, NameAnd } from "@laoban/utils";
-import { IdentityUrl, IdentityUrlLoadResult, isIdentityUrlLoadResult, isNamedLoadResult, isUrlStoreResult, NamedLoadResult, NamedOrIdentityUrl, NamedUrl, NameSpaceDetails, UrlLoadIdentityFn, UrlLoadNamedFn, UrlSaveFn, UrlStore, UrlStoreResult, urlToDetails, writeUrl } from "@itsmworkbench/url";
+import { HasNamespace, IdentityUrl, IdentityUrlLoadResult, isIdentityUrlLoadResult, isListNamesResult, isNamedLoadResult, isUrlStoreResult, ListNamesOrder, ListNamesResult, NamedLoadResult, NamedOrIdentityUrl, NamedUrl, NameSpaceDetails, PageQuery, UrlListFn, UrlLoadIdentityFn, UrlLoadNamedFn, UrlSaveFn, UrlStore, UrlStoreResult, urlToDetails, writeUrl } from "@itsmworkbench/url";
 
 export type UrlStoreApiClientConfig = {
   apiUrlPrefix: string // we place our url at the end of this
@@ -7,7 +7,7 @@ export type UrlStoreApiClientConfig = {
   debug?: boolean
 }
 
-export function baseFetch ( config: UrlStoreApiClientConfig, fullUrl: string, namedOrIdentity: NamedOrIdentityUrl, init?: RequestInit ): Promise<ErrorsAnd<any>> {
+export function baseFetch ( config: UrlStoreApiClientConfig, fullUrl: string, namedOrIdentity: HasNamespace, init?: RequestInit ): Promise<ErrorsAnd<any>> {
   return mapErrorsK ( urlToDetails ( config.details, namedOrIdentity ), async details => {//This is 'just' error checking//validation
     try {
       const response = await fetch ( fullUrl, init )
@@ -54,13 +54,19 @@ export const saveToApi = ( config: UrlStoreApiClientConfig ): UrlSaveFn =>
     } )
   }
 
+export const listFromApi = ( config: UrlStoreApiClientConfig ): UrlListFn =>
+  async ( org: string, namespace: string, query: PageQuery, order: ListNamesOrder ): Promise<ErrorsAnd<ListNamesResult>> => {
+    const fullUrl = `${config.apiUrlPrefix}/list/${org}/${namespace}?page=${query.page}&pageSize=${query.pageSize}&order=${order}`
+    const rawResponse = await baseFetch ( config, fullUrl, { namespace }, );
+    if ( isListNamesResult ( rawResponse ) ) return rawResponse;
+    return [ `Failed to list ${org} ${namespace}. Expected ListNamesResult. ${JSON.stringify ( rawResponse )}` ]
+  }
+
 export function urlStoreFromApi ( config: UrlStoreApiClientConfig ): UrlStore {
   return {
     loadNamed: loadNamedFromApi ( config ),
     loadIdentity: loadIdentityFromApi ( config ),
     save: saveToApi ( config ),
-    list: async ( org: string, namespace: string, query: any, order: any ) => {
-      return [ `Not implemented` ]
-    }
+    list: listFromApi ( config )
   }
 }

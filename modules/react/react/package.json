@@ -32,6 +32,7 @@
     "@itsmworkbench/react_softwarecatalog": "0.0.3",
     "@itsmworkbench/react_sql": "0.0.3",
     "@itsmworkbench/react_templates": "0.0.3",
+    "@itsmworkbench/react_ticket": "0.0.3",
     "@itsmworkbench/react_variables": "0.0.3",
     "@itsmworkbench/update_value_in_database_ticket_type": "0.0.3",
     "@itsmworkbench/variables": "0.0.3",

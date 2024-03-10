@@ -1,20 +1,26 @@
 import { ErrorsAnd, mapErrors } from "@laoban/utils";
+export type HasNamespace = {
+  namespace: string,
+}
+export type  HasOrganisation = {
+  organisation: string,
 
-export type IdentityUrl = {
+}
+
+export type OrgAndNamespace = HasNamespace &HasOrganisation;
+
+export type IdentityUrl = OrgAndNamespace & {
   url?: string // This is the original url that was parsed. Useful for debugging
   scheme: 'itsmid',
-  organisation: string,
-  namespace: string,
   id: string,
 };
 export function isIdentityUrl ( x: NamedOrIdentityUrl ): x is IdentityUrl {
   return x.scheme === 'itsmid';
 }
-export type NamedUrl = {
+export type NamedUrl = OrgAndNamespace & {
   url?: string // This is the original url that was parsed. Might not be here. Useful for debugging
   scheme: 'itsm',
-  organisation: string,
-  namespace: string,
+
   name: string,
 };
 
@@ -65,7 +71,7 @@ export function parseUrl ( url: string ): ErrorsAnd<NamedOrIdentityUrl> {
     }
     return [ `${url} does not match the expected format for NamedUrl or IdentityUrl` ];
   } catch ( e ) {
-    return [ `Error parsing url ${JSON.stringify(url)}. ${e}` ];
+    return [ `Error parsing url ${JSON.stringify ( url )}. ${e}` ];
   }
 }
 

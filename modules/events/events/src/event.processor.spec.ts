@@ -10,10 +10,9 @@ const data = {
   }
 }
 type Data = typeof data
-let idStore = async ( id: string ) => {throw new Error ( 'not any more' )};
 let idLoadFn: UrlLoadIdentityFn = async ( url ) => ({ url: writeUrl ( url ), result: `from ${url}` as any, mimeType: 'something', id: 'someId' });
 
-const eventProcessor: EventProcessor<Data> = defaultEventProcessor<Data> ( '', {} as Data, idStore, idLoadFn )
+const eventProcessor: EventProcessor<Data> = defaultEventProcessor<Data> ( '', {} as Data, idLoadFn )
 let context: EventContext = { some: "metadata" };
 describe ( "eventProcessors", () => {
   describe ( "zeroEventProcessor", () => {

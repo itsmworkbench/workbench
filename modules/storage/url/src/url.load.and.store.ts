@@ -45,6 +45,10 @@ export type ListNamesResult = PageQuery & {
   page: number
   total: number
 }
+
+export function isListNamesResult ( x: any ): x is ListNamesResult {
+  return typeof x.page === 'number' && typeof x.total === 'number' && Array.isArray ( x.names )
+}
 export type ListNamesOrder = 'name' | 'date'
 
 export type UrlListFn = ( org: string, namespace: string, query: PageQuery, order: ListNamesOrder ) => Promise<ErrorsAnd<ListNamesResult>>

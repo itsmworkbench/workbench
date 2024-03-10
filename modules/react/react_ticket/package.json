@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/react_new_ticket",
-  "description": "The react gui around new tickets",
+  "name": "@itsmworkbench/react_ticket",
+  "description": "How to display tickets in react",
   "version": "0.0.3",
   "browserslist": {
     "development": [
@@ -17,6 +17,7 @@
   "dependencies": {
     "@itsmworkbench/components": "0.0.3",
     "@itsmworkbench/tickets": "0.0.3",
+    "@itsmworkbench/react_conversation": "0.0.3",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

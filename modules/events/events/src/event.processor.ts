@@ -15,19 +15,17 @@ export interface EventProcessor<S> {
   listeners: EventProcessorListener<S>[]
   pathToLens: PathToLensFn<S>
   urlLoadFn: UrlLoadIdentityFn
-  idStore: IdStore
 }
 
 
-export function defaultEventProcessor<S> ( pathPrefix: string, zero: S, idStore: IdStore, urlLoadFn: UrlLoadIdentityFn ): EventProcessor<S> {
+export function defaultEventProcessor<S> ( pathPrefix: string, zero: S, urlLoadFn: UrlLoadIdentityFn ): EventProcessor<S> {
   return {
     pathPrefix,
     zero,
     processors: defaultProcessors<S> (),
     listeners: [],
     pathToLens: pathToLens<S> (),
-    urlLoadFn,
-    idStore
+    urlLoadFn
   }
 }
 export function addListener<S> ( processor: EventProcessor<S>, listener: EventProcessorListener<S> ): void {

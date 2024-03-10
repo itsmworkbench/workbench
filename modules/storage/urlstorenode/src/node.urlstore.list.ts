@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { applyPaging, ListNamesOrder, NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit, PageQuery, UrlListFn } from "@itsmworkbench/url";
+import { applyPaging, ListNamesOrder, OrganisationUrlStoreConfigForGit, PageQuery, UrlListFn } from "@itsmworkbench/url";
 import { ErrorsAnd, mapErrors, mapErrorsK } from "@laoban/utils";
 import { urlStorePathFn } from "@itsmworkbench/url/dist/src/url.pathops";
 
@@ -28,7 +28,7 @@ type SortFn = ( a: FileInfo, b: FileInfo ) => number;
 function getSortFunction ( order: ListNamesOrder ): ErrorsAnd<SortFn> {
   switch ( order ) {
     case 'date':
-      return ( a, b ) => new Date ( a.date ).getTime () - new Date ( b.date ).getTime ();
+      return ( a, b ) => new Date ( b.date ).getTime () - new Date ( a.date ).getTime ();
     case 'name':
       return ( a, b ) => a.name.localeCompare ( b.name );
     default:
@@ -45,8 +45,10 @@ export const listNamesInPath = ( nameFn: ( name: string ) => string ) =>
     return mapErrors ( await applySortOrder ( files, order ), ( { sortedFiles } ) =>
       ({ names: applyPaging ( sortedFiles, query ).map ( f => f.name ) }) )
   }
-
-export const listJustNamesInPath = listNamesInPath ( s => path.parse ( s ).name );
+function extractFirstPart ( input: string ): string {
+  return input.includes ( '.' ) ? (input.split ( '.' ))[ 0 ] : input;
+}
+export const listJustNamesInPath = listNamesInPath ( s => extractFirstPart ( path.parse ( s ).name ) );
 export const listInStoreFn = ( config: OrganisationUrlStoreConfigForGit ): UrlListFn => {
   const orgAndNsToPath = urlStorePathFn ( config )
   return async ( org, namespace, query, order ) =>

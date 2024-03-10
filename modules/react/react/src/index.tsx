@@ -70,11 +70,6 @@ addEventStoreModifier ( container,
 
 loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataResult ) => {
   const withInitialData = { ...startAppState, ...initialDataResult }
-  // loadInitialIds ( listIds ).then ( async ( res: InitialLoadIdResult ) => {
-  //   const newState = { ...withInitialData, ...res }
-  //   const cdd: ChatDisplayData<any> | undefined = await initialQuestions ( operatorL, ticketL ) ( newState )
-  //
-  // } )
   setJson ( withInitialData )
   startPolling ( pollingDetails )
 } )
