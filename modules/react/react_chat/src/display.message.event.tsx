@@ -1,7 +1,7 @@
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 import { AppendEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
-import { MicroCard, PROPSAndIcons } from "@itsmworkbench/components";
+import { DisplayMarkdown, MicroCard, PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";
 import { DisplayEnrichedEventPlugIn, DisplayEnrichedEventProps } from "@itsmworkbench/react_events";
 import { Box, Card, CardContent, CardHeader, Typography } from '@mui/material';
@@ -25,18 +25,28 @@ export function DisplayDefaultEnrichedMessageEventFull<S> ( { state, icons }: Di
       sx={{ position: 'relative', '.MuiCardHeader-action': { margin: 0, alignSelf: 'flex-start' } }}
     />
     <CardContent>
-      <Typography variant="body1" component="pre">
-        {message}
+      <Typography variant="body1">
+        <DisplayMarkdown md={message}/>
       </Typography>
     </CardContent>
   </Card>
+}
+function getTruncatedMessage ( msg ) {
+  if (msg === undefined) return undefined
+
+  const msgLines = msg?.toString (). split ( '\n' ).map ( s => s.trim () ).filter ( s => s.length > 0 )
+  if ( msgLines.length === 0 ) return undefined
+  const firstLine = msgLines[0]
+  if (msgLines.length === 1) return firstLine
+  return firstLine + '...'
 }
 export function DisplayDefaultEnrichedMessageEventMicro<S> ( { state, icons }: DisplayEnrichedEventProps<S> ) {
   function getSummary () {
     const event = state.optJson ()
     if ( event === undefined ) return 'No event - This is an error'
     const title = event.displayData?.title || event.event
-    const msg = event.value?.message
+    const msg= getTruncatedMessage(event.value?.message)
+    getTruncatedMessage ( msg );
     const titleAndName = msg ? `${title} - ${msg}` : title
     return titleAndName;
   }

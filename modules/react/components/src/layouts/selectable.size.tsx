@@ -27,18 +27,22 @@ export function SelectableSize<PROPS> ( {
                                           data,
                                         }: WithSelectableSizeProps<PROPS> ): React.ReactElement {
   const [ size, setSize ] = useState<SizeOption> ( 'micro' );
+  function handleClick (newSize: SizeOption) {
+    if (newSize === size) return () => setSize ( 'micro' );
+    return () => setSize ( newSize  );
+  }
   const icons = (
     <>
-      <IconButton onClick={() => setSize ( 'micro' )} color="primary" aria-label="micro size">
-        <ViewCompactIcon/>
-      </IconButton>
-      {MiniComponent && <IconButton onClick={() => setSize ( 'mini' )} color="primary" aria-label="mini size">
+      {/*<IconButton onClick={handleClick ('micro')} color="primary" aria-label="micro size">*/}
+      {/*  <ViewCompactIcon/>*/}
+      {/*</IconButton>*/}
+      {MiniComponent && <IconButton onClick={handleClick('mini')} color="primary" aria-label="mini size">
           <ViewModuleIcon/>
       </IconButton>}
-      {FullComponent && <IconButton onClick={() => setSize ( 'full' )} color="primary" aria-label="full size">
+      {FullComponent && <IconButton onClick={handleClick('full')} color="primary" aria-label="full size">
           <ViewQuiltIcon/>
       </IconButton>}
-      {DebugComponent && <IconButton onClick={() => setSize ( 'debug' )} color="primary" aria-label="debug size">
+      {DebugComponent && <IconButton onClick={handleClick('debug')} color="primary" aria-label="debug size">
           <BugReportIcon/></IconButton>}
     </>
   );

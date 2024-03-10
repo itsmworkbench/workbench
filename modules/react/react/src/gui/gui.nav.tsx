@@ -10,6 +10,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import AddIcon from '@mui/icons-material/Add';
 import EventIcon from '@mui/icons-material/Event';
 import { Event } from '@itsmworkbench/events';
+import { EventsAndEnriched } from "@itsmworkbench/react_core";
 
 export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
   const buttonSx = {
@@ -18,7 +19,7 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
     width: '100%',
   };
 
-  let displayTicketState: LensState3<S, string[], string, Event[], any> = state.tripleUp ().//
+  let displayTicketState: LensState3<S, string[], string, EventsAndEnriched, any> = state.tripleUp ().//
     focus1On ( 'ticketList' ).focus1On ( 'names' ).//
     focus2On ( 'selectionState' ).focus2On ( 'ticketId' ).//
     focus3On ( 'events' );

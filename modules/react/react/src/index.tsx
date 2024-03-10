@@ -50,16 +50,19 @@ const enricher = defaultEventEnricher ( urlStore )
 const pollingDetails = polling<Event[]> ( 1000, () => container.state.selectionState.ticketId,
   async ( poll, offset ) => await urlStore.loadNamed ( poll, offset ),
   async ( events: Event[] ) => {
+    if ( events.length === 0 ) return
     console.log ( 'polling', typeof events, events )
     const { state: state, errors } = await processEvents ( sep1, container.state, events )
     const enrichedEvents: EnrichedEvent<any, any>[] = await mapK<Event, EnrichedEvent<any, any>> ( events, enrichEvent ( enricher ) )
     console.log ( 'errors', errors )
     console.log ( 'state', state )
     if ( state ) {
-      const newState = {
+      const newState: ItsmState = {
         ...state, variables: {},
-        events: [ ...(state.events), ...events ],
-        enrichedEvents: [ ...(state.enrichedEvents), ...enrichedEvents ]
+        events: {
+          events: [ ...(state.events.events), ...events ],
+          enrichedEvents: [ ...(state.events.enrichedEvents), ...enrichedEvents ]
+        }
       }
       setJson ( newState )
     }

@@ -4,3 +4,5 @@
 {"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"hi"},"context":{"display":{"title":"Message","type":"message"}}}
 {"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"hello"},"context":{"display":{"title":"Message","type":"message"}}}
 {"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"testing"},"context":{"display":{"title":"Message","type":"message"}}}
+{"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"A chat"},"context":{"display":{"title":"Message","type":"message"}}}
+{"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"Is this\n* going\n* to \n* work"},"context":{"display":{"title":"Message","type":"message"}}}

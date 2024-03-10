@@ -17,7 +17,8 @@ export interface AppProps<S, CS> extends LensProps<S, CS, any> {
 export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState> ) {
   let showDevMode = state.optJson ()?.debug?.showDevMode;
   console.log ( 'state', state.optJson () );
-  const convState = state.tripleUp ().focus1On ( 'conversation' ).focus2On ( 'enrichedEvents' ).focus3On ( 'sideeffects' )
+  const convState = state.tripleUp ().focus1On ( 'conversation' ).focus2On('events').focus2On ( 'enrichedEvents' ).focus3On ( 'sideeffects' )
+  const eventsState = state.focusOn ( 'events' )
   return <>
     return <ThemeProvider theme={theme}>
     <ColumnLeftMainBottom title='ITSM Workbench'
@@ -27,9 +28,9 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
       <Toolbar/>
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )}>
         <SimpleTabPanel title='chat'><EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins}/></SimpleTabPanel>
-        <SimpleTabPanel title='events'><DisplayEnrichedEventsUsingPlugin state={state.focusOn ( 'enrichedEvents' )} plugins={eventPlugins}/></SimpleTabPanel>
-        <SimpleTabPanel title='debugEvents'><DisplayEvents state={state.focusOn ( 'events' )}/></SimpleTabPanel>
-        <SimpleTabPanel title='debugEnrichedEvents'><DisplayEnrichedEvents state={state.focusOn ( 'enrichedEvents' )}/></SimpleTabPanel>
+        <SimpleTabPanel title='events'><DisplayEnrichedEventsUsingPlugin state={eventsState.focusOn ( 'enrichedEvents' )} plugins={eventPlugins}/></SimpleTabPanel>
+        <SimpleTabPanel title='debugEvents'><DisplayEvents state={eventsState.focusOn ( 'events' )}/></SimpleTabPanel>
+        <SimpleTabPanel title='debugEnrichedEvents'><DisplayEnrichedEvents state={eventsState.focusOn ( 'enrichedEvents' )}/></SimpleTabPanel>
         <SimpleTabPanel title='settings'>
           <div><Toolbar/> Settings go here</div>
         </SimpleTabPanel>

@@ -1,4 +1,4 @@
-import { DebugState, SideEffect, SideeffectResult, WorkspaceSelectionState } from "@itsmworkbench/react_core";
+import { DebugState, EventsAndEnriched, SideEffect, SideeffectResult, WorkspaceSelectionState } from "@itsmworkbench/react_core";
 import { Lens, Lenses, Optional } from "@focuson/lens";
 import { ColumnLeftMainState } from "@itsmworkbench/components";
 import { ChatDisplayData, Conversation } from "@itsmworkbench/domain";
@@ -23,9 +23,9 @@ export interface TempData {
 export interface Blackboard {
   operator: Operator
 }
+
 export interface ItsmState {
-  events: Event[],
-  enrichedEvents: EnrichedEvent<any, any>[]
+  events: EventsAndEnriched,
   blackboard: Blackboard
   tempData: TempData
   ticketList: ListNamesResult
@@ -46,8 +46,7 @@ export const startAppState: ItsmState = {
   },
   ticketList: undefined as any,
   sideeffects: [],
-  events: [],
-  enrichedEvents: [],
+  events: { events: [], enrichedEvents: [] },
   log: [],
   conversation: { messages: [], chat: { type: '' } },
   variables: {},
@@ -66,4 +65,5 @@ export const ticketIdL: Optional<ItsmState, string> = selectionStateL.focusQuery
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> = itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )
 export const logsL: Lens<ItsmState, SideeffectResult<any>[]> = itsmIdL.focusOn ( 'log' )
-export const eventsL: Lens<ItsmState, Event[]> = itsmIdL.focusOn ( 'events' )
+export const eventsAndEnrichedL: Lens<ItsmState, EventsAndEnriched> = itsmIdL.focusOn ( 'events' )
+export const eventsL: Lens<ItsmState, Event[]> = eventsAndEnrichedL.focusOn ( 'events' )
