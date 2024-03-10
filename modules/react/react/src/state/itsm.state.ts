@@ -40,8 +40,7 @@ const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '' };
 
 export const startAppState: ItsmState = {
   blackboard: {
-    operator: undefined as any,
-    ticket: undefined as any
+    operator: undefined as any
   },
   ticketList: undefined as any,
   sideeffects: [],
@@ -59,7 +58,7 @@ export const itsmIdL: Lens<ItsmState, ItsmState> = Lenses.identity ()
 export const blackboardL: Lens<ItsmState, Blackboard> = itsmIdL.focusOn ( 'blackboard' )
 export const selectionStateL: Lens<ItsmState, ItsmSelectionState> = itsmIdL.focusOn ( 'selectionState' )
 export const operatorL: Lens<ItsmState, Operator> = blackboardL.focusOn ( 'operator' )
-export const setPageL: Lens<ItsmState, string > = itsmIdL.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )
+export const setPageL: Optional<ItsmState, string> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'workspaceTab' )
 export const ticketIdL: Optional<ItsmState, string> = selectionStateL.focusQuery ( 'ticketId' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> = itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )
