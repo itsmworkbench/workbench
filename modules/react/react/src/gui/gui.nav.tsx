@@ -30,7 +30,6 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
       p: 1, // Adds padding around the entire container
     }}
   >
-    <FocusOnSetValueButton aria-label='Events' startIcon={<EventIcon/>} valueToSet='events' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Events</FocusOnSetValueButton>
     <FocusOnSetValueButton aria-label='Chat' startIcon={<ChatIcon/>} valueToSet='chat' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Chat</FocusOnSetValueButton>
     <FocusOnSetValueButton aria-label='Show settings' startIcon={<SettingsIcon/>} valueToSet='settings' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Settings</FocusOnSetValueButton>
     <FocusOnSetValueButton aria-label='New ticket' startIcon={<AddIcon/>} valueToSet='newTicket' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>New Ticket</FocusOnSetValueButton>

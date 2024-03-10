@@ -17,6 +17,7 @@ import { addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket
 import { hasErrors, mapK, value } from "@laoban/utils";
 import { defaultEventEnricher, EnrichedEvent, enrichEvent } from "@itsmworkbench/enrichedevents";
 import { displayTicketEventPlugin } from '@itsmworkbench/react_ticket';
+import { displayMessageEventPlugin } from "@itsmworkbench/react_chat/dist/src/display.message.event";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -38,9 +39,11 @@ addEventStoreListener ( container, (( oldS, s, setJson ) =>
   root.render ( <App
     state={lensState ( s, setJson, 'Container', {} )}
     plugins={[]}
-    eventPlugins={[displayTicketEventPlugin<ItsmState>()]}
+    eventPlugins={[
+      displayTicketEventPlugin<ItsmState> (),
+      displayMessageEventPlugin<ItsmState> () ]}
     // plugins={[ operatorConversationPlugin ( operatorL ) ]}
-  /> )));
+  /> )) );
 
 const enricher = defaultEventEnricher ( urlStore )
 
@@ -67,7 +70,7 @@ const pollingDetails = polling<Event[]> ( 1000, () => container.state.selectionS
 addEventStoreModifier ( container,
   processSideEffectsInState<ItsmState> (
     processSideEffect ( [
-      eventSideeffectProcessor ( saveDetails, 'conversation.messages' ),
+      eventSideeffectProcessor ( urlStore.save, 'me', ticketIdL ),
       addNewTicketSideeffectProcessor ( urlStore.save, setPageL, eventsL, ticketIdL, 'ticket' )
     ] ),
     sideEffectsL, logsL ) )
@@ -76,11 +79,13 @@ addEventStoreModifier ( container,
 loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataResult ) => {
   const operatorResult = hasErrors ( initialDataResult.operator ) ? undefined : value ( initialDataResult.operator )
   //OK this is a mess. Need to think about how to do operator...
+  let ticketList = value ( initialDataResult.ticketList ) as any;
   const withInitialData: ItsmState = {
-    ...startAppState, blackboard: {
+    ...startAppState,
+    blackboard: {
       operator: operatorResult?.result || { name: 'Phil', email: 'phil@example.com' }
     },
-    ticketList: value ( initialDataResult.ticketList ) as any
+    ticketList
   }
   setJson ( withInitialData )
   startPolling ( pollingDetails )

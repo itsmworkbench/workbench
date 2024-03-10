@@ -1,5 +1,5 @@
 import { ErrorsAnd, hasErrors, mapErrorsK, NameAnd } from "@laoban/utils";
-import { HasNamespace, IdentityUrl, IdentityUrlLoadResult, isIdentityUrlLoadResult, isListNamesResult, isNamedLoadResult, isUrlStoreResult, ListNamesOrder, ListNamesResult, NamedLoadResult, NamedOrIdentityUrl, NamedUrl, NameSpaceDetails, PageQuery, UrlListFn, UrlLoadIdentityFn, UrlLoadNamedFn, UrlSaveFn, UrlStore, UrlStoreResult, urlToDetails, writeUrl } from "@itsmworkbench/url";
+import { HasNamespace, IdentityUrl, IdentityUrlLoadResult, isIdentityUrlLoadResult, isListNamesResult, isNamedLoadResult, isUrlStoreResult, ListNamesOrder, ListNamesResult, NamedLoadResult, NamedOrIdentityUrl, NamedUrl, NameSpaceDetails, PageQuery, UrlListFn, UrlLoadIdentityFn, UrlLoadNamedFn, UrlSaveFn, UrlSaveOptions, UrlStore, UrlStoreResult, urlToDetails, writeUrl } from "@itsmworkbench/url";
 
 export type UrlStoreApiClientConfig = {
   apiUrlPrefix: string // we place our url at the end of this
@@ -39,10 +39,11 @@ export function loadIdentityFromApi ( config: UrlStoreApiClientConfig ): UrlLoad
 }
 
 export const saveToApi = ( config: UrlStoreApiClientConfig ): UrlSaveFn =>
-  async ( namedOrIdentityUrl: NamedOrIdentityUrl, content: any ): Promise<ErrorsAnd<UrlStoreResult>> => {
+  async ( namedOrIdentityUrl: NamedOrIdentityUrl, content: any, options: UrlSaveOptions ): Promise<ErrorsAnd<UrlStoreResult>> => {
     return mapErrorsK ( urlToDetails ( config.details, namedOrIdentityUrl ), async details => {
       return mapErrorsK ( details.writer ( content ), async body => {
-        const fullUrl = `${config.apiUrlPrefix}/${writeUrl ( namedOrIdentityUrl )}`
+        const optionsAsQuery = options ? `?${Object.entries ( options ).map ( ( [ k, v ] ) => `${k}=${v}` ).join ( '&' )}` : ''
+        const fullUrl = `${config.apiUrlPrefix}/${writeUrl ( namedOrIdentityUrl )}${optionsAsQuery}`
         const rawResponse = await baseFetch ( config, fullUrl, namedOrIdentityUrl, {
           method: 'PUT',
           body,

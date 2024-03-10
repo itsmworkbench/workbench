@@ -1,1 +1,6 @@
-{"event":"setId","id":"itsmid/me/ticket/69e497720942f074131be81eae17700f8465773d","path":"ticket","context":{"display":{"title":"New Ticket","type":"ticket","name":"P123"}}}
+{"event":"setId","id":"itsmid/me/ticket/69e497720942f074131be81eae17700f8465773d","path":"ticket","context":{"display":{"title":"New Ticket","type":"ticket","name":"se.name"}}}
+{"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"hi"},"context":{"display":{"title":"Message","type":"message"}}}
+{"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"hi"},"context":{"display":{"title":"Message","type":"message"}}}
+{"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"hi"},"context":{"display":{"title":"Message","type":"message"}}}
+{"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"hello"},"context":{"display":{"title":"Message","type":"message"}}}
+{"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"testing"},"context":{"display":{"title":"Message","type":"message"}}}

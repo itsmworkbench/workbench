@@ -10,6 +10,7 @@ export interface DisplayEnrichedEventPlugIn<S> {
   microDisplay: ComponentType<PROPSAndIcons<LensProps<S, EnrichedEvent<any, any>, any>>>;
   miniDisplay?: ComponentType<PROPSAndIcons<LensProps<S, EnrichedEvent<any, any>, any>>>
   fullDisplay: ComponentType<PROPSAndIcons<LensProps<S, EnrichedEvent<any, any>, any>>>;
+  debugDisplay?: ComponentType<PROPSAndIcons<LensProps<S, EnrichedEvent<any, any>, any>>>;
 }
 
 export interface DisplayEnrichedEventUsingPluginProps<S> extends LensProps<S, EnrichedEvent<any, any>, any> {
@@ -20,12 +21,15 @@ export function DisplayEnrichedEventUsingPlugin<S> ( { state, plugins }: Display
   const event = state.optJson ()
   if ( event === undefined ) return <div>No event - This is an error</div>
   const plugin = plugins.find ( p => p.accept ( event ) )
-  console.log('plugin', plugin, 'event', event, 'state', state)
+  console.log ( 'plugin', plugin, 'event', event, 'state', state )
   if ( plugin === undefined ) return <DisplayEnrichedEvent state={state}/>
+  let debugComponent = plugin.debugDisplay||DisplayDefaultEnrichedEventFull<S>;
+  console.log('debugComponent',debugComponent)
   return <SelectableSize
     MicroComponent={plugin.microDisplay}
     MiniComponent={plugin.miniDisplay}
     FullComponent={plugin.fullDisplay}
+    DebugComponent={debugComponent}
     data={{ state }}
   />
 }
@@ -34,9 +38,11 @@ export interface DisplayEnrichedEventsUsingPluginProps<S> extends LensProps<S, E
 }
 export function DisplayEnrichedEventsUsingPlugin<S> ( { state, plugins }: DisplayEnrichedEventsUsingPluginProps<S> ) {
   const events = state.optJson () || []
-  return <div>    {events.map ( ( event, i ) =>
-    <DisplayEnrichedEventUsingPlugin key={i}
-                                     state={state.chainLens ( Lenses.nth ( i ) )}
-                                     plugins={plugins}/> )}
+  return <div>{events.map ( ( event, i ) =>
+    <div key={i} style={{ margin: '6px' }}>
+      <DisplayEnrichedEventUsingPlugin key={i}
+                                       state={state.chainLens ( Lenses.nth ( i ) )}
+                                       plugins={plugins}/>
+    </div> )}
   </div>
 }

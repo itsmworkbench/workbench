@@ -52,6 +52,8 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
     const match = /\/url\/(itsm.*)/.exec ( ctx.context.request.path );
     console.log ( 'match', match )
     const url = match[ 1 ];
+    const append = ctx.context.request.query.append === 'true'
+    const commit = ctx.context.request.query.commit === 'true'
     try {
       console.log ( `${'PUT'}Urls`, url );
       // The actionFn is either 'load' for GET or 'save' for PUT
@@ -62,7 +64,7 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
       const result: ErrorsAnd<UrlStoreResult> = await mapErrorsK ( details, async d => {
         const parsed = d.parser ( url, requestBody )
         console.log ( 'parsed', parsed )
-        return await save ( named, parsed );
+        return await save ( named, parsed, { append, commit } );
       } )
       if ( hasErrors ( result ) ) {
         console.log ( `${'PUT'}Urls - errors`, result )

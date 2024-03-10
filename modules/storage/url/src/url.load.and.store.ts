@@ -19,14 +19,18 @@ export type UrlLoadIdentityFn = <T>( url: IdentityUrl ) => Promise<ErrorsAnd<Ide
 
 export type UrlStoreResult = {
   url: string
-  fileSize: number
+  fileSize?: number
   id: string
 }
 export function isUrlStoreResult ( x: any ): x is UrlStoreResult {
   return typeof x.url === 'string' && typeof x.fileSize === 'number' && typeof x.id === 'string'
 }
+export type UrlSaveOptions = {
+  append?: boolean
+  commit?: boolean
+}
 
-export type UrlSaveFn = ( url: NamedOrIdentityUrl, content: any ) => Promise<ErrorsAnd<UrlStoreResult>>
+export type UrlSaveFn = ( url: NamedOrIdentityUrl, content: any, options?: UrlSaveOptions) => Promise<ErrorsAnd<UrlStoreResult>>
 
 export type PageQuery = {
   page: number

@@ -1,8 +1,8 @@
-import { ErrorsAnd, mapK, toArray, flatMap } from "@laoban/utils";
-import { sendEvent, SendEvents } from "@itsmworkbench/apiclienteventstore";
+import { ErrorsAnd, flatMap, mapK, toArray } from "@laoban/utils";
 import { Event } from "@itsmworkbench/events";
-import { Lens, Transform } from "@focuson/lens";
+import { Lens, Optional, Transform } from "@focuson/lens";
 import { massTransform } from "@focuson/lens/dist/src/optics";
+import { NamedUrl, parseNamedUrlOrThrow, UrlSaveFn } from "@itsmworkbench/url";
 
 export type SideEffectType = string
 export interface SideEffect {
@@ -46,12 +46,16 @@ export interface ISideEffectProcessor<S, SE extends SideEffect, R> {
   process: ( state: S, se: SE ) => Promise<ResultsAndTransforms<S, R>>
 }
 
-export function eventSideeffectProcessor<S> ( es: SendEvents, path: string ): ISideEffectProcessor<S, EventSideEffect, boolean> {
+export function eventSideeffectProcessor<S> ( saveFn: UrlSaveFn, organisation: string,  ticketEventUrlL: Optional<S, string> ): ISideEffectProcessor<S, EventSideEffect, boolean> {
   return {
     accept: isEventSideEffect,
     process: async ( state, se ) => {
-      console.log ( 'sending event', se.event )
-      await sendEvent ( es, se.event )
+      const ticketId = ticketEventUrlL.getOption ( state )
+      if ( !ticketId ) throw new Error ( 'No ticketId' )
+      const url: NamedUrl = parseNamedUrlOrThrow( ticketId)
+      console.log ( 'sending event', url, se.event )
+      const result = await saveFn ( url, [ se.event ], { append: true, commit: false } )
+      console.log ( 'eventSideeffectProcessor result', result )
       return { result: true }
     }
   }
@@ -81,10 +85,10 @@ export function processSideEffectsInState<S> ( sep: ISideEffectProcessor<S, Side
     const resultsAndTxs: SideEffectResultsAndTransforms<S, any>[] = await mapK ( sideeffects, async ( sideeffect ) => {
       let resultsAndTransforms: ResultsAndTransforms<S, any> = await sep.process ( state, sideeffect )
       if ( debug ) console.log ( 'processSideEffectsInState', 'sideeffect resultsAndTransforms', resultsAndTransforms )
-       console.log ( 'processSideEffectsInState', 'sideeffect resultsAndTransforms', resultsAndTransforms )
+      console.log ( 'processSideEffectsInState', 'sideeffect resultsAndTransforms', resultsAndTransforms )
       return { sideeffect, resultsAndTransforms }
     } )
-    console.log('resultsAndTxs', resultsAndTxs)
+    console.log ( 'resultsAndTxs', resultsAndTxs )
     const results: SideeffectAndResult<any>[] = resultsAndTxs.map ( r =>
       ({ sideeffect: r.sideeffect, result: r.resultsAndTransforms.result }) )
     console.log ( 'just results1', results )
@@ -94,7 +98,7 @@ export function processSideEffectsInState<S> ( sep: ISideEffectProcessor<S, Side
     const newLog = [ ...existingLog, ...results ]
     if ( debug ) console.log ( 'processSideEffectsInState', 'newLog', newLog )
     let withLog = seLens.set ( logL.set ( state, newLog ), [] );
- console.log ( 'processSideEffectsInState', 'txs', txs )
+    console.log ( 'processSideEffectsInState', 'txs', txs )
     const final = massTransform ( withLog, ...txs )
     if ( debug ) console.log ( 'processSideEffectsInState', 'final', final )
     return final

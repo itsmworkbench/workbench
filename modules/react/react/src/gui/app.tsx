@@ -3,11 +3,11 @@ import { ThemeProvider, Toolbar } from "@mui/material";
 import { ColumnLeftMainBottom, SilentTabsContainer, SimpleTabPanel, theme } from "@itsmworkbench/components";
 import React from "react";
 import { ItsmState } from "../state/itsm.state";
-import { ConversationHistoryAndChat, ConversationPlugin } from "@itsmworkbench/react_conversation";
+import { ConversationPlugin } from "@itsmworkbench/react_conversation";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { DisplayNewTicket } from "@itsmworkbench/react_new_ticket";
-import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents } from "@itsmworkbench/react_events";
+import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents, EnrichedEventsAndChat } from "@itsmworkbench/react_events";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -17,7 +17,7 @@ export interface AppProps<S, CS> extends LensProps<S, CS, any> {
 export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState> ) {
   let showDevMode = state.optJson ()?.debug?.showDevMode;
   console.log ( 'state', state.optJson () );
-  const convState = state.doubleUp ().focus1On ( 'conversation' ).focus2On ( 'sideeffects' )
+  const convState = state.tripleUp ().focus1On ( 'conversation' ).focus2On ( 'enrichedEvents' ).focus3On ( 'sideeffects' )
   return <>
     return <ThemeProvider theme={theme}>
     <ColumnLeftMainBottom title='ITSM Workbench'
@@ -26,7 +26,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                           Nav={<GuiNav state={state}/>}>
       <Toolbar/>
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )}>
-        <SimpleTabPanel title='chat'><ConversationHistoryAndChat state={convState} plugins={plugins}/></SimpleTabPanel>
+        <SimpleTabPanel title='chat'><EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins}/></SimpleTabPanel>
         <SimpleTabPanel title='events'><DisplayEnrichedEventsUsingPlugin state={state.focusOn ( 'enrichedEvents' )} plugins={eventPlugins}/></SimpleTabPanel>
         <SimpleTabPanel title='debugEvents'><DisplayEvents state={state.focusOn ( 'events' )}/></SimpleTabPanel>
         <SimpleTabPanel title='debugEnrichedEvents'><DisplayEnrichedEvents state={state.focusOn ( 'enrichedEvents' )}/></SimpleTabPanel>

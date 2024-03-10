@@ -1,0 +1,21 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/react_chat",
+  "description": "The react chat area",
+  "packageJson": {
+    "files":        ["build/"],
+    "dependencies": {
+    }
+  },
+  "links":       [
+    "@itsmworkbench/components",
+    "@itsmworkbench/events",
+    "@itsmworkbench/url"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false,
+    "react":   true
+  }
+}
