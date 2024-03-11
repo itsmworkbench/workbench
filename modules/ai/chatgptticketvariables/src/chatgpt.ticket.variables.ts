@@ -1,24 +1,27 @@
-import { AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
+import { AiTicketVariablesFn, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
+import { OpenAI } from "openai";
 
-//in root directory
-//npm i -g laoban
-// laoban update
-// yarn
-// laoban compile <-- this will fail 5 mins the first time
-// laoban compile <-- this will be ok.
-//dependecies go into package.details.json
-//after changing the package.details.json, you need to run laoban ypdate followed by yarn. (<1 min)  Don't need to call the compile code again
+export const clientSecret = process.env['CHATGPT_CLIENT_SECRET']
 
+const openai = new OpenAI({
+  apiKey: clientSecret,
+});
 
-export const clientSecret = process.env[ 'CHATGPT_CLIENT_SECRET' ]
+// Assuming TicketVariables is structured to store the API's response.
+// The chatgptTicketVariables function is updated to simulate calling the ChatGPT API.
+export const chatgptTicketVariables: AiTicketVariablesFn = async (ticket: string): Promise<TicketVariables> => {
+  const systemPrompt = `You will be provided with a ITSM work ticket, and your task is to extract important variables from it. Return these variables only as in key value format.`;
 
-export const chatgptTicketVariables: AiTicketVariablesFn = async ( ticket: string ) => {
-  return {
-    system: "EPX",
-    environment: "acceptance",
-    customer: "a.customer@example.com",
-    operator: "phil@example.com",
-    approver: "bob.the.boss@example.com"
-  }
+  const chatCompletion = await openai.chat.completions.create({
+    messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: ticket },
+    ],
+    model: 'gpt-3.5-turbo',
+  });
 
-}
+  // Assuming chatCompletion.choices contains the formatted string with variables.
+  const variablesString = chatCompletion.choices[0].message.content;
+
+  return { variables: variablesString };
+};
