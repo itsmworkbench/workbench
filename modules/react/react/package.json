@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@itsmworkbench/apiclienteventstore": "0.0.3",
+    "@itsmworkbench/apiclient_ticketvariables": "0.0.3",
     "@itsmworkbench/components": "0.0.3",
     "@itsmworkbench/domain": "0.0.3",
     "@itsmworkbench/events": "0.0.3",

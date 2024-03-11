@@ -7,7 +7,7 @@ import { DisplayYaml, DropdownAsTitle } from "@itsmworkbench/components";
 
 export function DisplayKnowledgeArticle<S> ( { state }: LensProps<S, KnowledgeArticle, any> ) {
   const ka = state.json ()
-  return <DisplayYaml yamlContent={ka} />
+  return <DisplayYaml yaml={ka} />
 }
 export function DisplayKnowledgeArticles<S> ( { path, state }: LensProps2<S, KnowledgeArticles, SideEffect[], any> & { path: string } ) {
   return <DropdownAsTitle path={path} state={state} purpose='Knowledge Article' >{

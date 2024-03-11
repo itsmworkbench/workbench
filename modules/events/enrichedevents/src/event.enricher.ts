@@ -1,4 +1,4 @@
-import { AppendEvent, BaseEvent, ErrorEvent, EventNameAnd, SetIdEvent, SetValueEvent, ZeroEvent } from "@itsmworkbench/events";
+import { AppendEvent, BaseEvent, ErrorEvent, EventNameAnd, InfoEvent, SetIdEvent, SetValueEvent, ZeroEvent } from "@itsmworkbench/events";
 import { loadFromString, UrlLoaders, UrlLoadIdentityFn, UrlStore } from "@itsmworkbench/url";
 import { mapErrorsK } from "@laoban/utils";
 
@@ -17,6 +17,7 @@ export type EventEnricher = {
   setId: EnricherFn<SetIdEvent, DisplaySetId>
   setValue: EnricherFn<SetValueEvent, GeneralDisplayData>
   append: EnricherFn<AppendEvent, GeneralDisplayData>
+  info: EnricherFn<InfoEvent, GeneralDisplayData>
   error: EnricherFn<ErrorEvent, GeneralDisplayData>
 }
 
@@ -27,6 +28,7 @@ export function defaultEventEnricher ( urlLoaders: UrlLoaders ): EventEnricher {
     setId: async ( event ) => ({ ...event, displayData: { value: await loadFromString ( urlLoaders, event.id ) } }),
     setValue: async ( event ) => ({ ...event, displayData: {} }),
     append: async ( event ) => ({ ...event, displayData: {} }),
+    info: async ( event ) => ({ ...event, displayData: {} }),
     error: async ( event ) => ({ ...event, displayData: {} })
   }
 }

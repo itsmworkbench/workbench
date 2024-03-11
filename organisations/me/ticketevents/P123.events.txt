@@ -1,3 +1,0 @@
-{"event":"setId","id":"itsmid/me/ticket/69e497720942f074131be81eae17700f8465773d","path":"ticket","context":{"display":{"title":"New Ticket","type":"ticket","name":"P123"}}}
-{"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"Hi wizard please do\n* something\n* cool\n* thankyou"},"context":{"display":{"title":"Message","type":"message"}}}
-{"event":"append","path":"conversation.messages","value":{"type":"message","who":"me","message":"Hi"},"context":{"display":{"title":"Message","type":"message"}}}

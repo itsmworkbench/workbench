@@ -9,15 +9,17 @@ import { defaultEventProcessor, Event, processEvents } from "@itsmworkbench/even
 import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, defaultParserStore, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { eventsL, ItsmState, logsL, setPageL, sideEffectsL, startAppState, ticketIdL } from "./state/itsm.state";
+import { eventsL, ItsmState, logsL, setPageL, sideEffectsL, startAppState, ticketIdL, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
-import { addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
+import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
 import { hasErrors, mapK, value } from "@laoban/utils";
 import { defaultEventEnricher, EnrichedEvent, enrichEvent } from "@itsmworkbench/enrichedevents";
 import { displayTicketEventPlugin } from '@itsmworkbench/react_ticket';
-import { displayMessageEventPlugin } from "@itsmworkbench/react_chat/dist/src/display.message.event";
+import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
+import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
+import { apiClientForTicketVariables } from "@itsmworkbench/apiclient_ticketvariables";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -26,6 +28,7 @@ const root = ReactDOM.createRoot ( rootElement );
 
 const yaml: YamlCapability = jsYaml ()
 const apiDetails: ApiLoading = apiLoading ( "http://localhost:1235/url/" )
+const aiDetails: ApiLoading = apiLoading ( "http://localhost:1235/ai/" )
 const saveDetails: SendEvents = sendEvents ( "http://localhost:1235/file1" )
 const idStoreDetails = apiIdStore ( "http://localhost:1235", defaultParserStore ( yaml ) )
 const urlStoreconfig: UrlStoreApiClientConfig = { apiUrlPrefix: "http://localhost:1235/url", details: defaultNameSpaceDetails ( yaml ) }
@@ -41,6 +44,7 @@ addEventStoreListener ( container, (( oldS, s, setJson ) =>
     plugins={[]}
     eventPlugins={[
       displayTicketEventPlugin<ItsmState> (),
+      displayVariablesEventPlugin<ItsmState> (),
       displayMessageEventPlugin<ItsmState> () ]}
     // plugins={[ operatorConversationPlugin ( operatorL ) ]}
   /> )) );
@@ -69,11 +73,13 @@ const pollingDetails = polling<Event[]> ( 1000, () => container.state.selectionS
   }, 0, true
 )
 
+const ai = apiClientForTicketVariables ( aiDetails )
 
 addEventStoreModifier ( container,
   processSideEffectsInState<ItsmState> (
     processSideEffect ( [
       eventSideeffectProcessor ( urlStore.save, 'me', ticketIdL ),
+      addAiTicketSideeffectProcessor ( ai, ticketVariablesL ),
       addNewTicketSideeffectProcessor ( urlStore.save, setPageL, eventsL, ticketIdL, 'ticket' )
     ] ),
     sideEffectsL, logsL ) )

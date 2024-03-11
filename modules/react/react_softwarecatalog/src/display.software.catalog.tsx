@@ -7,6 +7,6 @@ import { SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";
 
 export function DisplaySoftwareCatalogs<S> ( { state, path }: LensProps2<S, SoftwareCatalogs, SideEffect[], any> &{path:string}) {
   return <DropdownAsTitle state={state} path={path} purpose='Software Catalog'>{
-    state =>  <DisplayYaml yamlContent={state.optJson()}/>
+    state =>  <DisplayYaml yaml={state.optJson()}/>
   }</DropdownAsTitle>
 }
