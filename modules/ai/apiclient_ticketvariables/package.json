@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/ai_chatgptticketvariables",
-  "description": "Code that extras variables from the ticket using AI ... uses chatgpt",
+  "name": "@itsmworkbench/apiclient_ticketvariables",
+  "description": "The API client for Code that extras variables from the ticket using AI",
   "version": "0.0.3",
   "main": "dist/index",
   "types": "dist/index",
@@ -24,6 +24,7 @@
     "debug": "^4.3.4"
   },
   "devDependencies": {
+    "jest-fetch-mock": "^3.0.3",
     "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.0.0",
@@ -56,7 +57,6 @@
     "runbook"
   ],
   "license": "MIT",
-  "peerDependencies": {},
   "repository": "git@github.com:intellimaintain/intellimaintain.git",
   "scripts": {
     "test": "jest --config jest.config.json --env node",
