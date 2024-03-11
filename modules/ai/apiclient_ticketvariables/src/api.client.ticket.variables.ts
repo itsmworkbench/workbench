@@ -1,4 +1,3 @@
-import { NameAnd } from "@laoban/utils";
 import { AiTicketVariablesFn, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 
 export type ApiClientTicketVariablesConfig = {
