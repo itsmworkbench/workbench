@@ -1,4 +1,4 @@
-import { chatgptTicketVariables, clientSecret } from "./chatgpt.ticket.variables";
+import { chatgptTicketVariables } from "./chatgpt.ticket.variables";
 
 describe ( 'ChatGPTTicketVariables', () => {
   it ( "should do cool stuff",async  () => {
