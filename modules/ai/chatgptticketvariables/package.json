@@ -53,12 +53,10 @@
     "dist/src/"
   ],
   "keywords": [
-    "more",
-    "keywords",
-    "here",
     "runbook"
   ],
   "license": "MIT",
+  "peerDependencies": {},
   "repository": "git@github.com:intellimaintain/intellimaintain.git",
   "scripts": {
     "test": "jest --config jest.config.json --env node",
