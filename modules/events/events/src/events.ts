@@ -2,7 +2,7 @@ import { NameAnd } from "@laoban/utils";
 import { JSONPrimitive } from "@itsmworkbench/utils";
 
 
-export type EventType = 'zero' | 'setId' | 'setValue' | 'append' | 'error'
+export type EventType = 'zero' | 'setId' | 'setValue' | 'append' | 'info' | 'error'
 
 export interface BaseEvent {
   context: any
@@ -13,6 +13,14 @@ export interface ZeroEvent extends BaseEvent {
 }
 export function isZeroEvent ( e: BaseEvent ): e is ZeroEvent {
   return e.event === 'zero'
+}
+
+export interface InfoEvent extends BaseEvent {
+  event: 'info'
+  info: any
+}
+export function isInfoEvent ( e: BaseEvent ): e is InfoEvent {
+  return e.event === 'info'
 }
 export interface LensPathEvent extends BaseEvent {
   path: string
@@ -62,11 +70,12 @@ export interface ErrorEvent extends BaseEvent {
 export function isErrorEvent ( e: BaseEvent ): e is ErrorEvent {
   return e.event === 'error'
 }
-export type Event = ZeroEvent | SetIdEvent | SetValueEvent | AppendEvent | ErrorEvent
+export type Event = ZeroEvent | SetIdEvent | SetValueEvent | AppendEvent | ErrorEvent | InfoEvent
 export interface EventNameAnd<T> {
   zero: T
   setId: T
   setValue: T
   append: T
+  info: T
   error: T
 }

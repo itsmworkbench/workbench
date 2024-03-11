@@ -1,5 +1,5 @@
-import { appendEventProcessor, defaultEventProcessor, EventProcessor, setIdEventProcessor, setValueEventProcessor, zeroEventProcessor } from "./event.processor";
-import {  } from "./events";
+import { appendEventProcessor, defaultEventProcessor, EventProcessor, infoEventProcessor, setIdEventProcessor, setValueEventProcessor, zeroEventProcessor } from "./event.processor";
+import {} from "./events";
 import { UrlLoadIdentityFn, writeUrl } from "@itsmworkbench/url";
 
 const data = {
@@ -49,6 +49,12 @@ describe ( "eventProcessors", () => {
     it ( "should append value if array exists", async () => {
       let append = await appendEventProcessor<Data> () ( eventProcessor, { event: "append", context, path: "d", value: 2 }, { ...data, d: [ 'a' ] } as Data )
       expect ( append ).toEqual ( { "a": { "b": { "c": 1 } }, "d": [ "a", 2 ] } )
+    } )
+  } )
+  describe ( "infoEventProcessor", () => {
+    it ( "should do nothing", async () => {
+      let info = await infoEventProcessor<Data> () ( eventProcessor, { event: "info", context }, data )
+      expect ( info ).toEqual ( data )
     } )
   } )
 } )

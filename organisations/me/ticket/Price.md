@@ -1,4 +1,4 @@
-Ticket 
+Ticket price44
 P4
 Customer: a.customer@example.com
 
@@ -7,4 +7,4 @@ Issue:
 * The prices is currently 55.55.
 * The price should be 44.44.
 
-Please remove this project from the EPX production.
+Please update this price in the EPX production.

@@ -1,4 +1,3 @@
-import { IdStore } from "@itsmworkbench/idstore";
 import { AppendEvent, BaseEvent, ErrorEvent, Event, EventNameAnd, isErrorEvent, isLensPathEvent, SetIdEvent, SetValueEvent, ZeroEvent } from "./events";
 import { pathToLens, PathToLensFn } from "@itsmworkbench/optics";
 import { parseIdentityUrlOrThrow, UrlLoadIdentityFn } from "@itsmworkbench/url";
@@ -61,7 +60,10 @@ export function appendEventProcessor<S> (): EventProcessorFn<S, AppendEvent> {
 
 export function doNothingOnErrorProcessor<S> (): EventProcessorFn<S, any> {
   return async ( p, e, s: S ) => s
+}
 
+export function infoEventProcessor<S> (): EventProcessorFn<S, any> {
+  return async ( p, e, s: S ) => s
 }
 export function defaultProcessors<S> (): EventNameAnd<EventProcessorFn<S, any>> {
   return {
@@ -69,6 +71,7 @@ export function defaultProcessors<S> (): EventNameAnd<EventProcessorFn<S, any>> 
     setId: setIdEventProcessor<S> (),
     setValue: setValueEventProcessor<S> (),
     append: appendEventProcessor<S> (),
+    info: infoEventProcessor<S> (),
     error: doNothingOnErrorProcessor<S> ()
   }
 }

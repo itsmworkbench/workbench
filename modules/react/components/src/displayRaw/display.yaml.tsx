@@ -12,12 +12,12 @@ function turnToYaml ( jsonObject: JSONObject ) {
 }
 
 export interface YamlDisplayMUIProps {
-  yamlContent: any
+  yaml: any
   maxHeight?: string
 }
-export function DisplayYaml ( { yamlContent, maxHeight }: YamlDisplayMUIProps ) {
-  if (yamlContent === undefined) return <Paper>Nothing to display</Paper>
-  const withBlankLines = turnToYaml ( yamlContent )
+export function DisplayYaml ( { yaml, maxHeight }: YamlDisplayMUIProps ) {
+  if (yaml === undefined) return <Paper>Nothing to display</Paper>
+  const withBlankLines = turnToYaml ( yaml )
   return (
     <Typography component="pre" style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>
       <code>{withBlankLines}</code>

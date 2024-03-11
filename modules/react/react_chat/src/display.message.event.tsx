@@ -31,7 +31,7 @@ export function DisplayDefaultEnrichedMessageEventFull<S> ( { state, icons }: Di
     </CardContent>
   </Card>
 }
-function getTruncatedMessage ( msg ) {
+function getTruncatedMessage ( msg: string | undefined ) {
   if (msg === undefined) return undefined
 
   const msgLines = msg?.toString (). split ( '\n' ).map ( s => s.trim () ).filter ( s => s.length > 0 )

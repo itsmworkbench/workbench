@@ -26,7 +26,7 @@ function SectionCard ( { title, variables }: VariablesCardProps ) {
         <Typography variant="h6" component="h2" gutterBottom>
           {title}
         </Typography>
-        <DisplayYaml yamlContent={variables.variables}/>
+        <DisplayYaml yaml={variables.variables}/>
         {variables.errors.length > 0 && <List>
           {variables.errors.map ( ( error, index ) => (
             <ListItem key={`error-${index}`} style={{ paddingTop: '4px', paddingBottom: '4px' }}>
