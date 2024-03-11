@@ -1,5 +1,5 @@
 import { ErrorsAnd, mapErrorsK } from "@laoban/utils";
-import { isNamedUrl, NamedOrIdentityUrl, namedUrlToPathAndDetails, OrganisationUrlStoreConfigForGit, repoFrom, UrlSaveFn, UrlSaveOptions, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
+import { IdentityUrl, isNamedUrl, NamedOrIdentityUrl, namedUrlToPathAndDetails, OrganisationUrlStoreConfigForGit, repoFrom, UrlSaveFn, UrlSaveOptions, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
 import * as fs from "fs";
 import { GitOps } from "@itsmworkbench/git";
 import path from "path";
@@ -20,21 +20,22 @@ export const saveNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfig
           await fs.promises.mkdir ( path.dirname ( thePath ), { recursive: true } )
           const repo = repoFrom ( config, namedOrUrl )
           await gitOps.init ( repo ) // creates a new repo if needed including the directory.
-          const hash = await withFileLock ( fileLocking ( thePath ), async () => {
+          const { id, idAsString } = await withFileLock ( fileLocking ( thePath ), async () => {
             if ( options?.append )
               await fs.promises.appendFile ( thePath, string, { encoding: details.encoding } )
             else
               await fs.promises.writeFile ( thePath, string, { encoding: details.encoding } )
             const hash = await gitOps.hashFor ( repo, path.relative ( repo, thePath ) )
-            if ( options?.commit != false ) await gitOps.commit ( repo, `Saving ${namedOrUrl.name} as ${id}` )
-            return hash
+            let id: IdentityUrl = { scheme: 'itsmid', organisation: namedOrUrl.organisation, namespace: namedOrUrl.namespace, id: hash };
+            const idAsString = writeUrl ( id )
+            if ( options?.commit != false ) await gitOps.commit ( repo, `Saving ${namedOrUrl.name} as ${idAsString}` )
+            return { id, idAsString }
           } )
-          const id = writeUrl ( { scheme: 'itsmid', organisation: namedOrUrl.organisation, namespace: namedOrUrl.namespace, id: hash } )
-          const fileSize = options.append ? undefined : await gitOps.sizeForHash ( repo, hash )
-          const result: UrlStoreResult = { url: namedOrUrl.url, fileSize, id };
+          const fileSize = options.append ? undefined : await gitOps.sizeForHash ( repo, id.id )
+          const result: UrlStoreResult = { url: namedOrUrl.url, fileSize, id: idAsString };
           return result
         } catch ( e ) {
-          return [ `Failed to save ${JSON.stringify ( namedOrUrl )}\n${content}`, e ]
+          return [ `Failed to save ${JSON.stringify ( namedOrUrl )} Options=${JSON.stringify ( options )}\n${JSON.stringify ( content )}`, e ]
         }
       } )
     } )

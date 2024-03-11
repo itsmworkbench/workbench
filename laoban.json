@@ -1,5 +1,4 @@
 {
-
   "packageManager": "yarn",
   "parents":        [
     "@laoban@/laoban.json/core.laoban.json",
@@ -22,7 +21,7 @@
     "NPM_TOKEN": ""
   },
   "scripts":        {
-    "ls-react":      {
+    "ls-react": {
       "description": "Lists all the react projects",
       "commands":    [
         {
@@ -31,48 +30,21 @@
         }
       ]
     },
-    "ls-playground": {
-      "description": "Lists all the playground projects",
+    "ls-build": {
+      "description": "Lists all the  projects that will be built",
       "commands":    [
         {
-          "guard":   "${packageDetails.guards.playground}",
-          "command": "js:process.cwd()+ '    '+ ${packageDetails.guards.playground}"
+          "guard":   "${packageDetails.guards.react}",
+          "command": "js:process.cwd()"
         }
       ]
     },
-    "playground":    {
-      "description": "starts all the playground projects",
-      "commands":    [
-        {
-          "guard":   "${packageDetails.guards.playground}",
-          "command": "node dist/index.js ${packageDetails.guards.playground}"
-        }
-      ]
-    },
-    "build":         {
+    "build":    {
       "description": "Packages the react projects",
       "commands":    [
         {
           "guard":   "${packageDetails.guards.react}",
           "command": "yarn run build"
-        }
-      ]
-    },
-    "ls-storybook":  {
-      "description": "Lists all the react projects",
-      "commands":    [
-        {
-          "guard":   "${packageDetails.guards.storybook}",
-          "command": "js:process.cwd() + ': ' + ${packageDetails.guards.storybook}"
-        }
-      ]
-    },
-    "storybook":     {
-      "description": "Starts storybook",
-      "commands":    [
-        {
-          "guard":   "${packageDetails.guards.storybook}",
-          "command": "yarn run storybook --port ${packageDetails.guards.storybook}"
         }
       ]
     }

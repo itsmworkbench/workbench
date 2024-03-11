@@ -4,8 +4,8 @@ import { LensProps } from "@focuson/state";
 import { PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";
 import { DisplayDefaultEnrichedEventMicro } from "@itsmworkbench/react_events";
-import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
-import { Box } from "@mui/material";
+
+import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { DisplayEnrichedEventPlugIn } from "@itsmworkbench/react_events";
 
 
@@ -19,7 +19,7 @@ export function DisplayDefaultEnrichedHistoryEventFull<S> ( { state, icons }: Di
   const name = event.context?.display?.name
   const titleAndName = name ? `${title} - ${name}` : title
   const description = event.displayData?.value?.result?.description || '<Error: no description>'
-  return <Card>
+  return <Card sx={{ width: '100%', maxWidth: '75vw' }}>
     {/* CardHeader for actions */}
     <CardHeader
       action={<Box display="flex" alignItems="center">{icons}</Box>}

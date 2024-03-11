@@ -48,7 +48,7 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
         } )
       } )
       const txs: Transform<S, any>[] = [
-        [ setPage, _ => 'abc' ],
+        [ setPage, _ => 'chat' ],
         [ eventL, _ => [] ], //clear all the events. The next line will trigger a reload via polling
         [ ticketIdL, _ => writeUrl ( ticketeventsUrl ) ]
       ]

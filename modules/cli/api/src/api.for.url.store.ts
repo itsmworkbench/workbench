@@ -53,7 +53,7 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
     console.log ( 'match', match )
     const url = match[ 1 ];
     const append = ctx.context.request.query.append === 'true'
-    const commit = ctx.context.request.query.commit === 'true'
+    const commit = ctx.context.request.query.commit !== 'false'
     try {
       console.log ( `${'PUT'}Urls`, url );
       // The actionFn is either 'load' for GET or 'save' for PUT

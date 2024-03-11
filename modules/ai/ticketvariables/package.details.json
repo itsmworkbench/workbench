@@ -1,0 +1,20 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/ai_ticketvariables",
+  "description": "Code that extras variables from the ticket using AI",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":     "1.4.45",
+      "@laoban/variables": "1.4.45"
+    },
+    "devDependencies": {}
+  },
+  "links":       [
+    "@itsmworkbench/utils"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

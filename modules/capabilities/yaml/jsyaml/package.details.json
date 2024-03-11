@@ -15,6 +15,6 @@
     "compile": true,
     "publish": true,
     "test":    false,
-    "react":   true
+    "react":   false
   }
 }
