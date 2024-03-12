@@ -25,7 +25,7 @@ export const chatgptTicketVariables: AiTicketVariablesFn = async (ticket: string
 
   console.log(variablesString);
 
-  return { variables: variablesString };
+  return JSON.parse(variablesString);
 };
 
 //! have an integration test

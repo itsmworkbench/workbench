@@ -15,7 +15,7 @@ export const executeAI = ( ai: AiTicketVariablesFn ): KoaPartialFunction => ({
     try {
       const result = await ai ( ticket );
       console.log ( 'AI: result', result )
-      ctx.context.body = JSON.stringify ( result );
+      ctx.context.body = result;
       ctx.context.set ( 'Content-Type', 'application/json' );
     } catch ( e ) {
       ctx.context.status = 500;
