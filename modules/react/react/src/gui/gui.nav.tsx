@@ -1,4 +1,4 @@
-import { LensProps, LensState2, LensState3 } from "@focuson/state";
+import { LensProps, LensState3 } from "@focuson/state";
 import { ItsmSelectionState, ItsmState } from "../state/itsm.state";
 import { FocusOnSetValueButton, FocusOnToggleButton } from "@itsmworkbench/components";
 import { DisplayTicketList } from "@itsmworkbench/react_ticket";
@@ -10,7 +10,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import AddIcon from '@mui/icons-material/Add';
 import EventIcon from '@mui/icons-material/Event';
 import { EventsAndEnriched } from "@itsmworkbench/react_core";
-import { Capability } from "@itsmworkbench/domain";
+import { NewTicketButton } from "@itsmworkbench/react_new_ticket";
 
 export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
   const buttonSx = {
@@ -36,7 +36,7 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
     }}
   >
     <FocusOnSetValueButton aria-label='Chat' startIcon={<ChatIcon/>} valueToSet={{ workspaceTab: 'chat' }} state={tabsState} sx={buttonSx}>Chat</FocusOnSetValueButton>
-    <FocusOnSetValueButton aria-label='New ticket' startIcon={<AddIcon/>} valueToSet={{ workspaceTab: 'newTicket' }} state={tabsState} sx={buttonSx}>New Ticket</FocusOnSetValueButton>
+    <NewTicketButton aria-label='New ticket' startIcon={<AddIcon/>} state={state.focusOn ( 'selectionState' )} sx={buttonSx}>New Ticket</NewTicketButton>
     <DisplayTicketList state={displayTicketState}/>
     <FocusOnSetValueButton aria-label='Show settings' startIcon={<SettingsIcon/>} valueToSet={{ workspaceTab: 'settings' }} state={tabsState} sx={buttonSx}>Settings</FocusOnSetValueButton>
     <FocusOnToggleButton aria-label='Toggle Developer Mode' startIcon={<DeveloperModeIcon/>} state={state.focusOn ( 'debug' ).focusOn ( 'showDevMode' )} sx={buttonSx}>Developer Mode</FocusOnToggleButton>

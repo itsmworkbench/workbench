@@ -25,6 +25,7 @@ export interface AppProps<S, CS> extends LensProps<S, CS, any> {
 export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState> ) {
   let wholeState = state.optJson ();
   let showDevMode = wholeState?.debug?.showDevMode;
+  let showPhases = wholeState?.selectionState?.ticketId !== undefined;
   console.log ( 'state', wholeState );
   const convState = state.tripleUp ().//
     focus1On ( 'conversation' ).//
@@ -57,7 +58,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                           state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
                           Nav={<GuiNav state={state}/>}>
       <Toolbar/>
-      <DisplayPhases state={phasesState}/>
+      {showPhases &&<DisplayPhases state={phasesState}/>}
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'tabs' ).focusOn ( 'workspaceTab' )}>
         <SimpleTabPanel title='chat'>
           <EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins} devMode={showDevMode}

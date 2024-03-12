@@ -5,7 +5,7 @@ import { ChatDisplayData, Conversation, PhaseAnd } from "@itsmworkbench/domain";
 import { ListNamesResult } from "@itsmworkbench/url";
 import { NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
-import { NewTicketData } from "@itsmworkbench/react_new_ticket";
+import { NewTicketData, NewTicketState } from "@itsmworkbench/react_new_ticket";
 import { Operator } from "@itsmworkbench/operator";
 import { Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
@@ -14,7 +14,7 @@ import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
 import { defaultTicketTypeDetails, TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
 import { EmailData, LdapData, SqlData } from "@itsmworkbench/react_capabilities";
 
-export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState> {
+export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {
   mainScreen?: ColumnLeftMainState
   ticketId?: string
   tabs?: TabPhaseAndActionSelectionState
