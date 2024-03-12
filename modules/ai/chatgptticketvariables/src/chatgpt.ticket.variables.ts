@@ -23,13 +23,9 @@ export const chatgptTicketVariables: AiTicketVariablesFn = async ( ticket: strin
   // Assuming chatCompletion.choices contains the formatted string with variables.
   const variablesString = chatCompletion.choices[ 0 ].message.content;
 
-  console.log ( variablesString );
-
   return JSON.parse ( variablesString );
 };
 
 export const generalChat: AiTicketVariablesFn = async ( ticket: string ): Promise<TicketVariables> => {
   return {} as TicketVariables;
 }
-
-//! have an integration test
