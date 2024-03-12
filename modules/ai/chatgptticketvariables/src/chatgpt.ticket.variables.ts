@@ -28,4 +28,8 @@ export const chatgptTicketVariables: AiTicketVariablesFn = async (ticket: string
   return JSON.parse(variablesString);
 };
 
+export const generalChat: AiTicketVariablesFn = async (ticket: string): Promise<TicketVariables> => {
+}
+}
+
 //! have an integration test

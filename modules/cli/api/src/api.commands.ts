@@ -32,7 +32,7 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory, Confi
       const urlStore = nodeUrlstore ( gitOps, orgs )
 
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,
-        wizardOfOzApiHandlers ( idStore, allIds, ai, opts.debug === true, orgs.nameSpaceDetails, urlStore ) )
+        wizardOfOzApiHandlers ( idStore, allIds, ai, ai, opts.debug === true, orgs.nameSpaceDetails, urlStore ) )
     }
   })
 
