@@ -10,6 +10,7 @@
   },
   "links":       [
     "@itsmworkbench/actions",
+    "@itsmworkbench/react_core",
     "@itsmworkbench/components",
     "@itsmworkbench/domain",
     "@itsmworkbench/tickettype",

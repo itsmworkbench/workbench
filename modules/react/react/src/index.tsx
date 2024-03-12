@@ -9,7 +9,7 @@ import { defaultEventProcessor, Event, processEvents } from "@itsmworkbench/even
 import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, defaultParserStore, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { eventsL, ItsmState, logsL, newTicketL, setPageL, sideEffectsL, startAppState, ticketIdL, ticketVariablesL } from "./state/itsm.state";
+import { eventsL, ItsmState, logsL, newTicketL, tabsL, sideEffectsL, startAppState, ticketIdL, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
@@ -82,7 +82,7 @@ addEventStoreModifier ( container,
     processSideEffect ( [
       eventSideeffectProcessor ( urlStore.save, 'me', ticketIdL ),
       addAiTicketSideeffectProcessor ( ai, ticketVariablesL ),
-      addNewTicketSideeffectProcessor ( urlStore.save, setPageL, eventsL, ticketIdL, newTicketL, 'ticket' )
+      addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, 'ticket' )
     ] ),
     sideEffectsL, logsL ) )
 

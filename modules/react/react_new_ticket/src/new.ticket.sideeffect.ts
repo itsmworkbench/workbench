@@ -1,4 +1,4 @@
-import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
+import { ISideEffectProcessor, SideEffect, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
 import { NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
 import { Optional, Transform } from "@focuson/lens";
@@ -24,7 +24,8 @@ export interface TicketAndTicketEvents {
   ticket: UrlStoreResult
   ticketevents: UrlStoreResult
 }
-export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPage: Optional<S, string>,
+export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
+                                                     setPage: Optional<S, TabPhaseAndActionSelectionState>,
                                                      eventL: Optional<S, Event[]>,
                                                      ticketIdL: Optional<S, string>,
                                                      newTicketL: Optional<S, NewTicketData>,
@@ -58,7 +59,7 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
           }
           const setTicketTypeEvent: SetValueEvent = {
             event: 'setValue', path: 'blackboard.ticketType', value: { ticketTypeDetails, ticketType },
-            context: { display: { title: 'Ticket Type', type: 'ticketType' , hide: true}, }
+            context: { display: { title: 'Ticket Type', type: 'ticketType', hide: true }, }
           }
 
           return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ setTicketTypeEvent, initialTicketEvent, initialVariablesEvent ] ), async ticketevents => {
@@ -67,7 +68,7 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
           } )
         } )
       const txs: Transform<S, any>[] = [
-        [ setPage, _ => 'chat' ],
+        [ setPage, _ => ({ workspaceTab: 'chat' }) ],
         [ eventL, _ => [] ], //clear all the events. The next line will trigger a reload via polling
         [ ticketIdL, _ => writeUrl ( ticketeventsUrl ) ],
         [ newTicketL, _ => ({ organisation: se.organisation, ticketType: defaultTicketTypeDetails, name: '', ticket: '' }) ]

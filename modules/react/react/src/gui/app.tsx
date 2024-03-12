@@ -14,6 +14,7 @@ import { DisplayPhases } from "@itsmworkbench/react_phases";
 import { NameAnd } from "@laoban/utils";
 import { Action } from "@itsmworkbench/actions";
 import { TicketType } from "@itsmworkbench/tickettype";
+import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -25,11 +26,11 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   console.log ( 'state', state.optJson () );
   const convState = state.tripleUp ().focus1On ( 'conversation' ).focus2On ( 'events' ).focus2On ( 'enrichedEvents' ).focus3On ( 'sideeffects' )
   const eventsState = state.focusOn ( 'events' )
-  let ticketTypeAndSelectionState: LensState2<S, TicketType, string, any> = state.doubleUp ().//
+  const ticketTypeAndSelectionState: LensState2<S, TicketType, TabPhaseAndActionSelectionState, any> = state.doubleUp ().//
     focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).//
-    focus2On ( 'selectionState' ).focus2On ( 'workspaceTab' )
-  let capabilitiesState: LensState2<S, Capability[], string, any> = ticketTypeAndSelectionState.focus1On ( 'capabilities' )
-  let phasesState: LensState2<S,PhaseAnd<NameAnd<Action>>, string, any> = ticketTypeAndSelectionState.focus1On ( 'actions' )
+    focus2On ( 'selectionState' ).focus2On ( 'tabs' )
+  const capabilitiesState: LensState2<S, Capability[], TabPhaseAndActionSelectionState, any> = ticketTypeAndSelectionState.focus1On ( 'capabilities' )
+  const phasesState: LensState2<S, PhaseAnd<NameAnd<Action>>, TabPhaseAndActionSelectionState, any> = ticketTypeAndSelectionState.focus1On ( 'actions' )
 
   return <>
     return <ThemeProvider theme={theme}>
@@ -39,9 +40,10 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                           Nav={<GuiNav state={state}/>}>
       <Toolbar/>
       <DisplayPhases state={phasesState}/>
-      <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )}>
+      <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'tabs' ).focusOn ( 'workspaceTab' )}>
         <SimpleTabPanel title='chat'>
-          <EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins} devMode={showDevMode} plusMenu={<DisplayCapabilitiesMenu state={capabilitiesState}/>}/>
+          <EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins} devMode={showDevMode}
+                                 plusMenu={<DisplayCapabilitiesMenu state={capabilitiesState}/>}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='events'><DisplayEnrichedEventsUsingPlugin state={eventsState.focusOn ( 'enrichedEvents' )} plugins={eventPlugins}/></SimpleTabPanel>
         <SimpleTabPanel title='debugEvents'><DisplayEvents state={eventsState.focusOn ( 'events' )}/></SimpleTabPanel>

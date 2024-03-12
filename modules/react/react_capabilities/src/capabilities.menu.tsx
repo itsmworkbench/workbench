@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { DisplayCapabilitiesListProps } from "./display.capabilities.list";
+import { TabPhaseAndActionSelectionState, workbenchName } from "@itsmworkbench/react_core";
 
 
 export function DisplayCapabilitiesMenu<S> ( { state }: DisplayCapabilitiesListProps<S> ) {
@@ -20,7 +21,7 @@ export function DisplayCapabilitiesMenu<S> ( { state }: DisplayCapabilitiesListP
     setAnchorEl ( null );
   };
 
-  const handleMenuItemClick = ( c: string ) => {
+  const handleMenuItemClick = ( c: TabPhaseAndActionSelectionState ) => {
     state.state2 ().setJson ( c, 'Clicked in DisplayCapabilitiesList' );
     handleClose ();
   };
@@ -47,12 +48,12 @@ export function DisplayCapabilitiesMenu<S> ( { state }: DisplayCapabilitiesListP
           'aria-labelledby': 'capabilities-button',
         }}
       >
-        {capabilities.length === 0 && <MenuItem selected={selectedTab === `newTicket`} onClick={() => handleMenuItemClick ( 'newTicket' )}>New Ticket </MenuItem>}
+        {capabilities.length === 0 && <MenuItem onClick={() => handleMenuItemClick ( { workspaceTab: 'newTicket' } )}>New Ticket </MenuItem>}
         {capabilities.map ( ( c ) => (
           <MenuItem
             key={c}
-            selected={selectedTab === `${c}Workbench`}
-            onClick={() => handleMenuItemClick ( `${c}Workbench` )}
+            selected={selectedTab === workbenchName ( c )}
+            onClick={() => handleMenuItemClick ( { workspaceTab: workbenchName ( c ) } )}
           >
             {c}
           </MenuItem>

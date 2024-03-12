@@ -1,4 +1,4 @@
-import { Conversation } from "@itsmworkbench/domain";
+import { Capability, Conversation, PhaseName } from "@itsmworkbench/domain";
 import { NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
 
@@ -14,6 +14,15 @@ import { SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";
 
 export interface WorkspaceSelectionState {
   workspaceTab?: string
+}
+export interface TabPhaseAndActionSelectionState  extends WorkspaceSelectionState{
+  workspaceTab?: string
+  phase?: PhaseName
+  action?: string
+}
+
+export function workbenchName(capability: Capability){
+  return `${capability}Workbench`
 }
 
 export interface DebugState {
