@@ -24,7 +24,7 @@ export function DisplayLdapWorkbench<S> ( { state, SuccessButton, FailureButton 
   const { email, response } = state.optJson1 () || { sql: '', response: '' }
   const variables = state.optJson2 () || {}
 
-  const contextFn: SuccessFailContextFn = ( tab: string | undefined, phase: string, action: string, successOrFail ) => ({
+  const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ) => ({
     phase, action,
     display: {
       title: `Ldap check to ${splitAndCapitalize ( action )}`,

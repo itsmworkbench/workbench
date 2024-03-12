@@ -51,7 +51,7 @@ export function ActionButton<S> ( { name, action, phase, state }: ActionButtonPr
 }
 export interface DisplayPhaseProps<S> extends LensProps3<S, NameAnd<Action>, TabPhaseAndActionSelectionState, PhaseAnd<NameAnd<boolean>>, any> {
   phase: PhaseName
-  status: boolean
+  status: boolean | undefined
 }
 
 export function DisplayPhase<S> ( { state, phase, status }: DisplayPhaseProps<S> ) {

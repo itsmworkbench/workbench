@@ -7,7 +7,7 @@ import { AddNewTicketSideEffect, NewTicketData } from './new.ticket.sideeffect';
 import { SideEffect } from "@itsmworkbench/react_core";
 import { LensProps2 } from "@focuson/state";
 import { AiNewTicketSideEffect } from "./ai.ticket.sideeffect";
-import { DisplayJson, FocusedTextArea, FocusedTextInput } from "@itsmworkbench/components";
+import { DisplayJson, FocusedTextArea, FocusedTextInput, mustBeAlpha, mustBeIdentifier, mustNotBeEmpty } from "@itsmworkbench/components";
 import { SelectTicketType } from "@itsmworkbench/react_tickettype";
 import { Box } from '@mui/material';
 
@@ -39,6 +39,7 @@ export const DisplayNewTicket = <S, > ( { state }: NewTicketProps<S> ) => {
         variant="outlined"
         fullWidth
         label="Ticket Name"
+        errorFn={mustBeAlpha('Can only contain letters, numbers, and underscores')}
         state={ticketState.focusOn ( 'name' )}
       />
       <SelectTicketType state={ticketState.focusOn ( 'ticketType' )}/>

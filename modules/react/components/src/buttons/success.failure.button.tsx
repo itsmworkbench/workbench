@@ -6,7 +6,7 @@ import { EventSideEffect, SideEffect, TabPhaseAndActionSelectionState } from "@i
 import { SetValueEvent } from "@itsmworkbench/events";
 
 
-export type SuccessFailContextFn = ( tab: string | undefined, phase: PhaseName, action: string, successOrFail: boolean ) => any
+export type SuccessFailContextFn = ( tab: string | undefined, phase: PhaseName | undefined, action: string | undefined, successOrFail: boolean | undefined ) => any
 export interface SuccessFailureButtonProps<S> extends LensProps2<S, SideEffect[], TabPhaseAndActionSelectionState, any>, ButtonProps {
   title?: string;
   pathToStatus: string

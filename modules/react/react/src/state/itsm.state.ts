@@ -5,7 +5,7 @@ import { ChatDisplayData, Conversation, PhaseAnd } from "@itsmworkbench/domain";
 import { ListNamesResult } from "@itsmworkbench/url";
 import { NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
-import { NewTicketData, NewTicketState } from "@itsmworkbench/react_new_ticket";
+import { NewTicketData, NewTicketState, NewTicketWizardData } from "@itsmworkbench/react_new_ticket";
 import { Operator } from "@itsmworkbench/operator";
 import { Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
@@ -25,6 +25,7 @@ export interface TempData {
   sqlData: SqlData
   ldapData: LdapData
   emailData: EmailData
+  newTicketWizard: NewTicketWizardData
 }
 
 export interface Blackboard {
@@ -76,7 +77,7 @@ export const newTicketL: Optional<ItsmState, NewTicketData> = itsmIdL.focusQuery
 export const ticketVariablesL: Optional<ItsmState, TicketVariables> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' ).focusQuery ( 'aiAddedVariables' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> = itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )
-export const tabsL: Optional<ItsmState,TabPhaseAndActionSelectionState> = itsmIdL.focusQuery( 'selectionState' ).focusQuery('tabs')
+export const tabsL: Optional<ItsmState, TabPhaseAndActionSelectionState> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'tabs' )
 export const logsL: Lens<ItsmState, SideeffectResult<any>[]> = itsmIdL.focusOn ( 'log' )
 export const eventsAndEnrichedL: Lens<ItsmState, EventsAndEnriched> = itsmIdL.focusOn ( 'events' )
 export const eventsL: Lens<ItsmState, Event[]> = eventsAndEnrichedL.focusOn ( 'events' )

@@ -24,7 +24,7 @@ export function DisplayEmailWorkbench<S> ( { state, SuccessButton, FailureButton
   const { email, to } = state.optJson1 () || { email: '', to: '' }
   const variables = state.optJson2 () || {}
 
-  const contextFn: SuccessFailContextFn = ( tab: string | undefined, phase: string, action: string, successOrFail ) => ({
+  const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ) => ({
     phase, action,
     display: {
       title: `Ending email to ${to} in order to  ${splitAndCapitalize ( action )}`,

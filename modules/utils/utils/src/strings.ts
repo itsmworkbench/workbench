@@ -58,7 +58,7 @@ export function extractSqlString ( query?: string ): string[] {
 
   return parameters;
 }
-export function splitAndCapitalize(input: string): string {
+export function splitAndCapitalize(input: string|undefined): string {
   if (input === undefined) return '';
   const withSpaces = input.replace(/([A-Z])/g, ' $1').trim();
   const result = withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
