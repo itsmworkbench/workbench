@@ -10,8 +10,8 @@ const openai = new OpenAI ( {
 /**
  * Generates a verification email from the extracted ticket variables.
  *
- * @param {TicketVariables} variables - The extracted variables from an ITSM ticket.
  * @returns {Promise<TicketVariables>} - The generated email content.
+ * @param ticket
  */
 export const chatgptTicketVariables: AiTicketVariablesFn = async ( ticket: string ): Promise<TicketVariables> => {
   const systemPrompt = `You will be provided with a ITSM work ticket, and your task is to extract important variables from it. Return these variables only as in JSON format.`;
