@@ -11,8 +11,9 @@ import { Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
+import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
 
-export interface ItsmSelectionState extends WorkspaceSelectionState {
+export interface ItsmSelectionState extends WorkspaceSelectionState, DisplayTicketListSelectionState {
   mainScreen?: ColumnLeftMainState
   ticketId?: string
 }
@@ -63,7 +64,7 @@ export const selectionStateL: Lens<ItsmState, ItsmSelectionState> = itsmIdL.focu
 export const operatorL: Lens<ItsmState, Operator> = blackboardL.focusOn ( 'operator' )
 export const setPageL: Optional<ItsmState, string> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'workspaceTab' )
 export const ticketIdL: Optional<ItsmState, string> = selectionStateL.focusQuery ( 'ticketId' )
-export const ticketVariablesL: Optional<ItsmState, TicketVariables> = itsmIdL.focusQuery ( 'tempData' ).focusQuery('newTicket').focusQuery('aiAddedVariables')
+export const ticketVariablesL: Optional<ItsmState, TicketVariables> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' ).focusQuery ( 'aiAddedVariables' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> = itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )
 export const logsL: Lens<ItsmState, SideeffectResult<any>[]> = itsmIdL.focusOn ( 'log' )

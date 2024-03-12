@@ -1,5 +1,5 @@
 import { LensProps, LensState3 } from "@focuson/state";
-import { ItsmState } from "../state/itsm.state";
+import { ItsmSelectionState, ItsmState } from "../state/itsm.state";
 import { FocusOnSetValueButton, FocusOnToggleButton } from "@itsmworkbench/components";
 import { DisplayTicketList } from "@itsmworkbench/react_ticket";
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
@@ -9,7 +9,6 @@ import { Box } from "@mui/material";
 import ChatIcon from '@mui/icons-material/Chat';
 import AddIcon from '@mui/icons-material/Add';
 import EventIcon from '@mui/icons-material/Event';
-import { Event } from '@itsmworkbench/events';
 import { EventsAndEnriched } from "@itsmworkbench/react_core";
 
 export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
@@ -19,9 +18,9 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
     width: '100%',
   };
 
-  let displayTicketState: LensState3<S, string[], string, EventsAndEnriched, any> = state.tripleUp ().//
+  let displayTicketState: LensState3<S, string[], ItsmSelectionState, EventsAndEnriched, any> = state.tripleUp ().//
     focus1On ( 'ticketList' ).focus1On ( 'names' ).//
-    focus2On ( 'selectionState' ).focus2On ( 'ticketId' ).//
+    focus2On ( 'selectionState' ).//
     focus3On ( 'events' );
   return <Box
     sx={{

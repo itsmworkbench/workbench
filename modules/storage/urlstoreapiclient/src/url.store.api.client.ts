@@ -39,7 +39,7 @@ export function loadIdentityFromApi ( config: UrlStoreApiClientConfig ): UrlLoad
 }
 
 export const saveToApi = ( config: UrlStoreApiClientConfig ): UrlSaveFn =>
-  async ( namedOrIdentityUrl: NamedOrIdentityUrl, content: any, options: UrlSaveOptions ): Promise<ErrorsAnd<UrlStoreResult>> => {
+  async ( namedOrIdentityUrl: NamedOrIdentityUrl, content: any, options?: UrlSaveOptions ): Promise<ErrorsAnd<UrlStoreResult>> => {
     return mapErrorsK ( urlToDetails ( config.details, namedOrIdentityUrl ), async details => {
       return mapErrorsK ( details.writer ( content ), async body => {
         const optionsAsQuery = options ? `?${Object.entries ( options ).map ( ( [ k, v ] ) => `${k}=${v}` ).join ( '&' )}` : ''
