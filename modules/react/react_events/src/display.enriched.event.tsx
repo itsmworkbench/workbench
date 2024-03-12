@@ -2,21 +2,18 @@ import { LensProps } from "@focuson/state";
 import React from "react";
 import { Event } from "@itsmworkbench/events";
 
-import { MicroCard, PROPSAndIcons, SelectableSize } from "@itsmworkbench/components";
+import { microCard, PROPSAndIcons, SelectableSize } from "@itsmworkbench/components";
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 
 export type DisplayEnrichedEventProps<S> = PROPSAndIcons<LensProps<S, EnrichedEvent<any, any>, any>>
-export function DisplayDefaultEnrichedEventMicro<S> ( { state, icons }: DisplayEnrichedEventProps<S> ) {
-  function getSummary () {
-    const event = state.optJson ()
-    if ( event === undefined ) return 'No event - This is an error'
+export function DisplayDefaultEnrichedEventMicro<S extends any> ( { state, icons }: DisplayEnrichedEventProps<S> ) {
+  return microCard ( event => {
     const title = event.displayData?.title || event.event
     const name = event.context?.display?.name
     const titleAndName = name ? `${title} - ${name}` : title
     return titleAndName;
-  }
-  return <div><MicroCard icons={icons} summary={getSummary ()}/></div>
+  } ) ( { icons, state } )
 }
 export function DisplayDefaultEnrichedEventFull<S> ( { state, icons }: DisplayEnrichedEventProps<S> ) {
   const event = state.optJson ()

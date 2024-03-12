@@ -1,7 +1,7 @@
 import { DebugState, EventsAndEnriched, SideEffect, SideeffectResult, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { Lens, Lenses, Optional } from "@focuson/lens";
 import { ColumnLeftMainState } from "@itsmworkbench/components";
-import { ChatDisplayData, Conversation } from "@itsmworkbench/domain";
+import { ChatDisplayData, Conversation, PhaseAnd } from "@itsmworkbench/domain";
 import { ListNamesResult } from "@itsmworkbench/url";
 import { NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
@@ -30,7 +30,8 @@ export interface Blackboard {
   ticketType: {
     ticketType: TicketType,
     ticketTypeDetails: TicketTypeDetails
-  }
+  },
+  status: PhaseAnd<NameAnd<boolean>>
 }
 
 export interface ItsmState {

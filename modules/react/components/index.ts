@@ -1,3 +1,4 @@
+export * from './src/status.indicator';
 export * from './src/accordion/accordion.item';
 export * from './src/attribute/attribute.value';
 export * from './src/attribute/edit.attributes.table';
@@ -7,6 +8,7 @@ export * from './src/buttons/highlightedAndMessageButton';
 export * from './src/buttons/focusOnSetValueButton';
 export * from './src/buttons/focusOnToggleButton';
 export * from './src/buttons/messageButton';
+export * from './src/buttons/success.failure.button';
 export * from './src/debug/display.debug';
 export * from './src/displayRaw/display.json';
 export * from './src/displayRaw/display.markdown';

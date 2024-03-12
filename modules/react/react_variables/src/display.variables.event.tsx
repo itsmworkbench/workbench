@@ -1,23 +1,12 @@
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 import { SetValueEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
-import { DisplayYaml, MicroCard, PROPSAndIcons } from "@itsmworkbench/components";
+import { DisplayYaml, microCard, MicroCard, PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";
 import { DisplayEnrichedEventPlugIn, DisplayEnrichedEventProps } from "@itsmworkbench/react_events";
 
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 
-export function DisplayVariablesEventMicro<S> ( { state, icons }: DisplayEnrichedEventProps<S> ) {
-  function getSummary () {
-    const event = state.optJson ()
-    if ( event === undefined ) return <div>No event - This is an error</div>
-    const title = event.displayData?.title || event.event
-    const info = event?.value
-    const titleAndInfo = info ? `${title} - ${JSON.stringify ( info )}` : title
-    return titleAndInfo
-  }
-  return <div><MicroCard icons={icons} summary={getSummary ()}/></div>
-}
 export interface DisplayVariablesEventMiniProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetValueEvent, any>, any>> {
 }
 
@@ -54,7 +43,12 @@ export function DisplayVariablesEventFull<S> ( { state, icons }: DisplayVariable
 export function displayVariablesEventPlugin<S extends any> (): DisplayEnrichedEventPlugIn<S> {
   return {
     accept: ( event: EnrichedEvent<any, any> ) => event.event === 'setValue' && event.displayData?.type === 'variables',
-    microDisplay: DisplayVariablesEventMicro,
+    microDisplay: microCard<SetValueEvent> ( event => {
+      const title = event.displayData?.title || event.event
+      const info = event?.value
+      const titleAndInfo = info ? `${title} - ${JSON.stringify ( info )}` : title
+      return titleAndInfo
+    } ),
     fullDisplay: DisplayVariablesEventFull
   };
 }

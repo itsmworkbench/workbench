@@ -2,13 +2,11 @@ import { LensProps } from "@focuson/state";
 import React from "react";
 import { Event } from "@itsmworkbench/events";
 import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
-import { MicroCard, PROPSAndIcons, SelectableSize } from "@itsmworkbench/components";
+import { microCard, MicroCard, PROPSAndIcons, SelectableSize } from "@itsmworkbench/components";
 import { Box } from "@mui/material";
 
 export type DisplayEventProps<S> = PROPSAndIcons<LensProps<S, Event, any>>
-export function DisplayDefaultEventMicro<S> ( { state, icons }: DisplayEventProps<S> ) {
-  return <MicroCard icons={icons} summary={JSON.stringify ( state.optJson () || 'No Even this is an error' )}/>
-}
+
 export function DisplayDefaultEventFull<S> ( { state, icons }: DisplayEventProps<S> ) {
   const event = state.optJson ()
   if ( event === undefined ) return <div>No event - This is an error</div>
@@ -27,12 +25,11 @@ export function DisplayDefaultEventFull<S> ( { state, icons }: DisplayEventProps
   </Card>
 }
 
-
 export function DisplayEvent<S> ( props: LensProps<S, Event, any> ) {
   const event = props.state.optJson ()
   if ( event === undefined ) return <div>No event - This is an error</div>
   return <SelectableSize
-    MicroComponent={DisplayDefaultEventMicro<S>}
+    MicroComponent={microCard ( event => JSON.stringify ( event || '' ) )}
     FullComponent={DisplayDefaultEventFull<S>}
     data={props}
   />

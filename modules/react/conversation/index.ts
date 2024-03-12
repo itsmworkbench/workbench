@@ -5,5 +5,5 @@ export * from './src/conversation/conversation.plugin';
 export * from './src/conversation/conversation.history';
 export * from './src/conversation/userTypingBox';
 export * from './src/workspace/ldap.workspace';
-export * from './src/workspace/status.indicator';
+
 

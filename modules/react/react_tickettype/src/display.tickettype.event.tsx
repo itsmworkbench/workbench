@@ -1,7 +1,7 @@
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 import { SetValueEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
-import { DisplayYaml, MicroCard, PROPSAndIcons } from "@itsmworkbench/components";
+import { DisplayYaml, microCard, MicroCard, PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";
 import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn, DisplayEnrichedEventProps } from "@itsmworkbench/react_events";
 
@@ -31,25 +31,19 @@ export function DisplayTicketTypeEventFull<S> ( { state, icons }: DisplayTicketE
     </CardContent>
   </Card>
 }
-export function DisplayTicketTypeMicro<S> ( { state, icons }: DisplayTicketEventMiniProps<S> ) {
-  function getSummary () {
-    const event = state.optJson ()
-    if ( event === undefined ) return 'No event - This is an error'
-    try {
-      const { ticketType, approvalState, validateInvolvedParties } = event.value.ticketTypeDetails
-      const titleAndName = `Ticket type: ${ticketType} - ${approvalState} ${validateInvolvedParties ? ' - validate involved parties in LDAP' : ''}`
-      return titleAndName;
-    } catch ( e ) {
-      return `Error in ticket type event ${JSON.stringify ( e )}`
-    }
-  }
-  return <div><MicroCard icons={icons} summary={getSummary ()}/></div>
-}
 
 export function displayTicketTypeEventPlugin<S extends any> (): DisplayEnrichedEventPlugIn<S> {
   return {
     accept: ( event: EnrichedEvent<any, any> ) => event.event === 'setValue' && event.displayData?.type === 'ticketType',
-    microDisplay: DisplayTicketTypeMicro,
+    microDisplay: microCard<SetValueEvent> ( event => {
+      try {
+        const { ticketType, approvalState, validateInvolvedParties } = event.value.ticketTypeDetails
+        const titleAndName = `Ticket type: ${ticketType} - ${approvalState} ${validateInvolvedParties ? ' - validate involved parties in LDAP' : ''}`
+        return titleAndName;
+      } catch ( e ) {
+        return `Error in ticket type event ${JSON.stringify ( e )}`
+      }
+    } ),
     fullDisplay: DisplayTicketTypeEventFull
   };
 }

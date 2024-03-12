@@ -5,8 +5,9 @@ import { findSqlDataDetails } from "@itsmworkbench/defaultdomains";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import {  } from "@itsmworkbench/react_conversation";
 import { SqlDataTable } from "./SqlData";
+import { SuccessFailContextFn } from "@itsmworkbench/components";
+import { splitAndCapitalize } from "@itsmworkbench/utils";
 
 export interface SqlData {
   sql: string
@@ -14,11 +15,38 @@ export interface SqlData {
 }
 
 
-export function DisplaySqlWorkbench<S> ( { state }: LensProps2<S, SqlData, any, any> ) {
+export interface DisplayWorkbenchProps<S> extends LensProps2<S, SqlData, any, any> {
+  SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
+  FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
+}
+
+export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplayWorkbenchProps<S> ) {
   const { sql, response } = state.optJson1 () || { sql: '', response: '' }
   const variables = state.optJson2 () || {}
   const details = findSqlDataDetails ( sql || '', variables )
 
+  const contextFn: SuccessFailContextFn = ( tab: string, phase: string, action: string, successOrFail ) => ({
+    phase, action,
+    display: {
+      title: `Sql to ${splitAndCapitalize ( action )}`,
+      type: 'SQL',
+      successOrFail,
+    },
+    tab,
+    sql,
+    response
+  })
+
+
+  //"display": {
+  //       "title": "New Update Database Ticket",
+  //       "type": "ticket",
+  //       "name": "Price"
+  //     },
+  //     "ticketTypeDetails": {
+  //       "ticketType": "Update Database",
+  //       "approvalState": "Needs Approval",
+  //       "validate
   return <Container maxWidth="md">
     <Typography variant="h4" gutterBottom>SQL</Typography>
 
@@ -32,15 +60,8 @@ export function DisplaySqlWorkbench<S> ( { state }: LensProps2<S, SqlData, any, 
       </Box>
       <Typography variant="subtitle1" gutterBottom>SQL Result</Typography>
       <TextField fullWidth variant="outlined" multiline rows={4}/>
-      {/*<Paper style={{ padding: '16px', marginBottom: '16px' }}>*/}
-      {/*  {correctWhen && <Typography variant="subtitle1">The result is correct when "{correctWhen.toString ()}"</Typography>}*/}
-      {/*</Paper>*/}
-      {/*{type && <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1}>*/}
-      {/*    <FakeSendButton state={state} icon={<PlayArrowIcon/>} actionName={actionName} message={`[${type}Sql]`} value={true}>The result is good</FakeSendButton>*/}
-      {/*    <FakeSendButton state={state} icon={<PlayArrowIcon/>} actionName={actionName} message={`[${type}Sql]`} value={false}>The result is bad</FakeSendButton>*/}
-      {/*    <Button variant="contained" color="secondary" endIcon={<CancelIcon/>}> Cancel </Button>*/}
-      {/*</Box>}*/}
-      <Typography variant="subtitle1" gutterBottom>SQL Result</Typography>
+      {SuccessButton ( contextFn )}
+      {FailureButton ( contextFn )}
     </Box>
 
 

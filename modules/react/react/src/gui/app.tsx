@@ -1,6 +1,6 @@
-import { LensProps, LensState2 } from "@focuson/state";
+import { LensProps, LensState2, LensState3 } from "@focuson/state";
 import { ThemeProvider, Toolbar } from "@mui/material";
-import { ColumnLeftMainBottom, SilentTabsContainer, SimpleTabPanel, theme } from "@itsmworkbench/components";
+import { ColumnLeftMainBottom, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn, SuccessFailureButton, theme } from "@itsmworkbench/components";
 import React from "react";
 import { ItsmState } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
@@ -30,8 +30,16 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
     focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).//
     focus2On ( 'selectionState' ).focus2On ( 'tabs' )
   const capabilitiesState: LensState2<S, Capability[], TabPhaseAndActionSelectionState, any> = ticketTypeAndSelectionState.focus1On ( 'capabilities' )
-  const phasesState: LensState2<S, PhaseAnd<NameAnd<Action>>, TabPhaseAndActionSelectionState, any> = ticketTypeAndSelectionState.focus1On ( 'actions' )
+  const phasesState: LensState3<S, PhaseAnd<NameAnd<Action>>, TabPhaseAndActionSelectionState, PhaseAnd<NameAnd<boolean>>, any> =
+          state.tripleUp ().//
+            focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).focus1On ( 'actions' ).//
+            focus2On ( 'selectionState' ).focus2On ( 'tabs' ).//
+            focus3On ( 'blackboard' ).focus3On ( 'status' )
 
+  const successFailState = state.doubleUp ().focus1On ( 'sideeffects' ).focus2On ( 'selectionState' ).focus2On ( 'tabs' )
+  const pathToStatus = 'blackboard.status'
+  const successButton = ( context: SuccessFailContextFn ) => <SuccessFailureButton state={successFailState} successOrFail={true} pathToStatus={pathToStatus} context={context}/>
+  const failureButton = ( context: SuccessFailContextFn ) => <SuccessFailureButton state={successFailState} successOrFail={false} pathToStatus={pathToStatus} context={context}/>
   return <>
     return <ThemeProvider theme={theme}>
     <ColumnLeftMainBottom title='ITSM Workbench'
@@ -51,7 +59,9 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
         <SimpleTabPanel title='settings'>
           <div><Toolbar/> Settings go here</div>
         </SimpleTabPanel>
-        <SimpleTabPanel title='SQLWorkbench'><DisplaySqlWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'sqlData' )}/></SimpleTabPanel>
+        <SimpleTabPanel title='SQLWorkbench'>
+          <DisplaySqlWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'sqlData' )} SuccessButton={successButton} FailureButton={failureButton}/>
+        </SimpleTabPanel>
         <SimpleTabPanel title='newTicket'><DisplayNewTicket state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicket' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
       </SilentTabsContainer>
       {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', 'tempData', 'blackboard', 'events', 'enrichedEvents', "conversation", "variables", "ticket", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}

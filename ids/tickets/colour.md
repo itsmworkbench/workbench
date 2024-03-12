@@ -7,7 +7,7 @@ Issue:
 * The button is button id but-blue-123
 
 Action requested:
-* Please delete this.
+* Please change the colour of the button to blue
 
 Thanks`
 

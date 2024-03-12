@@ -84,7 +84,7 @@ export const updateSqlTT: TicketType = ({
       checkIssueStillExists: {
         by: 'SQL',
       },
-      resolve: {
+      resolveTheIssue: {
         by: 'SQL',
         waitingFor: [ 'checkIssueStillExists' ]
       }

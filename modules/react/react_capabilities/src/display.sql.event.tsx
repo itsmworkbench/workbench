@@ -1,5 +1,5 @@
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
-import { SetIdEvent } from "@itsmworkbench/events";
+import { SetValueEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
 import { PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";
@@ -8,10 +8,10 @@ import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn } from "@i
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 
 
-export interface DisplayTicketEventMiniProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetIdEvent, any>, any>> {
+export interface DisplaySqlEventProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetValueEvent, any>, any>> {
 }
 
-export function DisplayTicketEventFull<S> ( { state, icons }: DisplayTicketEventMiniProps<S> ) {
+export function DisplaySqlEventFull<S> ( { state, icons }: DisplaySqlEventProps<S> ) {
   const event = state.optJson ()
   if ( event === undefined ) return <div>No event - This is an error</div>
   const title = event.displayData?.title || event.event
@@ -34,10 +34,10 @@ export function DisplayTicketEventFull<S> ( { state, icons }: DisplayTicketEvent
 }
 
 
-export function displayTicketEventPlugin<S extends any> (): DisplayEnrichedEventPlugIn<S> {
+export function displaySqlEventPlugin<S extends any> (): DisplayEnrichedEventPlugIn<S> {
   return {
     accept: ( event: EnrichedEvent<any, any> ) => event.event === 'setId' && event.displayData?.type === 'ticket',
     microDisplay: DisplayDefaultEnrichedEventMicro,
-    fullDisplay: DisplayTicketEventFull
+    fullDisplay: DisplaySqlEventFull
   };
 }
