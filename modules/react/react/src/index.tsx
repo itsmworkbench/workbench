@@ -9,7 +9,7 @@ import { defaultEventProcessor, Event, processEvents } from "@itsmworkbench/even
 import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, defaultParserStore, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { eventsL, ItsmState, logsL, setPageL, sideEffectsL, startAppState, ticketIdL, ticketVariablesL } from "./state/itsm.state";
+import { eventsL, ItsmState, logsL, newTicketL, setPageL, sideEffectsL, startAppState, ticketIdL, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
@@ -17,6 +17,7 @@ import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor } from 
 import { hasErrors, mapK, value } from "@laoban/utils";
 import { defaultEventEnricher, EnrichedEvent, enrichEvent } from "@itsmworkbench/enrichedevents";
 import { displayTicketEventPlugin } from '@itsmworkbench/react_ticket';
+import { displayTicketTypeEventPlugin } from '@itsmworkbench/react_tickettype';
 import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForTicketVariables } from "@itsmworkbench/apiclient_ticketvariables";
@@ -45,6 +46,7 @@ addEventStoreListener ( container, (( oldS, s, setJson ) =>
     eventPlugins={[
       displayTicketEventPlugin<ItsmState> (),
       displayVariablesEventPlugin<ItsmState> (),
+      displayTicketTypeEventPlugin<ItsmState> (),
       displayMessageEventPlugin<ItsmState> () ]}
     // plugins={[ operatorConversationPlugin ( operatorL ) ]}
   /> )) );
@@ -80,7 +82,7 @@ addEventStoreModifier ( container,
     processSideEffect ( [
       eventSideeffectProcessor ( urlStore.save, 'me', ticketIdL ),
       addAiTicketSideeffectProcessor ( ai, ticketVariablesL ),
-      addNewTicketSideeffectProcessor ( urlStore.save, setPageL, eventsL, ticketIdL, 'ticket' )
+      addNewTicketSideeffectProcessor ( urlStore.save, setPageL, eventsL, ticketIdL, newTicketL, 'ticket' )
     ] ),
     sideEffectsL, logsL ) )
 

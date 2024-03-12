@@ -565,6 +565,24 @@
     "@laoban/utils" "1.4.45"
     debug "^4.3.4"
 
+"@itsmworkbench/update_value_in_database_ticket_type@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/update_value_in_database_ticket_type/-/update_value_in_database_ticket_type-0.0.3.tgz#6acbee8d515a2150b62c8a6a9c6d31a14879fe0d"
+  integrity sha512-R8KQiLQyelUuWiwaGL6hFOLLssisE98ZecVBXjSUHg9jp5hvW40j6mWuAMXik5jmLAKxyHS/pwkI+icS2rIu7g==
+  dependencies:
+    "@emotion/react" "^11.11.3"
+    "@emotion/styled" "^11.11.0"
+    "@focuson/lens" "1.44.3"
+    "@focuson/state" "1.44.3"
+    "@itsmworkbench/components" "0.0.3"
+    "@itsmworkbench/domain" "0.0.3"
+    "@itsmworkbench/react_core" "0.0.3"
+    "@laoban/utils" "1.4.45"
+    "@laoban/variables" "1.4.45"
+    "@mui/icons-material" "^5.15.10"
+    "@mui/material" "^5.15.10"
+    debug "^4.3.4"
+
 "@jest/console@^29.7.0":
   version "29.7.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-29.7.0.tgz#cd4822dbdb84529265c5a2bdb529a3c9cc950ffc"

@@ -25,7 +25,6 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                           layout={{ drawerWidth: '240px', height: '100vh' }}
                           state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
                           Nav={<GuiNav state={state}/>}>
-      <Toolbar/>
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )}>
         <SimpleTabPanel title='chat'><EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins}/></SimpleTabPanel>
         <SimpleTabPanel title='events'><DisplayEnrichedEventsUsingPlugin state={eventsState.focusOn ( 'enrichedEvents' )} plugins={eventPlugins}/></SimpleTabPanel>

@@ -1,9 +1,9 @@
 import { LensProps } from "@focuson/state";
 import React from "react";
 import { Event } from "@itsmworkbench/events";
-import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+
 import { MicroCard, PROPSAndIcons, SelectableSize } from "@itsmworkbench/components";
-import { Box } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 
 export type DisplayEnrichedEventProps<S> = PROPSAndIcons<LensProps<S, EnrichedEvent<any, any>, any>>
@@ -16,7 +16,7 @@ export function DisplayDefaultEnrichedEventMicro<S> ( { state, icons }: DisplayE
     const titleAndName = name ? `${title} - ${name}` : title
     return titleAndName;
   }
-  return<div> <MicroCard icons={icons} summary={getSummary () }/></div>
+  return <div><MicroCard icons={icons} summary={getSummary ()}/></div>
 }
 export function DisplayDefaultEnrichedEventFull<S> ( { state, icons }: DisplayEnrichedEventProps<S> ) {
   const event = state.optJson ()
@@ -24,7 +24,7 @@ export function DisplayDefaultEnrichedEventFull<S> ( { state, icons }: DisplayEn
   const title = event.displayData?.title || event.event
   const name = event.context?.display?.name
   const titleAndName = name ? `${title} - ${name}` : title
-  return <Card>
+  return <Card sx={{ width: '100%', maxWidth: '75vw' }}>
     {/* CardHeader for actions */}
     <CardHeader
       action={<Box display="flex" alignItems="center">{icons}</Box>}

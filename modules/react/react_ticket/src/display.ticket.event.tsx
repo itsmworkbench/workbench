@@ -12,7 +12,7 @@ import { DisplayEnrichedEventPlugIn } from "@itsmworkbench/react_events";
 export interface DisplayTicketEventMiniProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetIdEvent, any>, any>> {
 }
 
-export function DisplayDefaultEnrichedHistoryEventFull<S> ( { state, icons }: DisplayTicketEventMiniProps<S> ) {
+export function DisplayTicketEventFull<S> ( { state, icons }: DisplayTicketEventMiniProps<S> ) {
   const event = state.optJson ()
   if ( event === undefined ) return <div>No event - This is an error</div>
   const title = event.displayData?.title || event.event
@@ -39,6 +39,6 @@ export function displayTicketEventPlugin<S extends any> (): DisplayEnrichedEvent
   return {
     accept: ( event: EnrichedEvent<any, any> ) => event.event === 'setId' && event.displayData?.type === 'ticket',
     microDisplay: DisplayDefaultEnrichedEventMicro,
-    fullDisplay: DisplayDefaultEnrichedHistoryEventFull
+    fullDisplay: DisplayTicketEventFull
   };
 }

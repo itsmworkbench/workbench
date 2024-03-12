@@ -1,7 +1,7 @@
 {
   "template":    "react_library",
-  "name":        "@itsmworkbench/react_new_ticket",
-  "description": "The react gui around new tickets",
+  "name":        "@itsmworkbench/react_tickettype",
+  "description": "The react gui around tickettypes",
   "packageJson": {
     "files":        ["build/"],
     "dependencies": {
@@ -9,8 +9,7 @@
   },
   "links":       [
     "@itsmworkbench/components",
-    "@itsmworkbench/tickets",
-    "@itsmworkbench/react_tickettype"
+    "@itsmworkbench/tickettype"
   ],
   "guards":      {
     "compile": true,

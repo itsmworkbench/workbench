@@ -40,6 +40,7 @@ export function UserTypingBox<S, C> ( { state, from }: UserTypingBoxProps<S, C> 
 
   return (
     <Box sx={{
+      maxWidth:'75vw',
       display: 'flex', // Enables flex container
       alignItems: 'center', // Vertically centers the items
       gap: 1, // Adds a gap between items

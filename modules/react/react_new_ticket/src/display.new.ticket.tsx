@@ -8,6 +8,8 @@ import { SideEffect } from "@itsmworkbench/react_core";
 import { LensProps2 } from "@focuson/state";
 import { AiNewTicketSideEffect } from "./ai.ticket.sideeffect";
 import { DisplayJson, FocusedTextArea, FocusedTextInput } from "@itsmworkbench/components";
+import { SelectTicketType } from "@itsmworkbench/react_tickettype";
+import { Box } from '@mui/material';
 
 interface NewTicketProps<S> extends LensProps2<S, NewTicketData, SideEffect[], any> {}
 
@@ -25,22 +27,22 @@ export const DisplayNewTicket = <S, > ( { state }: NewTicketProps<S> ) => {
   const existing = state.optJson2 () || [];
 
   return (
-    <>
+    <Box sx={{ '& > *': { mb: 2 } }}> {/* This applies margin-bottom to all immediate children */}
+
       {errors.length > 0 && (
         <Alert severity="error">{errors.map ( ( error, index ) => <div key={index}>{error}</div> )}</Alert>
       )}
 
       <Typography variant="h6">New Ticket</Typography>
 
-      <Typography>Ticket name</Typography>
       <FocusedTextInput
         variant="outlined"
         fullWidth
         label="Ticket Name"
         state={ticketState.focusOn ( 'name' )}
       />
+      <SelectTicketType state={ticketState.focusOn ( 'ticketType' )}/>
 
-      <Typography>Ticket contents - please cut and paste it here</Typography>
       <FocusedTextArea
         variant="outlined"
         fullWidth
@@ -59,7 +61,6 @@ export const DisplayNewTicket = <S, > ( { state }: NewTicketProps<S> ) => {
         Calc variables
       </Button>
 
-      {/* Assuming DisplayJson is a component that you've defined elsewhere */}
       <Typography>Variables</Typography>
       <DisplayJson json={ticketState.focusOn ( 'aiAddedVariables' ).optJson ()}/>
 
@@ -71,6 +72,6 @@ export const DisplayNewTicket = <S, > ( { state }: NewTicketProps<S> ) => {
       >
         Create or Replace
       </Button>
-    </>
+    </Box>
   );
 };

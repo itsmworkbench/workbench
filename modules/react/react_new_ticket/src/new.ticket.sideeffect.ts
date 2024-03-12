@@ -1,15 +1,16 @@
 import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
 import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
 import { NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
-import { Lens, Optional, Transform } from "@focuson/lens";
-import { InfoEvent, SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
-import { Event } from "@itsmworkbench/events";
+import { Optional, Transform } from "@focuson/lens";
+import { Event, SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
+import { defaultTicketTypeDetails, TicketTypeDetails } from "@itsmworkbench/tickettype";
 
 //OK Gritting our teeth we aren't worrying about the errors for now. We are just going to assume that everything is going to work.
 //This is so that we can test out the happy path of the gui. We want to see what it will look like. We will come back to the errors later.
 export interface NewTicketData {
   organisation: string,
+  ticketType: TicketTypeDetails
   name: string
   ticket: string
   aiAddedVariables?: TicketVariables
@@ -26,12 +27,14 @@ export interface TicketAndTicketEvents {
 export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPage: Optional<S, string>,
                                                      eventL: Optional<S, Event[]>,
                                                      ticketIdL: Optional<S, string>,
+                                                     newTicketL: Optional<S, NewTicketData>,
                                                      ticketPath: string ): ISideEffectProcessor<S, AddNewTicketSideEffect, TicketAndTicketEvents> {
   return ({
     accept: ( s: SideEffect ): s is AddNewTicketSideEffect => s.command === 'addNewTicket',
     process: async ( s: S, se: AddNewTicketSideEffect ) => {
       const ticketUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticket', name: se.name }
       const ticketeventsUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticketevents', name: se.name }
+      const ticketType = se.ticketType || defaultTicketTypeDetails
 
       //what we should do instead of this
       //add to the ticket. (should have a flag that says 'error if doing it again')
@@ -51,8 +54,12 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
             event: 'setValue', path: 'blackboard.ticket', value: se.aiAddedVariables,
             context: { display: { title: 'Ticket Variables', type: 'variables' }, }
           }
+          const setTicketTypeEvent: SetValueEvent = {
+            event: 'setValue', path: 'blackboard.ticketType', value: ticketType,
+            context: { display: { title: 'Ticket Type', type: 'ticketType' }, }
+          }
 
-          return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ initialTicketEvent, initialVariablesEvent ] ), async ticketevents => {
+          return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ initialTicketEvent, initialVariablesEvent, setTicketTypeEvent ] ), async ticketevents => {
             console.log ( 'addNewTicketSideeffectProcessor - ticketevents ', ticketeventsUrl, ticketevents )
             return { ticket, ticketevents }
           } )
@@ -60,7 +67,8 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
       const txs: Transform<S, any>[] = [
         [ setPage, _ => 'chat' ],
         [ eventL, _ => [] ], //clear all the events. The next line will trigger a reload via polling
-        [ ticketIdL, _ => writeUrl ( ticketeventsUrl ) ]
+        [ ticketIdL, _ => writeUrl ( ticketeventsUrl ) ],
+        [ newTicketL, _ => ({ organisation: se.organisation, ticketType: defaultTicketTypeDetails, name: '', ticket: '' }) ]
       ]
       return hasErrors ( res ) ? { result: res } : {
         result: res, txs
