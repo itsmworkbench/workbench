@@ -23,8 +23,8 @@ export function DisplayEnrichedEventUsingPlugin<S> ( { state, plugins }: Display
   const plugin = plugins.find ( p => p.accept ( event ) )
   console.log ( 'plugin', plugin, 'event', event, 'state', state )
   if ( plugin === undefined ) return <DisplayEnrichedEvent state={state}/>
-  let debugComponent = plugin.debugDisplay||DisplayDefaultEnrichedEventFull<S>;
-  console.log('debugComponent',debugComponent)
+  let debugComponent = plugin.debugDisplay || DisplayDefaultEnrichedEventFull<S>;
+  console.log ( 'debugComponent', debugComponent )
   return <SelectableSize
     MicroComponent={plugin.microDisplay}
     MiniComponent={plugin.miniDisplay}
@@ -34,15 +34,17 @@ export function DisplayEnrichedEventUsingPlugin<S> ( { state, plugins }: Display
   />
 }
 export interface DisplayEnrichedEventsUsingPluginProps<S> extends LensProps<S, EnrichedEvent<any, any>[], any> {
+  devMode?: boolean
   plugins: DisplayEnrichedEventPlugIn<S>[]
 }
-export function DisplayEnrichedEventsUsingPlugin<S> ( { state, plugins }: DisplayEnrichedEventsUsingPluginProps<S> ) {
+export function DisplayEnrichedEventsUsingPlugin<S> ( { state, plugins, devMode }: DisplayEnrichedEventsUsingPluginProps<S> ) {
   const events = state.optJson () || []
+  console.log ( 'DisplayEnrichedEventsUsingPlugin events', events, 'devMode', devMode, 'plugins', plugins )
   return <div>{events.map ( ( event, i ) =>
     <div key={i} style={{ margin: '6px' }}>
-      <DisplayEnrichedEventUsingPlugin key={i}
-                                       state={state.chainLens ( Lenses.nth ( i ) )}
-                                       plugins={plugins}/>
+      {(devMode || !event.hide) && <DisplayEnrichedEventUsingPlugin key={i}
+                                                                   state={state.chainLens ( Lenses.nth ( i ) )}
+                                                                   plugins={plugins}/>}
     </div> )}
   </div>
 }

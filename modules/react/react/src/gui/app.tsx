@@ -1,4 +1,4 @@
-import { LensProps } from "@focuson/state";
+import { LensProps,LensState2 } from "@focuson/state";
 import { ThemeProvider, Toolbar } from "@mui/material";
 import { ColumnLeftMainBottom, SilentTabsContainer, SimpleTabPanel, theme } from "@itsmworkbench/components";
 import React from "react";
@@ -9,6 +9,7 @@ import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { DisplayNewTicket } from "@itsmworkbench/react_new_ticket";
 import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents, EnrichedEventsAndChat } from "@itsmworkbench/react_events";
+import { Capability } from "@itsmworkbench/domain";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -20,7 +21,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   console.log ( 'state', state.optJson () );
   const convState = state.tripleUp ().focus1On ( 'conversation' ).focus2On ( 'events' ).focus2On ( 'enrichedEvents' ).focus3On ( 'sideeffects' )
   const eventsState = state.focusOn ( 'events' )
-  let capabilitiesState: LensState2<S, Capabilities[], string, any> = state.doubleUp ().//
+  let capabilitiesState: LensState2<S, Capability[], string, any> = state.doubleUp ().//
     focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).focus1On ( 'capabilities' ).//
     focus2On ( 'selectionState' ).focus2On ( 'workspaceTab' )
 
@@ -33,7 +34,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
       <Toolbar/>
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )}>
         <SimpleTabPanel title='chat'>
-          <EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins} plusMenu={<DisplayCapabilitiesMenu state={capabilitiesState}/>}/>
+          <EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins} devMode={showDevMode}  plusMenu={<DisplayCapabilitiesMenu state={capabilitiesState} />}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='events'><DisplayEnrichedEventsUsingPlugin state={eventsState.focusOn ( 'enrichedEvents' )} plugins={eventPlugins}/></SimpleTabPanel>
         <SimpleTabPanel title='debugEvents'><DisplayEvents state={eventsState.focusOn ( 'events' )}/></SimpleTabPanel>

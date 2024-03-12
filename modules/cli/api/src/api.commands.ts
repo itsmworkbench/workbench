@@ -8,7 +8,7 @@ import { YamlCapability } from "@itsmworkbench/yaml";
 import { defaultOrganisationUrlStoreConfig } from "@itsmworkbench/defaultdomains/dist/src/organisation.default.domains";
 import { nodeUrlstore } from "@itsmworkbench/urlstorenode";
 import { shellGitsops } from "@itsmworkbench/shell_git";
-import { chatgptTicketVariables } from "@itsmworkbench/ai_chatgptticketvariables";
+import { chatgptTicketVariables, generalChat } from "@itsmworkbench/ai_chatgptticketvariables";
 
 
 export function apiCommand<Commander, Context extends HasCurrentDirectory, Config> ( yaml: YamlCapability ): CommandFn<Commander, Context, Config> {
@@ -32,7 +32,7 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory, Confi
       const urlStore = nodeUrlstore ( gitOps, orgs )
 
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,
-        wizardOfOzApiHandlers ( idStore, allIds, ai, ai, opts.debug === true, orgs.nameSpaceDetails, urlStore ) )
+        wizardOfOzApiHandlers ( idStore, allIds, ai, generalChat, opts.debug === true, orgs.nameSpaceDetails, urlStore ) )
     }
   })
 

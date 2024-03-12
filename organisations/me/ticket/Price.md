@@ -1,5 +1,3 @@
-Ticket price44
-P4
 Customer: a.customer@example.com
 
 Issue:

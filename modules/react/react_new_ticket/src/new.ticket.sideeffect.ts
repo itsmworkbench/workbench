@@ -53,11 +53,11 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
           }
           const initialVariablesEvent: SetValueEvent = {
             event: 'setValue', path: 'blackboard.ticket', value: se.aiAddedVariables,
-            context: { display: { title: 'Ticket Variables', type: 'variables' }, }
+            context: { display: { title: 'Ticket Variables', type: 'variables', hide: true }, }
           }
           const setTicketTypeEvent: SetValueEvent = {
             event: 'setValue', path: 'blackboard.ticketType', value: { ticketTypeDetails, ticketType },
-            context: { display: { title: 'Ticket Type', type: 'ticketType' }, }
+            context: { display: { title: 'Ticket Type', type: 'ticketType' , hide: true}, }
           }
 
           return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ setTicketTypeEvent, initialTicketEvent, initialVariablesEvent ] ), async ticketevents => {

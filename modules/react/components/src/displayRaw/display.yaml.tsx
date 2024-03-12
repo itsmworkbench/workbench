@@ -16,11 +16,18 @@ export interface YamlDisplayMUIProps {
   maxHeight?: string
 }
 export function DisplayYaml ( { yaml, maxHeight }: YamlDisplayMUIProps ) {
-  if (yaml === undefined) return <Paper>Nothing to display</Paper>
-  const withBlankLines = turnToYaml ( yaml )
-  return (
-    <Typography component="pre" style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>
-      <code>{withBlankLines}</code>
+  if ( yaml === undefined ) return <Paper>Nothing to display</Paper>
+  try {
+    const withBlankLines = turnToYaml ( yaml )
+    return (
+      <Typography component="pre" style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>
+        <code>{withBlankLines}</code>
+      </Typography>
+    );
+  } catch ( e ) {
+    return <Typography component="pre" style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>
+      Error {e.toString ()}
+      {yaml}
     </Typography>
-  );
+  }
 }

@@ -2,7 +2,7 @@ import { AppendEvent, BaseEvent, ErrorEvent, EventNameAnd, InfoEvent, SetIdEvent
 import { loadFromString, UrlLoaders, UrlLoadIdentityFn, UrlStore } from "@itsmworkbench/url";
 import { mapErrorsK } from "@laoban/utils";
 
-export type EnrichedEvent<E extends BaseEvent, D> = E & { displayData: D }
+export type EnrichedEvent<E extends BaseEvent, D> = E & { displayData: D, hide: boolean }
 
 export interface GeneralDisplayData {
   title?: string
@@ -23,13 +23,14 @@ export type EventEnricher = {
 
 export type EnricherFn<E extends BaseEvent, D> = ( event: E ) => Promise<EnrichedEvent<E, D>>
 export function defaultEventEnricher ( urlLoaders: UrlLoaders ): EventEnricher {
+  const hide = ( event: BaseEvent ) => event.context?.display?.hide || false
   return {
-    zero: async ( event ) => ({ ...event, displayData: {} }),
-    setId: async ( event ) => ({ ...event, displayData: { value: await loadFromString ( urlLoaders, event.id ) } }),
-    setValue: async ( event ) => ({ ...event, displayData: {} }),
-    append: async ( event ) => ({ ...event, displayData: {} }),
-    info: async ( event ) => ({ ...event, displayData: {} }),
-    error: async ( event ) => ({ ...event, displayData: {} })
+    zero: async ( event ) => ({ ...event, displayData: {}, hide: hide ( event ) }),
+    setId: async ( event ) => ({ ...event, displayData: { value: await loadFromString ( urlLoaders, event.id ) }, hide: hide ( event ) }),
+    setValue: async ( event ) => ({ ...event, displayData: {}, hide: hide ( event ) }),
+    append: async ( event ) => ({ ...event, displayData: {}, hide: hide ( event ) }),
+    info: async ( event ) => ({ ...event, displayData: {}, hide: hide ( event ) }),
+    error: async ( event ) => ({ ...event, displayData: {}, hide: hide ( event ) })
   }
 }
 

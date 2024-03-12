@@ -1,4 +1,4 @@
-import { LensProps, LensState3 } from "@focuson/state";
+import { LensProps, LensState2, LensState3 } from "@focuson/state";
 import { ItsmSelectionState, ItsmState } from "../state/itsm.state";
 import { FocusOnSetValueButton, FocusOnToggleButton } from "@itsmworkbench/components";
 import { DisplayTicketList } from "@itsmworkbench/react_ticket";
@@ -11,6 +11,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import AddIcon from '@mui/icons-material/Add';
 import EventIcon from '@mui/icons-material/Event';
 import { EventsAndEnriched } from "@itsmworkbench/react_core";
+import { Capability } from "@itsmworkbench/domain";
 
 export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
   const buttonSx = {
@@ -23,7 +24,7 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
     focus1On ( 'ticketList' ).focus1On ( 'names' ).//
     focus2On ( 'selectionState' ).//
     focus3On ( 'events' );
-  let capabilitiesState: LensState2<S, Capabilities[], string, any> = state.doubleUp ().//
+  let capabilitiesState: LensState2<S, Capability[], string, any> = state.doubleUp ().//
     focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).focus1On ( 'capabilities' ).//
     focus2On ( 'selectionState' ).focus2On ( 'workspaceTab' )
   const showDevMode = state.optJson ()?.debug?.showDevMode;

@@ -11,10 +11,11 @@ export interface EnrichedEventsAndChatProps<S> extends LensProps3<S, Conversatio
   eventPlugins: DisplayEnrichedEventPlugIn<S>[]
   plugins: ConversationPlugin<S>[]
   plusMenu?: React.ReactElement
+  devMode?: boolean
 }
-export function EnrichedEventsAndChat<S> ( { state, plugins, eventPlugins, plusMenu }: EnrichedEventsAndChatProps<S> ) {
+export function EnrichedEventsAndChat<S> ( { state, plugins, eventPlugins, plusMenu, devMode }: EnrichedEventsAndChatProps<S> ) {
   return <MainAndTypingLayout
-    Main={<DisplayEnrichedEventsUsingPlugin plugins={eventPlugins} state={state.state2 ()}/>}
+    Main={<DisplayEnrichedEventsUsingPlugin plugins={eventPlugins} devMode={devMode} state={state.state2 ()}/>}
     Typing={
       <><DisplayChatArea plugins={plugins} state={state.state12 ()} def={
         <UserTypingBox state={state.state13 ().focus1On ( 'chat' ).focus1On ( 'data' )} from='me' plusMenu={plusMenu}/>}/>

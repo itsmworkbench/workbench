@@ -11,8 +11,8 @@ import { Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
-import { defaultTicketTypeDetails } from "@itsmworkbench/tickettype";
-import { SqlData } from "@itsmworkbench/react_conversation/dist/src/workspace/sql.workspace";
+import { defaultTicketTypeDetails, TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
+import { SqlData } from "@itsmworkbench/react_capabilities";
 
 export interface ItsmSelectionState extends WorkspaceSelectionState, DisplayTicketListSelectionState {
   mainScreen?: ColumnLeftMainState
@@ -26,6 +26,10 @@ export interface TempData {
 
 export interface Blackboard {
   operator: Operator
+  ticketType: {
+    ticketType: TicketType,
+    ticketTypeDetails: TicketTypeDetails
+  }
 }
 
 export interface ItsmState {
@@ -45,9 +49,7 @@ const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '', tic
 
 
 export const startAppState: ItsmState = {
-  blackboard: {
-    operator: undefined as any
-  },
+  blackboard: {} as any,
   ticketList: undefined as any,
   sideeffects: [],
   events: { events: [], enrichedEvents: [] },

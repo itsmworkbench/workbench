@@ -95,7 +95,7 @@ loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataRe
     ...startAppState,
     blackboard: {
       operator: operatorResult?.result || { name: 'Phil', email: 'phil@example.com' }
-    },
+    } as any,
     ticketList
   }
   setJson ( withInitialData )
