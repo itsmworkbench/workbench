@@ -48,7 +48,8 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
           console.log ( 'addNewTicketSideeffectProcessor - ticket ', ticketUrl, ticket )
           const initialTicketEvent: SetIdEvent = {
             event: 'setId', id: ticket.id, path: ticketPath, context: {
-              display: { title: 'New Ticket', type: 'ticket', name: se.name },
+              display: { title: `New ${ticketTypeDetails.ticketType} Ticket`, type: 'ticket', name: se.name },
+              ticketTypeDetails
             }
           }
           const initialVariablesEvent: SetValueEvent = {

@@ -1,9 +1,9 @@
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 import { SetIdEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
-import { PROPSAndIcons } from "@itsmworkbench/components";
+import { MicroCard, PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";
-import { DisplayDefaultEnrichedEventMicro } from "@itsmworkbench/react_events";
+import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventProps } from "@itsmworkbench/react_events";
 
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { DisplayEnrichedEventPlugIn } from "@itsmworkbench/react_events";
