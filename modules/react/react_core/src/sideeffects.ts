@@ -1,7 +1,7 @@
 import { ErrorsAnd, flatMap, mapK, toArray } from "@laoban/utils";
 import { Event } from "@itsmworkbench/events";
 import { Lens, Optional, Transform } from "@focuson/lens";
-import { massTransform } from "@focuson/lens/dist/src/optics";
+import { massTransform } from "@focuson/lens";
 import { NamedUrl, parseNamedUrlOrThrow, UrlSaveFn } from "@itsmworkbench/url";
 
 export type SideEffectType = string

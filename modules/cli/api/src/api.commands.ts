@@ -5,7 +5,7 @@ import { loadFromIdStore } from "@itsmworkbench/idstore";
 import { defaultIdStoreDetails, defaultParserStore } from "@itsmworkbench/defaultdomains";
 import { findListIds } from "@itsmworkbench/listids";
 import { YamlCapability } from "@itsmworkbench/yaml";
-import { defaultOrganisationUrlStoreConfig } from "@itsmworkbench/defaultdomains/dist/src/organisation.default.domains";
+import { defaultOrganisationUrlStoreConfig } from "@itsmworkbench/defaultdomains";
 import { nodeUrlstore } from "@itsmworkbench/urlstorenode";
 import { shellGitsops } from "@itsmworkbench/shell_git";
 import { chatgptTicketVariables, generalChat } from "@itsmworkbench/ai_chatgptticketvariables";

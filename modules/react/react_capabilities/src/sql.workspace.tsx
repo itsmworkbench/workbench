@@ -25,7 +25,7 @@ export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }
   const variables = state.optJson2 () || {}
   const details = findSqlDataDetails ( sql || '', variables )
 
-  const contextFn: SuccessFailContextFn = ( tab: string, phase: string, action: string, successOrFail ) => ({
+  const contextFn: SuccessFailContextFn = ( tab: string|undefined, phase: string, action: string, successOrFail ) => ({
     phase, action,
     display: {
       title: `Sql to ${splitAndCapitalize ( action )}`,

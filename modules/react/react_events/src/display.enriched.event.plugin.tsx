@@ -1,7 +1,7 @@
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 import { LensProps, LensState } from "@focuson/state";
 import React, { ComponentType } from "react";
-import { PROPSAndIcons, SelectableSize } from "@itsmworkbench/components/dist/src/layouts/selectable.size";
+import { PROPSAndIcons, SelectableSize } from "@itsmworkbench/components";
 import { DisplayDefaultEnrichedEventFull, DisplayDefaultEnrichedEventMicro, DisplayEnrichedEvent } from "./display.enriched.event";
 import { Lenses } from "@focuson/lens";
 

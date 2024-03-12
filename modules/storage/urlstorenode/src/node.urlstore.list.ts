@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { applyPaging, ListNamesOrder, OrganisationUrlStoreConfigForGit, PageQuery, UrlListFn } from "@itsmworkbench/url";
 import { ErrorsAnd, mapErrors, mapErrorsK } from "@laoban/utils";
-import { urlStorePathFn } from "@itsmworkbench/url/dist/src/url.pathops";
+import { urlStorePathFn } from "@itsmworkbench/url";
 
 export type FileInfo = {
   name: string;

@@ -18,7 +18,7 @@ export function SuccessFailureButton<S> ( { state, successOrFail, title, pathToS
 
   function onClick () {
     const existingSelection = state.optJson2 () || {};
-    const phase: PhaseName = existingSelection.phase;
+    const phase: PhaseName = existingSelection.phase as PhaseName;
     const action = existingSelection.action;
 
     const sve: SetValueEvent = {
