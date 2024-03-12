@@ -15,6 +15,7 @@ import { NameAnd } from "@laoban/utils";
 import { Action } from "@itsmworkbench/actions";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
+import { parseNamedUrlOrThrow, parseUrl } from "@itsmworkbench/url";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -22,10 +23,11 @@ export interface AppProps<S, CS> extends LensProps<S, CS, any> {
 }
 
 export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState> ) {
-  let showDevMode = state.optJson ()?.debug?.showDevMode;
-  console.log ( 'state', state.optJson () );
-  const convState = state.tripleUp ().focus1On ( 'conversation' ).focus2On ( 'events' ).focus2On ( 'enrichedEvents' ).focus3On ( 'sideeffects' )
-  const eventsState = state.focusOn ( 'events' )
+  let wholeState = state.optJson ();
+  let showDevMode = wholeState?.debug?.showDevMode;
+  console.log ( 'state', wholeState );
+  const convState = state.tripleUp ().focus1On ( 'conversation' ).focus2On ( 'ticketData' ).focus2On ( 'enrichedEvents' ).focus3On ( 'sideeffects' )
+  const eventsState = state.focusOn ( 'ticketData' )
   const ticketTypeAndSelectionState: LensState2<S, TicketType, TabPhaseAndActionSelectionState, any> = state.doubleUp ().//
     focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).//
     focus2On ( 'selectionState' ).focus2On ( 'tabs' )
@@ -40,9 +42,14 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   const pathToStatus = 'blackboard.status'
   const successButton = ( context: SuccessFailContextFn ) => <SuccessFailureButton state={successFailState} successOrFail={true} pathToStatus={pathToStatus} context={context}/>
   const failureButton = ( context: SuccessFailContextFn ) => <SuccessFailureButton state={successFailState} successOrFail={false} pathToStatus={pathToStatus} context={context}/>
+
+  const currentTicketId = wholeState?.selectionState?.ticketId
+  const currentUrl = currentTicketId? parseNamedUrlOrThrow(currentTicketId) : undefined
+  const currentTicketText = currentTicketId ? ` - ${currentUrl?.name}`: ``
+
   return <>
     return <ThemeProvider theme={theme}>
-    <ColumnLeftMainBottom title='ITSM Workbench'
+    <ColumnLeftMainBottom title={`ITSM Workbench ${currentTicketText}`}
                           layout={{ drawerWidth: '240px', height: '100vh' }}
                           state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
                           Nav={<GuiNav state={state}/>}>
