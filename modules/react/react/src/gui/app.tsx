@@ -26,8 +26,11 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   let wholeState = state.optJson ();
   let showDevMode = wholeState?.debug?.showDevMode;
   console.log ( 'state', wholeState );
-  const convState = state.tripleUp ().focus1On ( 'conversation' ).focus2On ( 'ticketData' ).focus2On ( 'enrichedEvents' ).focus3On ( 'sideeffects' )
-  const eventsState = state.focusOn ( 'ticketData' )
+  const convState = state.tripleUp ().//
+    focus1On ( 'conversation' ).//
+    focus2On ( 'events' ).focus2On ( 'enrichedEvents' ).//
+    focus3On ( 'sideeffects' )
+  const eventsState = state.focusOn ( 'events' )
   const ticketTypeAndSelectionState: LensState2<S, TicketType, TabPhaseAndActionSelectionState, any> = state.doubleUp ().//
     focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).//
     focus2On ( 'selectionState' ).focus2On ( 'tabs' )
@@ -44,8 +47,8 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   const failureButton = ( context: SuccessFailContextFn ) => <SuccessFailureButton state={successFailState} successOrFail={false} pathToStatus={pathToStatus} context={context}/>
 
   const currentTicketId = wholeState?.selectionState?.ticketId
-  const currentUrl = currentTicketId? parseNamedUrlOrThrow(currentTicketId) : undefined
-  const currentTicketText = currentTicketId ? ` - ${currentUrl?.name}`: ``
+  const currentUrl = currentTicketId ? parseNamedUrlOrThrow ( currentTicketId ) : undefined
+  const currentTicketText = currentTicketId ? ` - ${currentUrl?.name}` : ``
 
   return <>
     return <ThemeProvider theme={theme}>

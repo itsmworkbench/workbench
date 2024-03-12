@@ -5,10 +5,10 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { HasSideeffects, SideEffect } from "@itsmworkbench/react_core";
 import { LensProps, LensState } from "@focuson/state";
-import { ActionStatus } from "@itsmworkbench/actions";
 import { makeSideeffectForMessage } from "@itsmworkbench/components";
 import { Message } from '@itsmworkbench/domain';
 
+type ActionStatus = any
 export interface InPlaceMenuProps<S, S1 extends HasSideeffects> extends LensProps<S, S1, any> {
   actionStatus: ActionStatus
   rootPath: string
