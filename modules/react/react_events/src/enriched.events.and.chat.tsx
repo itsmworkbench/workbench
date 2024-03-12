@@ -10,13 +10,14 @@ import { ConversationPlugin, DisplayChatArea, UserTypingBox } from "@itsmworkben
 export interface EnrichedEventsAndChatProps<S> extends LensProps3<S, Conversation, EnrichedEvent<any, any>[], SideEffect[], any> {
   eventPlugins: DisplayEnrichedEventPlugIn<S>[]
   plugins: ConversationPlugin<S>[]
+  plusMenu?: React.ReactElement
 }
-export function EnrichedEventsAndChat<S> ( { state, plugins, eventPlugins }: EnrichedEventsAndChatProps<S> ) {
+export function EnrichedEventsAndChat<S> ( { state, plugins, eventPlugins, plusMenu }: EnrichedEventsAndChatProps<S> ) {
   return <MainAndTypingLayout
     Main={<DisplayEnrichedEventsUsingPlugin plugins={eventPlugins} state={state.state2 ()}/>}
     Typing={
       <><DisplayChatArea plugins={plugins} state={state.state12 ()} def={
-        <UserTypingBox state={state.state13 ().focus1On ( 'chat' ).focus1On ( 'data' )} from='me'/>}/>
+        <UserTypingBox state={state.state13 ().focus1On ( 'chat' ).focus1On ( 'data' )} from='me' plusMenu={plusMenu}/>}/>
       </>}
   />
 }

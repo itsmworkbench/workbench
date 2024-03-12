@@ -3,16 +3,10 @@ import { Action } from "@itsmworkbench/actions";
 import { NameAnd } from "@laoban/utils";
 
 export interface TicketType {
-  parents: TicketType[]
-  name: string
-  description: string
   capabilities: Capability[]
   actions: PhaseAnd<NameAnd<Action>>
 }
-const checkUsersTT: TicketType = ({
-  parents: [],
-  name: 'CheckUsers',
-  description: 'We need to check if the user is valid in LDAP',
+export const checkUsersTT: TicketType = ({
   capabilities: [ 'LDAP' ],
   actions: {
     CheckTicket: {
@@ -32,11 +26,8 @@ const checkUsersTT: TicketType = ({
     Close: {}
   }
 })
-const simpleTicketType: TicketType = ({
-  parents: [],
-  name: 'Simple',
-  description: 'A simple ticket type',
-  capabilities: [],
+export const approvalTT: TicketType = {
+  capabilities: [ 'Email', 'ReceiveEmail' ],
   actions: {
     CheckTicket: {},
     Approval: {
@@ -51,6 +42,15 @@ const simpleTicketType: TicketType = ({
         waitingFor: [ 'requestApproval' ]
       }
     },
+    Resolve: {},
+    Close: {}
+  }
+}
+export const simpleTicketType: TicketType = ({
+  capabilities: [ 'Email', 'ReceiveEmail' ],
+  actions: {
+    CheckTicket: {},
+    Approval: {},
     Resolve: {},
     Close: {
       requestClosure: {
@@ -71,10 +71,7 @@ const simpleTicketType: TicketType = ({
   }
 })
 
-const updateSql: TicketType = ({
-  parents: [],
-  name: 'UpdateSql',
-  description: 'The ticket is about updating a SQL database',
+export const updateSqlTT: TicketType = ({
   capabilities: [ 'SQL' ],
   actions: {
     CheckTicket: {
@@ -91,6 +88,20 @@ const updateSql: TicketType = ({
         by: 'SQL',
         waitingFor: [ 'checkIssueStillExists' ]
       }
+    },
+    Close: {}
+  }
+})
+
+export const installSoftwareTT: TicketType = ({
+  capabilities: [ 'SSH' ],
+  actions: {
+    CheckTicket: {},
+    Approval: {},
+    Resolve: {
+      installSoftware: {
+        by: 'Manual',
+      },
     },
     Close: {}
   }

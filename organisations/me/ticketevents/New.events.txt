@@ -1,0 +1,2 @@
+{"event":"setId","id":"itsmid/me/ticket/9fb0773f013ca277b27abe95e612b63c3bc8cb22","path":"ticket","context":{"display":{"title":"New Ticket","type":"ticket","name":"New"}}}
+{"event":"info","info":{"system":"EPX","environment":"acceptance","customer":"a.customer@example.com","operator":"phil@example.com","approver":"bob.the.boss@example.com"},"context":{"display":{"title":"Ticket Variables","type":"variables"}}}

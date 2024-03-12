@@ -3,7 +3,7 @@
   "name":        "@itsmworkbench/tickettype",
   "description": "",
   "packageJson": {
-    "dependencies":    {},
+    "dependencies":    { "@laoban/utils":     "1.4.45"},
     "devDependencies": {},
     "browser":         {
       "child_process": false

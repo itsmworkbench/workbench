@@ -10,7 +10,6 @@ export interface DisplayTicketListSelectionState {
 }
 export function DisplayTicketList<S, WS extends DisplayTicketListSelectionState>({ state }: LensProps3<S, string[], WS, EventsAndEnriched, any>) {
   const ticketNames = state.state1().optJson() || [];
-  // Assuming state.state2().optJson() returns an object with a ticketId property
   const selectedTicketId = state.state2().optJson()?.ticketId;
 
   return (

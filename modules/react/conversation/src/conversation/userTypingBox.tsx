@@ -9,9 +9,10 @@ import { Message } from "@itsmworkbench/domain";
 
 interface UserTypingBoxProps<S, C> extends LensProps2<S, string, SideEffect[], C> {
   from: string
+  plusMenu?: React.ReactElement
 }
 
-export function UserTypingBox<S, C> ( { state, from }: UserTypingBoxProps<S, C> ) {
+export function UserTypingBox<S, C> ( { state, from , plusMenu}: UserTypingBoxProps<S, C> ) {
   const inputRef = useRef<HTMLTextAreaElement> ( null );
   function sendMessage () {
     if ( inputRef.current ) {
@@ -45,6 +46,7 @@ export function UserTypingBox<S, C> ( { state, from }: UserTypingBoxProps<S, C> 
       alignItems: 'center', // Vertically centers the items
       gap: 1, // Adds a gap between items
     }}>
+      {plusMenu}
       <TextField
         multiline
         variant="outlined"

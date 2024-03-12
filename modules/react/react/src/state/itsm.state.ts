@@ -12,6 +12,7 @@ import { Ticket } from "@itsmworkbench/tickets";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
 import { defaultTicketTypeDetails } from "@itsmworkbench/tickettype";
+import { SqlData } from "@itsmworkbench/react_conversation/dist/src/workspace/sql.workspace";
 
 export interface ItsmSelectionState extends WorkspaceSelectionState, DisplayTicketListSelectionState {
   mainScreen?: ColumnLeftMainState
@@ -20,6 +21,7 @@ export interface ItsmSelectionState extends WorkspaceSelectionState, DisplayTick
 export type TicketAndId = { id?: string, ticket?: Ticket }
 export interface TempData {
   newTicket: NewTicketData
+  sqlData: SqlData
 }
 
 export interface Blackboard {
@@ -54,7 +56,7 @@ export const startAppState: ItsmState = {
   variables: {},
   tempData: {
     newTicket,
-  },
+  } as TempData,
   selectionState: {},
 }
 

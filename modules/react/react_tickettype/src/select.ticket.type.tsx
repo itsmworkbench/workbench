@@ -30,6 +30,7 @@ export function SelectTicketType<S, > ( { state , readonly}: SelectTicketTypePro
           >
             <MenuItem value="General">General</MenuItem>
             <MenuItem value="Update Database">Update Database</MenuItem>
+            <MenuItem value="Install Software">Install Software</MenuItem>
           </Select>
         </FormControl>
       </Grid>
@@ -42,7 +43,6 @@ export function SelectTicketType<S, > ( { state , readonly}: SelectTicketTypePro
             disabled={disabled}
             onChange={event => state.focusOn ( 'approvalState' ).setJson ( event.target.value as ApprovalState, '' )
             }
-            // onChange={handleApprovalStateChange}
           >
             <MenuItem value="Pre Approved">Pre Approved</MenuItem>
             <MenuItem value="Needs Approval">Needs Approval</MenuItem>

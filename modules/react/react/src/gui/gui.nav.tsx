@@ -2,6 +2,7 @@ import { LensProps, LensState3 } from "@focuson/state";
 import { ItsmSelectionState, ItsmState } from "../state/itsm.state";
 import { FocusOnSetValueButton, FocusOnToggleButton } from "@itsmworkbench/components";
 import { DisplayTicketList } from "@itsmworkbench/react_ticket";
+import { DisplayCapabilitiesList } from "@itsmworkbench/react_capabilities";
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import SettingsIcon from '@mui/icons-material/Settings';
 import React from "react";
@@ -22,6 +23,10 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
     focus1On ( 'ticketList' ).focus1On ( 'names' ).//
     focus2On ( 'selectionState' ).//
     focus3On ( 'events' );
+  let capabilitiesState: LensState2<S, Capabilities[], string, any> = state.doubleUp ().//
+    focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).focus1On ( 'capabilities' ).//
+    focus2On ( 'selectionState' ).focus2On ( 'workspaceTab' )
+  const showDevMode = state.optJson ()?.debug?.showDevMode;
   return <Box
     sx={{
       display: 'flex',
@@ -31,11 +36,13 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
     }}
   >
     <FocusOnSetValueButton aria-label='Chat' startIcon={<ChatIcon/>} valueToSet='chat' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Chat</FocusOnSetValueButton>
-    <FocusOnSetValueButton aria-label='Show settings' startIcon={<SettingsIcon/>} valueToSet='settings' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Settings</FocusOnSetValueButton>
     <FocusOnSetValueButton aria-label='New ticket' startIcon={<AddIcon/>} valueToSet='newTicket' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>New Ticket</FocusOnSetValueButton>
     <DisplayTicketList state={displayTicketState}/>
+    <FocusOnSetValueButton aria-label='Show settings' startIcon={<SettingsIcon/>} valueToSet='settings' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Settings</FocusOnSetValueButton>
     <FocusOnToggleButton aria-label='Toggle Developer Mode' startIcon={<DeveloperModeIcon/>} state={state.focusOn ( 'debug' ).focusOn ( 'showDevMode' )} sx={buttonSx}>Developer Mode</FocusOnToggleButton>
-    <FocusOnSetValueButton aria-label='Debug Events' startIcon={<EventIcon/>} valueToSet='debugEvents' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Debug Events</FocusOnSetValueButton>
-    <FocusOnSetValueButton aria-label='Debug Enriched Events' startIcon={<EventIcon/>} valueToSet='debugEnrichedEvents' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Debug Enriched Events</FocusOnSetValueButton>
+    {showDevMode && <>
+           <FocusOnSetValueButton aria-label='Debug Events' startIcon={<EventIcon/>} valueToSet='debugEvents' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Debug Events</FocusOnSetValueButton>
+        <FocusOnSetValueButton aria-label='Debug Enriched Events' startIcon={<EventIcon/>} valueToSet='debugEnrichedEvents' state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )} sx={buttonSx}>Debug Enriched Events</FocusOnSetValueButton>
+    </>}
   </Box>
 }

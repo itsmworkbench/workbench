@@ -1,0 +1,3 @@
+{"event":"setId","id":"itsmid/me/ticket/0d550a6cdcc1d7d8c5ae248993478b435d257973","path":"ticket","context":{"display":{"title":"New Ticket","type":"ticket","name":"name"}}}
+{"event":"setValue","path":"blackboard.ticket","value":{"system":"EPX","environment":"acceptance","customer":"a.customer@example.com","operator":"phil@example.com","approver":"bob.the.boss@example.com"},"context":{"display":{"title":"Ticket Variables","type":"variables"}}}
+{"event":"setValue","path":"blackboard.ticketType","value":{"ticketType":"General","approvalState":"Needs Approval","validateInvolvedParties":false},"context":{"display":{"title":"Ticket Type","type":"ticketType"}}}

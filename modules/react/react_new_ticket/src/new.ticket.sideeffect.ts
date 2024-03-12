@@ -4,7 +4,7 @@ import { NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/ur
 import { Optional, Transform } from "@focuson/lens";
 import { Event, SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
-import { defaultTicketTypeDetails, TicketTypeDetails } from "@itsmworkbench/tickettype";
+import { defaultTicketTypeDetails, detailsToTicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
 
 //OK Gritting our teeth we aren't worrying about the errors for now. We are just going to assume that everything is going to work.
 //This is so that we can test out the happy path of the gui. We want to see what it will look like. We will come back to the errors later.
@@ -34,7 +34,8 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
     process: async ( s: S, se: AddNewTicketSideEffect ) => {
       const ticketUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticket', name: se.name }
       const ticketeventsUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticketevents', name: se.name }
-      const ticketType = se.ticketType || defaultTicketTypeDetails
+      const ticketTypeDetails = se.ticketType || defaultTicketTypeDetails
+      const ticketType = detailsToTicketType ( ticketTypeDetails )
 
       //what we should do instead of this
       //add to the ticket. (should have a flag that says 'error if doing it again')
@@ -55,11 +56,11 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
             context: { display: { title: 'Ticket Variables', type: 'variables' }, }
           }
           const setTicketTypeEvent: SetValueEvent = {
-            event: 'setValue', path: 'blackboard.ticketType', value: ticketType,
+            event: 'setValue', path: 'blackboard.ticketType', value: { ticketTypeDetails, ticketType },
             context: { display: { title: 'Ticket Type', type: 'ticketType' }, }
           }
 
-          return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ initialTicketEvent, initialVariablesEvent, setTicketTypeEvent ] ), async ticketevents => {
+          return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ setTicketTypeEvent, initialTicketEvent, initialVariablesEvent ] ), async ticketevents => {
             console.log ( 'addNewTicketSideeffectProcessor - ticketevents ', ticketeventsUrl, ticketevents )
             return { ticket, ticketevents }
           } )
