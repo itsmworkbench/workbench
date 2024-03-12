@@ -7,7 +7,7 @@ const openai = new OpenAI({
   apiKey: clientSecret,
 });
 
-// Assuming TicketVariables is structured to store the API's response.
+// Assuming TicketVariables is structured to store the APIs response.
 // The chatgptTicketVariables function is updated to simulate calling the ChatGPT API.
 export const chatgptTicketVariables: AiTicketVariablesFn = async (ticket: string): Promise<TicketVariables> => {
   const systemPrompt = `You will be provided with a ITSM work ticket, and your task is to extract important variables from it. Return these variables only as in key value format.`;
@@ -23,5 +23,9 @@ export const chatgptTicketVariables: AiTicketVariablesFn = async (ticket: string
   // Assuming chatCompletion.choices contains the formatted string with variables.
   const variablesString = chatCompletion.choices[0].message.content;
 
+  console.log(variablesString);
+
   return { variables: variablesString };
 };
+
+//! have an integration test
