@@ -58,7 +58,7 @@ export function DisplayPhase<S> ( { state, phase, status }: DisplayPhaseProps<S>
   const nameAndActions = state.optJson1 () || {}
   const selectionState = state.state23 ()
   return <Box sx={{
-    minWidth: 'fit-content',
+    minWidth: '200px',
     border: '1px solid',
     padding: 1,
     margin: 1,
@@ -67,10 +67,18 @@ export function DisplayPhase<S> ( { state, phase, status }: DisplayPhaseProps<S>
     // justifyContent: 'space-between', // This helps distribute space if needed
     height: '100%' // Makes Box fill the container height
   }}>
-    <Typography variant="h6" component="h2" sx={{ marginBottom: 1 }}>
-      {splitAndCapitalize ( phase )}
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center" // Align items vertically in the center
+      sx={{ marginBottom: 1 }} // You can adjust the margin as needed
+    >
+      <Typography variant="h6" component="h2">
+        {splitAndCapitalize(phase)}
+      </Typography>
+
       <StatusIndicator value={status}/>
-    </Typography>
+    </Box>
     {Object.entries ( nameAndActions ).map ( ( [ name, action ] ) =>
       (<ActionButton state={selectionState} action={action} phase={phase} name={name}/>
       ) )}
