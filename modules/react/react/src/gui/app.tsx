@@ -16,6 +16,7 @@ import { Action } from "@itsmworkbench/actions";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { parseNamedUrlOrThrow, parseUrl } from "@itsmworkbench/url";
+import { Welcome } from "./welcome";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -26,6 +27,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   let wholeState = state.optJson ();
   let showDevMode = wholeState?.debug?.showDevMode;
   let showPhases = wholeState?.selectionState?.ticketId !== undefined;
+  let showWelcome = wholeState?.selectionState?.tabs?.workspaceTab === undefined;
   console.log ( 'state', wholeState );
   const convState = state.tripleUp ().//
     focus1On ( 'conversation' ).//
@@ -59,6 +61,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                           Nav={<GuiNav state={state}/>}>
       <Toolbar/>
       {showPhases &&<DisplayPhases state={phasesState}/>}
+      {showWelcome &&<Welcome count={wholeState?.ticketList?.names?.length}/>}
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'tabs' ).focusOn ( 'workspaceTab' )}>
         <SimpleTabPanel title='chat'>
           <EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins} devMode={showDevMode}

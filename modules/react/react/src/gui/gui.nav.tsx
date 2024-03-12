@@ -35,7 +35,6 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
       p: 1, // Adds padding around the entire container
     }}
   >
-    <FocusOnSetValueButton aria-label='Chat' startIcon={<ChatIcon/>} valueToSet={{ workspaceTab: 'chat' }} state={tabsState} sx={buttonSx}>Chat</FocusOnSetValueButton>
     <NewTicketButton aria-label='New ticket' startIcon={<AddIcon/>} state={state.focusOn ( 'selectionState' )} sx={buttonSx}>New Ticket</NewTicketButton>
     <DisplayTicketList state={displayTicketState}/>
     <FocusOnSetValueButton aria-label='Show settings' startIcon={<SettingsIcon/>} valueToSet={{ workspaceTab: 'settings' }} state={tabsState} sx={buttonSx}>Settings</FocusOnSetValueButton>
@@ -43,6 +42,7 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
     {showDevMode && <>
         <FocusOnSetValueButton aria-label='Debug Events' startIcon={<EventIcon/>} valueToSet={{ workspaceTab: 'debugEvents' }} state={tabsState} sx={buttonSx}>Debug Events</FocusOnSetValueButton>
         <FocusOnSetValueButton aria-label='Debug Enriched Events' startIcon={<EventIcon/>} valueToSet={{ workspaceTab: 'debugEnrichedEvents' }} state={tabsState} sx={buttonSx}>Debug Enriched Events</FocusOnSetValueButton>
+        <FocusOnSetValueButton aria-label='Chat' startIcon={<ChatIcon/>} valueToSet={{ workspaceTab: 'chat' }} state={tabsState} sx={buttonSx}>Chat</FocusOnSetValueButton>
     </>}
   </Box>
 }

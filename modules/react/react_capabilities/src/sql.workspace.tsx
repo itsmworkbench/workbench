@@ -38,7 +38,7 @@ export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }
   })
 
 
-  return <Container maxWidth="md">
+  return <Container >
     <Typography variant="h4" gutterBottom>SQL</Typography>
 
     <Box marginBottom={2}>
@@ -54,7 +54,6 @@ export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }
       {SuccessButton ( contextFn )}
       {FailureButton ( contextFn )}
     </Box>
-
 
     <SqlDataTable details={details}/>
   </Container>
