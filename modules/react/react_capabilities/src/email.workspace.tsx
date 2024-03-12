@@ -9,54 +9,51 @@ import { SqlDataTable } from "./SqlData";
 import { SuccessFailContextFn } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 
-export interface SqlData {
-  sql: string
-  response: string
+export interface EmailData {
+  to: string
+  email: string
 }
 
 
-export interface DisplaySqlWorkbenchProps<S> extends LensProps2<S, SqlData, any, any> {
+export interface DisplayEmailWorkbenchProps<S> extends LensProps2<S, EmailData, any, any> {
   SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
   FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
-export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplaySqlWorkbenchProps<S> ) {
-  const { sql, response } = state.optJson1 () || { sql: '', response: '' }
+export function DisplayEmailWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplayEmailWorkbenchProps<S> ) {
+  const { email, to } = state.optJson1 () || { email: '', to: '' }
   const variables = state.optJson2 () || {}
-  const details = findSqlDataDetails ( sql || '', variables )
 
-  const contextFn: SuccessFailContextFn = ( tab: string|undefined, phase: string, action: string, successOrFail ) => ({
+  const contextFn: SuccessFailContextFn = ( tab: string | undefined, phase: string, action: string, successOrFail ) => ({
     phase, action,
     display: {
-      title: `Sql to ${splitAndCapitalize ( action )}`,
-      type: 'SQL',
+      title: `Ending email to ${to} in order to  ${splitAndCapitalize ( action )}`,
+      type: 'Email',
       successOrFail,
     },
     tab,
-    sql,
-    response
+    email,
+    to
   })
 
 
   return <Container maxWidth="md">
-    <Typography variant="h4" gutterBottom>SQL</Typography>
+    <Typography variant="h4" gutterBottom>Email Check</Typography>
 
     <Box marginBottom={2}>
-      <Typography variant="subtitle1" gutterBottom>SQL to execute</Typography>
-      <TextField fullWidth variant="outlined" value={details?.derefedSql} multiline rows={4}/>
+      <Typography variant="subtitle1" gutterBottom>Send Email To</Typography>
+      <TextField fullWidth variant="outlined" value={to}/>
       <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1}>
-        <Button variant="contained" color="primary" endIcon={<TestIcon/>}>Execute </Button>
+        <Button variant="contained" color="primary" endIcon={<TestIcon/>}>Send Email </Button>
         <Button variant="contained" color="primary" endIcon={<TestIcon/>}> Test Connection </Button>
         <Button variant="contained" color="primary" endIcon={<RefreshIcon/>}> Reset</Button>
       </Box>
-      <Typography variant="subtitle1" gutterBottom>SQL Result</Typography>
-      <TextField fullWidth variant="outlined" multiline rows={4}/>
+      <Typography variant="subtitle1" gutterBottom>Email</Typography>
+      <TextField fullWidth variant="outlined" multiline rows={16}/>
       {SuccessButton ( contextFn )}
       {FailureButton ( contextFn )}
     </Box>
 
-
-    <SqlDataTable details={details}/>
   </Container>
 }
 

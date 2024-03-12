@@ -4,7 +4,7 @@ import { ColumnLeftMainBottom, SilentTabsContainer, SimpleTabPanel, SuccessFailC
 import React from "react";
 import { ItsmState } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
-import { DisplayCapabilitiesMenu, DisplaySqlWorkbench } from "@itsmworkbench/react_capabilities";
+import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayLdapWorkbench, DisplaySqlWorkbench } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { DisplayNewTicket } from "@itsmworkbench/react_new_ticket";
@@ -71,6 +71,12 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
         </SimpleTabPanel>
         <SimpleTabPanel title='SQLWorkbench'>
           <DisplaySqlWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'sqlData' )} SuccessButton={successButton} FailureButton={failureButton}/>
+        </SimpleTabPanel>
+        <SimpleTabPanel title='EmailWorkbench'>
+          <DisplayEmailWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'emailData' )} SuccessButton={successButton} FailureButton={failureButton}/>
+        </SimpleTabPanel>
+        <SimpleTabPanel title='LDAPWorkbench'>
+          <DisplayLdapWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'ldapData' )} SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='newTicket'><DisplayNewTicket state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicket' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
       </SilentTabsContainer>
