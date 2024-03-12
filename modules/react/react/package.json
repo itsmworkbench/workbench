@@ -33,6 +33,7 @@
     "@itsmworkbench/react_ldap": "0.0.3",
     "@itsmworkbench/react_new_ticket": "0.0.3",
     "@itsmworkbench/react_capabilities": "0.0.3",
+    "@itsmworkbench/react_phases": "0.0.3",
     "@itsmworkbench/react_softwarecatalog": "0.0.3",
     "@itsmworkbench/react_sql": "0.0.3",
     "@itsmworkbench/react_templates": "0.0.3",

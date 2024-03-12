@@ -565,6 +565,64 @@
     "@laoban/utils" "1.4.45"
     debug "^4.3.4"
 
+"@itsmworkbench/react_actions@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/react_actions/-/react_actions-0.0.3.tgz#30d8cbb139a1f5683f0f76e1a3f70e2889edb332"
+  integrity sha512-XD7QuqQX/XNH6JR6PPP0C++nykSL5zdPX1HhybJYXJUYiUs/hyU/awG2I7b8DF/f15TychTlH/oCcM0qszok3g==
+  dependencies:
+    "@emotion/react" "^11.11.3"
+    "@emotion/styled" "^11.11.0"
+    "@focuson/lens" "1.44.3"
+    "@focuson/state" "1.44.3"
+    "@itsmworkbench/actions" "0.0.3"
+    "@itsmworkbench/components" "0.0.3"
+    "@laoban/utils" "1.4.45"
+    "@mui/icons-material" "^5.15.10"
+    "@mui/material" "^5.15.10"
+    debug "^4.3.4"
+
+"@itsmworkbench/react_ldap@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/react_ldap/-/react_ldap-0.0.3.tgz#c7545fd7e9c1dc2778c1b4f9aee614c83052055a"
+  integrity sha512-7ja+Ro7nZvwC8caniOZ06w7LJM1Q0Z1LIB5XtKWUU9vhlgNaOMNFj79pvPyARtskzN5WPbz8e1WmttPyYky0uw==
+  dependencies:
+    "@emotion/react" "^11.11.3"
+    "@emotion/styled" "^11.11.0"
+    "@focuson/lens" "1.44.3"
+    "@focuson/state" "1.44.3"
+    "@itsmworkbench/components" "0.0.3"
+    "@itsmworkbench/domain" "0.0.3"
+    "@itsmworkbench/react_core" "0.0.3"
+    "@itsmworkbench/react_softwarecatalog" "0.0.3"
+    "@itsmworkbench/variables" "0.0.3"
+    "@laoban/utils" "1.4.45"
+    "@mui/icons-material" "^5.15.10"
+    "@mui/material" "^5.15.10"
+    debug "^4.3.4"
+    react "^18.2.0"
+    react-dom "^18.2.0"
+
+"@itsmworkbench/react_sql@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/react_sql/-/react_sql-0.0.3.tgz#d4667e045b3787a4e08a2eb38150c070887ab509"
+  integrity sha512-UMXGyIXZn//6BEpmHk+/9f5cQYBxnsoj+afSGOpHxGUa3x3MyYMpMhtCAAimv3qxuhC/c4KrKthDlscxTporfw==
+  dependencies:
+    "@emotion/react" "^11.11.3"
+    "@emotion/styled" "^11.11.0"
+    "@focuson/lens" "1.44.3"
+    "@focuson/state" "1.44.3"
+    "@itsmworkbench/components" "0.0.3"
+    "@itsmworkbench/domain" "0.0.3"
+    "@itsmworkbench/react_core" "0.0.3"
+    "@itsmworkbench/react_softwarecatalog" "0.0.3"
+    "@itsmworkbench/variables" "0.0.3"
+    "@laoban/utils" "1.4.45"
+    "@mui/icons-material" "^5.15.10"
+    "@mui/material" "^5.15.10"
+    debug "^4.3.4"
+    react "^18.2.0"
+    react-dom "^18.2.0"
+
 "@itsmworkbench/update_value_in_database_ticket_type@0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@itsmworkbench/update_value_in_database_ticket_type/-/update_value_in_database_ticket_type-0.0.3.tgz#6acbee8d515a2150b62c8a6a9c6d31a14879fe0d"

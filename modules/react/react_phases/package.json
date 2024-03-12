@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/react_actions",
-  "description": "The react plugin for actions",
+  "name": "@itsmworkbench/react_phases",
+  "description": "The gui about the phases of a ticket",
   "version": "0.0.3",
   "browserslist": {
     "development": [
@@ -15,8 +15,11 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/components": "0.0.3",
     "@itsmworkbench/actions": "0.0.3",
+    "@itsmworkbench/components": "0.0.3",
+    "@itsmworkbench/domain": "0.0.3",
+    "@itsmworkbench/tickettype": "0.0.3",
+    "@itsmworkbench/react_actions": "0.0.3",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

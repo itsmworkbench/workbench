@@ -2,7 +2,7 @@ export * from './src/accordion/accordion.item';
 export * from './src/attribute/attribute.value';
 export * from './src/attribute/edit.attributes.table';
 export * from './src/buttons/copy.clipboard.button';
-export * from './src/buttons/fake.send.button';
+
 export * from './src/buttons/highlightedAndMessageButton';
 export * from './src/buttons/focusOnSetValueButton';
 export * from './src/buttons/focusOnToggleButton';

@@ -1,4 +1,4 @@
-import { LensProps,LensState2 } from "@focuson/state";
+import { LensProps, LensState2 } from "@focuson/state";
 import { ThemeProvider, Toolbar } from "@mui/material";
 import { ColumnLeftMainBottom, SilentTabsContainer, SimpleTabPanel, theme } from "@itsmworkbench/components";
 import React from "react";
@@ -9,7 +9,11 @@ import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { DisplayNewTicket } from "@itsmworkbench/react_new_ticket";
 import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents, EnrichedEventsAndChat } from "@itsmworkbench/react_events";
-import { Capability } from "@itsmworkbench/domain";
+import { Capability, PhaseAnd } from "@itsmworkbench/domain";
+import { DisplayPhases } from "@itsmworkbench/react_phases";
+import { NameAnd } from "@laoban/utils";
+import { Action } from "@itsmworkbench/actions";
+import { TicketType } from "@itsmworkbench/tickettype";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -21,9 +25,11 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   console.log ( 'state', state.optJson () );
   const convState = state.tripleUp ().focus1On ( 'conversation' ).focus2On ( 'events' ).focus2On ( 'enrichedEvents' ).focus3On ( 'sideeffects' )
   const eventsState = state.focusOn ( 'events' )
-  let capabilitiesState: LensState2<S, Capability[], string, any> = state.doubleUp ().//
-    focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).focus1On ( 'capabilities' ).//
+  let ticketTypeAndSelectionState: LensState2<S, TicketType, string, any> = state.doubleUp ().//
+    focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).//
     focus2On ( 'selectionState' ).focus2On ( 'workspaceTab' )
+  let capabilitiesState: LensState2<S, Capability[], string, any> = ticketTypeAndSelectionState.focus1On ( 'capabilities' )
+  let phasesState: LensState2<S,PhaseAnd<NameAnd<Action>>, string, any> = ticketTypeAndSelectionState.focus1On ( 'actions' )
 
   return <>
     return <ThemeProvider theme={theme}>
@@ -32,9 +38,10 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                           state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
                           Nav={<GuiNav state={state}/>}>
       <Toolbar/>
+      <DisplayPhases state={phasesState}/>
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'workspaceTab' )}>
         <SimpleTabPanel title='chat'>
-          <EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins} devMode={showDevMode}  plusMenu={<DisplayCapabilitiesMenu state={capabilitiesState} />}/>
+          <EnrichedEventsAndChat state={convState} plugins={plugins} eventPlugins={eventPlugins} devMode={showDevMode} plusMenu={<DisplayCapabilitiesMenu state={capabilitiesState}/>}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='events'><DisplayEnrichedEventsUsingPlugin state={eventsState.focusOn ( 'enrichedEvents' )} plugins={eventPlugins}/></SimpleTabPanel>
         <SimpleTabPanel title='debugEvents'><DisplayEvents state={eventsState.focusOn ( 'events' )}/></SimpleTabPanel>

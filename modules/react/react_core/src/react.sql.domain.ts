@@ -1,7 +1,3 @@
-import { ActionStatus } from "@itsmworkbench/actions";
-import { LensState } from "@focuson/state";
-import { calculateActionDetails, CommonStateForActionDetails } from "./common.state";
-
 export interface RawSqlWorkbenchState {
   sql: string
   response: string
@@ -33,14 +29,4 @@ export interface SqlPrefiledDetails {
   correctWhen?: string
   title?: string
   actionName?: string
-}
-
-function getSqlPrefiledDetailsIfExist<S, S1 extends CommonStateForActionDetails> ( state: LensState<S, S1, any> ) {
-  const { knowledgeArticle, action, variables, title, actionName } = calculateActionDetails ( state, 'sql' );
-  const type: string = (action as any)?.type?.toString () || ''
-  const sqlData: any = (knowledgeArticle as any)?.sql?.[ type ]
-  const sql = sqlData?.sql
-  const correctWhen = sqlData?.correctWhen
-  return { sql, variables, type, correctWhen, title, actionName }
-
 }

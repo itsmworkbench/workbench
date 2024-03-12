@@ -24,7 +24,7 @@ export function DisplayYaml ( { yaml, maxHeight }: YamlDisplayMUIProps ) {
         <code>{withBlankLines}</code>
       </Typography>
     );
-  } catch ( e ) {
+  } catch ( e: any ) {
     return <Typography component="pre" style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>
       Error {e.toString ()}
       {yaml}

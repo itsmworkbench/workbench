@@ -27,6 +27,7 @@
     "@itsmworkbench/react_ldap",
     "@itsmworkbench/react_new_ticket",
     "@itsmworkbench/react_capabilities",
+    "@itsmworkbench/react_phases",
     "@itsmworkbench/react_softwarecatalog",
     "@itsmworkbench/react_sql",
     "@itsmworkbench/react_templates",

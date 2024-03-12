@@ -3,13 +3,13 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { CommonState, onClickAction, SideEffect } from "@itsmworkbench/react_core";
+import { HasSideeffects, SideEffect } from "@itsmworkbench/react_core";
 import { LensProps, LensState } from "@focuson/state";
 import { ActionStatus } from "@itsmworkbench/actions";
 import { makeSideeffectForMessage } from "@itsmworkbench/components";
 import { Message } from '@itsmworkbench/domain';
 
-export interface InPlaceMenuProps<S, S1 extends CommonState> extends LensProps<S, S1, any> {
+export interface InPlaceMenuProps<S, S1 extends HasSideeffects> extends LensProps<S, S1, any> {
   actionStatus: ActionStatus
   rootPath: string
   who: string
@@ -24,7 +24,7 @@ function setAction<S> ( state: LensState<S, SideEffect[], any>, rootPath: string
   ], '' )
 }
 
-export function InPlaceMenu<S, S1 extends CommonState> ( { state, actionStatus, rootPath, who }: InPlaceMenuProps<S, S1> ) {
+export function InPlaceMenu<S, S1 extends HasSideeffects> ( { state, actionStatus, rootPath, who }: InPlaceMenuProps<S, S1> ) {
   const [ anchorEl, setAnchorEl ] = useState ( null );
   const open = Boolean ( anchorEl );
 
@@ -60,7 +60,7 @@ export function InPlaceMenu<S, S1 extends CommonState> ( { state, actionStatus, 
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={onClickAction ( state, actionStatus )}>
+        <MenuItem onClick={() =>{}}>
           Do this action now
         </MenuItem>
         <MenuItem onClick={() => {

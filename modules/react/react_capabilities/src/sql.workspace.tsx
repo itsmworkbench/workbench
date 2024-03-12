@@ -5,7 +5,8 @@ import { findSqlDataDetails } from "@itsmworkbench/defaultdomains";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { SqlDataTable } from "@itsmworkbench/react_conversation";
+import {  } from "@itsmworkbench/react_conversation";
+import { SqlDataTable } from "./SqlData";
 
 export interface SqlData {
   sql: string

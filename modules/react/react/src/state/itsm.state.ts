@@ -13,10 +13,12 @@ import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
 import { defaultTicketTypeDetails, TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
 import { SqlData } from "@itsmworkbench/react_capabilities";
+import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_phases";
 
-export interface ItsmSelectionState extends WorkspaceSelectionState, DisplayTicketListSelectionState {
+export interface ItsmSelectionState extends WorkspaceSelectionState,  DisplayTicketListSelectionState {
   mainScreen?: ColumnLeftMainState
   ticketId?: string
+  tabs?: TabPhaseAndActionSelectionState
 }
 export type TicketAndId = { id?: string, ticket?: Ticket }
 export interface TempData {
