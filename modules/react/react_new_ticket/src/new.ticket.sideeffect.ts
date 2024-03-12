@@ -2,7 +2,7 @@ import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
 import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
 import { NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
 import { Lens, Optional, Transform } from "@focuson/lens";
-import { InfoEvent, SetIdEvent } from "@itsmworkbench/events";
+import { InfoEvent, SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
 import { Event } from "@itsmworkbench/events";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 
@@ -39,20 +39,24 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn, setPa
       //if error, add to the errors... how do we specify this? Do we have global errors?
       //if not error we want to change the page. How do we do that? How do we say where we want to go? We shouldn't know...we should be told...
 
-      const res: ErrorsAnd<TicketAndTicketEvents> = await mapErrorsK ( await urlSaveFn ( ticketUrl, { description: se.ticket } ), async ticket => {
-        console.log ( 'addNewTicketSideeffectProcessor - ticket ', ticketUrl, ticket )
-        const initialTicketEvent: SetIdEvent = {
-          event: 'setId', id: ticket.id, path: ticketPath, context: {
-            display: { title: 'New Ticket', type: 'ticket', name: se.name },
+      const res: ErrorsAnd<TicketAndTicketEvents> = await mapErrorsK (
+        await urlSaveFn ( ticketUrl, { description: se.ticket } ), async ticket => {
+          console.log ( 'addNewTicketSideeffectProcessor - ticket ', ticketUrl, ticket )
+          const initialTicketEvent: SetIdEvent = {
+            event: 'setId', id: ticket.id, path: ticketPath, context: {
+              display: { title: 'New Ticket', type: 'ticket', name: se.name },
+            }
           }
-        }
-        const initialVariablesEvent: InfoEvent = { event: 'info', info: se.aiAddedVariables, context: { display: { title: 'Ticket Variables', type: 'variables' }, } }
+          const initialVariablesEvent: SetValueEvent = {
+            event: 'setValue', path: 'blackboard.ticket', value: se.aiAddedVariables,
+            context: { display: { title: 'Ticket Variables', type: 'variables' }, }
+          }
 
-        return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ initialTicketEvent, initialVariablesEvent ] ), async ticketevents => {
-          console.log ( 'addNewTicketSideeffectProcessor - ticketevents ', ticketeventsUrl, ticketevents )
-          return { ticket, ticketevents }
+          return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ initialTicketEvent, initialVariablesEvent ] ), async ticketevents => {
+            console.log ( 'addNewTicketSideeffectProcessor - ticketevents ', ticketeventsUrl, ticketevents )
+            return { ticket, ticketevents }
+          } )
         } )
-      } )
       const txs: Transform<S, any>[] = [
         [ setPage, _ => 'chat' ],
         [ eventL, _ => [] ], //clear all the events. The next line will trigger a reload via polling

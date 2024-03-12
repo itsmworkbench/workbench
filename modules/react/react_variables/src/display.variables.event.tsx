@@ -1,9 +1,9 @@
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
-import { InfoEvent, SetIdEvent } from "@itsmworkbench/events";
+import { SetValueEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
 import { DisplayYaml, MicroCard, PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";
-import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn, DisplayEnrichedEventProps } from "@itsmworkbench/react_events";
+import { DisplayEnrichedEventPlugIn, DisplayEnrichedEventProps } from "@itsmworkbench/react_events";
 
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 
@@ -12,20 +12,20 @@ export function DisplayVariablesEventMicro<S> ( { state, icons }: DisplayEnriche
     const event = state.optJson ()
     if ( event === undefined ) return <div>No event - This is an error</div>
     const title = event.displayData?.title || event.event
-    const info = event?.info
+    const info = event?.value
     const titleAndInfo = info ? `${title} - ${JSON.stringify ( info )}` : title
     return titleAndInfo
   }
   return <div><MicroCard icons={icons} summary={getSummary ()}/></div>
 }
-export interface DisplayVariablesEventMiniProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<InfoEvent, any>, any>> {
+export interface DisplayVariablesEventMiniProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetValueEvent, any>, any>> {
 }
 
-export function DisplayDefaultEnrichedHistoryEventFull<S> ( { state, icons }: DisplayVariablesEventMiniProps<S> ) {
+export function DisplayVariablesEventFull<S> ( { state, icons }: DisplayVariablesEventMiniProps<S> ) {
   const event = state.optJson ()
   if ( event === undefined ) return <div>No event - This is an error</div>
   const title = event.displayData?.title || event.event
-  const info = event?.info
+  const info = event?.value
   return <Card sx={{ width: '100%', maxWidth: '75vw' }}>
     {/* CardHeader for actions */}
     <CardHeader
@@ -53,8 +53,8 @@ export function DisplayDefaultEnrichedHistoryEventFull<S> ( { state, icons }: Di
 
 export function displayVariablesEventPlugin<S extends any> (): DisplayEnrichedEventPlugIn<S> {
   return {
-    accept: ( event: EnrichedEvent<any, any> ) => event.event === 'info' && event.displayData?.type === 'variables',
+    accept: ( event: EnrichedEvent<any, any> ) => event.event === 'setValue' && event.displayData?.type === 'variables',
     microDisplay: DisplayVariablesEventMicro,
-    fullDisplay: DisplayDefaultEnrichedHistoryEventFull
+    fullDisplay: DisplayVariablesEventFull
   };
 }

@@ -1,2 +1,2 @@
-{"event":"setId","id":"itsmid/me/ticket/f82b1bb6f4df019cf44f75c6b06b75c94e544e50","path":"ticket","context":{"display":{"title":"New Ticket","type":"ticket","name":"Price"}}}
-{"event":"info","info":{"system":"EPX","environment":"acceptance","customer":"a.customer@example.com","operator":"phil@example.com","approver":"bob.the.boss@example.com"},"context":{"display":{"title":"Ticket Variables","type":"variables"}}}
+{"event":"setId","id":"itsmid/me/ticket/312bdcbe84b8be9e13d6ed2ef66acc38f815c797","path":"ticket","context":{"display":{"title":"New Ticket","type":"ticket","name":"Price"}}}
+{"event":"setValue","path":"blackboard.ticket","value":{"system":"EPX","environment":"acceptance","customer":"a.customer@example.com","operator":"phil@example.com","approver":"bob.the.boss@example.com"},"context":{"display":{"title":"Ticket Variables","type":"variables"}}}
