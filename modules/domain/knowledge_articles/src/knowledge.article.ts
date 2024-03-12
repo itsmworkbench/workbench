@@ -2,7 +2,7 @@ import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { camelCaseAndIdYamlParser, DomainPlugin, } from "@itsmworkbench/domain";
 import { Variables } from "@itsmworkbench/variables";
 import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
-import { Action } from "@itsmworkbench/actions";
+import { BaseAction } from "@itsmworkbench/actions";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
 
@@ -21,8 +21,8 @@ export interface BaseKnowledgeArticle extends IdAndName {
   approver?: string // e.g. specific email for POC. Might have dsl in future. If not here no approval needed
   variables?: NameAnd<string>
   buttons?: NameAnd<ButtonData>
-  checklist?: NameAnd<Action>
-  state: NameAnd<Action>
+  checklist?: NameAnd<BaseAction>
+  state: NameAnd<BaseAction>
 }
 
 export type SqlDetailsType = 'atLeastOne' | 'none' | 'exactlyOne' | 'manual'

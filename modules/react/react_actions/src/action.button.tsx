@@ -1,4 +1,4 @@
-import { Action } from "@itsmworkbench/actions";
+import { BaseAction } from "@itsmworkbench/actions";
 import { Button } from "@mui/material";
 import { uppercaseFirstLetter } from "@itsmworkbench/utils";
 import React from "react";
@@ -6,7 +6,7 @@ import { LensProps } from "@focuson/state";
 import { SelectionStateForActions } from "./action.selection.state";
 
 export interface ActionButtonProps<S> extends LensProps<S, SelectionStateForActions, any> {
-  action: Action
+  action: BaseAction
 
 }
 export function ActionButton<S> ( { action, state }: ActionButtonProps<S> ) {

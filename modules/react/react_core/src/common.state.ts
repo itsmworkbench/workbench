@@ -2,7 +2,7 @@ import { Conversation } from "@itsmworkbench/domain";
 import { NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
 
-import { Action, ActionStatus, calcStatusForWithBy } from "@itsmworkbench/actions";
+import { BaseAction, ActionStatus, calcStatusForWithBy } from "@itsmworkbench/actions";
 import { LensState } from "@focuson/state";
 import { KnowledgeArticle, KnowledgeArticles } from "@itsmworkbench/knowledge_articles";
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
@@ -39,7 +39,7 @@ export interface CommonState extends CommonStateForActionDetails {
 export interface ActionDetails {
   knowledgeArticle: KnowledgeArticle | undefined
   actionName: string
-  action: Action | undefined
+  action: BaseAction | undefined
   variables: any
   title: string
 }

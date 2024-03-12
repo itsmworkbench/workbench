@@ -27,8 +27,8 @@ export function ReceiveEmailWorkspace<Mid, S1 extends CommonState> ( dataFn: Wor
 
 export function DisplayReceiveEmailWorkbench<S, S1 extends CommonState> ( { state: qd }: { state: ReceiveEmailWorkspace<S, S1> } ) {
   const { state } = qd
-  const { action, title, actionName } = calculateActionDetails ( state, 'receiveEmail' );
-  if ( action?.by !== 'receiveEmail' ) return <div>Action is not a receive email action it is {JSON.stringify ( action )}</div>
+  const { action, title, actionName } = calculateActionDetails ( state, 'ReceiveEmail' );
+  if ( action?.by !== 'ReceiveEmail' ) return <div>Action is not a receive email action it is {JSON.stringify ( action )}</div>
 
   return <Container maxWidth="md">
     <Typography variant="h4" gutterBottom>

@@ -26,7 +26,7 @@ export function SqlWorkspace<Mid, S1 extends CommonState> ( dataFn: WorkspaceSta
 
 function getSqlPrefiledDetailsIfExist<S, S1 extends CommonState> ( state: LensState<S, S1, any> ) {
   const { knowledgeArticle, action, variables, title, actionName } = calculateActionDetails ( state, 'sql' );
-  if ( action?.by !== 'sql' ) return {}
+  if ( action?.by !== 'SQL' ) return {}
   if ( !isAdjustDatabaseSqlKS ( knowledgeArticle ) ) return {}
   const type: string = (action as any)?.type?.toString () || ''
   const sqlData: any = (knowledgeArticle?.sql as any)?.[ type ]

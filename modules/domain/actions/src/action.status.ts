@@ -1,5 +1,5 @@
-import { Action } from "./actions";
-import { fromEntries, mapObject, NameAnd } from "@laoban/utils";
+import { BaseAction } from "./actions";
+import { fromEntries, mapObject, NameAnd, toArray } from "@laoban/utils";
 
 export interface WaitingStatus {
   name: string
@@ -9,7 +9,7 @@ export interface WaitingStatus {
 
 export interface ActionStatus {
   actionName: string
-  action: Action
+  action: BaseAction
   waiting: NameAnd<WaitingStatus>
   cantStartBecause: string[]
 }
@@ -24,8 +24,8 @@ export function value2Status ( value: boolean | undefined ): string {
       return 'Not finished';
   }
 }
-export const calcStatusFor = ( ticketStatus: NameAnd<boolean> ) => ( action: Action , actionName: string): ActionStatus => {
-  const waitingStrings = (action.waitingFor || '').split ( ',' ).map ( ( x: string ) => x.trim () ).filter ( ( x: string ) => x !== '' )
+export const calcStatusFor = ( ticketStatus: NameAnd<boolean> ) => ( action: BaseAction, actionName: string ): ActionStatus => {
+  const waitingStrings = toArray ( action.waitingFor ).map ( ( x: string ) => x.trim () ).filter ( ( x: string ) => x !== '' )
   const waiting: NameAnd<WaitingStatus> = {}
   waitingStrings.forEach ( w => {
     waiting[ w ] = { name: w, value: ticketStatus[ w ], status: value2Status ( ticketStatus[ w ] ) }
@@ -34,12 +34,12 @@ export const calcStatusFor = ( ticketStatus: NameAnd<boolean> ) => ( action: Act
   return { action, actionName, waiting, cantStartBecause }
 };
 
-export function calcStatusForAll ( ticketStatus: NameAnd<boolean>, actions: NameAnd<Action> ): NameAnd<ActionStatus> {
+export function calcStatusForAll ( ticketStatus: NameAnd<boolean>, actions: NameAnd<BaseAction> ): NameAnd<ActionStatus> {
   return mapObject ( actions, calcStatusFor ( ticketStatus ) )
 }
-export function filterFor ( actions: NameAnd<Action>, by: string ): NameAnd<Action> {
+export function filterFor ( actions: NameAnd<BaseAction>, by: string ): NameAnd<BaseAction> {
   return fromEntries ( ...Object.entries ( actions ).filter ( ( [ name, action ] ) => by.toLowerCase () === action?.by?.toLowerCase () ) )
 }
-export function calcStatusForWithBy ( ticketStatus: NameAnd<boolean>, by: string, actions: NameAnd<Action> ): NameAnd<ActionStatus> {
+export function calcStatusForWithBy ( ticketStatus: NameAnd<boolean>, by: string, actions: NameAnd<BaseAction> ): NameAnd<ActionStatus> {
   return calcStatusForAll ( ticketStatus, filterFor ( actions, by ) )
 }

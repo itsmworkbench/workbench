@@ -32,8 +32,8 @@ export function EmailWorkspace<Mid, S1 extends CommonState> ( dataFn: WorkspaceS
 
 export function DisplayEmailWorkbench<S, S1 extends CommonState> ( { state: qd }: { state: EmailTempSpace<S, S1> } ) {
   const { state } = qd
-  const { action, variables, title, actionName } = calculateActionDetails ( state, 'email' );
-  if ( action?.by !== 'email' ) return <div>Action is not a email action it is {JSON.stringify ( action )}</div>
+  const { action, variables, title, actionName } = calculateActionDetails ( state, 'Email' );
+  if ( action?.by !== 'Email' ) return <div>Action is not a email action it is {JSON.stringify ( action )}</div>
 
   const toName = (action as any).to
   const to = toName ? replaceVar ( 'finding to', '${' + toName + '}', variables, { variableDefn: dollarsBracesVarDefn, emptyTemplateReturnsSelf: true } ) : ''

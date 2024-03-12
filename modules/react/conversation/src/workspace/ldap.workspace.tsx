@@ -28,7 +28,7 @@ export function LdapWorkspace<Mid, S1 extends CommonState> ( dataFn: WorkspaceSt
 export function DisplayLdapWorkbench<S, S1 extends CommonState> ( { state: qd }: { state: LdapTempSpace<S, S1> } ) {
   const { state } = qd
   const { knowledgeArticle, action, variables, title, actionName } = calculateActionDetails ( state, 'ldap' );
-  if ( action?.by !== 'ldap' ) return <div>Action is not a ldap action it is {JSON.stringify ( action )}</div>
+  if ( action?.by !== 'LDAP' ) return <div>Action is not a ldap action it is {JSON.stringify ( action )}</div>
 
   const whoName = (action as any).who
   const who = whoName && replaceVar ( 'finding who', '${' + whoName + '}', variables, { variableDefn: dollarsBracesVarDefn, emptyTemplateReturnsSelf: true } )
