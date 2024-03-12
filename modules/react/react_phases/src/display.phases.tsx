@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { LensProps2, LensProps3 } from "@focuson/state";
 import { NameAnd } from "@laoban/utils";
 import { PhaseAnd, PhaseName } from "@itsmworkbench/domain";
-import { Action, BaseAction } from "@itsmworkbench/actions";
+import { Action, BaseAction, phaseStatus } from "@itsmworkbench/actions";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { TabPhaseAndActionSelectionState, workbenchName } from "@itsmworkbench/react_core";
@@ -51,9 +51,10 @@ export function ActionButton<S> ( { name, action, phase, state }: ActionButtonPr
 }
 export interface DisplayPhaseProps<S> extends LensProps3<S, NameAnd<Action>, TabPhaseAndActionSelectionState, PhaseAnd<NameAnd<boolean>>, any> {
   phase: PhaseName
+  status: boolean
 }
 
-export function DisplayPhase<S> ( { state, phase }: DisplayPhaseProps<S> ) {
+export function DisplayPhase<S> ( { state, phase, status }: DisplayPhaseProps<S> ) {
   const nameAndActions = state.optJson1 () || {}
   const selectionState = state.state23 ()
   return <Box sx={{
@@ -68,6 +69,7 @@ export function DisplayPhase<S> ( { state, phase }: DisplayPhaseProps<S> ) {
   }}>
     <Typography variant="h6" component="h2" sx={{ marginBottom: 1 }}>
       {splitAndCapitalize ( phase )}
+      <StatusIndicator value={status}/>
     </Typography>
     {Object.entries ( nameAndActions ).map ( ( [ name, action ] ) =>
       (<ActionButton state={selectionState} action={action} phase={phase} name={name}/>
@@ -78,12 +80,20 @@ export function DisplayPhase<S> ( { state, phase }: DisplayPhaseProps<S> ) {
 export interface DisplayPhasesProps<S> extends LensProps3<S, PhaseAnd<NameAnd<Action>>, TabPhaseAndActionSelectionState, PhaseAnd<NameAnd<boolean>>, any> {
 }
 export function DisplayPhases<S> ( { state }: DisplayPhasesProps<S> ) {
-  const phases = state.optJson1 () || {}
+  const phases: PhaseAnd<NameAnd<Action>> = state.optJson1 () || ({} as any)
+  const pStatus: PhaseAnd<NameAnd<boolean>> = state.optJson3 () || ({} as any)
+  const ps = phaseStatus ( phases, pStatus )
+  let previousPhaseOk: boolean = true
   return <Box sx={{ margin: 2 }}><Grid container spacing={2}>
-    {Object.entries ( phases ).map ( ( [ name, actions ] ) => (
-      <Grid item key={name}>
-        <DisplayPhase state={state.focus1On ( name as PhaseName )} phase={name as PhaseName}/>
-      </Grid>
-    ) )}
+    {Object.entries ( phases ).map ( ( [ name, actions ] ) => {
+      const rawPhaseStatus = ps ( name as PhaseName )
+      const thisPhaseStatus = previousPhaseOk === true ? rawPhaseStatus: undefined
+      if ( previousPhaseOk === true ) previousPhaseOk = rawPhaseStatus;
+      return (
+        <Grid item key={name}>
+          <DisplayPhase state={state.focus1On ( name as PhaseName )} phase={name as PhaseName} status={thisPhaseStatus}/>
+        </Grid>
+      );
+    } )}
   </Grid></Box>
 }

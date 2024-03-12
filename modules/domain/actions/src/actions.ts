@@ -1,4 +1,5 @@
-import { Capability } from "@itsmworkbench/domain";
+import { Capability, PhaseAnd } from "@itsmworkbench/domain";
+import { NameAnd } from "@laoban/utils";
 
 
 export interface BaseAction {
@@ -45,3 +46,15 @@ export function isSafeAction ( x: any ): x is SafeAction {
   return x.safe === true
 }
 
+export const phaseStatus = ( actions: PhaseAnd<NameAnd<Action>>, status: PhaseAnd<NameAnd<boolean>>) =>(phase: string ) => {
+  const phaseActions = actions[ phase ] || {}  as any
+  const phaseStatus = status[ phase ]
+  let result: boolean = true;
+  if (Object.keys(phaseActions).length === 0) return true;
+  for ( const action in phaseActions ) {
+    if ( phaseStatus?.[ action ] === false ) return false
+    result = result && phaseStatus?.[ action ]
+  }
+  return result;
+
+};

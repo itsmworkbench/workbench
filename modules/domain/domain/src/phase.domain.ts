@@ -27,3 +27,4 @@ export const phases = [ checkTicketPhase, approvalPhase, resolvePhase, closeTick
 export type PhaseName = 'CheckTicket' | 'Approval' | 'Resolve' | 'Close'
 export const phaseNames: PhaseName[] = [ 'CheckTicket', 'Approval', 'Resolve', 'Close' ]
 export type PhaseAnd<T> = Record<PhaseName, T>
+
