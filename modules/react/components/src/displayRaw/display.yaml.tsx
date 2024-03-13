@@ -20,12 +20,12 @@ export function DisplayYaml ( { yaml, maxHeight }: YamlDisplayMUIProps ) {
   try {
     const withBlankLines = turnToYaml ( yaml )
     return (
-      <Typography component="pre" style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', maxHeight }}>
+      <Typography component="pre" style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', maxHeight,overflowY:'auto' }}>
         <code>{withBlankLines}</code>
       </Typography>
     );
   } catch ( e: any ) {
-    return <Typography component="pre" style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', maxHeight }}>
+    return <Typography component="pre" style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', maxHeight ,overflowY:'auto'}}>
       Error {e.toString ()}
       {yaml}
     </Typography>
