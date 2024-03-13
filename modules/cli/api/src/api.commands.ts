@@ -2,13 +2,12 @@ import { CommandFn, HasCurrentDirectory } from "@itsmworkbench/cli";
 import { startKoa } from "@itsmworkbench/koa";
 import { wizardOfOzApiHandlers } from "./api";
 import { loadFromIdStore } from "@itsmworkbench/idstore";
-import { defaultIdStoreDetails, defaultParserStore } from "@itsmworkbench/defaultdomains";
+import { defaultIdStoreDetails, defaultOrganisationUrlStoreConfig, defaultParserStore } from "@itsmworkbench/defaultdomains";
 import { findListIds } from "@itsmworkbench/listids";
 import { YamlCapability } from "@itsmworkbench/yaml";
-import { defaultOrganisationUrlStoreConfig } from "@itsmworkbench/defaultdomains";
 import { nodeUrlstore } from "@itsmworkbench/urlstorenode";
 import { shellGitsops } from "@itsmworkbench/shell_git";
-import { chatgptTicketVariables, generalChat, generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
+import { chatgptTicketVariables, generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
 import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
 
 

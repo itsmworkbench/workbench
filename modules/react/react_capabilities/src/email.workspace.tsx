@@ -6,6 +6,7 @@ import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn } from "@itsmwo
 import { SideEffect, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { Ticket } from "@itsmworkbench/tickets";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { AiEmailSideEffect } from "./ai.email.sideeffect";
 
 export interface EmailTempData {
   to: string
@@ -43,19 +44,19 @@ export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ) => ({
     phase, action,
     display: {
-      title: `Ending to ${to} ${subject}`,
+      title: `Sending email [${subject}]`,
       type: 'Email',
-      successOrFail,
+      successOrFail
     },
     tab,
     email,
     to,
-    subject
+    subject,
   })
 
 
   return <Container maxWidth="md">
-    <Typography variant="h4" gutterBottom>Email Check</Typography>
+    <Typography variant="h4" gutterBottom>Email</Typography>
 
     <Box marginBottom={2}>
       <Typography variant="subtitle1" gutterBottom>Send Email To</Typography>
