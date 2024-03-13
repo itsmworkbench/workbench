@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { Event } from "@itsmworkbench/events";
-import { makeKnowledgeArticle } from "./create.ka";
+import { findActionInEventsFor, makeKnowledgeArticle } from "./create.ka";
 
 const raw = `
 {"event":"setValue","path":"blackboard.ticketType","value":{"ticketTypeDetails":{"ticketType":"Update Database","approvalState":"Needs Approval","validateInvolvedParties":true},"ticketType":{"capabilities":["Email","KnowledgeArticle","LDAP","ReceiveEmail","SQL"],"actions":{"CheckTicket":{"checkProblemExists":{"by":"SQL"},"checkUser":{"safe":true,"by":"LDAP","who":"issuer.email"},"checkApprover":{"safe":true,"by":"LDAP","who":"approval.to"}},"Approval":{"requestApproval":{"by":"Email","to":"approval.to","waitingFor":[]},"receiveApproval":{"by":"ReceiveEmail","from":"approval.to","waitingFor":["requestApproval"]}},"Resolve":{"checkIssueStillExists":{"by":"SQL"},"resolveTheIssue":{"by":"SQL","waitingFor":["checkIssueStillExists"]}},"Close":{"requestClosure":{"by":"Email","to":"issuer.email","waitingFor":[]},"agreeClosure":{"by":"ReceiveEmail","from":"issuer.email","waitingFor":["requestClosure"]},"closed":{"by":"Ticket","waitingFor":["agreeClosure"]}},"Review":{"createKnowledgeArticle":{"by":"KnowledgeArticle"}}}}},"context":{"display":{"title":"Ticket Type","type":"ticketType","hide":true}}}
@@ -99,6 +99,16 @@ describe ( 'createKnowledgeArticle', () => {
         "LDAP",
         "SQL"
       ]
+    } )
+  } )
+} )
+
+describe ( "findActionInEventsFor", () => {
+  it ( "should find the action in the events", () => {
+    expect ( findActionInEventsFor ( events, 'Resolve', 'resolveTheIssue' ) ).toEqual ( {
+      by: 'SQL',
+      sql: 'delete from product where item_code=\'1234-44\'',
+      waitingFor: [ 'checkIssueStillExists' ]
     } )
   } )
 } )
