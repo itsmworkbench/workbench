@@ -12,7 +12,7 @@ import { Ticket } from "@itsmworkbench/tickets";
 import { EmailResult, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
 import { defaultTicketTypeDetails, TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
-import { EmailTempData, LdapData, SqlData } from "@itsmworkbench/react_capabilities";
+import { EmailTempData, LdapData, SqlData ,KnowledgeArticleTempData} from "@itsmworkbench/react_capabilities";
 
 export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {
   mainScreen?: ColumnLeftMainState
@@ -27,6 +27,7 @@ export interface TempData {
   emailData: EmailTempData
   emailResult: EmailResult
   newTicketWizard: NewTicketWizardData
+  ka: KnowledgeArticleTempData
 }
 
 export interface Blackboard {

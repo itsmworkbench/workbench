@@ -4,7 +4,7 @@ import { ColumnLeftMainBottom, SilentTabsContainer, SimpleTabPanel, SuccessFailC
 import React from "react";
 import { ItsmState } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
-import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayLdapWorkbench, DisplaySqlWorkbench, SendTicketForEmailButton } from "@itsmworkbench/react_capabilities";
+import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplaySqlWorkbench, SendTicketForEmailButton } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { DisplayNewTicket, NewTicketWizard } from "@itsmworkbench/react_new_ticket";
@@ -15,7 +15,7 @@ import { NameAnd } from "@laoban/utils";
 import { Action } from "@itsmworkbench/actions";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
-import { parseNamedUrlOrThrow, parseUrl } from "@itsmworkbench/url";
+import { parseNamedUrlOrThrow } from "@itsmworkbench/url";
 import { Welcome } from "./welcome";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
@@ -88,6 +88,12 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
         </SimpleTabPanel>
         <SimpleTabPanel title='LDAPWorkbench'>
           <DisplayLdapWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'ldapData' )} SuccessButton={successButton} FailureButton={failureButton}/>
+        </SimpleTabPanel>
+        <SimpleTabPanel title='KnowledgeArticleWorkbench'>
+          <DisplayKnowledgeArticleWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'ka' ).//
+            focus2On ( 'events' ).focus2On ( 'events' )
+
+          } SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='newTicket'><DisplayNewTicket state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicket' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
         <SimpleTabPanel title='experimentalNewTicketWizard'>

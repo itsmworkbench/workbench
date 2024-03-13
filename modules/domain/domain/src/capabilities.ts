@@ -1,1 +1,1 @@
-export type Capability = 'SQL' | 'LDAP' | 'Email' | 'ReceiveEmail' | 'Chat' | 'SSH' | 'Manual' | 'Ticket'
+export type Capability = 'SQL' | 'LDAP' | 'Email' | 'ReceiveEmail' | 'Chat' | 'SSH' | 'Manual' | 'Ticket' | 'KnowledgeArticle'

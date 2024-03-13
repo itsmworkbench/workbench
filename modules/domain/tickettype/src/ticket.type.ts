@@ -23,7 +23,8 @@ export const checkUsersTT: TicketType = ({
     },
     Approval: {},
     Resolve: {},
-    Close: {}
+    Close: {},
+    Review: {}
   }
 })
 export const approvalTT: TicketType = {
@@ -43,7 +44,8 @@ export const approvalTT: TicketType = {
       }
     },
     Resolve: {},
-    Close: {}
+    Close: {},
+    Review: {}
   }
 }
 export const simpleTicketType: TicketType = ({
@@ -67,9 +69,43 @@ export const simpleTicketType: TicketType = ({
         by: 'Ticket',
         waitingFor: [ 'agreeClosure' ]
       }
+    },
+    Review: {
+      createKnowledgeArticle: {
+        by: 'KnowledgeArticle',
+      }
     }
   }
 })
+export const usingTicketTypeTT: TicketType = {
+  capabilities: [ 'KnowledgeArticle' ],
+  actions: {
+    CheckTicket: {},
+    Approval: {},
+    Resolve: {},
+    Close: {},
+    Review: {
+      createKnowledgeArticle: {
+        by: 'KnowledgeArticle',
+      }
+    }
+  }
+}
+export const usingKATT: TicketType = {
+  capabilities: [ 'KnowledgeArticle' ],
+  actions: {
+    CheckTicket: {},
+    Approval: {},
+    Resolve: {},
+    Close: {},
+    Review: {
+      reviewKnowledgeArticle: {
+        by: 'KnowledgeArticle',
+      }
+    }
+  }
+
+}
 
 export const updateSqlTT: TicketType = ({
   capabilities: [ 'SQL' ],
@@ -89,7 +125,8 @@ export const updateSqlTT: TicketType = ({
         waitingFor: [ 'checkIssueStillExists' ]
       }
     },
-    Close: {}
+    Close: {},
+    Review: {}
   }
 })
 
@@ -103,6 +140,7 @@ export const installSoftwareTT: TicketType = ({
         by: 'Manual',
       },
     },
-    Close: {}
+    Close: {},
+    Review: {}
   }
 })
