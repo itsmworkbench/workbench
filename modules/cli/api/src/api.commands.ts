@@ -8,7 +8,8 @@ import { YamlCapability } from "@itsmworkbench/yaml";
 import { defaultOrganisationUrlStoreConfig } from "@itsmworkbench/defaultdomains";
 import { nodeUrlstore } from "@itsmworkbench/urlstorenode";
 import { shellGitsops } from "@itsmworkbench/shell_git";
-import { chatgptTicketVariables, generalChat } from "@itsmworkbench/ai_chatgptticketvariables";
+import { chatgptTicketVariables, generalChat, generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
+import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
 
 
 export function apiCommand<Commander, Context extends HasCurrentDirectory, Config> ( yaml: YamlCapability ): CommandFn<Commander, Context, Config> {
@@ -24,7 +25,8 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory, Confi
     action: async ( commander, opts ) => {
       const { port, debug, directory } = opts
       let details = defaultIdStoreDetails ( opts.id.toString (), yaml, defaultParserStore ( yaml ) );
-      const ai = chatgptTicketVariables
+      const aiVariables = chatgptTicketVariables
+      const aiEmails: AIEmailsFn = generalEmail
       const idStore = loadFromIdStore ( details )
       const allIds = findListIds ( details )
       const orgs = defaultOrganisationUrlStoreConfig ( yaml )
@@ -32,7 +34,7 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory, Confi
       const urlStore = nodeUrlstore ( gitOps, orgs )
 
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,
-        wizardOfOzApiHandlers ( idStore, allIds, ai, generalChat, opts.debug === true, orgs.nameSpaceDetails, urlStore ) )
+        wizardOfOzApiHandlers ( idStore, allIds, aiVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore ) )
     }
   })
 

@@ -9,10 +9,10 @@ import { NewTicketData, NewTicketState, NewTicketWizardData } from "@itsmworkben
 import { Operator } from "@itsmworkbench/operator";
 import { Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
-import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
+import { EmailResult, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
 import { defaultTicketTypeDetails, TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
-import { EmailData, LdapData, SqlData } from "@itsmworkbench/react_capabilities";
+import { EmailTempData, LdapData, SqlData } from "@itsmworkbench/react_capabilities";
 
 export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {
   mainScreen?: ColumnLeftMainState
@@ -24,7 +24,8 @@ export interface TempData {
   newTicket: NewTicketData
   sqlData: SqlData
   ldapData: LdapData
-  emailData: EmailData
+  emailData: EmailTempData
+  emailResult: EmailResult
   newTicketWizard: NewTicketWizardData
 }
 
@@ -44,6 +45,7 @@ export interface ItsmState {
   ticketList: ListNamesResult
   conversation: Conversation
   selectionState: ItsmSelectionState
+  ticket?: Ticket
   sideeffects: SideEffect[]
   log: SideeffectResult<any>[],
   variables: NameAnd<Variables>
@@ -75,6 +77,7 @@ export const operatorL: Lens<ItsmState, Operator> = blackboardL.focusOn ( 'opera
 export const ticketIdL: Optional<ItsmState, string> = selectionStateL.focusQuery ( 'ticketId' )
 export const newTicketL: Optional<ItsmState, NewTicketData> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' )
 export const ticketVariablesL: Optional<ItsmState, TicketVariables> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' ).focusQuery ( 'aiAddedVariables' )
+export const emailDataL: Optional<ItsmState, EmailTempData> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'emailData' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> = itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )
 export const tabsL: Optional<ItsmState, TabPhaseAndActionSelectionState> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'tabs' )

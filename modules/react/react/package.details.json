@@ -10,7 +10,7 @@
   },
   "links":       [
     "@itsmworkbench/apiclienteventstore",
-    "@itsmworkbench/apiclient_ticketvariables",
+    "@itsmworkbench/apiclient_ai",
     "@itsmworkbench/components",
     "@itsmworkbench/domain",
     "@itsmworkbench/events",

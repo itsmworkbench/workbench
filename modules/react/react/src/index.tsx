@@ -9,7 +9,7 @@ import { defaultEventProcessor, Event, processEvents } from "@itsmworkbench/even
 import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, defaultParserStore, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { eventsL, ItsmState, logsL, newTicketL, tabsL, sideEffectsL, startAppState, ticketIdL, ticketVariablesL } from "./state/itsm.state";
+import { emailDataL, eventsL, ItsmState, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
@@ -20,7 +20,8 @@ import { displayTicketEventPlugin } from '@itsmworkbench/react_ticket';
 import { displayTicketTypeEventPlugin } from '@itsmworkbench/react_tickettype';
 import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
-import { apiClientForTicketVariables } from "@itsmworkbench/apiclient_ticketvariables";
+import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
+import { addAiEmailSideEffectProcessor } from '@itsmworkbench/react_capabilities';
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -75,13 +76,15 @@ const pollingDetails = polling<Event[]> ( 1000, () => container.state.selectionS
   }, 0, true
 )
 
-const ai = apiClientForTicketVariables ( aiDetails )
+const aiVariables = apiClientForTicketVariables ( aiDetails )
+const aiEmails = apiClientForEmail ( aiDetails )
 
 addEventStoreModifier ( container,
   processSideEffectsInState<ItsmState> (
     processSideEffect ( [
       eventSideeffectProcessor ( urlStore.save, 'me', ticketIdL ),
-      addAiTicketSideeffectProcessor ( ai, ticketVariablesL ),
+      addAiTicketSideeffectProcessor ( aiVariables, ticketVariablesL ),
+      addAiEmailSideEffectProcessor ( aiEmails, emailDataL ),
       addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, 'ticket' )
     ] ),
     sideEffectsL, logsL ) )

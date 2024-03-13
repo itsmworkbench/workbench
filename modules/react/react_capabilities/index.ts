@@ -1,3 +1,4 @@
+export * from './src/ai.email.sideeffect'
 export * from './src/display.capabilities.list';
 export * from './src/capabilities.menu'
 export * from './src/email.workspace';

@@ -1,39 +1,56 @@
-import { LensProps2 } from "@focuson/state";
+import { LensProps2, LensProps3 } from "@focuson/state";
 import React from "react";
-
-import { findSqlDataDetails } from "@itsmworkbench/defaultdomains";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
-import RefreshIcon from '@mui/icons-material/Refresh';
-import { SqlDataTable } from "./SqlData";
-import { SuccessFailContextFn } from "@itsmworkbench/components";
-import { splitAndCapitalize } from "@itsmworkbench/utils";
+import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn } from "@itsmworkbench/components";
+import { SideEffect, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
+import { Ticket } from "@itsmworkbench/tickets";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
-export interface EmailData {
+export interface EmailTempData {
   to: string
+  subject: string
   email: string
 }
 
+export interface SendTicketForEmailButtonProps<S> extends LensProps3<S, TabPhaseAndActionSelectionState, Ticket, SideEffect[], any> {
+}
+export function SendTicketForEmailButton<S> ( { state }: SendTicketForEmailButtonProps<S> ) {
+  function onClick () {
+    const existing = state.optJson3 () ?? []
+    const aiEmailSideEffect: AiEmailSideEffect = {
+      command: 'aiEmail',
+      ticketId: '',
+      purpose: state.state1 ().optJson ()?.action as any,
+      ticket: state.optJson2 ()?.description ?? ''
+    };
+    state.state3 ().setJson ( [ ...existing, aiEmailSideEffect ], '' )
+  }
+  return <Button variant="contained" color="primary" endIcon={<TestIcon/>} onClick={onClick}>Suggest Email </Button>
+}
 
-export interface DisplayEmailWorkbenchProps<S> extends LensProps2<S, EmailData, any, any> {
+
+export interface DisplayEmailWorkbenchProps<S> extends LensProps2<S, EmailTempData, any, any> {
+  SuggestButton: React.ReactNode
   SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
   FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
-export function DisplayEmailWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplayEmailWorkbenchProps<S> ) {
-  const { email, to } = state.optJson1 () || { email: '', to: '' }
+export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton, FailureButton }: DisplayEmailWorkbenchProps<S> ) {
+  const { email, to, subject } = state.optJson1 () || {}
   const variables = state.optJson2 () || {}
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ) => ({
     phase, action,
     display: {
-      title: `Ending email to ${to} in order to  ${splitAndCapitalize ( action )}`,
+      title: `Ending to ${to} ${subject}`,
       type: 'Email',
       successOrFail,
     },
     tab,
     email,
-    to
+    to,
+    subject
   })
 
 
@@ -42,14 +59,18 @@ export function DisplayEmailWorkbench<S> ( { state, SuccessButton, FailureButton
 
     <Box marginBottom={2}>
       <Typography variant="subtitle1" gutterBottom>Send Email To</Typography>
-      <TextField fullWidth variant="outlined" value={to}/>
+      <FocusedTextInput fullWidth variant="outlined" state={state.state1 ().focusOn ( 'to' )}/>
+      <Typography variant="subtitle1" gutterBottom>Subject</Typography>
+      <FocusedTextInput fullWidth variant="outlined" state={state.state1 ().focusOn ( 'subject' )}/>
+
+      <Typography variant="subtitle1" gutterBottom>Email</Typography>
+      {SuggestButton}
+      <FocusedTextArea fullWidth variant="outlined" multiline rows={12} state={state.state1 ().focusOn ( 'email' )}/>
       <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1}>
         <Button variant="contained" color="primary" endIcon={<TestIcon/>}>Send Email </Button>
         <Button variant="contained" color="primary" endIcon={<TestIcon/>}> Test Connection </Button>
         <Button variant="contained" color="primary" endIcon={<RefreshIcon/>}> Reset</Button>
       </Box>
-      <Typography variant="subtitle1" gutterBottom>Email</Typography>
-      <TextField fullWidth variant="outlined" multiline rows={16}/>
       {SuccessButton ( contextFn )}
       {FailureButton ( contextFn )}
     </Box>

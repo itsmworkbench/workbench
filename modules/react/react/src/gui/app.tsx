@@ -4,7 +4,7 @@ import { ColumnLeftMainBottom, SilentTabsContainer, SimpleTabPanel, SuccessFailC
 import React from "react";
 import { ItsmState } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
-import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayLdapWorkbench, DisplaySqlWorkbench } from "@itsmworkbench/react_capabilities";
+import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayLdapWorkbench, DisplaySqlWorkbench, SendTicketForEmailButton } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { DisplayNewTicket, NewTicketWizard } from "@itsmworkbench/react_new_ticket";
@@ -77,14 +77,21 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
           <DisplaySqlWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'sqlData' )} SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='EmailWorkbench'>
-          <DisplayEmailWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'emailData' )} SuccessButton={successButton} FailureButton={failureButton}/>
+          <DisplayEmailWorkbench state={state.doubleUp ().//
+            focus1On ( 'tempData' ).focus1On ( 'emailData' ).//
+            focus2On ( 'variables' )
+
+          } SuggestButton={<SendTicketForEmailButton state={state.tripleUp ().//
+            focus1On ( 'selectionState' ).focus1On ( 'tabs' ).//
+            focus2On ( 'ticket' ).//
+            focus3On ( 'sideeffects' )}/>} SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='LDAPWorkbench'>
           <DisplayLdapWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'ldapData' )} SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='newTicket'><DisplayNewTicket state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicket' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
         <SimpleTabPanel title='experimentalNewTicketWizard'>
-          <NewTicketWizard state={state.doubleUp().focus1On ( 'tempData' ).focus1On ( 'newTicketWizard' ).focus2On('sideeffects')}/></SimpleTabPanel>
+          <NewTicketWizard state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicketWizard' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
       </SilentTabsContainer>
       {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', 'tempData', 'blackboard', 'events', 'enrichedEvents', "conversation", "variables", "ticket", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}
     </ColumnLeftMainBottom>

@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/apiclient_ticketvariables",
-  "description": "The API client for Code that extras variables from the ticket using AI",
+  "name": "@itsmworkbench/apiclient_ai",
+  "description": "The API client for Code accesses the AI API",
   "version": "0.0.3",
   "main": "dist/index",
   "types": "dist/index",

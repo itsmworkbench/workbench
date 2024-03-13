@@ -10,9 +10,11 @@ export type EmailData={
   ticket: string
 }
 
+
 export type EmailResult={
-  subject: string
-  email: string
+  subject?: string
+  email?: string
+  error?: NameAnd<string>
 }
 export type AiTicketVariablesFn = ( ticket: string ) => Promise<TicketVariables>
 
