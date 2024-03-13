@@ -13,9 +13,10 @@ import { EmailResult, TicketVariables } from "@itsmworkbench/ai_ticketvariables"
 import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
 import { defaultTicketTypeDetails, TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
 import { KnowledgeArticleTempData } from "@itsmworkbench/react_capabilities";
+import { Action } from "@itsmworkbench/actions";
 
 export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {
-  mainScreen?: ColumnLeftMainState
+  mainScreen?: MainAppMainState
   ticketId?: string
   tabs?: TabPhaseAndActionSelectionState
 }
@@ -32,6 +33,7 @@ export interface TempData {
 }
 
 export interface Blackboard {
+  action: Action
   operator: Operator
   ticketType: {
     ticketType: TicketType,
@@ -56,7 +58,6 @@ export interface ItsmState {
 
 const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '', ticketType: defaultTicketTypeDetails };
 
-
 export const startAppState: ItsmState = {
   blackboard: {} as any,
   ticketList: undefined as any,
@@ -79,7 +80,7 @@ export const operatorL: Lens<ItsmState, Operator> = blackboardL.focusOn ( 'opera
 export const ticketIdL: Optional<ItsmState, string> = selectionStateL.focusQuery ( 'ticketId' )
 export const newTicketL: Optional<ItsmState, NewTicketData> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' )
 export const ticketVariablesL: Optional<ItsmState, TicketVariables> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' ).focusQuery ( 'aiAddedVariables' )
-export const emailDataL: Optional<ItsmState, EmailTempData> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'emailData' )
+export const emailDataL: Optional<ItsmState, Action> = itsmIdL.focusQuery ( 'blackboard' ).focusQuery ( 'action' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> = itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )
 export const tabsL: Optional<ItsmState, TabPhaseAndActionSelectionState> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'tabs' )

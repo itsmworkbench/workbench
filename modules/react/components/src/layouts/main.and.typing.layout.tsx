@@ -1,7 +1,5 @@
 import { Box, Toolbar } from "@mui/material";
 import React, { ReactNode } from "react";
-import { LensProps } from "@focuson/state";
-import { calcDrawer, MainAppMainState, DrawerLayoutProps } from "./column.left.main.bottom";
 
 export interface MainAndTypingLayoutProps {
   Main: ReactNode;

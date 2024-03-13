@@ -1,7 +1,7 @@
 import { Capability } from "./capabilities";
 
 export type WhereContext = { phase?: string, action?: string, tab?: string }
-export type DisplayContext = { title: string, type: string, successOrFail: boolean }
+export type DisplayContext = { title: string, type: string, successOrFail: boolean | undefined}
 
 export type WorkBenchContext<T> = {
   capability: Capability

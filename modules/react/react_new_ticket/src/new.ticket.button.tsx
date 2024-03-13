@@ -1,6 +1,6 @@
 import { LensProps } from "@focuson/state";
 import { WorkspaceSelectionState } from "@itsmworkbench/react_core";
-import { MainAppMainState } from "@itsmworkbench/components/dist/src/layouts/column.left.main.bottom";
+import { MainAppMainState } from "@itsmworkbench/components";
 import React, { ReactElement } from "react";
 import Button from "@mui/material/Button";
 import { ButtonProps } from "@mui/material";
@@ -9,7 +9,7 @@ import { ButtonProps } from "@mui/material";
 export interface NewTicketState {
   tabs?: WorkspaceSelectionState
   ticketId?: string
-  mainScreen?: ColumnLeftMainState
+  mainScreen?: MainAppMainState
 }
 
 export interface NewTicketButtonProps<S, W> extends LensProps<S, W, any>, ButtonProps {

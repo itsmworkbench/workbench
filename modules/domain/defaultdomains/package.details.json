@@ -21,6 +21,7 @@
     "@itsmworkbench/softwarecatalog",
     "@itsmworkbench/templates",
     "@itsmworkbench/tickets",
+    "@itsmworkbench/tickettype",
     "@itsmworkbench/ticketevents",
     "@itsmworkbench/utils",
     "@itsmworkbench/yaml"

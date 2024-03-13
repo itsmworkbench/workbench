@@ -30,6 +30,7 @@
     "@itsmworkbench/softwarecatalog": "0.0.3",
     "@itsmworkbench/templates": "0.0.3",
     "@itsmworkbench/tickets": "0.0.3",
+    "@itsmworkbench/tickettype": "0.0.3",
     "@itsmworkbench/ticketevents": "0.0.3",
     "@itsmworkbench/utils": "0.0.3",
     "@itsmworkbench/yaml": "0.0.3",

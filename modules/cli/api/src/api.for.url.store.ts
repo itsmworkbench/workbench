@@ -57,12 +57,13 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
     try {
       console.log ( `${'PUT'}Urls`, url );
       // The actionFn is either 'load' for GET or 'save' for PUT
-      let requestBody = ctx.context.request.rawBody;
+      let requestBody: any = ctx.context.request.rawBody;
       console.log ( 'requestBody', requestBody )
       const named = parseNamedUrlOrThrow ( url )
       const details = urlToDetails ( nsToDetails, named )
       const result: ErrorsAnd<UrlStoreResult> = await mapErrorsK ( details, async d => {
         const parsed = d.parser ( url, requestBody )
+        console.log ( 'parsed','sizein', requestBody.length, details )
         console.log ( 'parsed', parsed )
         return await save ( named, parsed, { append, commit } );
       } )

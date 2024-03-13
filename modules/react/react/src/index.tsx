@@ -21,7 +21,7 @@ import { displayTicketTypeEventPlugin } from '@itsmworkbench/react_tickettype';
 import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
-import { addAiEmailSideEffectProcessor } from '@itsmworkbench/react_capabilities';
+import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect } from '@itsmworkbench/react_capabilities';
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -85,6 +85,7 @@ addEventStoreModifier ( container,
       eventSideeffectProcessor ( urlStore.save, 'me', ticketIdL ),
       addAiTicketSideeffectProcessor ( aiVariables, ticketVariablesL ),
       addAiEmailSideEffectProcessor ( aiEmails, emailDataL ),
+      addSaveKnowledgeArticleSideEffect ( urlStore.save, 'me' ),
       addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, 'ticket' )
     ] ),
     sideEffectsL, logsL ) )

@@ -1,6 +1,9 @@
 import { Capability, PhaseAnd } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { NameAnd } from "@laoban/utils";
+import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
+import { Ticket } from "@itsmworkbench/tickets";
+import { YamlCapability } from "@itsmworkbench/yaml";
 
 export interface TicketType {
   capabilities: Capability[]
@@ -144,3 +147,11 @@ export const installSoftwareTT: TicketType = ({
     Review: {}
   }
 })
+export function ticketTypeNamespaceDetails ( yaml: YamlCapability, ) {
+  return nameSpaceDetailsForGit ( 'ka', {
+    extension: 'md',
+    mimeType: 'text/markdown; charset=UTF-8',
+    parser: ( id, s ) => yaml.parser ( s ),
+    writer: yaml.writer,
+  } );
+}

@@ -1,7 +1,7 @@
 import { Event } from "@itsmworkbench/events";
 import { Capability, EmailWorkBenchContext, isEmailWorkBenchContext, isLdapWorkBenchContext, isReceiveEmailWorkbenchContext, isSqlWorkBenchContext, isWorkBenchContext, LdapWorkBenchContext, ReceiveEmailWorkbenchContext, SqlWorkBenchContext, WorkBenchContext } from "@itsmworkbench/domain";
 import { TicketType } from "@itsmworkbench/tickettype";
-import { NameAnd } from "@laoban/utils";
+import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { Action, BaseAction, SqlAction } from "@itsmworkbench/actions";
 
 export type EventWithWorkBenchContext<T> = Event & { context: WorkBenchContext<T> }
@@ -57,7 +57,7 @@ export function lastTicketType ( e: Event[] ): TicketType {
   return JSON.parse ( JSON.stringify ( foundTicketType ) )
 
 }
-export function makeKnowledgeArticle ( e: Event[] ) {
+export function makeKnowledgeArticle ( e: Event[] ): ErrorsAnd<TicketType> {
   const ticketType: TicketType = lastTicketType ( e )
   if ( ticketType == undefined ) return [ 'Could not find ticket type event' ]
   const capabilities: Capability[] = []
