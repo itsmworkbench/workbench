@@ -7,12 +7,8 @@ import { SideEffect, TabPhaseAndActionSelectionState } from "@itsmworkbench/reac
 import { Ticket } from "@itsmworkbench/tickets";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { AiEmailSideEffect } from "./ai.email.sideeffect";
+import { EmailTempData, EmailWorkBenchContext } from "@itsmworkbench/domain";
 
-export interface EmailTempData {
-  to: string
-  subject: string
-  email: string
-}
 
 export interface SendTicketForEmailButtonProps<S> extends LensProps3<S, TabPhaseAndActionSelectionState, Ticket, SideEffect[], any> {
 }
@@ -41,19 +37,15 @@ export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton
   const { email, to, subject } = state.optJson1 () || {}
   const variables = state.optJson2 () || {}
 
-  const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ) => ({
-    phase, action,
+  const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): EmailWorkBenchContext => ({
+    where: { phase, action, tab },
     display: {
       title: `Sending email [${subject}]`,
       type: 'Email',
       successOrFail
     },
-    tab,
-    email,
-    to,
-    subject,
+    data: { to, subject, email }
   })
-
 
   return <Container maxWidth="md">
     <Typography variant="h4" gutterBottom>Email</Typography>

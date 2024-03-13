@@ -1,7 +1,8 @@
 import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
 import { AIEmailsFn, EmailData, EmailResult } from "@itsmworkbench/ai_ticketvariables";
 import { Optional, Transform } from "@focuson/lens";
-import { EmailTempData } from "./email.workspace";
+import {  } from "./email.workbench";
+import { EmailTempData } from "@itsmworkbench/domain";
 
 //OK Gritting our teeth we aren't worrying about the errors for now. We are just going to assume that everything is going to work.
 //This is so that we can test out the happy path of the gui. We want to see what it will look like. We will come back to the errors later.

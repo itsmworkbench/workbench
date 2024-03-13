@@ -8,11 +8,8 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { SqlDataTable } from "./SqlData";
 import { SuccessFailContextFn } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
+import { LdapData, LdapWorkBenchContext } from "@itsmworkbench/domain";
 
-export interface LdapData {
-  email: string
-  response: string
-}
 
 
 export interface DisplayLdapWorkbenchProps<S> extends LensProps2<S, LdapData, any, any> {
@@ -24,18 +21,15 @@ export function DisplayLdapWorkbench<S> ( { state, SuccessButton, FailureButton 
   const { email, response } = state.optJson1 () || { sql: '', response: '' }
   const variables = state.optJson2 () || {}
 
-  const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ) => ({
-    phase, action,
+  const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): LdapWorkBenchContext => ({
+    where: { phase, action, tab },
     display: {
       title: `Ldap check to ${splitAndCapitalize ( action )}`,
       type: 'LDAP',
       successOrFail,
     },
-    tab,
-    email,
-    response
+    data: { email, response }
   })
-
 
   return <Container maxWidth="md">
     <Typography variant="h4" gutterBottom>LDAP Check</Typography>
