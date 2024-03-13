@@ -1,6 +1,6 @@
 import { DebugState, EventsAndEnriched, SideEffect, SideeffectResult, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { Lens, Lenses, Optional } from "@focuson/lens";
-import { ColumnLeftMainState } from "@itsmworkbench/components";
+import { MainAppMainState } from "@itsmworkbench/components";
 import { ChatDisplayData, Conversation, EmailTempData, LdapData, PhaseAnd, ReceiveEmailData, SqlData } from "@itsmworkbench/domain";
 import { ListNamesResult } from "@itsmworkbench/url";
 import { NameAnd } from "@laoban/utils";

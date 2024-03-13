@@ -2,7 +2,7 @@ import React from "react";
 import { LensProps3 } from "@focuson/state";
 import { List, ListItem, ListItemText } from "@material-ui/core";
 import { EventsAndEnriched, WorkspaceSelectionState } from "@itsmworkbench/react_core";
-import { ColumnLeftMainState } from "@itsmworkbench/components/dist/src/layouts/column.left.main.bottom";
+import { MainAppMainState } from "@itsmworkbench/components/dist/src/layouts/column.left.main.bottom";
 
 
 export interface DisplayTicketListSelectionState<Tabs extends WorkspaceSelectionState> {

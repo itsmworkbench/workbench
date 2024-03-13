@@ -1,6 +1,6 @@
 import { LensProps, LensState2, LensState3 } from "@focuson/state";
 import { ThemeProvider, Toolbar } from "@mui/material";
-import { ColumnLeftMainBottom, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn, SuccessFailureButton, theme } from "@itsmworkbench/components";
+import { DisplayMarkdown, DisplayYaml, MainAppLayout, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn, SuccessFailureButton, theme } from "@itsmworkbench/components";
 import React from "react";
 import { ItsmState } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
@@ -56,10 +56,11 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
 
   return <>
     return <ThemeProvider theme={theme}>
-    <ColumnLeftMainBottom title={`ITSM Workbench ${currentTicketText}`}
-                          layout={{ drawerWidth: '240px', height: '100vh' }}
-                          state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
-                          Nav={<GuiNav state={state}/>}>
+    <MainAppLayout title={`ITSM Workbench ${currentTicketText}`}
+                   layout={{ leftDrawerWidth: '240px', height: '100vh' }}
+                   state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
+                   Nav={<GuiNav state={state}/>}
+                   Details={<DisplayMarkdown md={state.optJson()?.ticket?.description||'<No Ticket>'}/>}>
       <Toolbar/>
       {showPhases && <DisplayPhases state={phasesState}/>}
       {showWelcome && <Welcome count={wholeState?.ticketList?.names?.length}/>}
@@ -106,7 +107,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
           <NewTicketWizard state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicketWizard' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
       </SilentTabsContainer>
       {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', 'tempData', 'blackboard', 'events', 'enrichedEvents', "conversation", "variables", "ticket", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}
-    </ColumnLeftMainBottom>
+    </MainAppLayout>
   </ThemeProvider>
   </>
 }

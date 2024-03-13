@@ -1,6 +1,6 @@
 import { LensProps } from "@focuson/state";
 import { WorkspaceSelectionState } from "@itsmworkbench/react_core";
-import { ColumnLeftMainState } from "@itsmworkbench/components/dist/src/layouts/column.left.main.bottom";
+import { MainAppMainState } from "@itsmworkbench/components/dist/src/layouts/column.left.main.bottom";
 import React, { ReactElement } from "react";
 import Button from "@mui/material/Button";
 import { ButtonProps } from "@mui/material";
