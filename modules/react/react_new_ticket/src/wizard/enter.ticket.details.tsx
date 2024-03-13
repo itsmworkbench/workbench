@@ -94,7 +94,8 @@ export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTick
 
 
       <DisplayJson json={hackedStateForAi.optJson ()} maxHeight='200px'/>
-
+      {prev}
+      {next(true)}
     </Box>
   );
 }

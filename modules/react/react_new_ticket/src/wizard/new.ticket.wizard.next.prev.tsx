@@ -3,12 +3,12 @@ import { getCurrentStep, getNextWizardStep, getPreviousWizardStep, NewTicketWiza
 import Button from "@mui/material/Button";
 import React from "react";
 
-export function NextNewWizardStepButton<S> ( { state, enabled }: LensProps<S, NewTicketWizardStep, any> & { enabled: boolean } ) {
+export function NextNewWizardStepButton<S> ( { state, enabled }: LensProps<S, NewTicketWizardStep, any> & { enabled?: boolean } ) {
   const currentStep = getCurrentStep ( state );
   const nextStep = getNextWizardStep ( currentStep );
   return (
     <Button
-      disabled={!enabled && nextStep === undefined}
+      disabled={enabled ==false || nextStep === undefined}
       variant="contained"
       onClick={() => {if ( nextStep ) state.setJson ( nextStep, 'wizard' )}}
     >

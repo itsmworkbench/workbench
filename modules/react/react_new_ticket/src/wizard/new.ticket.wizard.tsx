@@ -6,6 +6,7 @@ import { TicketSourceSelection } from "./ticketSourceSelection";
 import { EnterTicketDetails } from "./enter.ticket.details";
 import { SideEffect } from "@itsmworkbench/react_core";
 import { Box, Container } from "@mui/material";
+import { NewHowToProcessTicket } from "./new.how.to.process.ticket";
 
 
 export function DisplayNewTicketWizardStep<S> ( { state }: LensProps2<S, NewTicketWizardData, SideEffect[], any> ) {
@@ -17,8 +18,7 @@ export function DisplayNewTicketWizardStep<S> ( { state }: LensProps2<S, NewTick
     case 'createTicket':
       return <EnterTicketDetails state={state}/>
     case 'howToProcessTicket':
-      return <div>Ticket details</div>
-
+      return <NewHowToProcessTicket state={state}/>
   }
 }
 export function NewTicketWizard<S>({ state }: LensProps2<S, NewTicketWizardData, SideEffect[], any>) {

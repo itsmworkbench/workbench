@@ -7,7 +7,7 @@ import React from "react";
 export function WizardBreadcrumbs<S> ( { state }: LensProps<S, NewTicketWizardStep, any> ) {
   const currentStep = getCurrentStep ( state )
 
-  return <Breadcrumbs aria-label="breadcrumb">
+  return <Breadcrumbs aria-label="breadcrumb"  separator=" >> ">
     {newTicketWizardSteps.map ( ( step, index ) => {
       const isCurrentStep = step === currentStep;
       const isClickable = isSameOrBefore ( currentStep, step );

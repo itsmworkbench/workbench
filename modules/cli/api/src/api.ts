@@ -7,7 +7,7 @@ import { ListIds } from "@itsmworkbench/listids";
 import { getUrls, listUrls, putUrls } from "./api.for.url.store";
 import { NameSpaceDetails, UrlStore } from "@itsmworkbench/url";
 import { NameAnd } from "@laoban/utils";
-import { executeAIForChat, executeAIForVariables } from "./api.for.ai";
+import { executeAIForEmail, executeAIForVariables } from "./api.for.ai";
 import { AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
 
 
@@ -91,7 +91,7 @@ export const wizardOfOzApiHandlers = ( idStore: IdStore, getIds: ListIds, aiForV
                                        urlStore: UrlStore, ...handlers: KoaPartialFunction[] ): ( from: ContextAndStats ) => Promise<void> =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
     executeAIForVariables ( aiForVariables ),
-    executeAIForChat( aiForChat ),
+    executeAIForEmail( aiForChat ),
     ids ( idStore, debug ),
     eventsPF,
     getIdsPF ( getIds ),
