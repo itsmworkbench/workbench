@@ -5,7 +5,7 @@ import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { FocusedTextArea, SuccessFailContextFn } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
-import { ReceiveEmailData, ReceiveEmailWorkBenchContext } from "@itsmworkbench/domain";
+import { ReceiveEmailData, ReceiveEmailWorkbenchContext } from "@itsmworkbench/domain";
 
 
 export interface DisplayReceiveEmailWorkbenchProps<S> extends LensProps2<S, ReceiveEmailData, any, any> {
@@ -17,7 +17,8 @@ export function DisplayReceiveEmailWorkbench<S> ( { state, SuccessButton, Failur
   const { email, from } = state.optJson1 () || { sql: '', from: '' }
   const variables = state.optJson2 () || {}
 
-  const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): ReceiveEmailWorkBenchContext => ({
+  const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): ReceiveEmailWorkbenchContext => ({
+    capability: 'ReceiveEmail',
     where: { phase, action, tab },
     display: {
       title: `ReceiveEmail check to ${splitAndCapitalize ( action )}`,
@@ -28,7 +29,7 @@ export function DisplayReceiveEmailWorkbench<S> ( { state, SuccessButton, Failur
   })
 
   return <Container maxWidth="md">
-    <Typography variant="h4" gutterBottom>ReceiveEmail</Typography>
+    <Typography variant="h4" gutterBottom>Receive Email</Typography>
 
     <Box marginBottom={2}>
       <Typography variant="subtitle1" gutterBottom>Received From</Typography>

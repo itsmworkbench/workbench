@@ -23,6 +23,7 @@ export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }
   const details = findSqlDataDetails ( sql || '', variables )
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): SqlWorkBenchContext => ({
+    capability: 'SQL',
     where: { phase, action, tab },
     data: { sql, response },
     display: {

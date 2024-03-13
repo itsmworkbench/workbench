@@ -21,6 +21,8 @@ export interface LdapAction extends BaseAction {
 export interface EmailAction extends BaseAction {
   by: 'Email'
   to: string
+  subject?: string
+  email?: string
 }
 export interface ReceiveEmailAction extends BaseAction {
   by: 'ReceiveEmail'

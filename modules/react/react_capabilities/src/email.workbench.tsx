@@ -38,6 +38,7 @@ export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton
   const variables = state.optJson2 () || {}
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): EmailWorkBenchContext => ({
+    capability: 'Email',
     where: { phase, action, tab },
     display: {
       title: `Sending email [${subject}]`,

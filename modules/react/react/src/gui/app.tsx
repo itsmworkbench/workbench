@@ -17,6 +17,7 @@ import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/url";
 import { Welcome } from "./welcome";
+import { DisplayReceiveEmailWorkbench } from "@itsmworkbench/react_capabilities/dist/src/receive.email.workbench";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -89,6 +90,11 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
         <SimpleTabPanel title='LDAPWorkbench'>
           <DisplayLdapWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'ldapData' )} SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
+
+        <SimpleTabPanel title='ReceiveEmailWorkbench'>
+          <DisplayReceiveEmailWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'receiveEmailData' )} SuccessButton={successButton} FailureButton={failureButton}/>
+        </SimpleTabPanel>
+
         <SimpleTabPanel title='KnowledgeArticleWorkbench'>
           <DisplayKnowledgeArticleWorkbench state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'ka' ).//
             focus2On ( 'events' ).focus2On ( 'events' )

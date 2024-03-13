@@ -1,15 +1,11 @@
 import { LensProps2 } from "@focuson/state";
 import React from "react";
-
-import { findSqlDataDetails } from "@itsmworkbench/defaultdomains";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { SqlDataTable } from "./SqlData";
-import { SuccessFailContextFn } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { LdapData, LdapWorkBenchContext } from "@itsmworkbench/domain";
-
 
 
 export interface DisplayLdapWorkbenchProps<S> extends LensProps2<S, LdapData, any, any> {
@@ -23,6 +19,7 @@ export function DisplayLdapWorkbench<S> ( { state, SuccessButton, FailureButton 
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): LdapWorkBenchContext => ({
     where: { phase, action, tab },
+    capability: 'LDAP',
     display: {
       title: `Ldap check to ${splitAndCapitalize ( action )}`,
       type: 'LDAP',
@@ -36,14 +33,14 @@ export function DisplayLdapWorkbench<S> ( { state, SuccessButton, FailureButton 
 
     <Box marginBottom={2}>
       <Typography variant="subtitle1" gutterBottom>Email to check in LDAP</Typography>
-      <TextField fullWidth variant="outlined" value={email}/>
+      <FocusedTextInput fullWidth variant="outlined"state={state.state1 ().focusOn ( 'email' )}/>
       <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1}>
         <Button variant="contained" color="primary" endIcon={<TestIcon/>}>Execute </Button>
         <Button variant="contained" color="primary" endIcon={<TestIcon/>}> Test Connection </Button>
         <Button variant="contained" color="primary" endIcon={<RefreshIcon/>}> Reset</Button>
       </Box>
       <Typography variant="subtitle1" gutterBottom>LDAP Result</Typography>
-      <TextField fullWidth variant="outlined" multiline rows={4}/>
+      <FocusedTextArea fullWidth variant="outlined" state={state.state1 ().focusOn ( 'response' )}/>
       {SuccessButton ( contextFn )}
       {FailureButton ( contextFn )}
     </Box>

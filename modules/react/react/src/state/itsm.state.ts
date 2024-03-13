@@ -1,7 +1,7 @@
 import { DebugState, EventsAndEnriched, SideEffect, SideeffectResult, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { Lens, Lenses, Optional } from "@focuson/lens";
 import { ColumnLeftMainState } from "@itsmworkbench/components";
-import { ChatDisplayData, Conversation, PhaseAnd } from "@itsmworkbench/domain";
+import { ChatDisplayData, Conversation, EmailTempData, LdapData, PhaseAnd, ReceiveEmailData, SqlData } from "@itsmworkbench/domain";
 import { ListNamesResult } from "@itsmworkbench/url";
 import { NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
@@ -12,7 +12,7 @@ import { Ticket } from "@itsmworkbench/tickets";
 import { EmailResult, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
 import { defaultTicketTypeDetails, TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
-import { EmailTempData, LdapData, SqlData ,KnowledgeArticleTempData} from "@itsmworkbench/react_capabilities";
+import { KnowledgeArticleTempData } from "@itsmworkbench/react_capabilities";
 
 export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {
   mainScreen?: ColumnLeftMainState
@@ -26,6 +26,7 @@ export interface TempData {
   ldapData: LdapData
   emailData: EmailTempData
   emailResult: EmailResult
+  receiveEmailData: ReceiveEmailData
   newTicketWizard: NewTicketWizardData
   ka: KnowledgeArticleTempData
 }
