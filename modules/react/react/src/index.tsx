@@ -22,6 +22,8 @@ import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
 import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect } from '@itsmworkbench/react_capabilities';
+import { displaySqlEventPlugin } from "@itsmworkbench/react_capabilities";
+import { displayEmailEventPlugin } from "@itsmworkbench/react_capabilities";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -46,6 +48,8 @@ addEventStoreListener ( container, (( oldS, s, setJson ) =>
     plugins={[]}
     eventPlugins={[
       displayTicketEventPlugin<ItsmState> (),
+      displaySqlEventPlugin<ItsmState> (),
+      displayEmailEventPlugin<ItsmState> (),
       displayVariablesEventPlugin<ItsmState> (),
       displayTicketTypeEventPlugin<ItsmState> (),
       displayMessageEventPlugin<ItsmState> () ]}
