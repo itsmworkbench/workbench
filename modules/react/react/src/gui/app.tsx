@@ -60,7 +60,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                    layout={{ leftDrawerWidth: '240px', height: '100vh' }}
                    state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
                    Nav={<GuiNav state={state}/>}
-                   Details={<DisplayMarkdown md={state.optJson ()?.ticket?.description || '<No Ticket>'}/>}>
+                   Details={<DisplayMarkdown md={state.optJson ()?.ticket?.description || state.optJson ()?.tempData?.newTicket?.ticketDetails || '<No Ticket>'}/>}>
       <Toolbar/>
       {showPhases && <DisplayPhases state={phasesState}
                                     Action={( phase, name, action, status ) =>
@@ -103,7 +103,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
         </SimpleTabPanel>
 
         <SimpleTabPanel title='KnowledgeArticleWorkbench'>
-          <DisplayKnowledgeArticleWorkbench variables={(state.focusOn('blackboard').optJson()||{} as any)?.ticket} state={state.tripleUp ().focus1On ( 'tempData' ).focus1On ( 'ka' ).//
+          <DisplayKnowledgeArticleWorkbench variables={(state.focusOn ( 'blackboard' ).optJson () || {} as any)?.ticket} state={state.tripleUp ().focus1On ( 'tempData' ).focus1On ( 'ka' ).//
             focus2On ( 'events' ).focus2On ( 'events' ).//
             focus3On ( 'sideeffects' )
           } SuccessButton={successButton} FailureButton={failureButton}/>
