@@ -19,7 +19,7 @@ const raw = `
 const events: Event[] = raw.split ( '\n' ).filter ( t => t.length > 0 ).map ( t => t.trim () ).map ( line => JSON.parse ( line ) )
 describe ( 'createKnowledgeArticle', () => {
   it ( 'should create a knowledge article', () => {
-    expect ( makeKnowledgeArticle ( events ) ).toEqual ( {
+    expect ( makeKnowledgeArticle ( events ,{"approval.to":"someName"}) ).toEqual ( {
       "actions": {
         "Approval": {
           "receiveApproval": {
@@ -33,14 +33,12 @@ describe ( 'createKnowledgeArticle', () => {
             "by": "Email",
             "email": "I am writing to inform you of a discrepancy in the EPX system regarding the discombobulator (item code 1234-44). The current listed price is £55.55, which is incorrect. The correct price for this item should be £44.44.\n\nTo ensure our pricing reflects accurately in the EPX production environment and to maintain our integrity with our customers, I request your approval to update the price from £55.55 to £44.44.\n\nYour prompt attention to this matter will be greatly appreciated as it will help us to continue providing accurate and reliable service to our customers.\n\nThank you for your understanding and support.",
             "subject": "Approval Required for Price Correction in EPX System",
-            "to": "the.boss@example.com",
-            "waitingFor": []
+            "to": "the.boss@example.com"
           }
         },
         "CheckTicket": {
           "checkApprover": {
             "by": "LDAP",
-            "safe": true,
             "who": "the.boss@example.com"
           },
           "checkProblemExists": {
@@ -49,7 +47,6 @@ describe ( 'createKnowledgeArticle', () => {
           },
           "checkUser": {
             "by": "LDAP",
-            "safe": true,
             "who": "a.customer@example.com"
           }
         },
@@ -71,8 +68,7 @@ describe ( 'createKnowledgeArticle', () => {
             "by": "Email",
             "email": "I am pleased to inform you that the price discrepancy for the discombobulator (item code 1234-44) in the EPX system has been successfully corrected. The price has been updated from £55.55 to the accurate price of £44.44, as requested.\n\nWith this issue now resolved, I would like to seek your confirmation to proceed with closing the related ITSM ticket. Your approval to close this ticket will signify that the matter has been addressed to your satisfaction.\n\nPlease let me know at your earliest convenience if you agree to close the ticket or if there are any further actions required on this matter.\n\nLooking forward to your confirmation.",
             "subject": " Confirmation of Price Update in EPX System - Request to Close Ticket",
-            "to": "a.customer@example.com",
-            "waitingFor": []
+            "to": "a.customer@example.com"
           }
         },
         "Resolve": {
@@ -82,10 +78,7 @@ describe ( 'createKnowledgeArticle', () => {
           },
           "resolveTheIssue": {
             "by": "SQL",
-            "sql": "delete from product where item_code='1234-44'",
-            "waitingFor": [
-              "checkIssueStillExists"
-            ]
+            "sql": "delete from product where item_code='1234-44'"
           }
         },
         "Review": {
@@ -98,7 +91,8 @@ describe ( 'createKnowledgeArticle', () => {
         "Email",
         "LDAP",
         "SQL"
-      ]
+      ],
+      "variables": []
     } )
   } )
 } )

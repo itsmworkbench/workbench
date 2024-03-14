@@ -7,3 +7,4 @@ export * from './src/wizard/new.ticket.wizard.next.prev';
 export * from './src/wizard/enter.ticket.details';
 export * from './src/wizard/ticketSourceSelection';
 export * from './src/wizard/new.ticket.wizard.domain';
+export * from './src/load.ka.sideeffect';
