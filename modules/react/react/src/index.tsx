@@ -95,12 +95,14 @@ loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataRe
   const operatorResult = hasErrors ( initialDataResult.operator ) ? undefined : value ( initialDataResult.operator )
   //OK this is a mess. Need to think about how to do operator...
   let ticketList = value ( initialDataResult.ticketList ) as any;
+  let kaList = value ( initialDataResult.kaList ) as any;
   const withInitialData: ItsmState = {
     ...startAppState,
     blackboard: {
       operator: operatorResult?.result || { name: 'Phil', email: 'phil@example.com' }
     } as any,
-    ticketList
+    ticketList,
+    kaList
   }
   setJson ( withInitialData )
   startPolling ( pollingDetails )

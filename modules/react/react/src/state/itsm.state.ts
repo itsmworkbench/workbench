@@ -46,6 +46,7 @@ export interface ItsmState {
   blackboard: Blackboard
   tempData: TempData
   ticketList: ListNamesResult
+  kaList: ListNamesResult
   conversation: Conversation
   selectionState: ItsmSelectionState
   ticket?: Ticket
@@ -60,6 +61,7 @@ const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '', tic
 export const startAppState: ItsmState = {
   blackboard: {} as any,
   ticketList: undefined as any,
+  kaList: undefined as any,
   sideeffects: [],
   events: { events: [], enrichedEvents: [] },
   log: [],

@@ -10,9 +10,11 @@ import { ErrorsAnd } from "@laoban/utils";
 export type InitialLoadDataResult = {
   operator?: ErrorsAnd<NamedLoadResult<Operator>>
   ticketList?: ErrorsAnd<ListNamesResult>
+  kaList?: ErrorsAnd<ListNamesResult>
 }
 export async function loadInitialData ( urlStore: UrlStore ): Promise<InitialLoadDataResult> {
   const operator = await urlStore.loadNamed<Operator> ( parseNamedUrlOrThrow ( 'itsm/me/operator/me' ) )
   const ticketList = await urlStore.list ( "me", "ticketevents", { page: 1, pageSize: 10 }, "date" )
-  return { operator, ticketList };
+  const kaList = await urlStore.list ( "me", "ks", { page: 1, pageSize: 1000 }, "date" )
+  return { operator, ticketList, kaList };
 }
