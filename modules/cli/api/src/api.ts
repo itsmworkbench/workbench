@@ -1,4 +1,4 @@
-import { ContextAndStats, defaultShowsError, KoaPartialFunction, notFoundIs404 } from "@itsmworkbench/koa";
+import { ContextAndStats, defaultShowsError, handleFile, KoaPartialFunction, notFoundIs404 } from "@itsmworkbench/koa";
 import { chainOfResponsibility } from "@runbook/utils";
 import { fileLoading, fileLocking, loadStringIncrementally, withFileLock } from "@itsmworkbench/fileloading";
 import { promises as fs } from 'fs';
@@ -92,13 +92,11 @@ export const wizardOfOzApiHandlers = ( idStore: IdStore, getIds: ListIds, aiForV
   chainOfResponsibility ( defaultShowsError, //called if no matches
     executeAIForVariables ( aiForVariables ),
     executeAIForEmail( aiForChat ),
-    ids ( idStore, debug ),
-    eventsPF,
-    getIdsPF ( getIds ),
     listUrls ( urlStore.list ),
     getUrls ( urlStore ),
     putUrls ( urlStore.save, details ),
-    appendPostPF,
+    // appendPostPF,
+    handleFile,
     ...handlers,
     notFoundIs404,
   )

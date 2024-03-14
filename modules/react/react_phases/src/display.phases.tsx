@@ -8,7 +8,7 @@ import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { TabPhaseAndActionSelectionState, workbenchName } from "@itsmworkbench/react_core";
 import { StatusIndicator } from "@itsmworkbench/components";
 import { Event } from "@itsmworkbench/events";
-import { findActionInEventsFor } from "@itsmworkbench/knowledge_articles";
+import { findActionInEventsFor, dereferenceAction } from "@itsmworkbench/knowledge_articles";
 
 export interface ActionButtonProps<S> extends LensProps3<S, any, TabPhaseAndActionSelectionState, Event[], any> {
   name: string
@@ -18,9 +18,11 @@ export interface ActionButtonProps<S> extends LensProps3<S, any, TabPhaseAndActi
 }
 export function ActionButton<S> ( { name, action, phase, status, state }: ActionButtonProps<S> ) {
   let buttonOnClick = () => {
-    let found = findActionInEventsFor ( state.optJson3 () || [], phase, name );
+    let found: Action = findActionInEventsFor ( state.optJson3 () || [], phase, name );
+    const variables: any = state.optJson2 () || {}
+    let derefed = dereferenceAction ( found, variables )
     console.log ( 'ActionButton', found )
-    state.state12 ().setJson ( found, { workspaceTab: workbenchName ( action.by ), phase, action: name }, action );
+    state.state12 ().setJson ( found, { workspaceTab: workbenchName ( derefed.by ), phase, action: name }, derefed );
   };
   return <><Button
     variant="text"
@@ -81,7 +83,7 @@ export function DisplayPhase<S> ( { state, phase, status, Action }: DisplayPhase
 }
 
 export interface DisplayPhasesProps<S> extends LensProps3<S, PhaseAnd<NameAnd<Action>>, TabPhaseAndActionSelectionState, PhaseAnd<NameAnd<boolean>>, any> {
-  Action: ( phase: PhaseName, name: string, action: Action, status: boolean|undefined ) => React.ReactNode
+  Action: ( phase: PhaseName, name: string, action: Action, status: boolean | undefined ) => React.ReactNode
 }
 export function DisplayPhases<S> ( { state, Action }: DisplayPhasesProps<S> ) {
   const phases: PhaseAnd<NameAnd<Action>> = state.optJson1 () || ({} as any)

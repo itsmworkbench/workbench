@@ -2,6 +2,7 @@ export * from './src/ai.email.sideeffect'
 export * from './src/display.capabilities.list';
 export * from './src/display.sql.event';
 export * from './src/display.email.event';
+export * from './src/display.receiveemail.event';
 export * from './src/capabilities.menu'
 export * from './src/email.workbench';
 export * from './src/receive.email.workbench'

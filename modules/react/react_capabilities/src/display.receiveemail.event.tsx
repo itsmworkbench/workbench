@@ -6,17 +6,17 @@ import React from "react";
 import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn } from "@itsmworkbench/react_events";
 
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
-import { isSqlWorkBenchContext, SqlWorkBenchContext } from "@itsmworkbench/domain";
+import { isReceiveEmailWorkbenchContext } from "@itsmworkbench/domain";
 
 
-export interface DisplaySqlEventProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetValueEvent, any>, any>> {
+export interface DisplayReceiveEmailEventProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetValueEvent, any>, any>> {
 }
 
-export function DisplaySqlEventFull<S> ( { state, icons }: DisplaySqlEventProps<S> ) {
+export function DisplayReceiveEmailEventFull<S> ( { state, icons }: DisplayReceiveEmailEventProps<S> ) {
   const event = state.optJson ()
   if ( event === undefined ) return <div>No event - This is an error</div>
   let context = event.context;
-  if ( !isSqlWorkBenchContext ( context ) ) return <div>Error: should be sql</div>
+  if ( !isReceiveEmailWorkbenchContext ( context ) ) return <div>Error: should be ReceiveEmail</div>
   const title = event.displayData?.title || event.event
   // const description = event.displayData?.value?.result?.description || '<Error: no description>'
   return <Card sx={{ width: '100%', maxWidth: '75vw' }}>
@@ -28,21 +28,20 @@ export function DisplaySqlEventFull<S> ( { state, icons }: DisplaySqlEventProps<
     />
     <CardContent>
       <Typography variant="body1" component="pre">
-        Sql: {context.data?.sql}
+        From: {context.data?.from}
       </Typography>
       <Typography variant="body1" component="pre">
-        Response: {context.data?.response}
+        Email: {context.data?.email}
       </Typography>
     </CardContent>
   </Card>
 }
 
 
-export function
-displaySqlEventPlugin<S extends any> (): DisplayEnrichedEventPlugIn<S> {
+export function displayReceiveEmailEventPlugin<S extends any> (): DisplayEnrichedEventPlugIn<S> {
   return {
-    accept: ( event: EnrichedEvent<any, any> ) => event.event === 'setValue' && event.displayData?.type === 'SQL',
+    accept: ( event: EnrichedEvent<any, any> ) => event.event === 'setValue' && event.displayData?.type === 'ReceiveEmail',
     microDisplay: DisplayDefaultEnrichedEventMicro,
-    fullDisplay: DisplaySqlEventFull
+    fullDisplay: DisplayReceiveEmailEventFull
   };
 }
