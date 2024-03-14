@@ -22,13 +22,12 @@ export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabP
 }
 export type TicketAndId = { id?: string, ticket?: Ticket }
 export interface TempData {
-  newTicket: NewTicketData
+  newTicket: NewTicketWizardData
   sqlData: SqlData
   ldapData: LdapData
   emailData: EmailTempData
   emailResult: EmailResult
   receiveEmailData: ReceiveEmailData
-  newTicketWizard: NewTicketWizardData
   ka: KnowledgeArticleTempData
 }
 
@@ -66,9 +65,7 @@ export const startAppState: ItsmState = {
   log: [],
   conversation: { messages: [], chat: { type: '' } },
   variables: {},
-  tempData: {
-    newTicket,
-  } as TempData,
+  tempData: {} as TempData,
   selectionState: {},
 }
 
@@ -78,7 +75,7 @@ export const selectionStateL: Lens<ItsmState, ItsmSelectionState> = itsmIdL.focu
 export const operatorL: Lens<ItsmState, Operator> = blackboardL.focusOn ( 'operator' )
 // export const setPageL: Optional<ItsmState, string> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'workspaceTab' )
 export const ticketIdL: Optional<ItsmState, string> = selectionStateL.focusQuery ( 'ticketId' )
-export const newTicketL: Optional<ItsmState, NewTicketData> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' )
+export const newTicketL: Optional<ItsmState, NewTicketWizardData> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' )
 export const ticketVariablesL: Optional<ItsmState, TicketVariables> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' ).focusQuery ( 'aiAddedVariables' )
 export const emailDataL: Optional<ItsmState, Action> = itsmIdL.focusQuery ( 'blackboard' ).focusQuery ( 'action' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> = itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )

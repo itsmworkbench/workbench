@@ -5,6 +5,7 @@ import { Optional, Transform } from "@focuson/lens";
 import { Event, SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { defaultTicketTypeDetails, detailsToTicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
+import { NewTicketWizardData } from "./wizard/new.ticket.wizard.domain";
 
 //OK Gritting our teeth we aren't worrying about the errors for now. We are just going to assume that everything is going to work.
 //This is so that we can test out the happy path of the gui. We want to see what it will look like. We will come back to the errors later.
@@ -16,7 +17,7 @@ export interface NewTicketData {
   aiAddedVariables?: TicketVariables
   errors?: string[]
 }
-export interface AddNewTicketSideEffect extends SideEffect, NewTicketData {
+export interface AddNewTicketSideEffect extends SideEffect, NewTicketWizardData {
   command: 'addNewTicket';
 }
 
@@ -28,15 +29,17 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
                                                      setPage: Optional<S, TabPhaseAndActionSelectionState>,
                                                      eventL: Optional<S, Event[]>,
                                                      ticketIdL: Optional<S, string>,
-                                                     newTicketL: Optional<S, NewTicketData>,
+                                                     newTicketL: Optional<S, NewTicketWizardData>,
                                                      ticketPath: string ): ISideEffectProcessor<S, AddNewTicketSideEffect, TicketAndTicketEvents> {
   return ({
     accept: ( s: SideEffect ): s is AddNewTicketSideEffect => s.command === 'addNewTicket',
     process: async ( s: S, se: AddNewTicketSideEffect ) => {
-      const ticketUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticket', name: se.name }
-      const ticketeventsUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticketevents', name: se.name }
-      const ticketTypeDetails = se.ticketType || defaultTicketTypeDetails
+      console.log('addNewTicketSideeffectProcessor - se', se)
+      const ticketUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticket', name: se.ticketName }
+      const ticketeventsUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticketevents', name: se.ticketName }
+      const ticketTypeDetails = se.ticketTypeDetails || defaultTicketTypeDetails
       const ticketType = detailsToTicketType ( ticketTypeDetails )
+
 
       //what we should do instead of this
       //add to the ticket. (should have a flag that says 'error if doing it again')
@@ -45,11 +48,11 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
       //if not error we want to change the page. How do we do that? How do we say where we want to go? We shouldn't know...we should be told...
 
       const res: ErrorsAnd<TicketAndTicketEvents> = await mapErrorsK (
-        await urlSaveFn ( ticketUrl, { description: se.ticket } ), async ticket => {
+        await urlSaveFn ( ticketUrl, { description: se.ticketDetails } ), async ticket => {
           console.log ( 'addNewTicketSideeffectProcessor - ticket ', ticketUrl, ticket )
           const initialTicketEvent: SetIdEvent = {
             event: 'setId', id: ticket.id, path: ticketPath, context: {
-              display: { title: `New ${ticketTypeDetails.ticketType} Ticket`, type: 'ticket', name: se.name },
+              display: { title: `New ${ticketTypeDetails.ticketType} Ticket`, type: 'ticket', name: se.ticketName },
               ticketTypeDetails
             }
           }

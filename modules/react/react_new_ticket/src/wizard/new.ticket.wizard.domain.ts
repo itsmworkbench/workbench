@@ -1,12 +1,15 @@
-import { TicketTypeDetails } from "@itsmworkbench/tickettype";
+import { TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
 import { LensState } from "@focuson/state";
+import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 
 export type NewTicketWizardData = {
+  organisation: string
   currentStep: NewTicketWizardStep
   whereIsTicket: TicketSourceMethod
   ticketName: string
   ticketDetails: string
   ticketTypeDetails: TicketTypeDetails
+  aiAddedVariables: TicketVariables
 }
 
 export type NewTicketWizardStep = 'whereIsTicket' | 'createTicket' | 'howToProcessTicket'

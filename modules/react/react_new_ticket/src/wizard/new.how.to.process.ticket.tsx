@@ -5,6 +5,8 @@ import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.tick
 import { SideEffect } from "@itsmworkbench/react_core";
 import { ApprovalStateSelect, SelectTicketTypeProps, TicketTypeSelect, ValidateInvolvedPartiesCheckbox } from "@itsmworkbench/react_tickettype";
 import { Grid, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
 
 
 export function SelectTicketTypeForNewWizard<S> ( { state, readonly }: SelectTicketTypeProps<S> ) {
@@ -44,10 +46,25 @@ export function NewHowToProcessTicket<S> ( { state }: LensProps2<S, NewTicketWiz
   let stepState = state.state1 ().focusOn ( 'currentStep' );
   let ticketState = state.state1 ().focusOn ( 'ticketTypeDetails' );
   const currentStep = getCurrentStep ( stepState )
-
+  const existing = state.optJson2 () || [];
+  let wizardData = state.optJson1 () || {};
+  const se = {
+    command: 'addNewTicket',
+    organisation: 'me',
+    ...wizardData
+  };
+  console
   return <>
     <SelectTicketTypeForNewWizard state={ticketState}/>
     <PreviousNewWizardStepButton state={stepState}/>
-    <NextNewWizardStepButton state={stepState}/>
+    {/*<NextNewWizardStepButton state={stepState}/>*/}
+    <Button
+      variant="contained"
+      color="primary"
+      endIcon={<SendIcon/>}
+      onClick={() => state.state2 ().setJson ( [ ...existing, se ], 'add new ticket pressed' )}
+    >
+      Create or Replace Ticket
+    </Button>
   </>
 }

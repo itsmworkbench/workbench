@@ -1,13 +1,13 @@
 import { LensProps, LensState2, LensState3 } from "@focuson/state";
 import { ThemeProvider, Toolbar } from "@mui/material";
-import { DisplayMarkdown, DisplayYaml, MainAppLayout, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn, SuccessFailureButton, theme } from "@itsmworkbench/components";
+import { DisplayMarkdown, MainAppLayout, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn, SuccessFailureButton, theme } from "@itsmworkbench/components";
 import React from "react";
 import { ItsmState } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
 import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplaySqlWorkbench, SendTicketForEmailButton } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
-import { DisplayNewTicket, NewTicketWizard } from "@itsmworkbench/react_new_ticket";
+import { NewTicketWizard } from "@itsmworkbench/react_new_ticket";
 import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents, EnrichedEventsAndChat } from "@itsmworkbench/react_events";
 import { Capability, PhaseAnd } from "@itsmworkbench/domain";
 import { ActionButton, DisplayPhases } from "@itsmworkbench/react_phases";
@@ -108,9 +108,8 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
             focus3On ( 'sideeffects' )
           } SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
-        <SimpleTabPanel title='newTicket'><DisplayNewTicket state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicket' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
-        <SimpleTabPanel title='experimentalNewTicketWizard'>
-          <NewTicketWizard state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicketWizard' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
+        <SimpleTabPanel title='newTicket'>
+          <NewTicketWizard state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicket' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
       </SilentTabsContainer>
       {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', 'tempData', 'blackboard', 'events', 'enrichedEvents', "conversation", "variables", "ticket", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}
     </MainAppLayout>
