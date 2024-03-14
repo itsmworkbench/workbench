@@ -2,32 +2,33 @@ import { Event } from "@itsmworkbench/events";
 import { Capability, EmailWorkBenchContext, isEmailWorkBenchContext, isLdapWorkBenchContext, isReceiveEmailWorkbenchContext, isSqlWorkBenchContext, isWorkBenchContext, LdapWorkBenchContext, ReceiveEmailWorkbenchContext, SqlWorkBenchContext, WorkBenchContext } from "@itsmworkbench/domain";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
-import { Action, BaseAction, SqlAction } from "@itsmworkbench/actions";
+import { Action } from "@itsmworkbench/actions";
+import { findUsedVariables, reverseTemplate } from "@itsmworkbench/utils";
 
 export type EventWithWorkBenchContext<T> = Event & { context: WorkBenchContext<T> }
 
 
-export function updateSqlAction ( a: Action, c: SqlWorkBenchContext ): Action {
+export function updateSqlAction ( variables: Record<string, string>, a: Action, c: SqlWorkBenchContext ): Action {
   if ( a.by !== 'SQL' ) return a
-  return { by: 'SQL', sql: c.data.sql } //explict: the action could have a lot of things in it we don't want to copy
+  return { by: 'SQL', sql: reverseTemplate ( c.data.sql, variables ) } //explict: the action could have a lot of things in it we don't want to copy
 }
-export function updateEmailAction ( a: Action, c: EmailWorkBenchContext ): Action {
+export function updateEmailAction ( variables: Record<string, string>, a: Action, c: EmailWorkBenchContext ): Action {
   if ( a.by !== 'Email' ) return a
-  return { by: 'Email', to: c.data.to, subject: c.data.subject, email: c.data.email }
+  return { by: 'Email', to: reverseTemplate ( c.data.to, variables ), subject: reverseTemplate ( c.data.subject, variables ), email: reverseTemplate ( c.data.email, variables ) }
 }
-export function updateLdapAction ( a: Action, c: LdapWorkBenchContext ): Action {
+export function updateLdapAction ( variables: Record<string, string>, a: Action, c: LdapWorkBenchContext ): Action {
   if ( a.by !== 'LDAP' ) return a
-  return { by: 'LDAP', who: c.data.email }
+  return { by: 'LDAP', who: reverseTemplate ( c.data.email, variables ) }
 }
 
-export function updateReceiveEmailAction ( a: Action, c: ReceiveEmailWorkbenchContext ): Action {
+export function updateReceiveEmailAction ( variables: Record<string, string>, a: Action, c: ReceiveEmailWorkbenchContext ): Action {
   return a
 }
-export function updateAction ( e: EventWithWorkBenchContext<any>, a: Action ): Action {
-  if ( isSqlWorkBenchContext ( e.context ) ) return updateSqlAction ( a, e.context )
-  if ( isEmailWorkBenchContext ( e.context ) ) return updateEmailAction ( a, e.context )
-  if ( isLdapWorkBenchContext ( e.context ) ) return updateLdapAction ( a, e.context )
-  if ( isReceiveEmailWorkbenchContext ( e.context ) ) return updateReceiveEmailAction ( a, e.context )
+export function updateAction ( variables: Record<string, string>, e: EventWithWorkBenchContext<any>, a: Action ): Action {
+  if ( isSqlWorkBenchContext ( e.context ) ) return updateSqlAction ( variables, a, e.context )
+  if ( isEmailWorkBenchContext ( e.context ) ) return updateEmailAction ( variables, a, e.context )
+  if ( isLdapWorkBenchContext ( e.context ) ) return updateLdapAction ( variables, a, e.context )
+  if ( isReceiveEmailWorkbenchContext ( e.context ) ) return updateReceiveEmailAction ( variables, a, e.context )
   return a
 }
 export const allWorkbenchEvents = ( e: Event[] ) =>
@@ -57,7 +58,22 @@ export function lastTicketType ( e: Event[] ): TicketType {
   return JSON.parse ( JSON.stringify ( foundTicketType ) )
 
 }
-export function makeKnowledgeArticle ( e: Event[] ): ErrorsAnd<TicketType> {
+
+export function createVariablesUsedFrom ( e: Event[], variables: Record<string, string> ): string[] {
+  const ticketType: TicketType = lastTicketType ( e )
+  if ( ticketType == undefined ) return []
+  const result: string[] = []
+  const workBenchEvents = allWorkbenchEvents ( e );
+  for ( const event of workBenchEvents ) {
+    const action = findActionsInEventsMergeWithTicketType ( ticketType, e, event.context.where.phase, event.context.where.action )
+    if ( action ) {
+      const usedVariables = findUsedVariables ( JSON.stringify ( action ), variables )
+      result.push ( ...usedVariables )
+    }
+  }
+  return result;
+}
+export function makeKnowledgeArticle ( e: Event[], variables: Record<string, string> ): ErrorsAnd<TicketType> {
   const ticketType: TicketType = lastTicketType ( e )
   if ( ticketType == undefined ) return [ 'Could not find ticket type event' ]
   const capabilities: Capability[] = []
@@ -66,9 +82,11 @@ export function makeKnowledgeArticle ( e: Event[] ): ErrorsAnd<TicketType> {
     capabilities.push ( event.context.capability )
     const action = findActionsInEventsMergeWithTicketType ( ticketType, e, event.context.where.phase, event.context.where.action )
     const actions: NameAnd<Action> = ticketType.actions[ event.context.where.phase ] || {}
-    actions[ event.context.where.action ] = updateAction ( event, action )
+    actions[ event.context.where.action ] = updateAction ( variables, event, action )
     ticketType.actions[ event.context.where.phase ] = actions
   }
-  return { capabilities: [ ...new Set ( capabilities ) ].sort (), actions: ticketType.actions }
+  const variablesUsed = createVariablesUsedFrom ( e, variables )
+  console.log ( 'variablesUsed', variablesUsed )
+  return { variables: [ ...new Set ( variablesUsed ) ].sort (), capabilities: [ ...new Set ( capabilities ) ].sort (), actions: ticketType.actions } as any
 }
 

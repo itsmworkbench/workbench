@@ -6,10 +6,10 @@ actions:
   CheckTicket:
     checkProblemExists:
       by: SQL
-      sql: select * from product where item_code='1234-44'
+      sql: select * from product where item_code='${itemId}'
     checkUser:
       by: LDAP
-      who: a.customer@example.com
+      who: ${Customer}
     checkApprover:
       by: LDAP
       who: the.boss@example.com
@@ -20,14 +20,15 @@ actions:
       subject: Approval Required for Price Correction in EPX System
       email: >-
         I am writing to inform you of a discrepancy in the EPX system regarding
-        the discombobulator (item code 1234-44). The current listed price is
-        £55.55, which is incorrect. The correct price for this item should be
-        £44.44.
+        the ${itemName} (item code ${itemId}). The current listed price is
+        £${currentPrice}, which is incorrect. The correct price for this item
+        should be £${correctedPrice}.
 
 
-        To ensure our pricing reflects accurately in the EPX production
+        To ensure our pricing reflects accurately in the ${Environment}
         environment and to maintain our integrity with our customers, I request
-        your approval to update the price from £55.55 to £44.44.
+        your approval to update the price from £${currentPrice} to
+        £${correctedPrice}.
 
 
         Your prompt attention to this matter will be greatly appreciated as it
@@ -44,20 +45,20 @@ actions:
   Resolve:
     checkIssueStillExists:
       by: SQL
-      sql: select * from product where item_code='1234-44'
+      sql: select * from product where item_code='${itemId}'
     resolveTheIssue:
       by: SQL
-      sql: delete from product where item_code='1234-44'
+      sql: delete from product where item_code='${itemId}'
   Close:
     requestClosure:
       by: Email
-      to: a.customer@example.com
+      to: ${Customer}
       subject: ' Confirmation of Price Update in EPX System - Request to Close Ticket'
       email: >-
         I am pleased to inform you that the price discrepancy for the
-        discombobulator (item code 1234-44) in the EPX system has been
-        successfully corrected. The price has been updated from £55.55 to the
-        accurate price of £44.44, as requested.
+        ${itemName} (item code ${itemId}) in the EPX system has been
+        successfully corrected. The price has been updated from £${currentPrice}
+        to the accurate price of £${correctedPrice}, as requested.
 
 
         With this issue now resolved, I would like to seek your confirmation to

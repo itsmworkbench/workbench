@@ -16,14 +16,16 @@ export interface KnowledgeArticleTempData {
 
 
 export interface DisplayKnowledgeArticleWorkbenchProps<S> extends LensProps3<S, KnowledgeArticleTempData, Event[], SideEffect[], any> {
+  variables: Record<string, string>
   SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
   FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
-export function DisplayKnowledgeArticleWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplayKnowledgeArticleWorkbenchProps<S> ) {
+export function DisplayKnowledgeArticleWorkbench<S> ( { state, SuccessButton, FailureButton, variables }: DisplayKnowledgeArticleWorkbenchProps<S> ) {
   const {} = state.optJson1 () || {}
   const events = state.optJson2 () || []
-  const ka = makeKnowledgeArticle ( events )
+  const ka = makeKnowledgeArticle ( events, variables )
+
   let nameState = state.state13 ().focus1On ( 'name' );
   return <Container>
     <Typography variant="h4" gutterBottom>Knowledge Article</Typography>

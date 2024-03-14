@@ -6,6 +6,7 @@ import { Ticket } from "@itsmworkbench/tickets";
 import { YamlCapability } from "@itsmworkbench/yaml";
 
 export interface TicketType {
+  variables?: string[]
   capabilities: Capability[]
   actions: PhaseAnd<NameAnd<Action>>
 }

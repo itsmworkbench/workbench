@@ -103,7 +103,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
         </SimpleTabPanel>
 
         <SimpleTabPanel title='KnowledgeArticleWorkbench'>
-          <DisplayKnowledgeArticleWorkbench state={state.tripleUp ().focus1On ( 'tempData' ).focus1On ( 'ka' ).//
+          <DisplayKnowledgeArticleWorkbench variables={(state.focusOn('blackboard').optJson()||{} as any)?.ticket} state={state.tripleUp ().focus1On ( 'tempData' ).focus1On ( 'ka' ).//
             focus2On ( 'events' ).focus2On ( 'events' ).//
             focus3On ( 'sideeffects' )
           } SuccessButton={successButton} FailureButton={failureButton}/>
