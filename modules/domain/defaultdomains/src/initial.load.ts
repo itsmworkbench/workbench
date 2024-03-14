@@ -15,6 +15,6 @@ export type InitialLoadDataResult = {
 export async function loadInitialData ( urlStore: UrlStore ): Promise<InitialLoadDataResult> {
   const operator = await urlStore.loadNamed<Operator> ( parseNamedUrlOrThrow ( 'itsm/me/operator/me' ) )
   const ticketList = await urlStore.list ( "me", "ticketevents", { page: 1, pageSize: 10 }, "date" )
-  const kaList = await urlStore.list ( "me", "ks", { page: 1, pageSize: 1000 }, "date" )
+  const kaList = await urlStore.list ( "me", "ka", { page: 1, pageSize: 1000 }, "date" )
   return { operator, ticketList, kaList };
 }

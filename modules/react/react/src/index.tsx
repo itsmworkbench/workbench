@@ -13,7 +13,7 @@ import { emailDataL, eventsL, ItsmState, logsL, newTicketL, sideEffectsL, startA
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
-import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
+import { addAiTicketSideeffectProcessor, addLoadKaSideEffect, addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
 import { hasErrors, mapK, value } from "@laoban/utils";
 import { defaultEventEnricher, EnrichedEvent, enrichEvent } from "@itsmworkbench/enrichedevents";
 import { displayTicketEventPlugin } from '@itsmworkbench/react_ticket';
@@ -86,6 +86,7 @@ addEventStoreModifier ( container,
       addAiTicketSideeffectProcessor ( aiVariables, ticketVariablesL ),
       addAiEmailSideEffectProcessor ( aiEmails, emailDataL ),
       addSaveKnowledgeArticleSideEffect ( urlStore.save, 'me' ),
+      addLoadKaSideEffect ( urlStore.loadNamed, newTicketL.focusOn ( 'ticketDetails' ) ),
       addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, 'ticket' )
     ] ),
     sideEffectsL, logsL ) )
