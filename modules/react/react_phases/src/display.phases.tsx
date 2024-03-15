@@ -29,7 +29,7 @@ export function ActionButton<S> ( { name, action, phase, status, state }: Action
     color="primary"
     fullWidth
     onClick={buttonOnClick}
-    endIcon={<StatusIndicator value={status}/>}
+    endIcon={<StatusIndicator action={action} value={status}/>}
     sx={{
       textTransform: 'none',
       justifyContent: 'flex-start', // This aligns text to the left

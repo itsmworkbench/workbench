@@ -7,6 +7,7 @@ export interface BaseAction {
   safe?: boolean
   waitingFor?: string[]
   hint?: string
+  optional?: boolean
 }
 export function isBaseAction ( a: any ) {
   if ( a === undefined || a === null ) return false
@@ -27,6 +28,7 @@ export interface EmailAction extends BaseAction {
   to: string
   subject?: string
   email?: string
+  highlyVariant?: boolean
 }
 export interface ReceiveEmailAction extends BaseAction {
   by: 'ReceiveEmail'
@@ -48,7 +50,13 @@ export interface KnowledgeArticleAction extends BaseAction {
 
 }
 
-export type Action = SqlAction | LdapAction | EmailAction | ChatAction | ManualAction | ReceiveEmailAction | TicketAction | KnowledgeArticleAction
+export interface ReviewTicketAction extends BaseAction {
+  by: 'ReviewTicket'
+}
+
+export type Action = SqlAction | LdapAction | EmailAction |
+  ChatAction | ManualAction | ReceiveEmailAction | TicketAction | KnowledgeArticleAction |
+  ReviewTicketAction
 export interface SafeAction extends BaseAction {
   safe?: true
 }

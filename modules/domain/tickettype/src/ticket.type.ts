@@ -55,9 +55,23 @@ export const approvalTT: TicketType = {
 export const simpleTicketType: TicketType = ({
   capabilities: [ 'Email', 'ReceiveEmail' ],
   actions: {
-    CheckTicket: {},
+    CheckTicket: {
+      ReviewTicket: {
+        by: 'ReviewTicket',
+      },
+      RequestMoreData: {
+        by: 'Email',
+        to: 'issuer.email',
+        optional: true,
+        highlyVariant: true,
+      }
+    },
     Approval: {},
-    Resolve: {},
+    Resolve: {
+      resolveTheIssue: {
+        by: 'Manual'
+      }
+    },
     Close: {
       requestClosure: {
         by: 'Email',
@@ -77,6 +91,7 @@ export const simpleTicketType: TicketType = ({
     Review: {
       createKnowledgeArticle: {
         by: 'KnowledgeArticle',
+        optional: true,
       }
     }
   }
