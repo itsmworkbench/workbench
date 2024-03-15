@@ -85,13 +85,13 @@ export const appendPostPF: KoaPartialFunction = {
   }
 }
 
-export const wizardOfOzApiHandlers = ( idStore: IdStore, getIds: ListIds, aiForVariables: AiTicketVariablesFn,aiForChat: AIEmailsFn,
-                                       debug: boolean,
-                                       details: NameAnd<NameSpaceDetails>,
-                                       urlStore: UrlStore, ...handlers: KoaPartialFunction[] ): ( from: ContextAndStats ) => Promise<void> =>
+export const wizardOfOzApiHandlers = (idStore: IdStore, getIds: ListIds, aiForVariables: AiTicketVariablesFn, aiForEmail: AIEmailsFn,
+                                      debug: boolean,
+                                      details: NameAnd<NameSpaceDetails>,
+                                      urlStore: UrlStore, ...handlers: KoaPartialFunction[] ): ( from: ContextAndStats ) => Promise<void> =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
     executeAIForVariables ( aiForVariables ),
-    executeAIForEmail( aiForChat ),
+    executeAIForEmail( aiForEmail ),
     listUrls ( urlStore.list ),
     getUrls ( urlStore ),
     putUrls ( urlStore.save, details ),
