@@ -51,18 +51,32 @@ export function createVariablesUsedFrom ( e: Event[], variables: Record<string, 
   return result;
 }
 
+export function basics ( a: Action ): NameAnd<any> {
+  return { safe: a.safe, waitingFor: a.waitingFor, hint: a.hint, optional: a.optional }
+
+}
 
 export function reverseSqlAction ( variables: Record<string, string>, a: Action, c: SqlWorkBenchContext ): Action {
   if ( a.by !== 'SQL' ) return a
-  return { by: 'SQL', sql: reverseTemplate ( c.data.sql, variables ) } //explict: the action could have a lot of things in it we don't want to copy
+  return { ...basics ( a ), by: "SQL", sql: reverseTemplate ( c.data.sql, variables ) } //explict: the action could have a lot of things in it we don't want to copy
 }
 export function reverseEmailAction ( variables: Record<string, string>, a: Action, c: EmailWorkBenchContext ): Action {
   if ( a.by !== 'Email' ) return a
-  return { by: 'Email', to: reverseTemplate ( c.data.to, variables ), subject: reverseTemplate ( c.data.subject, variables ), email: reverseTemplate ( c.data.email, variables ) }
+  return {
+    ...basics ( a ),
+    by: 'Email',
+    to: reverseTemplate ( c.data.to, variables ),
+    subject: reverseTemplate ( a.highlyVariant ? undefined : c.data.subject, variables ),
+    email: reverseTemplate ( a.highlyVariant ? undefined : c.data.email, variables )
+  }
 }
 export function reverseLdapAction ( variables: Record<string, string>, a: Action, c: LdapWorkBenchContext ): Action {
   if ( a.by !== 'LDAP' ) return a
-  return { by: 'LDAP', who: reverseTemplate ( c.data.email, variables ) }
+  return {
+    ...basics ( a ),
+    by: 'LDAP',
+    who: reverseTemplate ( c.data.email, variables )
+  }
 }
 
 export function reverseReceiveEmailAction ( variables: Record<string, string>, a: Action, c: ReceiveEmailWorkbenchContext ): Action {
