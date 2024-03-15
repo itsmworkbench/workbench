@@ -21,7 +21,7 @@ export function isKnowledgeArticleSideEffect ( x: any ): x is SaveKnowledgeArtic
 export interface SaveKnowledgeModelButtonProps<S> extends LensProps2<S, string, SideEffect[], any> {
   ticketType: TicketType
 }
-export function SaveKnowledgeModelButton<S> ( { state, ticketType }: SaveKnowledgeModelButtonProps<S> ) {
+export function SaveKnowledgeArticleButton<S> ( { state, ticketType }: SaveKnowledgeModelButtonProps<S> ) {
   function onClick () {
     const sk: SaveKnowledgeArticleSideEffect = { command: 'saveKa', name: state.optJson1 () || '', ticketType }
     let seState = state.state2 ();

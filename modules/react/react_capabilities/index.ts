@@ -1,5 +1,6 @@
 export * from './src/ai.email.sideeffect'
 export * from './src/display.capabilities.list';
+export * from './src/display.ldap.event';
 export * from './src/display.sql.event';
 export * from './src/display.email.event';
 export * from './src/display.receiveemail.event';
