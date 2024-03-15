@@ -8,6 +8,10 @@ export interface BaseAction {
   waitingFor?: string[]
   hint?: string
 }
+export function isBaseAction ( a: any ) {
+  if ( a === undefined || a === null ) return false
+  return a.by !== undefined
+}
 export interface SqlAction extends BaseAction {
   by: 'SQL'
   sql?: string

@@ -2,7 +2,7 @@ import { Event } from "@itsmworkbench/events";
 import { Capability, EmailWorkBenchContext, isEmailWorkBenchContext, isLdapWorkBenchContext, isReceiveEmailWorkbenchContext, isSqlWorkBenchContext, isWorkBenchContext, LdapWorkBenchContext, ReceiveEmailWorkbenchContext, SqlWorkBenchContext, WorkBenchContext } from "@itsmworkbench/domain";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
-import { Action } from "@itsmworkbench/actions";
+import { Action, isBaseAction } from "@itsmworkbench/actions";
 import { findUsedVariables, reverseTemplate } from "@itsmworkbench/utils";
 
 export type EventWithWorkBenchContext<T> = Event & { context: WorkBenchContext<T> }
@@ -15,7 +15,7 @@ export function findWorkbenchEventFor ( e: Event[], phase: string, action: strin
 }
 
 export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType, e: Event[], phase: string, action: string ) {
-  const found = ticketType.actions?.[ phase ]?.[ action ] || {}
+  const found = ticketType?.actions?.[ phase ]?.[ action ] || {}
   const workBenchEvent: EventWithWorkBenchContext<any> = findWorkbenchEventFor ( e, phase, action )
   if ( workBenchEvent ) {
     const result = { ...found, by: workBenchEvent.context.capability, ...workBenchEvent.context.data } as Action
@@ -43,7 +43,7 @@ export function createVariablesUsedFrom ( e: Event[], variables: Record<string, 
   const workBenchEvents = allWorkbenchEvents ( e );
   for ( const event of workBenchEvents ) {
     const action = findActionsInEventsMergeWithTicketType ( ticketType, e, event.context.where.phase, event.context.where.action )
-    if ( action ) {
+    if ( isBaseAction ( action ) ) {
       const usedVariables = findUsedVariables ( JSON.stringify ( action ), variables )
       result.push ( ...usedVariables )
     }
