@@ -5,9 +5,33 @@ export type TicketVariables = NameAnd<string>
 
 export type EmailPurpose = 'requestApproval' | 'requestClosure'
 export type EmailData={
-  purpose: string //changing for now
+  purpose: EmailPurpose //changing for now
   ticketId: string,
   ticket: string
+}
+export type EmailPurposeAnd<T> = {
+  requestApproval: T
+  requestClosure: T
+}
+
+
+export type EmailPurposeFn = EmailPurposeAnd<AIEmailsFn>
+function processEmailFn(fns: EmailPurposeAnd<AIEmailsFn>): AIEmailsFn{
+  return async (email: EmailData) => {
+    let fn = fns[email.purpose];
+    if (!fn) throw new Error(`No function for email purpose ${email.purpose}`)
+    return fn(email)
+  }
+}
+
+export type EmailStringFn = (email: EmailData) => Promise<string>
+export function processEmailsThatReturnAstring(fns: EmailPurposeAnd<EmailStringFn>, fn: (res: string) => EmailResult){
+  return async (email: EmailData) => {
+    let fn = fns[email.purpose];
+    if (!fn) throw new Error(`No function for email purpose ${email.purpose}`)
+    return fn(email).then(fn)
+  }
+
 }
 
 
