@@ -1,4 +1,5 @@
-import {chatgptTicketVariables, generateVerificationEmail} from "./chatgpt.ticket.variables";
+import {chatgptTicketVariables, generalEmail, generateAllPurposeEmail} from "./chatgpt.ticket.variables";
+import {EmailData, EmailResult} from "@itsmworkbench/ai_ticketvariables";
 
 jest.mock('openai', () => ({
   OpenAI: jest.fn().mockImplementation(() => ({
@@ -44,21 +45,37 @@ describe('ChatGPTTicketVariables', () => {
 describe('generateVerificationEmail', () => {
   it('should format the request correctly and return email content', async () => {
     // Setup
-    const mockVariables = {
-      ticketId: "SR5542",
-      Customer: "bob.grey@thecompany.co",
-      Environment: "DSS production",
-      buttonId: "but-blue-123",
-      desiredColor: "blue",
-      currentColor: "red"
+    const mockEmailData: EmailData = {
+      purpose: "purpose", //changing for now
+      ticketId: "ticketId",
+      ticket: "sampleTicket"
     };
     const mockEmailContent = 'Here is your professional email content based on the ticket.';
 
     // Act
-    const result = await generateVerificationEmail(mockVariables);
+    const result = await generateAllPurposeEmail(mockEmailData);
 
     // Assert
-
     expect(result).toBe(mockEmailContent);
+  });
+
+  it('should format the request correctly and return EmailResult', async () => {
+    // Setup
+    const mockEmailData: EmailData = {
+      purpose: "purpose", //changing for now
+      ticketId: "ticketId",
+      ticket: "sampleTicket"
+    };
+
+    const mockEmailResult: EmailResult ={
+      email: "No Email Content",
+      subject: "No Subject"
+    };
+
+    // Act
+    const result = await generalEmail(mockEmailData);
+
+    // Assert
+    expect(result).toStrictEqual(mockEmailResult);
   });
 });

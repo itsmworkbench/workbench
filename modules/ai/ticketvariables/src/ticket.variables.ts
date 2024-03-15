@@ -3,9 +3,9 @@ import { NameAnd } from "@laoban/utils";
 export type TicketVariables = NameAnd<string>
 
 
-type EmailPurpose = 'requestApproval' | 'requestClosure'
+export type EmailPurpose = 'requestApproval' | 'requestClosure'
 export type EmailData={
-  purpose: EmailPurpose
+  purpose: string //changing for now
   ticketId: string,
   ticket: string
 }

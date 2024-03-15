@@ -1,5 +1,11 @@
-import { AIEmailsFn, AiTicketVariablesFn, EmailData, EmailResult, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
-import { OpenAI } from "openai";
+import {
+  AIEmailsFn,
+  AiTicketVariablesFn,
+  EmailData, EmailPurpose,
+  EmailResult,
+  TicketVariables
+} from "@itsmworkbench/ai_ticketvariables";
+import {OpenAI} from "openai";
 
 export const clientSecret = process.env[ 'CHATGPT_CLIENT_SECRET' ]
 
@@ -7,15 +13,14 @@ const openai = new OpenAI ( {
   apiKey: clientSecret,
 } );
 
-/**
- * Generates a verification email from the extracted ticket variables.
- *
- * @returns {Promise<TicketVariables>} - The generated email content.
- * @param ticket
- */
+
 export const chatgptTicketVariables: AiTicketVariablesFn = async ( ticket: string ): Promise<TicketVariables> => {
-  const systemPrompt = `You will be provided with a ITSM work ticket, and your task is to extract important variables from it. Return these variables only as in JSON format.`;
-console.log('chat gpt ticket variables', ticket)
+  const systemPrompt = `You will be provided with a ITSM work ticket, and your task is to extract important variables from it.
+   Make sure the these 2 variables always exist: 
+   * ticketId
+   * purposeOfEmail
+   Return these variables only as in JSON format.`;
+  console.log('chat gpt ticket variables', ticket)
   const chatCompletion = await openai.chat.completions.create ( {
     messages: [
       { role: 'system', content: systemPrompt },
@@ -79,15 +84,54 @@ Please update the price of the discombobulator`
   return JSON.parse ( variablesString );
 };
 
-/**
- * Generates a verification email from the extracted ticket variables.
- *
- * @param {TicketVariables} variables - The extracted variables from an ITSM ticket.
- * @returns {Promise<string>} - The generated email content.
- */
-export const generateVerificationEmail = async ( variables: TicketVariables ): Promise<string> => {
-  const emailPrompt = `Given the following ticket variables: ${JSON.stringify ( variables, null, 2 )}
-    Generate a professional email from an employee to their employer, using these variables to verify the actions taken on a ticket.`;
+export const extractEmailDataFromTicket = async (ticket: string): Promise<EmailData> => {
+  const allVariables = await chatgptTicketVariables ( ticket );
+  return {
+    purpose: allVariables.purposeOfEmail,
+    ticketId: allVariables.ticketId,
+    ticket: ticket
+  };
+}
+
+//TODO: unused method, we can delete later
+export const determineEmailPurpose = async (ticket: string): Promise<EmailPurpose> => {
+  const prompt = `Based on the following ticket details, should an email request for approval or closure be sent? Ticket details: "${ticket}"`;
+
+  const response = await openai.chat.completions.create({
+    messages: [
+      { role: 'system', content: prompt },
+      {
+        role: 'user',
+        content: 'Generate the email purpose'
+      }
+    ],
+    model: "gpt-3.5-turbo", // or any suitable model
+    max_tokens: 60,
+    temperature: 0.5,
+  });
+
+  const answer = response.choices[0].message.content.trim().toLowerCase();
+
+  // Decide the purpose based on the model's response
+  if (answer.includes("approval")) {
+    return 'requestApproval';
+  } else if (answer.includes("closure")) {
+    return 'requestClosure';
+  } else {
+    // Default or handle ambiguity
+    console.log("Ambiguous or unclear answer from AI, consider manual review.");
+    return 'requestApproval'; // Defaulting or you might want a different handling
+  }
+};
+
+
+export const generateAllPurposeEmail = async (emailData: EmailData): Promise<string> => {
+  const extractedData = await extractEmailDataFromTicket(emailData.ticket);
+
+  const emailPrompt = `Given the following ticket ID: ${extractedData.ticketId}, purpose: ${extractedData.purpose} and details: ${JSON.stringify(emailData.ticket, null, 2)}
+Generate a professional email from an employee to their employer, including a subject and body. 
+Annotate the subject with <!-- SUBJECT START --> and <!-- SUBJECT END -->. Annotate the email body with <!-- EMAIL START --> and <!-- EMAIL END -->. 
+Use these details to craft the email content.`;
 
   const emailCompletion = await openai.chat.completions.create ( {
     messages: [
@@ -102,19 +146,41 @@ export const generateVerificationEmail = async ( variables: TicketVariables ): P
   } );
 
   // Assuming emailCompletion.choices contains the email content
-  const emailContent = emailCompletion.choices[ 0 ].message.content;
+  const emailContent = emailCompletion.choices[ 0 ].message.content.trim();
   console.log ( emailContent );
 
   return emailContent;
 };
 
-export const generalChat: AiTicketVariablesFn = async ( ticket: string ): Promise<TicketVariables> => {
-  return {} as TicketVariables;
+export const generalEmail: AIEmailsFn = async ( email: EmailData ): Promise<EmailResult> => {
+  try {
+    const annotatedEmailContent = await generateAllPurposeEmail(email);
+
+    // Extract subject using regex
+    const subjectMatch = annotatedEmailContent.match(/<!-- SUBJECT START -->(.*?)<!-- SUBJECT END -->/s);
+    const subject = subjectMatch ? subjectMatch[1].trim() : "No Subject";
+    console.log("Subject: ", subject);
+
+    // Extract email body using regex
+    const emailBodyMatch = annotatedEmailContent.match(/<!-- EMAIL START -->(.*?)<!-- EMAIL END -->/s);
+    const emailBody = emailBodyMatch ? emailBodyMatch[1].trim() : "No Email Content";
+    console.log("Email Body: ", emailBody);
+
+    return {
+      subject: subject,
+      email: emailBody,
+    };
+  } catch ( error ) {
+    console.error("Error generating email: ", error);
+    return {
+      error: {
+        name: "EmailGenerationError",
+        message: typeof error === "string" ? error : error.message || "Unknown error",
+      }
+    }
+  }
 }
 
-export const generalEmail: AIEmailsFn = async ( email: EmailData ): Promise<EmailResult> => {
-  return {
-    subject: `the subject for ${email.purpose}`,
-    email: `Some email from ${JSON.stringify ( email, null, 2 )}`
-  }
+export const generalChat: AiTicketVariablesFn = async ( ticket: string ): Promise<TicketVariables> => {
+  return {} as TicketVariables;
 }

@@ -1,4 +1,10 @@
-import {chatgptTicketVariables, generateVerificationEmail} from "./chatgpt.ticket.variables";
+import {
+  chatgptTicketVariables,
+  extractEmailDataFromTicket,
+  generalEmail,
+  generateAllPurposeEmail
+} from "./chatgpt.ticket.variables";
+import {EmailData} from "@itsmworkbench/ai_ticketvariables";
 
 const sampleTicket = `Ticket SR5542
 =============
@@ -24,32 +30,38 @@ describe('ChatGPTTicketVariables', () => {
 });
 
 describe('ChatGPTEmailGeneration', () => {
-  test('should generate email from sample variables', async () => {
-    const variables = {
-      ticketId: "SR5542",
-      Customer: "bob.grey@thecompany.co",
-      Environment: "DSS production",
-      buttonId: "but-blue-123",
-      desiredColor: "blue",
-      currentColor: "red"
+  test('should generate email from EmailData', async () => {
+    const emailData: EmailData = {
+      purpose: "purpose", //changing for now
+      ticketId: "ticketId",
+      ticket: sampleTicket
     };
 
     // Call the function with the variables to generate an email
-    const emailContent = await generateVerificationEmail(variables);
+    const emailContent = await generateAllPurposeEmail(emailData);
 
     // Check if emailContent is a string (indicatively checking if an email was generated)
     expect(typeof emailContent).toBe('string');
     // Further tests can be added to check the content of the email if necessary
   });
 
-  test('should generate email from incoming variables', async () => {
-    const sampleTicketVariables = await chatgptTicketVariables(sampleTicket);
+  test('should generate email from incoming EmailData', async () => {
+    const extractedEmailData = await extractEmailDataFromTicket(sampleTicket);
 
     // Call the function with the variables to generate an email
-    const emailContent = await generateVerificationEmail(sampleTicketVariables);
+    const emailContent = await generateAllPurposeEmail(extractedEmailData);
 
     // Check if emailContent is a string (indicatively checking if an email was generated)
     expect(typeof emailContent).toBe('string');
     // Further tests can be added to check the content of the email if necessary
+  });
+
+  test('should generate general email with the EmailResult', async () => {
+    const extractedEmailData = await extractEmailDataFromTicket(sampleTicket);
+
+    // Call the function with the variables to generate an email
+    const generalEmailReturn = await generalEmail(extractedEmailData);
+
+    expect(typeof generalEmailReturn).toBe('object');
   });
 });
