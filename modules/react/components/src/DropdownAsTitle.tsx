@@ -6,6 +6,7 @@ import { SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
 import { Loading } from "@itsmworkbench/components";
 import { SideEffect } from "@itsmworkbench/react_core";
 import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
+import { ErrorsAnd, hasErrors } from "@laoban/utils";
 
 
 //observations... it will take time to load the selected item
@@ -63,4 +64,15 @@ export function LoadingOr<S, T extends IdAndName> ( { state, children }: Loading
   if ( item === undefined || item.selected === undefined ) return <></>
   const newState: LensState<S, T, any> = state.focusOn ( 'item' )
   return item.item === undefined ? <Loading/> : children ( newState );
+}
+
+export interface LoadingValueProps<T> {
+  children: ( t: T ) => React.ReactNode
+  value: ErrorsAnd<T> | undefined
+  errors?: ( errors: string[] ) => React.ReactElement
+}
+export function LoadingValue<T> ( { children, value, errors }: LoadingValueProps<T> ): React.ReactElement {
+  if ( value === undefined ) {return <Loading/>}
+  if ( hasErrors ( value ) ) return errors ? errors ( value ) : <pre>{value.join ( '\n' )}</pre>
+  {return <>{children ( value as T )}</>}
 }

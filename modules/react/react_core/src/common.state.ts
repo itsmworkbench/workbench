@@ -1,4 +1,5 @@
 import { Capability, PhaseName } from "@itsmworkbench/domain";
+import { Operator } from "@itsmworkbench/operator";
 
 export interface WorkspaceSelectionState {
   workspaceTab?: string
@@ -16,4 +17,9 @@ export function workbenchName(capability: Capability){
 export interface DebugState {
   showDevMode?: boolean
   selectedDebugTab?: string | undefined
+}
+
+export interface BasicData{
+  operator: Operator
+  organisation: string
 }

@@ -55,7 +55,14 @@ export function isListNamesResult ( x: any ): x is ListNamesResult {
 }
 export type ListNamesOrder = 'name' | 'date'
 
-export type UrlListFn = ( org: string, namespace: string, query: PageQuery, order: ListNamesOrder, filter?: string ) => Promise<ErrorsAnd<ListNamesResult>>
+export type UrlQuery={
+  org: string
+  namespace: string
+  pageQuery: PageQuery
+  order: ListNamesOrder
+  filter?: string
+}
+export type UrlListFn = ( q: UrlQuery) => Promise<ErrorsAnd<ListNamesResult>>
 
 export type UrlLoaders = {
   loadNamed: UrlLoadNamedFn
