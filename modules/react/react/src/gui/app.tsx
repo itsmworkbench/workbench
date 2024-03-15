@@ -4,7 +4,7 @@ import { DisplayMarkdown, MainAppLayout, SilentTabsContainer, SimpleTabPanel, Su
 import React from "react";
 import { ItsmState } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
-import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplaySqlWorkbench, SendTicketForEmailButton } from "@itsmworkbench/react_capabilities";
+import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplayReceiveEmailWorkbench, DisplaySqlWorkbench, SendTicketForEmailButton } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { NewTicketWizard } from "@itsmworkbench/react_new_ticket";
@@ -17,13 +17,13 @@ import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/url";
 import { Welcome } from "./welcome";
-import { DisplayReceiveEmailWorkbench } from "@itsmworkbench/react_capabilities";
+import { DisplayReviewTicketWorkbench } from "@itsmworkbench/react_capabilities/dist/src/review.ticket.workbench";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
   eventPlugins: DisplayEnrichedEventPlugIn<S>[]
-}
 
+}
 export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState> ) {
   let wholeState = state.optJson ();
   let showDevMode = wholeState?.debug?.showDevMode;
@@ -96,6 +96,16 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
         </SimpleTabPanel>
         <SimpleTabPanel title='LDAPWorkbench'>
           <DisplayLdapWorkbench state={state.doubleUp ().focus1On ( 'blackboard' ).focus1On ( 'action' )} SuccessButton={successButton} FailureButton={failureButton}/>
+        </SimpleTabPanel>
+
+        <SimpleTabPanel title='ReviewTicketWorkbench'>
+          <DisplayReviewTicketWorkbench state={state.tripleUp ().//
+            focus1On ( 'ticket' ).//
+            focus2On ( 'blackboard' ).focus2On ( 'action' ).//
+            focus3On ( 'variables' )}
+                                        SuccessButton={successButton}
+                                        FailureButton={failureButton}
+          />
         </SimpleTabPanel>
 
         <SimpleTabPanel title='ReceiveEmailWorkbench'>

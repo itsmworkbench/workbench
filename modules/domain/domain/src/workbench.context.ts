@@ -1,7 +1,8 @@
 import { Capability } from "./capabilities";
+import { NameAnd } from "@laoban/utils";
 
 export type WhereContext = { phase?: string, action?: string, tab?: string }
-export type DisplayContext = { title: string, type: string, successOrFail: boolean | undefined}
+export type DisplayContext = { title: string, type: string, successOrFail: boolean | undefined }
 
 export type WorkBenchContext<T> = {
   capability: Capability
@@ -61,3 +62,15 @@ export interface ReceiveEmailData {
   email: string
 }
 
+
+export interface ReviewTicketWorkBenchContext extends WorkBenchContext<ReviewTicketData> {
+  capability: 'ReviewTicket'
+}
+
+export function isReviewTicketWorkBenchContext ( context: any ): context is ReviewTicketWorkBenchContext {
+  return isWorkBenchContext<ReviewTicketData> ( context ) && context.capability === 'ReviewTicket'
+}
+export interface ReviewTicketData {
+  locatedAttributes: NameAnd<string>
+  editedAttributes: string
+}

@@ -5,7 +5,7 @@ import React from "react";
 import { BaseAction } from "@itsmworkbench/actions";
 
 export interface StatusIndicatorProps {
-  action: BaseAction
+  action?: BaseAction
   value: boolean | undefined
 
 }

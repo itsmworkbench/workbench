@@ -12,7 +12,7 @@ const openai = new OpenAI ( {
 export const extractEmailDataFromTicket = async ( ticket: string ): Promise<EmailData> => {
   const allVariables = await chatgptTicketVariables ( ticket );
   return {
-    purpose: allVariables.purposeOfEmail,
+    purpose: allVariables.purposeOfEmail as EmailPurpose,
     ticketId: allVariables.ticketId,
     ticket: ticket
   };
