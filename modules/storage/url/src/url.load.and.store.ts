@@ -30,7 +30,7 @@ export type UrlSaveOptions = {
   commit?: boolean
 }
 
-export type UrlSaveFn = ( url: NamedOrIdentityUrl, content: any, options?: UrlSaveOptions) => Promise<ErrorsAnd<UrlStoreResult>>
+export type UrlSaveFn = ( url: NamedOrIdentityUrl, content: any, options?: UrlSaveOptions ) => Promise<ErrorsAnd<UrlStoreResult>>
 
 export type PageQuery = {
   page: number
@@ -55,7 +55,7 @@ export function isListNamesResult ( x: any ): x is ListNamesResult {
 }
 export type ListNamesOrder = 'name' | 'date'
 
-export type UrlListFn = ( org: string, namespace: string, query: PageQuery, order: ListNamesOrder ) => Promise<ErrorsAnd<ListNamesResult>>
+export type UrlListFn = ( org: string, namespace: string, query: PageQuery, order: ListNamesOrder, filter?: string ) => Promise<ErrorsAnd<ListNamesResult>>
 
 export type UrlLoaders = {
   loadNamed: UrlLoadNamedFn

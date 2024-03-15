@@ -3,6 +3,7 @@ import path from 'path';
 import { applyPaging, ListNamesOrder, OrganisationUrlStoreConfigForGit, PageQuery, UrlListFn } from "@itsmworkbench/url";
 import { ErrorsAnd, mapErrors, mapErrorsK } from "@laoban/utils";
 import { urlStorePathFn } from "@itsmworkbench/url";
+import { Dirent } from "node:fs";
 
 export type FileInfo = {
   name: string;
@@ -11,9 +12,11 @@ export type FileInfo = {
 };
 
 // Load file information from a directory
-async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => string ): Promise<FileInfo[]> {
+async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => string, filter?: string ): Promise<FileInfo[]> {
   const files = await fs.readdir ( directoryPath, { withFileTypes: true } );
-  const fileInfoPromises = files.filter ( file => file.isFile () ).map ( async file => {
+  const lcFilter = filter && filter.toLowerCase ()
+  const filterFn = filter ? ( file: Dirent ) => file.name.toLowerCase().includes ( lcFilter ) : () => true;
+  const fileInfoPromises = files.filter ( file => file.isFile () && filterFn ( file ) ).map ( async file => {
     const filePath = path.join ( directoryPath, file.name );
     const stat = await fs.stat ( filePath );
     return {
@@ -40,8 +43,8 @@ const applySortOrder = ( files: FileInfo[], order: ListNamesOrder ): ErrorsAnd<{
 
 
 export const listNamesInPath = ( nameFn: ( name: string ) => string ) =>
-  async ( directoryPath: string, query: PageQuery, order: ListNamesOrder ): Promise<ErrorsAnd<{ names: string[] }>> => {
-    const files = await loadFileInfo ( directoryPath, nameFn );
+  async ( directoryPath: string, query: PageQuery, order: ListNamesOrder, filter?: string ): Promise<ErrorsAnd<{ names: string[] }>> => {
+    const files = await loadFileInfo ( directoryPath, nameFn, filter );
     return mapErrors ( await applySortOrder ( files, order ), ( { sortedFiles } ) =>
       ({ names: applyPaging ( sortedFiles, query ).map ( f => f.name ) }) )
   }
@@ -51,8 +54,8 @@ function extractFirstPart ( input: string ): string {
 export const listJustNamesInPath = listNamesInPath ( s => extractFirstPart ( path.parse ( s ).name ) );
 export const listInStoreFn = ( config: OrganisationUrlStoreConfigForGit ): UrlListFn => {
   const orgAndNsToPath = urlStorePathFn ( config )
-  return async ( org, namespace, query, order ) =>
+  return async ( org, namespace, query, order, filter ) =>
     mapErrorsK ( orgAndNsToPath ( org, namespace ), async ( path: string ) =>
-      mapErrors ( await listJustNamesInPath ( path, query, order ),
+      mapErrors ( await listJustNamesInPath ( path, query, order, filter ),
         ( { names } ) => ({ org, namespace, names, page: query.page, total: names.length }) ) )
 }

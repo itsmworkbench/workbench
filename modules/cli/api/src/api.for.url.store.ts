@@ -118,8 +118,10 @@ export const listUrls = ( list: UrlListFn ): KoaPartialFunction => ({
         const pageSize = getIntegerWithDefault ( ctx.context.query.pageSize, 10 );
         const page = getIntegerWithDefault ( ctx.context.query.page, 1 );
         const order = getOrder ( ctx.context.query.order );
+        const filter = ctx.context.query.filter;
 
-        const result = await list ( org, ns, { page, pageSize }, order )
+        console.log('filter', filter)
+        const result = await list ( org, ns, { page, pageSize }, order , filter)
         if ( hasErrors ( result ) ) {
           console.log ( 'listUrls - errors', result )
           ctx.context.status = 500;
