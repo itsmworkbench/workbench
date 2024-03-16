@@ -15,7 +15,7 @@ export type FileInfo = {
 async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => string, filter?: string ): Promise<FileInfo[]> {
   const files = await fs.readdir ( directoryPath, { withFileTypes: true } );
   const lcFilter = filter?.toLowerCase ()
-  const filterFn = filter ? ( file: Dirent ) => file.name.toLowerCase().includes ( lcFilter ) : () => true;
+  const filterFn = filter ? ( file: Dirent ) => file.name.toLowerCase ().includes ( lcFilter ) : () => true;
   const fileInfoPromises = files.filter ( file => file.isFile () && filterFn ( file ) ).map ( async file => {
     const filePath = path.join ( directoryPath, file.name );
     const stat = await fs.stat ( filePath );
@@ -54,8 +54,8 @@ function extractFirstPart ( input: string ): string {
 export const listJustNamesInPath = listNamesInPath ( s => extractFirstPart ( path.parse ( s ).name ) );
 export const listInStoreFn = ( config: OrganisationUrlStoreConfigForGit ): UrlListFn => {
   const orgAndNsToPath = urlStorePathFn ( config )
-  return async ( org, namespace, query, order, filter ) =>
+  return async ( { org, namespace, pageQuery, order, filter } ) =>
     mapErrorsK ( orgAndNsToPath ( org, namespace ), async ( path: string ) =>
-      mapErrors ( await listJustNamesInPath ( path, query, order, filter ),
-        ( { names } ) => ({ org, namespace, names, page: query.page, total: names.length }) ) )
+      mapErrors ( await listJustNamesInPath ( path, pageQuery, order, filter ),
+        ( { names } ) => ({ org, namespace, names, page: pageQuery.page, total: names.length }) ) )
 }

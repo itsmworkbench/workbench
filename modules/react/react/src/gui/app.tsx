@@ -1,6 +1,6 @@
 import { LensProps, LensState2, LensState3 } from "@focuson/state";
 import { ThemeProvider, Toolbar } from "@mui/material";
-import { DisplayMarkdown, MainAppLayout, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn, SuccessFailureButton, theme } from "@itsmworkbench/components";
+import { DisplayMarkdown, MainAppLayout, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn, SuccessFailureButton, UrlStoreProvider, theme } from "@itsmworkbench/components";
 import React from "react";
 import { ItsmState } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
@@ -102,7 +102,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
           <DisplayReviewTicketWorkbench state={state.tripleUp ().//
             focus1On ( 'ticket' ).//
             focus2On ( 'blackboard' ).focus2On ( 'action' ).//
-            focus3On ( 'variables' )}
+            focus3On ( 'blackboard' ).focus3On ( 'ticketType' ).focus3On ( 'ticketType' )}
                                         SuccessButton={successButton}
                                         FailureButton={failureButton}
           />

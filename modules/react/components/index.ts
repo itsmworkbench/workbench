@@ -28,6 +28,7 @@ export * from './src/layouts/WithTitle';
 export * from './src/messages/before.and.after.component';
 export * from './src/messages/messaging';
 export * from './src/messages/display.message.plugin';
+export * from './src/select.and.load.from.url.store'
 export * from './src/text/MicroCard';
 export * from './src/text/textarea';
 export * from './src/theme/mytheme';

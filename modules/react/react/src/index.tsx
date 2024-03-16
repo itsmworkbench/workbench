@@ -21,9 +21,8 @@ import { displayTicketTypeEventPlugin } from '@itsmworkbench/react_tickettype';
 import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
-import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayLdapEventPlugin, displayReceiveEmailEventPlugin } from '@itsmworkbench/react_capabilities';
-import { displaySqlEventPlugin } from "@itsmworkbench/react_capabilities";
-import { displayEmailEventPlugin } from "@itsmworkbench/react_capabilities";
+import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin, displaySqlEventPlugin } from '@itsmworkbench/react_capabilities';
+import { UrlStoreProvider } from '@itsmworkbench/components';
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -43,7 +42,7 @@ const setJson = setEventStoreValue ( container );
 const sep1 = defaultEventProcessor<ItsmState> ( '', startAppState, urlStore.loadIdentity )
 
 addEventStoreListener ( container, (( oldS, s, setJson ) =>
-  root.render ( <App
+  root.render ( <UrlStoreProvider urlStore={urlStore}><App
     state={lensState ( s, setJson, 'Container', {} )}
     plugins={[]}
     eventPlugins={[
@@ -56,7 +55,7 @@ addEventStoreListener ( container, (( oldS, s, setJson ) =>
       displayTicketTypeEventPlugin<ItsmState> (),
       displayMessageEventPlugin<ItsmState> () ]}
     // plugins={[ operatorConversationPlugin ( operatorL ) ]}
-  /> )) );
+  /></UrlStoreProvider> )) );
 
 const enricher = defaultEventEnricher ( urlStore )
 
@@ -103,10 +102,12 @@ loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataRe
   //OK this is a mess. Need to think about how to do operator...
   let ticketList = value ( initialDataResult.ticketList ) as any;
   let kaList = value ( initialDataResult.kaList ) as any;
+  let operator = operatorResult?.result || { name: 'Phil', email: 'phil@example.com' };
   const withInitialData: ItsmState = {
     ...startAppState,
+    basicData: { operator, organisation: 'me' },
     blackboard: {
-      operator: operatorResult?.result || { name: 'Phil', email: 'phil@example.com' }
+      operator
     } as any,
     ticketList,
     kaList

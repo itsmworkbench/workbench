@@ -1,4 +1,4 @@
-import { DebugState, EventsAndEnriched, SideEffect, SideeffectResult, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
+import { BasicData, DebugState, EventsAndEnriched, SideEffect, SideeffectResult, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { Lens, Lenses, Optional } from "@focuson/lens";
 import { MainAppMainState } from "@itsmworkbench/components";
 import { ChatDisplayData, Conversation, EmailTempData, LdapData, PhaseAnd, ReceiveEmailData, SqlData } from "@itsmworkbench/domain";
@@ -42,6 +42,7 @@ export interface Blackboard {
 }
 
 export interface ItsmState {
+  basicData: BasicData
   events: EventsAndEnriched,
   blackboard: Blackboard
   tempData: TempData
@@ -59,6 +60,7 @@ export interface ItsmState {
 const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '', ticketType: defaultTicketTypeDetails };
 
 export const startAppState: ItsmState = {
+  basicData: undefined as any,
   blackboard: {} as any,
   ticketList: undefined as any,
   kaList: undefined as any,
