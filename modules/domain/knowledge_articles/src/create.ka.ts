@@ -12,12 +12,13 @@ export type EventWithWorkBenchContext<T> = Event & { context: WorkBenchContext<T
 export const allWorkbenchEvents = ( e: Event[] ) =>
   (e.filter ( e => isWorkBenchContext ( e.context ) ) as EventWithWorkBenchContext<any>[]);
 export function findWorkbenchEventFor ( e: Event[], phase: string, action: string ): EventWithWorkBenchContext<any> | undefined {
-  return e.find ( e => isWorkBenchContext ( e.context ) && e.context.where.phase === phase && e.context.where.action === action ) as EventWithWorkBenchContext<any>
+  const found = e.filter ( e => isWorkBenchContext ( e.context ) && e.context.where.phase === phase && e.context.where.action === action ) as EventWithWorkBenchContext<any>[]
+  return found.length === 0 ? undefined : found[ found.length - 1 ]
 }
 
 export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType, e: Event[], phase: string, action: string ) {
   const found = ticketType?.actions?.[ phase ]?.[ action ] || {}
-  console.log ( 'findActionsInEventsMergeWithTicketType - found', found )
+  console.log ( 'findActionsInEventsMergeWithTicketType - found', phase, action, found )
   const workBenchEvent: EventWithWorkBenchContext<any> = findWorkbenchEventFor ( e, phase, action )
   console.log ( 'findActionsInEventsMergeWithTicketType - workBenchEvent', workBenchEvent )
   if ( workBenchEvent ) {

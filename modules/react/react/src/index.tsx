@@ -9,7 +9,7 @@ import { defaultEventProcessor, Event, processEvents } from "@itsmworkbench/even
 import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, defaultParserStore, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { emailDataL, eventsL, ItsmState, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketVariablesL } from "./state/itsm.state";
+import { emailDataL, enrichedEventsO, eventsL, ItsmState, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
@@ -23,6 +23,7 @@ import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
 import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin, displaySqlEventPlugin } from '@itsmworkbench/react_capabilities';
 import { UrlStoreProvider } from '@itsmworkbench/components';
+import { eventsAndEnrichedL } from "../dist/state/itsm.state";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -69,13 +70,8 @@ const pollingDetails = polling<Event[]> ( 1000, () => container.state.selectionS
     console.log ( 'errors', errors )
     console.log ( 'state', state )
     if ( state ) {
-      const newState: ItsmState = {
-        ...state, variables: {},
-        events: {
-          events: [ ...(state.events.events), ...events ],
-          enrichedEvents: [ ...(state.events.enrichedEvents), ...enrichedEvents ]
-        }
-      }
+      const withEvents = eventsL.map ( state, old => [ ...(old || []), ...events ] )
+      const newState = enrichedEventsO.map ( withEvents, old => [ ...(old || []), ...enrichedEvents ] )
       setJson ( newState )
     }
   }, 0, true
