@@ -8,6 +8,7 @@ export interface BaseAction {
   waitingFor?: string[]
   hint?: string
   optional?: boolean
+  recordInCapability?: boolean
 }
 export function isBaseAction ( a: any ) {
   if ( a === undefined || a === null ) return false
@@ -45,18 +46,23 @@ export interface TicketAction extends BaseAction {
   by: 'Ticket'
 }
 
-export interface KnowledgeArticleAction extends BaseAction {
-  by: 'KnowledgeArticle'
-
+export interface SelectKnowledgeArticleAction extends BaseAction {
+  by: 'SelectKnowledgeArticle';
+  recordInCapability: false;
 }
 
+export interface CreateKnowledgeArticleAction extends BaseAction {
+  by: 'CreateKnowledgeArticle';
+  recordInCapability: false;
+}
 export interface ReviewTicketAction extends BaseAction {
   by: 'ReviewTicket'
 }
 
 export type Action = SqlAction | LdapAction | EmailAction |
-  ChatAction | ManualAction | ReceiveEmailAction | TicketAction | KnowledgeArticleAction |
-  ReviewTicketAction
+  ChatAction | ManualAction | ReceiveEmailAction | TicketAction | SelectKnowledgeArticleAction |
+  ReviewTicketAction | CreateKnowledgeArticleAction
+
 export interface SafeAction extends BaseAction {
   safe?: true
 }

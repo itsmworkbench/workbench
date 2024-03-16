@@ -1,6 +1,6 @@
 import { LensProps3, LensState } from "@focuson/state";
 import React from "react";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { DisplayMarkdown, DisplayYaml, FocusedTextArea, SelectAndLoadFromUrlStore, SuccessFailContextFn } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { ReviewTicketWorkBenchContext } from "@itsmworkbench/domain";
@@ -41,13 +41,6 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
       <DisplayMarkdown md={locatedAttributes} maxHeight='500px'/>
       <Typography variant="subtitle1" gutterBottom>You can change attributes here</Typography>
       <FocusedTextArea fullWidth rows={10} variant="outlined" state={actionState.focusOn ( 'editedAttributes' )}/>
-      <SelectAndLoadFromUrlStore basicData={
-        { organisation: 'me', operator: undefined as any }
-      }
-                                 namespace='ka'
-                                 Title={<h1>Knowledge Article</h1>}
-                                 Summary={ka => <DisplayYaml yaml={ka}/>}
-                                 state={state.state3 ()}/>
       {SuccessButton ( contextFn )}
       {FailureButton ( contextFn )}
     </Box>

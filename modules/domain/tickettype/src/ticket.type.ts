@@ -59,6 +59,10 @@ export const simpleTicketType: TicketType = ({
       ReviewTicket: {
         by: 'ReviewTicket',
       },
+      SelectKnowledgeArticle: {
+        by: 'SelectKnowledgeArticle',
+        recordInCapability: false,
+      },
       RequestMoreData: {
         by: 'Email',
         to: 'issuer.email',
@@ -90,14 +94,15 @@ export const simpleTicketType: TicketType = ({
     },
     Review: {
       createKnowledgeArticle: {
-        by: 'KnowledgeArticle',
+        by: 'CreateKnowledgeArticle',
+        recordInCapability: false,
         optional: true,
       }
     }
   }
 })
 export const usingTicketTypeTT: TicketType = {
-  capabilities: [ 'KnowledgeArticle' ],
+  capabilities: [  ],
   actions: {
     CheckTicket: {},
     Approval: {},
@@ -105,13 +110,14 @@ export const usingTicketTypeTT: TicketType = {
     Close: {},
     Review: {
       createKnowledgeArticle: {
-        by: 'KnowledgeArticle',
+        by: 'CreateKnowledgeArticle',
+        recordInCapability: false,
       }
     }
   }
 }
 export const usingKATT: TicketType = {
-  capabilities: [ 'KnowledgeArticle' ],
+  capabilities: [  ],
   actions: {
     CheckTicket: {},
     Approval: {},
@@ -119,7 +125,9 @@ export const usingKATT: TicketType = {
     Close: {},
     Review: {
       reviewKnowledgeArticle: {
-        by: 'KnowledgeArticle',
+        by: 'CreateKnowledgeArticle',
+        recordInCapability: false,
+
       }
     }
   }

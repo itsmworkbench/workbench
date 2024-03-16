@@ -7,8 +7,9 @@ import { findListIds } from "@itsmworkbench/listids";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { nodeUrlstore } from "@itsmworkbench/urlstorenode";
 import { shellGitsops } from "@itsmworkbench/shell_git";
-import { chatgptTicketVariables, generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
+import { chatgptTicketVariables } from "@itsmworkbench/ai_chatgptticketvariables";
 import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
+import { generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
 
 
 export function apiCommand<Commander, Context extends HasCurrentDirectory, Config> ( yaml: YamlCapability ): CommandFn<Commander, Context, Config> {

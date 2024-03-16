@@ -7,6 +7,8 @@ export * from './src/display.receiveemail.event';
 export * from './src/capabilities.menu'
 export * from './src/email.workbench';
 export * from './src/receive.email.workbench'
+export * from './src/review.ticket.workbench'
+export * from './src/select.knowledge.article.workbench'
 export * from './src/ldap.workbench';
 export * from './src/ka.workspace'
 export * from './src/save.ka.sideeffect'

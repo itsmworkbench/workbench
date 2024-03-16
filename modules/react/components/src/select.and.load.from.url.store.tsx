@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { LensProps } from "@focuson/state";
-import { TicketType } from "@itsmworkbench/tickettype";
+import { LensProps, LensProps2 } from "@focuson/state";
 import { LoadingValue, useUrlStore } from '@itsmworkbench/components';
 import { BasicData } from "@itsmworkbench/react_core";
-import { ListNamesResult } from "@itsmworkbench/url";
-import { ErrorsAnd } from '@laoban/utils';
+import { IdentityUrl, ListNamesResult } from "@itsmworkbench/url";
+import { ErrorsAnd, hasErrors } from '@laoban/utils';
 import { List, ListItem, ListItemText, Pagination, TextField } from "@mui/material";
 
-export interface SelectAndLoadUrlProps<S, T> extends LensProps<S, TicketType, any> {
+export interface SelectAndLoadUrlProps<S, T> extends LensProps2<S, T, string, any> {
   basicData: BasicData
   namespace: string
   pageSize?: number
   Title: React.ReactNode
-  Summary: ( t: T ) => React.ReactNode
+  Summary: ( t: T | undefined ) => React.ReactNode
 }
 
 export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace, pageSize, Title, Summary }: SelectAndLoadUrlProps<S, T> ) {
@@ -21,11 +20,24 @@ export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace,
   const [ filter, setFilter ] = useState ( '' );
   const [ page, setPage ] = useState ( 1 );
   const [ kas, setKas ] = useState<ErrorsAnd<ListNamesResult> | undefined> ( undefined );
-  const [ summary, setSummary ] = useState<T | undefined> ( undefined )
+  // const [ summary, setSummary ] = useState<T | undefined> ( undefined )
   useEffect ( () => {
     urlStore.list ( { filter, order: 'name', org: basicData.organisation, namespace, pageQuery: { page, pageSize } } ).then ( setKas ), [ filter ]
   } )
 
+  function setSummaryLoad ( item: string ) {
+
+    urlStore.loadNamed<T> ( { scheme: 'itsm', name: item, organisation: basicData.organisation, namespace } ).then ( res => {
+      console.log ( 'setSummaryLoad', res )
+      if ( hasErrors ( res ) )
+        console.error ( res )
+      else {
+        // setSummary ( res.result )
+        console.log ( 'setSummaryLoad', state, res.result )
+        state.setJson ( res.result, res.id, 'select' )
+      }
+    } )
+  }
   return (
     <div>
       {Title}
@@ -36,8 +48,8 @@ export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace,
         fullWidth
         margin="normal"
       />
-      <ResultsList items={kas} onSelect={setSummary}/>
-      {Summary ( summary )}
+      <ResultsList items={kas} onSelect={setSummaryLoad}/>
+      {Summary ( state.optJson1 () )}
       <Pagination
         onChange={( event, page ) => setPage ( page )}
         color="primary"
@@ -52,7 +64,8 @@ interface ResultsListProps {
   onSelect: ( item: any ) => void; // Define the correct item type based on your needs
 }
 
-export function ResultsList ( { items, onSelect } ) {
+export function ResultsList ( { items, onSelect }: ResultsListProps ) {
+  const urlStore = useUrlStore ();
   return <LoadingValue value={items}>{( list: ListNamesResult ) =>
     <List>
       {list.names.map ( ( item, index ) => (

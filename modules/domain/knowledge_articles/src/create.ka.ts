@@ -4,6 +4,7 @@ import { TicketType } from "@itsmworkbench/tickettype";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { Action, isBaseAction } from "@itsmworkbench/actions";
 import { findUsedVariables, reverseTemplate } from "@itsmworkbench/utils";
+import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 
 export type EventWithWorkBenchContext<T> = Event & { context: WorkBenchContext<T> }
 
@@ -16,22 +17,26 @@ export function findWorkbenchEventFor ( e: Event[], phase: string, action: strin
 
 export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType, e: Event[], phase: string, action: string ) {
   const found = ticketType?.actions?.[ phase ]?.[ action ] || {}
+  console.log ( 'findActionsInEventsMergeWithTicketType - found', found )
   const workBenchEvent: EventWithWorkBenchContext<any> = findWorkbenchEventFor ( e, phase, action )
+  console.log ( 'findActionsInEventsMergeWithTicketType - workBenchEvent', workBenchEvent )
   if ( workBenchEvent ) {
     const result = { ...found, by: workBenchEvent.context.capability, ...workBenchEvent.context.data } as Action
     return result
   }
   return found
 }
-export function findActionInEventsFor ( e: Event[], phase: string, action: string ): Action {
+export function findActionInEventsFor ( e: EnrichedEvent<any, any>[], phase: string, action: string ): Action {
   const ticketType: TicketType = lastTicketType ( e )
+  console.log ( 'findActionInEventsFor - ticketType', ticketType )
   return findActionsInEventsMergeWithTicketType ( ticketType, e, phase, action )
 }
 
-export function lastTicketType ( e: Event[] ): TicketType {
-  const withTicketType: any[] = e.filter ( ( e: any ) => e.value?.ticketType )
+export function lastTicketType ( e: EnrichedEvent<any, any>[] ): TicketType {
+  const withTicketType: any[] = e.filter ( ( e: any ) => e.value?.ticketType || e.context?.data?.ticketType !== undefined )
   if ( withTicketType.length === 0 ) return undefined
-  const foundTicketType: TicketType = withTicketType[ withTicketType.length - 1 ].value.ticketType
+  let foundEvent = withTicketType[ withTicketType.length - 1 ];
+  const foundTicketType: TicketType = foundEvent.value.ticketType || foundEvent.context.data.ticketType
   return JSON.parse ( JSON.stringify ( foundTicketType ) )
 
 }

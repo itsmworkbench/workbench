@@ -63,7 +63,7 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
       const details = urlToDetails ( nsToDetails, named )
       const result: ErrorsAnd<UrlStoreResult> = await mapErrorsK ( details, async d => {
         const parsed = d.parser ( url, requestBody )
-        console.log ( 'parsed','sizein', requestBody.length, details )
+        console.log ( 'parsed', 'sizein', requestBody.length, details )
         console.log ( 'parsed', parsed )
         return await save ( named, parsed, { append, commit } );
       } )
@@ -113,15 +113,15 @@ export const listUrls = ( list: UrlListFn ): KoaPartialFunction => ({
     const match = listUrlRegex.exec ( ctx.context.request.path );
     if ( match ) {
       const org = match[ 1 ];
-      const ns = match[ 2 ];
+      const namespace = match[ 2 ];
       try {
         const pageSize = getIntegerWithDefault ( ctx.context.query.pageSize, 10 );
         const page = getIntegerWithDefault ( ctx.context.query.page, 1 );
         const order = getOrder ( ctx.context.query.order );
         const filter = ctx.context.query.filter;
 
-        console.log('filter', filter)
-        const result = await list ( org, ns, { page, pageSize }, order , filter)
+        console.log ( 'filter', filter )
+        const result = await list ( { org, namespace, pageQuery: { page, pageSize }, order, filter } )
         if ( hasErrors ( result ) ) {
           console.log ( 'listUrls - errors', result )
           ctx.context.status = 500;

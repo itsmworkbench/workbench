@@ -1,5 +1,6 @@
 import { Capability } from "./capabilities";
 import { NameAnd } from "@laoban/utils";
+import { IdentityUrl } from "@itsmworkbench/url";
 
 export type WhereContext = { phase?: string, action?: string, tab?: string }
 export type DisplayContext = { title: string, type: string, successOrFail: boolean | undefined }
@@ -73,4 +74,13 @@ export function isReviewTicketWorkBenchContext ( context: any ): context is Revi
 export interface ReviewTicketData {
   locatedAttributes: NameAnd<string>
   editedAttributes: string
+}
+
+export type SelectKnowledgeArticleWorkBenchContext = WorkBenchContext<SelectKnowledgeArticleData>
+export function isSelectKnowledgeArticleWorkBenchContext ( context: any ): context is SelectKnowledgeArticleWorkBenchContext {
+  return isWorkBenchContext<SelectKnowledgeArticleData> ( context ) && context.capability === 'SelectKnowledgeArticle'
+}
+export interface SelectKnowledgeArticleData {
+  ticketType: any //should be ticket type but need to move around
+  id?: IdentityUrl
 }

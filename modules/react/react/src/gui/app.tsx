@@ -17,7 +17,8 @@ import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/url";
 import { Welcome } from "./welcome";
-import { DisplayReviewTicketWorkbench } from "@itsmworkbench/react_capabilities/dist/src/review.ticket.workbench";
+import { DisplayReviewTicketWorkbench } from "@itsmworkbench/react_capabilities";
+import { DisplaySelectKnowledgeArticleWorkbench } from "@itsmworkbench/react_capabilities";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -112,11 +113,20 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
           <DisplayReceiveEmailWorkbench state={state.doubleUp ().focus1On ( 'blackboard' ).focus1On ( 'action' )} SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
 
-        <SimpleTabPanel title='KnowledgeArticleWorkbench'>
-          <DisplayKnowledgeArticleWorkbench variables={(state.focusOn ( 'blackboard' ).optJson () || {} as any)?.ticket} state={state.tripleUp ().focus1On ( 'tempData' ).focus1On ( 'ka' ).//
-            focus2On ( 'events' ).focus2On ( 'events' ).//
-            focus3On ( 'sideeffects' )
-          } SuccessButton={successButton} FailureButton={failureButton}/>
+        <SimpleTabPanel title='CreateKnowledgeArticleWorkbench'>
+          <DisplayKnowledgeArticleWorkbench variables={(state.focusOn ( 'blackboard' ).optJson () || {} as any)?.ticket}
+                                            state={state.tripleUp ().focus1On ( 'tempData' ).focus1On ( 'ka' ).//
+                                              focus2On ( 'events' ).focus2On ( 'events' ).//
+                                              focus3On ( 'sideeffects' )
+                                            } SuccessButton={successButton} FailureButton={failureButton}/>
+        </SimpleTabPanel>
+        <SimpleTabPanel title='SelectKnowledgeArticleWorkbench'>
+          <DisplaySelectKnowledgeArticleWorkbench
+            state={state.doubleUp ().//
+              focus1On ( 'blackboard' ).focus1On ( 'action' ).//
+              focus2On ( 'blackboard' ).focus2On ( 'ticketType' ).focus2On ( 'ticketType' )//
+            }
+            SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='newTicket'>
           <NewTicketWizard

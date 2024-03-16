@@ -9,8 +9,9 @@ import { TabPhaseAndActionSelectionState, workbenchName } from "@itsmworkbench/r
 import { StatusIndicator } from "@itsmworkbench/components";
 import { Event } from "@itsmworkbench/events";
 import { findActionInEventsFor, dereferenceAction } from "@itsmworkbench/knowledge_articles";
+import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
 
-export interface ActionButtonProps<S> extends LensProps3<S, any, TabPhaseAndActionSelectionState, Event[], any> {
+export interface ActionButtonProps<S> extends LensProps3<S, any, TabPhaseAndActionSelectionState, EnrichedEvent<any, any>[], any> {
   name: string
   phase: PhaseName
   action: BaseAction
@@ -19,9 +20,10 @@ export interface ActionButtonProps<S> extends LensProps3<S, any, TabPhaseAndActi
 export function ActionButton<S> ( { name, action, phase, status, state }: ActionButtonProps<S> ) {
   let buttonOnClick = () => {
     let found: Action = findActionInEventsFor ( state.optJson3 () || [], phase, name );
+    console.log('ActionButton - found', found)
     const variables: any = state.optJson2 () || {}
     let derefed = dereferenceAction ( found, variables )
-    console.log ( 'ActionButton', found )
+    console.log ( 'ActionButton - derefed', found )
     state.state12 ().setJson ( found, { workspaceTab: workbenchName ( derefed.by ), phase, action: name }, derefed );
   };
   return <><Button
