@@ -7,7 +7,7 @@ import { findListIds } from "@itsmworkbench/listids";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { nodeUrlstore } from "@itsmworkbench/urlstorenode";
 import { shellGitsops } from "@itsmworkbench/shell_git";
-import { chatgptTicketVariables } from "@itsmworkbench/ai_chatgptticketvariables";
+import { chatgptTicketVariables, generalChat } from "@itsmworkbench/ai_chatgptticketvariables";
 import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
 import { generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
 
