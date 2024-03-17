@@ -1,4 +1,4 @@
-import { BasicData, DebugState, EventsAndEnriched, SideEffect, SideeffectResult, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
+import { BasicData, DebugState, SideEffect, SideeffectResult, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { Lens, Lenses, Optional } from "@focuson/lens";
 import { MainAppMainState } from "@itsmworkbench/components";
 import { ChatDisplayData, Conversation, EmailTempData, LdapData, PhaseAnd, ReceiveEmailData, SqlData } from "@itsmworkbench/domain";
@@ -11,11 +11,10 @@ import { Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
 import { EmailResult, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
-import { defaultTicketTypeDetails, TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
+import { defaultTicketTypeDetails } from "@itsmworkbench/tickettype";
 import { KnowledgeArticleTempData } from "@itsmworkbench/react_capabilities";
 import { Action } from "@itsmworkbench/actions";
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
-import { Option } from "@itsmworkbench/cli";
 
 export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {
   mainScreen?: MainAppMainState
@@ -44,12 +43,13 @@ export type ItsmStateDataForTicket = {
   ticket?: Ticket //This is a cache of what's in the events. It's not the source of truth
   variables: NameAnd<string> // things we can use in the templates. Also a cache
   status: PhaseAnd<NameAnd<boolean>>// more cached data
+  tempData: TempData
+
 }
 
 export interface ItsmState {
   forTicket: ItsmStateDataForTicket
   basicData: BasicData
-  tempData: TempData
   ticketList: ListNamesResult
   kaList: ListNamesResult
   conversation: Conversation
@@ -66,7 +66,6 @@ const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '', tic
 export const startAppState: ItsmState = {
   forTicket: {} as any,
   basicData: undefined as any,
-  tempData: {} as TempData,
   ticketList: undefined as any,
   kaList: undefined as any,
   sideeffects: [],
@@ -82,15 +81,16 @@ export const selectionStateL: Lens<ItsmState, ItsmSelectionState> = itsmIdL.focu
 export const operatorL: Lens<ItsmState, Operator> = basicDataL.focusOn ( 'operator' )
 // export const setPageL: Optional<ItsmState, string> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'workspaceTab' )
 export const ticketIdL: Optional<ItsmState, string> = selectionStateL.focusQuery ( 'ticketId' )
-export const newTicketL: Optional<ItsmState, NewTicketWizardData> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' )
-export const ticketVariablesL: Optional<ItsmState, TicketVariables> = itsmIdL.focusQuery ( 'forTicket' ).focusQuery ( 'variables' )
+let forTicketL = itsmIdL.focusOn ( 'forTicket' );
+let tempDataL = forTicketL.focusQuery ( 'tempData' );
+export const newTicketL: Optional<ItsmState, NewTicketWizardData> = tempDataL.focusQuery ( 'newTicket' )
+export const ticketVariablesL: Optional<ItsmState, TicketVariables> = forTicketL.focusQuery ( 'variables' )
 
-export const emailDataL: Optional<ItsmState, Action> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'action' )
+export const emailDataL: Optional<ItsmState, Action> = tempDataL.focusQuery ( 'action' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> = itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )
 export const tabsL: Optional<ItsmState, TabPhaseAndActionSelectionState> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'tabs' )
 export const logsL: Lens<ItsmState, SideeffectResult<any>[]> = itsmIdL.focusOn ( 'log' )
-let forTicketL = itsmIdL.focusOn ( 'forTicket' );
 export const eventsO: Optional<ItsmState, Event[]> = forTicketL.focusOn ( 'events' )
 export const eventsL: Lens<ItsmState, Event[]> = forTicketL.focusOn ( 'events' )
 export const enrichedEventsO: Optional<ItsmState, Event[]> = forTicketL.focusOn ( 'enrichedEvents' )

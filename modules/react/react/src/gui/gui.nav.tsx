@@ -9,7 +9,6 @@ import { Box } from "@mui/material";
 import ChatIcon from '@mui/icons-material/Chat';
 import AddIcon from '@mui/icons-material/Add';
 import EventIcon from '@mui/icons-material/Event';
-import { EventsAndEnriched } from "@itsmworkbench/react_core";
 import { NewTicketButton } from "@itsmworkbench/react_new_ticket";
 
 export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {

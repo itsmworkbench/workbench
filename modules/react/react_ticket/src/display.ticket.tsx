@@ -3,7 +3,6 @@ import { LensProps3 } from "@focuson/state";
 import { List, ListItem, ListItemText } from "@material-ui/core";
 import { EventsAndEnriched, WorkspaceSelectionState } from "@itsmworkbench/react_core";
 import { MainAppMainState } from "@itsmworkbench/components";
-import { ItsmStateDataForTicket } from "@itsmworkbench/react/dist/state/itsm.state";
 
 
 export interface DisplayTicketListSelectionState<Tabs extends WorkspaceSelectionState> {
@@ -11,7 +10,7 @@ export interface DisplayTicketListSelectionState<Tabs extends WorkspaceSelection
   ticketId?: string
   mainScreen?: MainAppMainState
 }
-export function DisplayTicketList<S, WS extends DisplayTicketListSelectionState<Tabs>, Tabs extends WorkspaceSelectionState> ( { state }: LensProps3<S, string[], WS, ItsmStateDataForTicket, any> ) {
+export function DisplayTicketList<S, WS extends DisplayTicketListSelectionState<Tabs>, Tabs extends WorkspaceSelectionState> ( { state }: LensProps3<S, string[], WS, any, any> ) {
   const ticketNames = state.state1 ().optJson () || [];
   const selectedTicketId = state.state2 ().optJson ()?.ticketId;
 
@@ -28,9 +27,9 @@ export function DisplayTicketList<S, WS extends DisplayTicketListSelectionState<
             onClick={() => {
               console.log ( 'Clicked in DisplayTicketList', id, state.state2 ().optJson () );
               const oldSelectState = state.state2 ().optJson () || {} as WS;
-              let forTicket = state.state3 ().optJson () || {} as ItsmStateDataForTicket;
-              if ( oldSelectState.ticketId !== id ) forTicket = {} as ItsmStateDataForTicket;
-              console.log('display ticket. forTicket', forTicket)
+              let forTicket = state.state3 ().optJson () || {} as any;
+              if ( oldSelectState.ticketId !== id ) forTicket = {} as any;
+              console.log ( 'display ticket. forTicket', forTicket )
               const newSelectState = { ...oldSelectState, ticketId: id, tabs: { workspaceTab: 'chat' }, mainScreen: { drawerOpen: false } };
               state.state23 ().setJson ( newSelectState, forTicket, 'Clicked in DisplayTicketList' );
             }}
