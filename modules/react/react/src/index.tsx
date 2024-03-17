@@ -23,7 +23,6 @@ import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
 import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin, displaySqlEventPlugin } from '@itsmworkbench/react_capabilities';
 import { UrlStoreProvider } from '@itsmworkbench/components';
-import { eventsAndEnrichedL } from "../dist/state/itsm.state";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -102,9 +101,6 @@ loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataRe
   const withInitialData: ItsmState = {
     ...startAppState,
     basicData: { operator, organisation: 'me' },
-    blackboard: {
-      operator
-    } as any,
     ticketList,
     kaList
   }

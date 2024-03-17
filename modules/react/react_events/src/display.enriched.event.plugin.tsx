@@ -21,10 +21,8 @@ export function DisplayEnrichedEventUsingPlugin<S> ( { state, plugins }: Display
   const event = state.optJson ()
   if ( event === undefined ) return <div>No event - This is an error</div>
   const plugin = plugins.find ( p => p.accept ( event ) )
-  console.log ( 'plugin', plugin, 'event', event, 'state', state )
   if ( plugin === undefined ) return <DisplayEnrichedEvent state={state}/>
   let debugComponent = plugin.debugDisplay || DisplayDefaultEnrichedEventFull<S>;
-  console.log ( 'debugComponent', debugComponent )
   return <SelectableSize
     MicroComponent={plugin.microDisplay}
     MiniComponent={plugin.miniDisplay}

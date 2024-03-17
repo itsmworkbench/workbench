@@ -30,10 +30,6 @@ export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButt
     data: { ticketType }
   })
 
-  function saveClick () {
-    //hacking this. the whole workbenches are a mess. Need refactoring, but I want the end to end story to work first
-    state.state2 ().setJson ( ticketType, 'saved' )
-  }
   return <>
     {SuccessButton ( contextFn )}
     <SelectAndLoadFromUrlStore basicData={{ organisation: 'me', operator: undefined as any }}
@@ -41,7 +37,7 @@ export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButt
                                Title={<h1>Knowledge Article</h1>}
                                Summary={ka => <DisplayYaml maxHeight='600px' yaml={ka}/>}
                                state={actionState.doubleUp ().focus1On ( 'ticketType' ).focus2On ( 'id' )}/>
-    <Button onClick={saveClick}>Save</Button>
+
   </>
 }
 

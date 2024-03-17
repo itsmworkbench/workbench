@@ -24,6 +24,7 @@ export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabP
 }
 export type TicketAndId = { id?: string, ticket?: Ticket }
 export interface TempData {
+  action: Action
   newTicket: NewTicketWizardData
   sqlData: SqlData
   ldapData: LdapData
@@ -33,15 +34,6 @@ export interface TempData {
   ka: KnowledgeArticleTempData
 }
 
-export interface Blackboard {
-  action: Action
-  operator: Operator
-  ticketType: {
-    ticketType: TicketType,
-    ticketTypeDetails: TicketTypeDetails
-  },
-  status: PhaseAnd<NameAnd<boolean>>
-}
 
 //These are blown away every time we have a new ticket
 //They are the 'data we know about this ticket'
@@ -57,8 +49,6 @@ export type ItsmStateDataForTicket = {
 export interface ItsmState {
   forTicket: ItsmStateDataForTicket
   basicData: BasicData
-  events: EventsAndEnriched,
-  blackboard: Blackboard
   tempData: TempData
   ticketList: ListNamesResult
   kaList: ListNamesResult
@@ -76,21 +66,18 @@ const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '', tic
 export const startAppState: ItsmState = {
   forTicket: {} as any,
   basicData: undefined as any,
-  blackboard: {} as any,
+  tempData: {} as TempData,
   ticketList: undefined as any,
   kaList: undefined as any,
   sideeffects: [],
-  events: { events: [], enrichedEvents: [] },
   log: [],
   conversation: { messages: [], chat: { type: '' } },
   variables: {},
-  tempData: {} as TempData,
   selectionState: {},
 }
 
 export const itsmIdL: Lens<ItsmState, ItsmState> = Lenses.identity ()
 export const basicDataL: Lens<ItsmState, BasicData> = itsmIdL.focusOn ( 'basicData' )
-export const blackboardL: Lens<ItsmState, Blackboard> = itsmIdL.focusOn ( 'blackboard' )
 export const selectionStateL: Lens<ItsmState, ItsmSelectionState> = itsmIdL.focusOn ( 'selectionState' )
 export const operatorL: Lens<ItsmState, Operator> = basicDataL.focusOn ( 'operator' )
 // export const setPageL: Optional<ItsmState, string> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'workspaceTab' )
@@ -98,7 +85,7 @@ export const ticketIdL: Optional<ItsmState, string> = selectionStateL.focusQuery
 export const newTicketL: Optional<ItsmState, NewTicketWizardData> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'newTicket' )
 export const ticketVariablesL: Optional<ItsmState, TicketVariables> = itsmIdL.focusQuery ( 'forTicket' ).focusQuery ( 'variables' )
 
-export const emailDataL: Optional<ItsmState, Action> = itsmIdL.focusQuery ( 'blackboard' ).focusQuery ( 'action' )
+export const emailDataL: Optional<ItsmState, Action> = itsmIdL.focusQuery ( 'tempData' ).focusQuery ( 'action' )
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> = itsmIdL.focusOn ( 'conversation' ).focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )
 export const tabsL: Optional<ItsmState, TabPhaseAndActionSelectionState> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'tabs' )
