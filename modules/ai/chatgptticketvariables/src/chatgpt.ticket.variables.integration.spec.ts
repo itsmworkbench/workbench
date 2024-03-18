@@ -1,6 +1,6 @@
 import { chatgptTicketVariables, } from "./chatgpt.ticket.variables";
 import { EmailData } from "@itsmworkbench/ai_ticketvariables";
-import { extractEmailDataFromTicket, generateAllPurposeEmail } from "./chatgpt.emails.purpose";
+import { generateAllPurposeEmail } from "./chatgpt.emails.purpose";
 import { generalEmail } from "./chatgpt.emails";
 
 const sampleTicket = `Ticket SR5542
@@ -42,22 +42,14 @@ describe ( 'ChatGPTEmailGeneration', () => {
     // Further tests can be added to check the content of the email if necessary
   } );
 
-  test ( 'should generate email from incoming EmailData', async () => {
-    const extractedEmailData = await extractEmailDataFromTicket ( sampleTicket );
-
-    // Call the function with the variables to generate an email
-    const emailContent = await generateAllPurposeEmail ( extractedEmailData );
-
-    // Check if emailContent is a string (indicatively checking if an email was generated)
-    expect ( typeof emailContent ).toBe ( 'string' );
-    // Further tests can be added to check the content of the email if necessary
-  } );
-
   test ( 'should generate general email with the EmailResult', async () => {
-    const extractedEmailData = await extractEmailDataFromTicket ( sampleTicket );
-
+    const emailData: EmailData = {
+      purpose: "requestApproval", //changing for now
+      ticketId: "ticketId",
+      ticket: sampleTicket
+    };
     // Call the function with the variables to generate an email
-    const generalEmailReturn = await generalEmail ( extractedEmailData );
+    const generalEmailReturn = await generalEmail ( emailData );
 
     expect ( typeof generalEmailReturn ).toBe ( 'object' );
   } );

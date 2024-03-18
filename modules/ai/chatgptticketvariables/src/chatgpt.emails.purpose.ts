@@ -1,7 +1,6 @@
-import { AIEmailsFn, EmailData, EmailPurpose } from "@itsmworkbench/ai_ticketvariables";
-import { chatgptTicketVariables } from "./chatgpt.ticket.variables";
+import {EmailData, EmailPurpose} from "@itsmworkbench/ai_ticketvariables";
 
-import { OpenAI } from "openai";
+import {OpenAI} from "openai";
 
 export const clientSecret = process.env[ 'CHATGPT_CLIENT_SECRET' ]
 
@@ -9,23 +8,29 @@ const openai = new OpenAI ( {
   apiKey: clientSecret,
 } );
 
-export const extractEmailDataFromTicket = async ( ticket: string ): Promise<EmailData> => {
-  const allVariables = await chatgptTicketVariables ( ticket );
-  return {
-    purpose: allVariables.purposeOfEmail as EmailPurpose,
-    ticketId: allVariables.ticketId,
-    ticket: ticket
-  };
-}
+const generateEmailPrompt = (emailData: EmailData): string => {
+  let purposeDescription = '';
+  switch (emailData.purpose) {
+    case 'requestApproval':
+      purposeDescription = 'to request approval for a pending task or project';
+      break;
+    case 'requestClosure':
+      purposeDescription = 'to inform about the completion of a task or project and request its closure';
+      break;
+      // Add more cases as needed for other purposes
+    default:
+      purposeDescription = 'for a general inquiry or update';
+  }
+
+  return `Given the following ticket ID: ${emailData.ticketId} and details: ${JSON.stringify(emailData.ticket, null, 2)}
+Generate a professional email from an employee to their employer ${purposeDescription}. Include a subject and body in the email. 
+Annotate the subject with <!-- SUBJECT START --> and <!-- SUBJECT END -->. Annotate the email body with <!-- EMAIL START --> and <!-- EMAIL END -->. 
+Use these details to craft the email content.`;
+};
 
 
 export const generateAllPurposeEmail = async ( emailData: EmailData ): Promise<string> => {
-  const extractedData = await extractEmailDataFromTicket ( emailData.ticket );
-
-  const emailPrompt = `Given the following ticket ID: ${extractedData.ticketId}, purpose: ${extractedData.purpose} and details: ${JSON.stringify ( emailData.ticket, null, 2 )}
-Generate a professional email from an employee to their employer, including a subject and body. 
-Annotate the subject with <!-- SUBJECT START --> and <!-- SUBJECT END -->. Annotate the email body with <!-- EMAIL START --> and <!-- EMAIL END -->. 
-Use these details to craft the email content.`;
+  const emailPrompt = generateEmailPrompt(emailData);
 
   const emailCompletion = await openai.chat.completions.create ( {
     messages: [
@@ -36,7 +41,8 @@ Use these details to craft the email content.`;
       }
     ],
     model: 'gpt-3.5-turbo',
-    temperature: 0.7, // A bit of creativity for more natural email text
+    temperature: 0.7,
+    max_tokens: 1024,
   } );
 
   // Assuming emailCompletion.choices contains the email content

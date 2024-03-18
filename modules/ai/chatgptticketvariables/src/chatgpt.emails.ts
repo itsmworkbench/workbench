@@ -1,24 +1,13 @@
 import { AIEmailsFn, EmailData, EmailResult } from "@itsmworkbench/ai_ticketvariables";
-import { chatgptTicketVariables } from "./chatgpt.ticket.variables";
-import { generateAllPurposeEmail } from "./chatgpt.emails.purpose";
+import {emailProcessor} from "./chatgpt.emails.proper";
 
 export const generalEmail: AIEmailsFn = async ( email: EmailData ): Promise<EmailResult> => {
   try {
-    const annotatedEmailContent = await generateAllPurposeEmail ( email );
-
-    // Extract subject using regex
-    const subjectMatch = annotatedEmailContent.match ( /<!-- SUBJECT START -->(.*?)<!-- SUBJECT END -->/s );
-    const subject = subjectMatch ? subjectMatch[ 1 ].trim () : "No Subject";
-    console.log ( "Subject: ", subject );
-
-    // Extract email body using regex
-    const emailBodyMatch = annotatedEmailContent.match ( /<!-- EMAIL START -->(.*?)<!-- EMAIL END -->/s );
-    const emailBody = emailBodyMatch ? emailBodyMatch[ 1 ].trim () : "No Email Content";
-    console.log ( "Email Body: ", emailBody );
+    const emailContent = await emailProcessor ( email );
 
     return {
-      subject: subject,
-      email: emailBody,
+      subject: emailContent.subject,
+      email: emailContent.email,
     };
   } catch ( error ) {
     console.error ( "Error generating email: ", error );

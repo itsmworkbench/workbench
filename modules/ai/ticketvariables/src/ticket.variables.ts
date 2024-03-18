@@ -5,7 +5,7 @@ export type TicketVariables = NameAnd<string>
 
 export type EmailPurpose = 'requestApproval' | 'requestClosure'
 export type EmailData = {
-  purpose: EmailPurpose //changing for now
+  purpose: EmailPurpose
   ticketId: string,
   ticket: string
 }

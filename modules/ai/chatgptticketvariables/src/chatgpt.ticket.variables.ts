@@ -1,8 +1,5 @@
 import {
-  AIEmailsFn,
   AiTicketVariablesFn,
-  EmailData, EmailPurpose,
-  EmailResult,
   TicketVariables
 } from "@itsmworkbench/ai_ticketvariables";
 import {OpenAI} from "openai";
@@ -15,11 +12,7 @@ const openai = new OpenAI ( {
 
 
 export const chatgptTicketVariables: AiTicketVariablesFn = async ( ticket: string ): Promise<TicketVariables> => {
-  const systemPrompt = `You will be provided with a ITSM work ticket, and your task is to extract important variables from it.
-   Make sure the these 2 variables always exist: 
-   * ticketId
-   * purposeOfEmail
-   Return these variables only as in JSON format.`;
+  const systemPrompt = `You will be provided with a ITSM work ticket, and your task is to extract important variables from it. Return these variables only as in JSON format.`;
   console.log('chat gpt ticket variables', ticket)
   const chatCompletion = await openai.chat.completions.create ( {
     messages: [

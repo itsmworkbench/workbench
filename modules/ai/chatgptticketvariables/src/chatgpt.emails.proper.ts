@@ -1,7 +1,14 @@
 import { AIEmailsFn, EmailData, EmailPurposeAnd, EmailResult, EmailStringFn, processEmailsThatReturnAstring } from "@itsmworkbench/ai_ticketvariables";
+import {
+  generateAllPurposeEmail,
+} from "./chatgpt.emails.purpose";
 
-const requestClosure: EmailStringFn = async ( email: EmailData ): Promise<string> => ''
-const requestApproval: EmailStringFn = async ( email ) => ''
+const requestClosure: EmailStringFn = async ( email: EmailData ): Promise<string> => {
+  return generateAllPurposeEmail(email);
+}
+const requestApproval: EmailStringFn = async ( email ) => {
+  return generateAllPurposeEmail(email);
+}
 export const chatGptEmailProcessors: EmailPurposeAnd<EmailStringFn> = {
   requestApproval,
   requestClosure
