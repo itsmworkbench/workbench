@@ -1,30 +1,29 @@
 import React from "react";
-import { LensProps3 } from "@focuson/state";
+import { LensProps2 } from "@focuson/state";
 import { NameAnd } from "@laoban/utils";
 import { PhaseAnd, PhaseName } from "@itsmworkbench/domain";
 import { Action, BaseAction, phaseStatus } from "@itsmworkbench/actions";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { TabPhaseAndActionSelectionState, workbenchName } from "@itsmworkbench/react_core";
-import { StatusIndicator } from "@itsmworkbench/components";
-import { Event } from "@itsmworkbench/events";
-import { findActionInEventsFor, dereferenceAction } from "@itsmworkbench/knowledge_articles";
-import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
+import { Status, StatusIndicator, useActionInEventsFor, useStatus, useTicketType } from "@itsmworkbench/components";
+import { dereferenceAction } from "@itsmworkbench/knowledge_articles";
+import { TicketType } from "@itsmworkbench/tickettype";
 
-export interface ActionButtonProps<S> extends LensProps3<S, any, TabPhaseAndActionSelectionState, EnrichedEvent<any, any>[], any> {
+export interface ActionButtonProps<S> extends LensProps2<S, any, TabPhaseAndActionSelectionState, any> {
   name: string
   phase: PhaseName
   action: BaseAction
   status: boolean | undefined
 }
 export function ActionButton<S> ( { name, action, phase, status, state }: ActionButtonProps<S> ) {
+  const foundAction = useActionInEventsFor ( phase, name );
   let buttonOnClick = () => {
-    let found: Action = findActionInEventsFor ( state.optJson3 () || [], phase, name );
-    console.log('ActionButton - found', found)
+    console.log ( 'ActionButton - action', foundAction )
     const variables: any = state.optJson2 () || {}
-    let derefed = dereferenceAction ( found, variables )
-    console.log ( 'ActionButton - derefed', found )
-    state.state12 ().setJson ( found, { workspaceTab: workbenchName ( derefed.by ), phase, action: name }, derefed );
+    let derefed = dereferenceAction ( foundAction, variables )
+    console.log ( 'ActionButton - derefed', foundAction )
+    state.setJson ( foundAction, { workspaceTab: workbenchName ( derefed.by ), phase, action: name }, derefed );
   };
   return <><Button
     variant="text"
@@ -49,14 +48,16 @@ export function ActionButton<S> ( { name, action, phase, status, state }: Action
 
   </>
 }
-export interface DisplayPhaseProps<S> extends LensProps3<S, NameAnd<Action>, TabPhaseAndActionSelectionState, PhaseAnd<NameAnd<boolean>>, any> {
+export interface DisplayPhaseProps {
   phase: PhaseName
   status: boolean | undefined
   Action: ( phase: PhaseName, name: string, action: Action, status: boolean | undefined ) => React.ReactNode
 }
 
-export function DisplayPhase<S> ( { state, phase, status, Action }: DisplayPhaseProps<S> ) {
-  const nameAndActions = state.optJson1 () || {}
+export function DisplayPhase ( { phase, status, Action }: DisplayPhaseProps ) {
+  const ticketType: TicketType = useTicketType ()
+  const nameAndActions: NameAnd<Action> = ticketType?.actions?.[ phase ]
+  const statusForActionsinPhase = useStatus?.[ phase ]
   return <Box sx={{
     minWidth: '200px',
     border: '1px solid',
@@ -80,16 +81,16 @@ export function DisplayPhase<S> ( { state, phase, status, Action }: DisplayPhase
       <StatusIndicator value={status}/>
     </Box>
     {Object.entries ( nameAndActions ).map ( ( [ name, action ] ) =>
-      Action ( phase, name, action, state.optJson3 ()?.[ phase ]?.[ name ] ) )}
+      Action ( phase, name, action, statusForActionsinPhase?.[ name ] ) )}
   </Box>
 }
 
-export interface DisplayPhasesProps<S> extends LensProps3<S, PhaseAnd<NameAnd<Action>>, TabPhaseAndActionSelectionState, PhaseAnd<NameAnd<boolean>>, any> {
+export interface DisplayPhasesProps {
   Action: ( phase: PhaseName, name: string, action: Action, status: boolean | undefined ) => React.ReactNode
 }
-export function DisplayPhases<S> ( { state, Action }: DisplayPhasesProps<S> ) {
-  const phases: PhaseAnd<NameAnd<Action>> = state.optJson1 () || ({} as any)
-  const pStatus: PhaseAnd<NameAnd<boolean>> = state.optJson3 () || ({} as any)
+export function DisplayPhases ( { Action }: DisplayPhasesProps ) {
+  const phases: PhaseAnd<NameAnd<Action>> = useTicketType ().actions
+  const pStatus: Status = useStatus ()
   const ps = phaseStatus ( phases, pStatus )
   let previousPhaseOk: boolean = true
   return <Box sx={{ margin: 2 }}><Grid container spacing={2}>
@@ -99,7 +100,7 @@ export function DisplayPhases<S> ( { state, Action }: DisplayPhasesProps<S> ) {
       if ( previousPhaseOk === true ) previousPhaseOk = rawPhaseStatus;
       return (
         <Grid item key={name}>
-          <DisplayPhase state={state.focus1On ( name as PhaseName )} phase={name as PhaseName} status={thisPhaseStatus} Action={Action}/>
+          <DisplayPhase phase={name as PhaseName} status={thisPhaseStatus} Action={Action}/>
         </Grid>
       );
     } )}

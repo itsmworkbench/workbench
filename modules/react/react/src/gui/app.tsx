@@ -2,7 +2,7 @@ import { LensProps, LensState2, LensState3 } from "@focuson/state";
 import { ThemeProvider, Toolbar } from "@mui/material";
 import { DisplayMarkdown, MainAppLayout, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn, SuccessFailureButton, theme } from "@itsmworkbench/components";
 import React from "react";
-import { enrichedEventsL, enrichedEventsO, eventsL, eventsO, ItsmState, statusL } from "../state/itsm.state";
+import { actionO, enrichedEventsL, enrichedEventsO, eventsL, eventsO, ItsmState, statusL } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
 import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplayReceiveEmailWorkbench, DisplayReviewTicketWorkbench, DisplaySelectKnowledgeArticleWorkbench, DisplaySqlWorkbench, SendTicketForEmailButton } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
@@ -62,13 +62,11 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                    Nav={<GuiNav state={state}/>}
                    Details={<DisplayMarkdown md={state.optJson ()?.ticket?.description || state.optJson ()?.tempData?.newTicket?.ticketDetails || '<No Ticket>'}/>}>
       <Toolbar/>
-      {showPhases && <DisplayPhases state={phasesState}
-                                    Action={( phase, name, action, status ) =>
-                                      <ActionButton state={state.tripleUp ().//
-                                        focus1On ( 'blackboard' ).focus1On ( 'action' ).//
-                                        focus2On ( 'selectionState' ).focus2On ( 'tabs' ).//
-                                        chainLens3 ( enrichedEventsL )
-                                      } name={name} phase={phase} action={action} status={status}/>}/>}
+      {showPhases && <DisplayPhases Action={( phase, name, action, status ) =>
+        <ActionButton state={state.doubleUp ().//
+          focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'action' ).//
+          focus2On ( 'selectionState' ).focus2On ( 'tabs' )}
+                      name={name} phase={phase} action={action} status={status}/>}/>}
       {showWelcome && <Welcome count={wholeState?.ticketList?.names?.length}/>}
       <SilentTabsContainer state={state.focusOn ( 'selectionState' ).focusOn ( 'tabs' ).focusOn ( 'workspaceTab' )}>
         <SimpleTabPanel title='chat'>
@@ -82,11 +80,11 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
           <div><Toolbar/> Settings go here</div>
         </SimpleTabPanel>
         <SimpleTabPanel title='SQLWorkbench'>
-          <DisplaySqlWorkbench state={state.doubleUp ().focus1On ( 'blackboard' ).focus1On ( 'action' )} SuccessButton={successButton} FailureButton={failureButton}/>
+          <DisplaySqlWorkbench state={state.doubleUp ().chain1 ( actionO )} SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='EmailWorkbench'>
           <DisplayEmailWorkbench state={state.doubleUp ().//
-            focus1On ( 'blackboard' ).focus1On ( 'action' ).//
+            focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'action' ).//
             focus2On ( 'variables' )
 
           } SuggestButton={<SendTicketForEmailButton state={state.tripleUp ().//
@@ -95,13 +93,13 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
             focus3On ( 'sideeffects' )}/>} SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='LDAPWorkbench'>
-          <DisplayLdapWorkbench state={state.doubleUp ().focus1On ( 'blackboard' ).focus1On ( 'action' )} SuccessButton={successButton} FailureButton={failureButton}/>
+          <DisplayLdapWorkbench state={state.doubleUp ().focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'action' )} SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
 
         <SimpleTabPanel title='ReviewTicketWorkbench'>
           <DisplayReviewTicketWorkbench state={state.tripleUp ().//
             focus1On ( 'ticket' ).//
-            focus2On ( 'blackboard' ).focus2On ( 'action' ).//
+            chain2 ( actionO ).//
             focus3On ( 'blackboard' ).focus3On ( 'ticketType' ).focus3On ( 'ticketType' )}
                                         SuccessButton={successButton}
                                         FailureButton={failureButton}
@@ -109,11 +107,12 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
         </SimpleTabPanel>
 
         <SimpleTabPanel title='ReceiveEmailWorkbench'>
-          <DisplayReceiveEmailWorkbench state={state.doubleUp ().focus1On ( 'blackboard' ).focus1On ( 'action' )} SuccessButton={successButton} FailureButton={failureButton}/>
+          <DisplayReceiveEmailWorkbench state={state.doubleUp ().chain1 ( actionO )} SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
 
         <SimpleTabPanel title='CreateKnowledgeArticleWorkbench'>
-          <DisplayKnowledgeArticleWorkbench variables={(state.focusOn ( 'blackboard' ).optJson () || {} as any)?.ticket}
+          <DisplayKnowledgeArticleWorkbench variables={(state.//
+            focusOn ( 'blackboard' ).optJson () || {} as any)?.ticket}
                                             state={state.tripleUp ().focus1On ( 'tempData' ).focus1On ( 'ka' ).//
                                               chain2 ( eventsO ).//
                                               focus3On ( 'sideeffects' )
@@ -121,16 +120,19 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
         </SimpleTabPanel>
         <SimpleTabPanel title='SelectKnowledgeArticleWorkbench'>
           <DisplaySelectKnowledgeArticleWorkbench
+            targetPath='forTicket.tempData.newTicket.ticketDetails'
             state={state.doubleUp ().//
-              focus1On ( 'blackboard' ).focus1On ( 'action' ).//
-              focus2On ( 'blackboard' ).focus2On ( 'ticketType' ).focus2On ( 'ticketType' )//
+              chain1 ( actionO ).//
+              focus2On ( 'forTicket' ).focus2On ( 'tempData' ).focus2On ( 'ticketType' )//
             }
             SuccessButton={successButton} FailureButton={failureButton}/>
         </SimpleTabPanel>
         <SimpleTabPanel title='newTicket'>
           <NewTicketWizard
             // kaList={wholeState?.kaList}
-            state={state.doubleUp ().focus1On ( 'tempData' ).focus1On ( 'newTicket' ).focus2On ( 'sideeffects' )}/></SimpleTabPanel>
+            state={state.doubleUp ().//
+              focus1On ( 'tempData' ).focus1On ( 'newTicket' ).//
+              focus2On ( 'sideeffects' )}/></SimpleTabPanel>
       </SilentTabsContainer>
       {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', 'tempData', 'blackboard', 'events', 'enrichedEvents', "conversation", "variables", "ticket", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}
     </MainAppLayout>

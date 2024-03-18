@@ -11,10 +11,11 @@ import { Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
 import { EmailResult, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
-import { defaultTicketTypeDetails } from "@itsmworkbench/tickettype";
+import { defaultTicketTypeDetails, TicketType } from "@itsmworkbench/tickettype";
 import { KnowledgeArticleTempData } from "@itsmworkbench/react_capabilities";
 import { Action } from "@itsmworkbench/actions";
 import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
+import { IdAnd } from "@itsmworkbench/utils";
 
 export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {
   mainScreen?: MainAppMainState
@@ -31,6 +32,7 @@ export interface TempData {
   emailResult: EmailResult
   receiveEmailData: ReceiveEmailData
   ka: KnowledgeArticleTempData
+  ticketType: IdAnd<TicketType>
 }
 
 
@@ -96,3 +98,5 @@ export const eventsL: Lens<ItsmState, Event[]> = forTicketL.focusOn ( 'events' )
 export const enrichedEventsO: Optional<ItsmState, Event[]> = forTicketL.focusOn ( 'enrichedEvents' )
 export const enrichedEventsL: Lens<ItsmState, Event[]> = forTicketL.focusOn ( 'enrichedEvents' )
 export const statusL: Lens<ItsmState, PhaseAnd<NameAnd<boolean>>> = forTicketL.focusOn ( 'status' )
+
+export const actionO = forTicketL.focusOn('tempData').focusOn('action')

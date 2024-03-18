@@ -1,21 +1,22 @@
 import { LensProps2, LensState } from "@focuson/state";
 import React from "react";
-import { DisplayYaml, SelectAndLoadFromUrlStore, SuccessFailContextFn } from "@itsmworkbench/components";
-import { splitAndCapitalize } from "@itsmworkbench/utils";
+import { DisplayYaml, SelectAndLoadFromUrlStore, SuccessFailContextFn, useTicketType } from "@itsmworkbench/components";
+import { IdAnd, splitAndCapitalize } from "@itsmworkbench/utils";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { SelectKnowledgeArticleWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
-import { Button } from "@mui/material";
 
 
 //bit hacky... need to clean this up
-export interface DisplaySelectKnowledgeArticleWorkbenchProps<S> extends LensProps2<S, Action, TicketType, any> {
+export interface DisplaySelectKnowledgeArticleWorkbenchProps<S> extends LensProps2<S, Action, IdAnd<TicketType>, any> {
+  targetPath: string
   SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
   FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
-export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplaySelectKnowledgeArticleWorkbenchProps<S> ) {
+export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButton, FailureButton, targetPath }: DisplaySelectKnowledgeArticleWorkbenchProps<S> ) {
   const action: any = (state.optJson1 () || {})
+  const appTT = useTicketType ()
   const ticketType: TicketType = action.ticketType || {}
   const actionState = state.state1 () as LensState<S, any, any>
 
@@ -36,7 +37,8 @@ export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButt
                                namespace='ka'
                                Title={<h1>Knowledge Article</h1>}
                                Summary={ka => <DisplayYaml maxHeight='600px' yaml={ka}/>}
-                               state={actionState.doubleUp ().focus1On ( 'ticketType' ).focus2On ( 'id' )}/>
+                               targetPath={targetPath}
+                               state={state.state2 ()}/>
 
   </>
 }

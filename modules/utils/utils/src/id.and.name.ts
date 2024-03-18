@@ -1,3 +1,8 @@
+export type IdAnd<T> = {
+  id: string
+  item: T
+}
+
 export type IdAndName = {
   id: string
   name: string
