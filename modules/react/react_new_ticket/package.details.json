@@ -10,6 +10,7 @@
   "links":       [
     "@itsmworkbench/components",
     "@itsmworkbench/tickets",
+    "@itsmworkbench/react_phases",
     "@itsmworkbench/react_tickettype"
   ],
   "guards":      {

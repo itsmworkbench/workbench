@@ -49,13 +49,13 @@ export function ActionButton<S> ( { name, action, phase, status, state }: Action
   </>
 }
 export interface DisplayPhaseProps {
+  ticketType: TicketType
   phase: PhaseName
   status: boolean | undefined
   Action: ( phase: PhaseName, name: string, action: Action, status: boolean | undefined ) => React.ReactNode
 }
 
-export function DisplayPhase ( { phase, status, Action }: DisplayPhaseProps ) {
-  const ticketType: TicketType = useTicketType ()
+export function DisplayPhase ( { ticketType, phase, status, Action }: DisplayPhaseProps ) {
 
   const nameAndActions: NameAnd<Action> = ticketType?.actions?.[ phase ]
   const statusForActionsinPhase = useStatus ()?.[ phase ]
@@ -81,20 +81,20 @@ export function DisplayPhase ( { phase, status, Action }: DisplayPhaseProps ) {
 
       <StatusIndicator value={status}/>
     </Box>
-    {Object.entries ( nameAndActions ).map ( ( [ name, action ] ) =>
+    {Object.entries ( nameAndActions || {} ).map ( ( [ name, action ] ) =>
       Action ( phase, name, action, statusForActionsinPhase?.[ name ] ) )}
   </Box>
 }
+export interface DisplayPhasesForTicketTypeProps extends DisplayPhasesProps {
+  ticketType: TicketType
 
-export interface DisplayPhasesProps {
-  Action: ( phase: PhaseName, name: string, action: Action, status: boolean | undefined ) => React.ReactNode
+  pStatus: Status
 }
-export function DisplayPhases ( { Action }: DisplayPhasesProps ) {
-  let ticketType = useTicketType ();
-  console.log('DisplayPhases - ticketType', ticketType)
-  if ( !ticketType ) return <pre>Error: no ticket type!</pre>
+
+export function DisplayPhasesForTicketType ( { ticketType, pStatus, Action }: DisplayPhasesForTicketTypeProps ) {
+  console.log ( 'DisplayPhasesForTicketType - ticketType', ticketType )
+  if ( !ticketType ) return <pre>No ticket type!</pre>
   const phases: PhaseAnd<NameAnd<Action>> = ticketType.actions
-  const pStatus: Status = useStatus ()
   const ps = phaseStatus ( phases, pStatus )
   let previousPhaseOk: boolean = true
   return <Box sx={{ margin: 2 }}><Grid container spacing={2}>
@@ -104,9 +104,17 @@ export function DisplayPhases ( { Action }: DisplayPhasesProps ) {
       if ( previousPhaseOk === true ) previousPhaseOk = rawPhaseStatus;
       return (
         <Grid item key={name}>
-          <DisplayPhase phase={name as PhaseName} status={thisPhaseStatus} Action={Action}/>
+          <DisplayPhase ticketType={ticketType} phase={name as PhaseName} status={thisPhaseStatus} Action={Action}/>
         </Grid>
       );
     } )}
   </Grid></Box>
+}
+export interface DisplayPhasesProps {
+  Action: ( phase: PhaseName, name: string, action: Action, status: boolean | undefined ) => React.ReactNode
+}
+export function DisplayPhases ( { Action }: DisplayPhasesProps ) {
+  let ticketType = useTicketType ();
+  const pStatus: Status = useStatus ()
+  return <DisplayPhasesForTicketType ticketType={ticketType} pStatus={pStatus} Action={Action}/>
 }

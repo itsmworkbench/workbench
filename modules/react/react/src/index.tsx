@@ -22,7 +22,7 @@ import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
 import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin, displaySqlEventPlugin } from '@itsmworkbench/react_capabilities';
-import { UrlStoreProvider } from '@itsmworkbench/components';
+import { AiVariablesProvider, UrlStoreProvider } from '@itsmworkbench/components';
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -36,26 +36,30 @@ const saveDetails: SendEvents = sendEvents ( "http://localhost:1235/file1" )
 const idStoreDetails = apiIdStore ( "http://localhost:1235", defaultParserStore ( yaml ) )
 const urlStoreconfig: UrlStoreApiClientConfig = { apiUrlPrefix: "http://localhost:1235/url", details: defaultNameSpaceDetails ( yaml ) }
 const urlStore = urlStoreFromApi ( urlStoreconfig )
+const aiVariables = apiClientForTicketVariables ( aiDetails )
+const aiEmails = apiClientForEmail ( aiDetails )
 
 const container = eventStore<ItsmState> ()
 const setJson = setEventStoreValue ( container );
 const sep1 = defaultEventProcessor<ItsmState> ( '', startAppState, urlStore.loadIdentity )
 
-addEventStoreListener ( container, (( oldS, s, setJson ) =>
-  root.render ( <UrlStoreProvider urlStore={urlStore}><App
+const eventPlugins = [
+  displayTicketEventPlugin<ItsmState> (),
+  displaySqlEventPlugin<ItsmState> (),
+  displayEmailEventPlugin<ItsmState> (),
+  displayLdapEventPlugin<ItsmState> (),
+  displayReceiveEmailEventPlugin<ItsmState> (),
+  displayVariablesEventPlugin<ItsmState> (),
+  displayTicketTypeEventPlugin<ItsmState> (),
+  displayMessageEventPlugin<ItsmState> () ];
+addEventStoreListener ( container, (( oldS, s, setJson ) => {
+  return root.render ( <UrlStoreProvider urlStore={urlStore}> <AiVariablesProvider aiVariables={aiVariables}><App
     state={lensState ( s, setJson, 'Container', {} )}
     plugins={[]}
-    eventPlugins={[
-      displayTicketEventPlugin<ItsmState> (),
-      displaySqlEventPlugin<ItsmState> (),
-      displayEmailEventPlugin<ItsmState> (),
-      displayLdapEventPlugin<ItsmState> (),
-      displayReceiveEmailEventPlugin<ItsmState> (),
-      displayVariablesEventPlugin<ItsmState> (),
-      displayTicketTypeEventPlugin<ItsmState> (),
-      displayMessageEventPlugin<ItsmState> () ]}
+    eventPlugins={eventPlugins}
     // plugins={[ operatorConversationPlugin ( operatorL ) ]}
-  /></UrlStoreProvider> )) );
+  /></AiVariablesProvider></UrlStoreProvider> );
+}) );
 
 const enricher = defaultEventEnricher ( urlStore )
 
@@ -76,8 +80,6 @@ const pollingDetails = polling<Event[]> ( 1000, () => container.state.selectionS
   }, 0, true
 )
 
-const aiVariables = apiClientForTicketVariables ( aiDetails )
-const aiEmails = apiClientForEmail ( aiDetails )
 
 addEventStoreModifier ( container,
   processSideEffectsInState<ItsmState> (
@@ -87,7 +89,7 @@ addEventStoreModifier ( container,
       addAiEmailSideEffectProcessor ( aiEmails, emailDataL ),
       addSaveKnowledgeArticleSideEffect ( urlStore.save, 'me' ),
       // addLoadKaSideEffect ( urlStore.loadNamed, newTicketL.focusOn ( 'ticketDetails' ) ),
-      addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, 'forTicket.ticket', 'forTicket.variables','forTicket.tempData.ticketType' )
+      addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, 'forTicket.ticket', 'forTicket.variables', 'forTicket.tempData.ticketType' )
     ] ),
     sideEffectsL, logsL ) )
 

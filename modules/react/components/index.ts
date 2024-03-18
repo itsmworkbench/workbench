@@ -14,6 +14,7 @@ export * from './src/displayRaw/display.json';
 export * from './src/displayRaw/display.markdown';
 export * from './src/displayRaw/display.text';
 export * from './src/displayRaw/display.yaml';
+export * from './src/hooks/useAiVariables';
 export * from './src/hooks/useEnrichedEvents';
 export * from './src/hooks/useStatus';
 export * from './src/hooks/useSideEffects';

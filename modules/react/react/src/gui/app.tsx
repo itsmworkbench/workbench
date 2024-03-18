@@ -3,7 +3,7 @@ import { ThemeProvider, Toolbar } from "@mui/material";
 import {
   DisplayMarkdown, EnrichedEventsProvider, MainAppLayout, SideEffectsProvider,
   VariablesProvider, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn,
-  SuccessFailureButton, theme
+  SuccessFailureButton, theme, AiVariablesProvider
 } from "@itsmworkbench/components";
 import React from "react";
 import { actionO, enrichedEventsL, enrichedEventsO, eventsL, eventsO, ItsmState, sideEffectsL, statusL } from "../state/itsm.state";
@@ -25,6 +25,7 @@ import { Welcome } from "./welcome";
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
   eventPlugins: DisplayEnrichedEventPlugIn<S>[]
+
 
 }
 export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState> ) {

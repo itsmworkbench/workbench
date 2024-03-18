@@ -4,15 +4,12 @@ import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { NewTicketWizardData, TicketSourceAnd } from "./new.ticket.wizard.domain";
 import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
-import { FocusedTextArea, FocusedTextInput, mustBeIdentifier } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, mustBeIdentifier, useAiVariables, useSideEffects } from "@itsmworkbench/components";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
-import { DisplayJson } from "@itsmworkbench/components/dist/src/displayRaw/display.json";
-import { AiNewTicketSideEffect } from "../ai.ticket.sideeffect";
-import { NewTicketData } from "../new.ticket.sideeffect";
-import { TicketTypeDetails } from "@itsmworkbench/tickettype";
-import { useVariables } from "@itsmworkbench/components/src/hooks/useVariables";
-import { useSideEffects } from "@itsmworkbench/components";
+import { DisplayJson } from "@itsmworkbench/components";
+import { useVariables } from "@itsmworkbench/components";
+import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 
 interface EnterTicketDetailsComp<S> extends LensProps<S, NewTicketWizardData, any> {
   next: ( enabled: boolean ) => React.ReactElement
@@ -42,11 +39,18 @@ export function EnterTicketDetails<S> ( { state }: LensProps<S, NewTicketWizardD
 
 export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTicketDetailsComp<S> ) {
   const variableState = useVariables<S> ()
-  let addSideEffect = useSideEffects ( state );
-
+  const aiFn = useAiVariables ()
+  const addSe = useSideEffects ( state )
+  const [ ai, setAi ] = React.useState<TicketVariables> ( {} )
+  const data = state.optJson () || {} as any
+  const se = {
+    command: 'addNewTicket',
+    organisation: 'me',
+    ...data,
+    aiAddedVariables: ai
+  };
   return (
     <Box sx={{ '& > *': { mb: 2 } }}> {/* This applies margin-bottom to all immediate children */}
-
       <Typography variant="h6">New Ticket</Typography>
 
       <FocusedTextInput
@@ -69,33 +73,24 @@ export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTick
         variant="contained"
         color="primary"
         endIcon={<SendIcon/>}
-        onClick={() => {
-          //Just hacking it while experimental
-          const data = state.optJson () || {} as any
-          const newTicketData: NewTicketData = {
-            organisation: 'me',
-            name: data.ticketName || "",
-            ticket: data.ticketDetails || "",
-            ticketType: {} as TicketTypeDetails,
-          }
-          const ai: AiNewTicketSideEffect = {
-            ...newTicketData,
-            command: 'aiNewTicket',
-          };
-          addSideEffect ( ai )
-          // const existing = state.state2 ().optJson () || [];
-          // state.state2 ().setJson ( [ ...existing, ai ], 'calc variables' );
-        }}
+        onClick={() => aiFn ( data.ticketDetails ).then ( setAi )}
       >
         Calc variables
       </Button>
 
       <Typography>Variables</Typography>
-
-
-      <DisplayJson json={variableState.optJson ()} maxHeight='200px'/>
+      <DisplayJson json={ai} maxHeight='200px'/>
       {prev}
       {next ( true )}
+      <Button
+        variant="contained"
+        color="primary"
+        disabled={data?.ticketName === undefined || data?.ticketName.length === 0}
+        endIcon={<SendIcon/>}
+        onClick={() => addSe ( se )}
+      >
+        Create or Replace Ticket
+      </Button>
     </Box>
   );
 }

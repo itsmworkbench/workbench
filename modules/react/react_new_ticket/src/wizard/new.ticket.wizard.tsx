@@ -6,6 +6,7 @@ import { TicketSourceSelection } from "./ticketSourceSelection";
 import { EnterTicketDetails } from "./enter.ticket.details";
 import { Box, Container } from "@mui/material";
 import { NewHowToProcessTicket } from "./new.how.to.process.ticket";
+import { NewSelectKa } from "./new.select.ka";
 
 
 export function DisplayNewTicketWizardStep<S> ( { state }: LensProps<S, NewTicketWizardData, any> ) {
@@ -18,6 +19,8 @@ export function DisplayNewTicketWizardStep<S> ( { state }: LensProps<S, NewTicke
       return <EnterTicketDetails state={state}/>
     case 'howToProcessTicket':
       return <NewHowToProcessTicket state={state}/>
+    case 'selectKnowledgeArticle':
+      return <NewSelectKa  state={state} />
   }
 }
 export function NewTicketWizard<S> ( { state }: LensProps<S, NewTicketWizardData, any> ) {

@@ -1,96 +1,72 @@
 import React from "react";
+import { LensProps } from "@focuson/state";
+import { NewTicketWizardData } from "./new.ticket.wizard.domain";
+import { PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
+import { DisplayPhasesForTicketType } from "@itsmworkbench/react_phases";
+import { detailsToTicketType, TicketType } from "@itsmworkbench/tickettype";
+import { SelectAndLoadFromUrlStore, Status } from "@itsmworkbench/components";
+import { IdAnd } from "@itsmworkbench/utils";
+import Typography from "@mui/material/Typography";
+import { Tooltip } from "@mui/material";
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
 
-export const x = 1
+export interface NewSelectKaProps<S> extends LensProps<S, NewTicketWizardData, any> {
 
-// import { Grid, Typography } from "@mui/material";
-// import { ListNamesResult } from "@itsmworkbench/url";
-// import { List, ListItem, ListItemText } from "@material-ui/core";
-// import { DisplayJson } from "@itsmworkbench/components";
-// import { NewTicketWizardProps } from "./new.ticket.wizard";
-// import { LoadKaSideEffect } from "../load.ka.sideeffect";
-// import Button from "@mui/material/Button";
-// import SendIcon from "@mui/icons-material/Send";
-//
-// export interface KaListProps<S> extends NewTicketWizardProps<S> {
-//   kaList: ListNamesResult
-//   readonly?: boolean
-// }
-// export interface SelectKnowledgeArticleForNewWizardProps<S> extends KaListProps<S> {
-//
-//   next: ( enabled: boolean ) => React.ReactElement
-//   prev: React.ReactElement
-// }
-// export function KaList<S> ( { state, kaList }: KaListProps<S> ) {
-//   return <List>
-//     {kaList.names.map ( ( ka, index ) => {
-//       let id = `itsm/${kaList.org}/${kaList.namespace}/${ka}`;
-//       const isSelected = false
-//
-//       return (
-//         <ListItem
-//           button
-//           selected={isSelected}
-//           onClick={() => {
-//             const seState = state.state2 ()
-//             const existing = seState.optJson () || []
-//             const se: LoadKaSideEffect = {
-//               command: 'loadKa',
-//               ka: {
-//                 scheme: "itsm",
-//                 organisation: kaList.org,
-//                 namespace: kaList.namespace,
-//                 name: ka
-//               }
-//             }
-//             seState.setJson ( [ ...existing, se ], 'Clicked in KAList' )
-//           }}
-//           key={ka}
-//         >
-//           <ListItemText primary={ka}/>
-//         </ListItem>
-//       );
-//     } )}
-//   </List>
-// }
-//
-// export function SelectKnowledgeArticleForNewWizard<S> ( { state, readonly, kaList, next, prev }: SelectKnowledgeArticleForNewWizardProps<S> ) {
-//   const disabled = readonly === true;
-//
-//   return (
-//     <><Grid container spacing={2}>
-//       <Grid item xs={12} md={6} sx={{ paddingRight: 4 }}>
-//         <Typography variant="body1" gutterBottom>
-//           If this ticket is like one you have processed before, you may have saved a knowledge article for it. If so
-//           select it from the list to the right
-//         </Typography>
-//       </Grid>
-//       <Grid item xs={12} md={6} container direction="column" spacing={2}>
-//         <KaList state={state} kaList={kaList}/>
-//       </Grid>
-//       <Grid item xs={12} md={6} container direction="column" spacing={2}>
-//         <DisplayJson maxHeight='500px' json={state.optJson1 () || 'None Selected'}/>
-//       </Grid>
-//     </Grid>
-//       {prev}
-//       <Button
-//         variant="contained"
-//         color="primary"
-//         endIcon={<SendIcon/>}
-//         onClick={() => {
-//           const existing = state.optJson2 () || [];
-//           let wizardData = state.optJson1 () || {};
-//           const se = {
-//             command: 'addNewTicket',
-//             organisation: 'me',
-//             ...wizardData
-//           };
-//           state.state2 ().setJson ( [ ...existing, se ], 'add new ticket pressed' );
-//         }}
-//       >
-//         Create or Replace Ticket
-//       </Button>
-//       {next ( true )}
-//     </>
-//   )
-//     ;
-// }
+}
+
+const initialState = detailsToTicketType ( {
+  ticketType: 'General',
+  approvalState: 'Needs Approval',
+  validateInvolvedParties: false
+} );
+export function NewSelectKa<S> ( { state }: NewSelectKaProps<S> ) {
+  const data = state.optJson () || {} as any
+  return <div>
+    <SelectAndLoadFromUrlStore basicData={{ organisation: 'me', operator: undefined as any }}
+                               namespace='ka'
+                               Title={<h1>Knowledge Article</h1>}
+                               Summary={( ka: IdAnd<TicketType> ) =>
+                                 <DisplayPhasesForTicketType ticketType={ka?.item} pStatus={{} as Status} Action={
+                                   ( phase, name, action, status ) => <Tooltip title={JSON.stringify ( action )}>
+                                     <Typography
+                                       component="span"
+                                       variant="body1"
+                                       sx={{
+                                         textDecoration: "underline",
+                                         color: "blue",
+                                         cursor: "pointer",
+                                         '&:hover': {
+                                           color: "darkblue",
+                                         }
+                                       }}
+                                     >
+                                       {name}
+                                     </Typography>
+                                   </Tooltip>
+                                 }/>}
+                               targetPath={'some.target.path'}
+                               state={(state as any).focusOn ( 'tt' )}
+                               Save={ka => {
+                                 const se = {
+                                   command: 'addNewTicket',
+                                   organisation: 'me',
+                                   ...data,
+                                   aiAddedVariables: {}
+                                 };
+                                 return <Button
+                                   variant="contained"
+                                   color="primary"
+                                   disabled={data?.ticketName === undefined || data?.ticketName.length === 0}
+                                   endIcon={<SendIcon/>}
+                                   // onClick={() => addSe ( se )}
+                                 >
+                                   Create or Replace Ticket
+                                 </Button>;
+                               }}/>
+
+
+    <PreviousNewWizardStepButton state={state.focusOn ( 'currentStep' )}/>
+  </div>
+
+}
