@@ -18,6 +18,7 @@ export * from './src/hooks/useEnrichedEvents';
 export * from './src/hooks/useStatus';
 export * from './src/hooks/useSideEffects';
 export * from './src/hooks/useUrlStore';
+export * from './src/hooks/useVariables';
 export * from './src/DropdownAsTitle';
 export * from './src/loading';
 export * from './src/layouts/main/main.app.layout';

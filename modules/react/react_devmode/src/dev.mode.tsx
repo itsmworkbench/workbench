@@ -7,11 +7,11 @@ import { toArray } from "@laoban/utils";
 export interface DevModeProps<S> extends LensProps<S, DebugState, any> {
   maxHeight?: string
   maxWidth?: string
-  titles?: string[]
+  titles: string[]
   forTicket: string[]
   tempData: string[]
 }
-function makeDevPanels ( titles: string[], keyPrefix: string, maxWidth: string, maxHeight: string, main: any ) {
+function makeDevPanels ( titles: string[], keyPrefix: string, maxWidth: string | undefined, maxHeight: string | undefined, main: any ) {
   if ( main === undefined ) return []
   return toArray ( titles ).map ( t => <SimpleTabPanel key={keyPrefix + t} title={t}><DisplayJson maxWidth={maxWidth} maxHeight={maxHeight} json={main?.[ t ]}/></SimpleTabPanel> );
 }

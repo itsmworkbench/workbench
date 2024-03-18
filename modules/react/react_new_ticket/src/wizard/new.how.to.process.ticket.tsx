@@ -1,4 +1,4 @@
-import { LensProps2 } from "@focuson/state";
+import { LensProps, LensProps2 } from "@focuson/state";
 import { getCurrentStep, NewTicketWizardData } from "./new.ticket.wizard.domain";
 import React from "react";
 import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
@@ -7,6 +7,7 @@ import { ApprovalStateSelect, SelectTicketTypeProps, TicketTypeSelect, ValidateI
 import { Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
+import { useSideEffects } from "@itsmworkbench/components";
 
 
 export function SelectTicketTypeForNewWizard<S> ( { state, readonly }: SelectTicketTypeProps<S> ) {
@@ -42,12 +43,12 @@ export function SelectTicketTypeForNewWizard<S> ( { state, readonly }: SelectTic
   );
 }
 
-export function NewHowToProcessTicket<S> ( { state }: LensProps2<S, NewTicketWizardData, SideEffect[], any> ) {
-  let stepState = state.state1 ().focusOn ( 'currentStep' );
-  let ticketState = state.state1 ().focusOn ( 'ticketTypeDetails' );
+export function NewHowToProcessTicket<S> ( { state }: LensProps<S, NewTicketWizardData, any> ) {
+  let addSideEffect = useSideEffects ( state );
+  let stepState = state.focusOn ( 'currentStep' );
+  let ticketState = state.focusOn ( 'ticketTypeDetails' );
   const currentStep = getCurrentStep ( stepState )
-  const existing = state.optJson2 () || [];
-  let wizardData = state.optJson1 () || {};
+  let wizardData = state.optJson () || {};
   const se = {
     command: 'addNewTicket',
     organisation: 'me',
@@ -62,7 +63,7 @@ export function NewHowToProcessTicket<S> ( { state }: LensProps2<S, NewTicketWiz
       variant="contained"
       color="primary"
       endIcon={<SendIcon/>}
-      onClick={() => state.state2 ().setJson ( [ ...existing, se ], 'add new ticket pressed' )}
+      onClick={() => addSideEffect ( se )}
     >
       Create or Replace Ticket
     </Button>

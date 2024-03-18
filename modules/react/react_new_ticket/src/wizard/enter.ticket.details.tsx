@@ -1,23 +1,20 @@
 import React from "react";
-import { LensProps, LensProps2 } from "@focuson/state";
+import { LensProps } from "@focuson/state";
 import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { NewTicketWizardData, TicketSourceAnd } from "./new.ticket.wizard.domain";
 import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
-import Alert from "@mui/material/Alert";
-import { FocusedTextArea, FocusedTextInput, mustBeIdentifier } from "@itsmworkbench/components/dist/src/text/textarea";
-import { SelectTicketType } from "@itsmworkbench/react_tickettype/dist/src/select.ticket.type";
+import { FocusedTextArea, FocusedTextInput, mustBeIdentifier } from "@itsmworkbench/components";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import { DisplayJson } from "@itsmworkbench/components/dist/src/displayRaw/display.json";
-import { SideEffect } from "@itsmworkbench/react_core";
 import { AiNewTicketSideEffect } from "../ai.ticket.sideeffect";
 import { NewTicketData } from "../new.ticket.sideeffect";
 import { TicketTypeDetails } from "@itsmworkbench/tickettype";
-import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
-import { Lenses } from "@focuson/lens";
+import { useVariables } from "@itsmworkbench/components/src/hooks/useVariables";
+import { useSideEffects } from "@itsmworkbench/components";
 
-interface EnterTicketDetailsComp<S> extends LensProps2<S, NewTicketWizardData, SideEffect[], any> {
+interface EnterTicketDetailsComp<S> extends LensProps<S, NewTicketWizardData, any> {
   next: ( enabled: boolean ) => React.ReactElement
   prev: React.ReactElement
 }
@@ -30,12 +27,12 @@ export const enterTicketDetailsComp = <S extends any> (): TicketSourceAnd<React.
   fromServiceNow: NotSupportYetTicketDetailsEntry<S>
 })
 
-export function EnterTicketDetails<S> ( { state }: LensProps2<S, NewTicketWizardData, SideEffect[], any> ) {
-  const ticketSource = state.optJson1 ()?.whereIsTicket;
+export function EnterTicketDetails<S> ( { state }: LensProps<S, NewTicketWizardData, any> ) {
+  const ticketSource = state.optJson ()?.whereIsTicket;
   if ( ticketSource === undefined ) throw Error ( 'No ticket source' );
   console.log ( 'ticketSource', ticketSource, state );
   const Comp = enterTicketDetailsComp<S> ()[ ticketSource ];
-  let stepState = state.state1 ().focusOn ( 'currentStep' );
+  let stepState = state.focusOn ( 'currentStep' );
   console.log ( 'comp', Comp, enterTicketDetailsComp, stepState )
   if ( Comp === undefined ) throw Error ( 'No component for ticket source ' + ticketSource );
   return <Comp state={state}
@@ -44,7 +41,9 @@ export function EnterTicketDetails<S> ( { state }: LensProps2<S, NewTicketWizard
 }
 
 export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTicketDetailsComp<S> ) {
-  const hackedStateForAi = state.state1 ().copyWithLens ( Lenses.identity<any> () ).focusOn ( 'tempData' ).focusOn ( 'newTicket' ).focusOn ( 'aiAddedVariables' )
+  const variableState = useVariables<S> ()
+  let addSideEffect = useSideEffects ( state );
+
   return (
     <Box sx={{ '& > *': { mb: 2 } }}> {/* This applies margin-bottom to all immediate children */}
 
@@ -55,7 +54,7 @@ export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTick
         fullWidth
         label="Ticket Name"
         errorFn={mustBeIdentifier ( 'Can only contain letters, numbers, and underscores' )}
-        state={state.state1 ().focusOn ( 'ticketName' )}
+        state={state.focusOn ( 'ticketName' )}
       />
       <FocusedTextArea
         variant="outlined"
@@ -63,7 +62,7 @@ export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTick
         label="Ticket Contents"
         multiline
         rows={12}
-        state={state.state1 ().focusOn ( 'ticketDetails' )}
+        state={state.focusOn ( 'ticketDetails' )}
       />
 
       <Button
@@ -72,7 +71,7 @@ export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTick
         endIcon={<SendIcon/>}
         onClick={() => {
           //Just hacking it while experimental
-          const data = state.state1 ().optJson () || {} as any
+          const data = state.optJson () || {} as any
           const newTicketData: NewTicketData = {
             organisation: 'me',
             name: data.ticketName || "",
@@ -83,8 +82,9 @@ export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTick
             ...newTicketData,
             command: 'aiNewTicket',
           };
-          const existing = state.state2 ().optJson () || [];
-          state.state2 ().setJson ( [ ...existing, ai ], 'calc variables' );
+          addSideEffect ( ai )
+          // const existing = state.state2 ().optJson () || [];
+          // state.state2 ().setJson ( [ ...existing, ai ], 'calc variables' );
         }}
       >
         Calc variables
@@ -93,9 +93,9 @@ export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTick
       <Typography>Variables</Typography>
 
 
-      <DisplayJson json={hackedStateForAi.optJson ()} maxHeight='200px'/>
+      <DisplayJson json={variableState.optJson ()} maxHeight='200px'/>
       {prev}
-      {next(true)}
+      {next ( true )}
     </Box>
   );
 }
