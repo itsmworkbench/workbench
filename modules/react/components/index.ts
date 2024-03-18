@@ -16,6 +16,7 @@ export * from './src/displayRaw/display.text';
 export * from './src/displayRaw/display.yaml';
 export * from './src/hooks/useEnrichedEvents';
 export * from './src/hooks/useStatus';
+export * from './src/hooks/useSideEffects';
 export * from './src/hooks/useUrlStore';
 export * from './src/DropdownAsTitle';
 export * from './src/loading';

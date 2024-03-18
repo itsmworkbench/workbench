@@ -10,7 +10,7 @@ export interface SideEffectsProviderProps {
   sideEffectL: Lens<any, SideEffect[]> // really want this to be <S> but I don't know how to do that with React. I'm not sure it's really possible... or at least worth the complexity.
   children: React.ReactNode;
 }
-export const SideEffectsProviderContext = React.createContext<Lens<any, SideEffect[] | undefined>> ( undefined );
+export const SideEffectsProviderContext = React.createContext<Lens<any, SideEffect[]> | undefined> ( undefined );
 export function SideEffectsProvider ( { children, sideEffectL }: SideEffectsProviderProps ) {
   return <SideEffectsProviderContext.Provider value={sideEffectL}> {children} </SideEffectsProviderContext.Provider>;
 }

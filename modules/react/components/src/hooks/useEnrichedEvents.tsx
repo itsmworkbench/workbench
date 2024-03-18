@@ -25,7 +25,8 @@ export function useEnrichedEvents (): EnrichedEvent<any, any>[] {
 }
 
 export function useTicketType (): TicketType {
-  return lastTicketType ( useEnrichedEvents () )
+  let result = lastTicketType ( useEnrichedEvents () );
+  return result
 }
 export function useActionInEventsFor ( phase: string, action: string ) {
   let events = useEnrichedEvents ();

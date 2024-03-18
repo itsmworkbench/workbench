@@ -36,14 +36,14 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   const eventsState = state.chainLens ( eventsL )
   const enrichedEventsState = state.chainLens ( enrichedEventsO )
   const ticketTypeAndSelectionState: LensState2<S, TicketType, TabPhaseAndActionSelectionState, any> = state.doubleUp ().//
-    focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).//
+    focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'ticketType' ).focus1On ( 'item' ).//
     focus2On ( 'selectionState' ).focus2On ( 'tabs' )
   const capabilitiesState: LensState2<S, Capability[], TabPhaseAndActionSelectionState, any> = ticketTypeAndSelectionState.focus1On ( 'capabilities' )
-  const phasesState: LensState3<S, PhaseAnd<NameAnd<Action>>, TabPhaseAndActionSelectionState, PhaseAnd<NameAnd<boolean>>, any> =
-          state.tripleUp ().//
-            focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).focus1On ( 'actions' ).//
-            focus2On ( 'selectionState' ).focus2On ( 'tabs' ).//
-            chainLens3 ( statusL )
+  // const phasesState: LensState3<S, PhaseAnd<NameAnd<Action>>, TabPhaseAndActionSelectionState, PhaseAnd<NameAnd<boolean>>, any> =
+  //         state.tripleUp ().//
+  //           focus1On ( 'blackboard' ).focus1On ( 'ticketType' ).focus1On ( 'ticketType' ).focus1On ( 'actions' ).//
+  //           focus2On ( 'selectionState' ).focus2On ( 'tabs' ).//
+  //           chainLens3 ( statusL )
   const pathToStatus = 'forTicket.status'
 
   const successFailState = state.doubleUp ().focus1On ( 'sideeffects' ).focus2On ( 'selectionState' ).focus2On ( 'tabs' )
@@ -60,7 +60,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                    layout={{ leftDrawerWidth: '240px', height: '100vh' }}
                    state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
                    Nav={<GuiNav state={state}/>}
-                   Details={<DisplayMarkdown md={state.optJson ()?.ticket?.description || state.optJson ()?.tempData?.newTicket?.ticketDetails || '<No Ticket>'}/>}>
+                   Details={<DisplayMarkdown md={state.optJson ()?.ticket?.description || state.optJson ()?.forTicket?.tempData?.newTicket?.ticketDetails || '<No Ticket>'}/>}>
       <Toolbar/>
       {showPhases && <DisplayPhases Action={( phase, name, action, status ) =>
         <ActionButton state={state.doubleUp ().//
@@ -100,7 +100,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
           <DisplayReviewTicketWorkbench state={state.tripleUp ().//
             focus1On ( 'ticket' ).//
             chain2 ( actionO ).//
-            focus3On ( 'blackboard' ).focus3On ( 'ticketType' ).focus3On ( 'ticketType' )}
+            focus3On ( 'forTicket' ).focus3On ( 'tempData' ).focus3On ( 'ticketType' ).focus3On ( 'item' )}
                                         SuccessButton={successButton}
                                         FailureButton={failureButton}
           />
@@ -112,8 +112,9 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
 
         <SimpleTabPanel title='CreateKnowledgeArticleWorkbench'>
           <DisplayKnowledgeArticleWorkbench variables={(state.//
-            focusOn ( 'blackboard' ).optJson () || {} as any)?.ticket}
-                                            state={state.tripleUp ().focus1On ( 'tempData' ).focus1On ( 'ka' ).//
+            focusOn ( 'forTicket' ).focusOn ( 'variables' ).optJson () || {} as any)?.ticket}
+                                            state={state.tripleUp ().//
+                                              focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'ka' ).//
                                               chain2 ( eventsO ).//
                                               focus3On ( 'sideeffects' )
                                             } SuccessButton={successButton} FailureButton={failureButton}/>
@@ -131,7 +132,7 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
           <NewTicketWizard
             // kaList={wholeState?.kaList}
             state={state.doubleUp ().//
-              focus1On ( 'tempData' ).focus1On ( 'newTicket' ).//
+              focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'newTicket' ).//
               focus2On ( 'sideeffects' )}/></SimpleTabPanel>
       </SilentTabsContainer>
       {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )} titles={[ 'selectionState', 'tempData', 'blackboard', 'events', 'enrichedEvents', "conversation", "variables", "ticket", "templates", 'kas', 'scs', 'log', 'operator' ]}/>}

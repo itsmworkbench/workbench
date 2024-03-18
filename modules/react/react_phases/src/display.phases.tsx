@@ -56,8 +56,9 @@ export interface DisplayPhaseProps {
 
 export function DisplayPhase ( { phase, status, Action }: DisplayPhaseProps ) {
   const ticketType: TicketType = useTicketType ()
+
   const nameAndActions: NameAnd<Action> = ticketType?.actions?.[ phase ]
-  const statusForActionsinPhase = useStatus?.[ phase ]
+  const statusForActionsinPhase = useStatus ()?.[ phase ]
   return <Box sx={{
     minWidth: '200px',
     border: '1px solid',
@@ -89,7 +90,9 @@ export interface DisplayPhasesProps {
   Action: ( phase: PhaseName, name: string, action: Action, status: boolean | undefined ) => React.ReactNode
 }
 export function DisplayPhases ( { Action }: DisplayPhasesProps ) {
-  const phases: PhaseAnd<NameAnd<Action>> = useTicketType ().actions
+  let ticketType = useTicketType ();
+  if ( !ticketType ) return <pre>Error: no ticket type</pre>
+  const phases: PhaseAnd<NameAnd<Action>> = ticketType.actions
   const pStatus: Status = useStatus ()
   const ps = phaseStatus ( phases, pStatus )
   let previousPhaseOk: boolean = true
