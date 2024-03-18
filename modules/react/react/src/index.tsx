@@ -87,7 +87,7 @@ addEventStoreModifier ( container,
       addAiEmailSideEffectProcessor ( aiEmails, emailDataL ),
       addSaveKnowledgeArticleSideEffect ( urlStore.save, 'me' ),
       // addLoadKaSideEffect ( urlStore.loadNamed, newTicketL.focusOn ( 'ticketDetails' ) ),
-      addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, 'ticket' )
+      addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, 'forTicket.ticket', 'forTicket.variables','forTicket.tempData.ticketType' )
     ] ),
     sideEffectsL, logsL ) )
 

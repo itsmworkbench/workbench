@@ -6,18 +6,18 @@ import { findActionsInEventsMergeWithTicketType, lastTicketType } from "@itsmwor
 
 
 export interface EnrichedEventsProviderProps {
-  enrichedEvents: EnrichedEvent<any, any>[]
+  enrichedEvents: EnrichedEvent<any, any>[] | undefined
   children: React.ReactNode;
 
 }
-export const EnrichedEventsContext = React.createContext<EnrichedEvent<any, any>[]> ( [] );
+export const EnrichedEventsContext = React.createContext<EnrichedEvent<any, any>[] | undefined> ( undefined )
 export function EnrichedEventsProvider ( { children, enrichedEvents }: EnrichedEventsProviderProps ) {
   return <EnrichedEventsContext.Provider value={enrichedEvents || []}> {children} </EnrichedEventsContext.Provider>;
 }
 
-// Hook for consuming the service
+
 export function useEnrichedEvents (): EnrichedEvent<any, any>[] {
-  const results = useContext ( EnrichedEventsContext ) || [];
+  const results = useContext ( EnrichedEventsContext );
   if ( results === undefined ) {
     throw new Error ( "useEnrichedEvents  must be used within a EnrichedEventsProvider" );
   }
@@ -25,7 +25,11 @@ export function useEnrichedEvents (): EnrichedEvent<any, any>[] {
 }
 
 export function useTicketType (): TicketType {
-  let result = lastTicketType ( useEnrichedEvents () );
+  let enriched = useEnrichedEvents ();
+  let result = lastTicketType ( enriched );
+  if ( result === undefined ) {
+    console.log ( 'useTicketType - no ticketType - enriched', enriched )
+  }
   return result
 }
 export function useActionInEventsFor ( phase: string, action: string ) {

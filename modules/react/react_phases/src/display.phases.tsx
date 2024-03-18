@@ -91,7 +91,8 @@ export interface DisplayPhasesProps {
 }
 export function DisplayPhases ( { Action }: DisplayPhasesProps ) {
   let ticketType = useTicketType ();
-  if ( !ticketType ) return <pre>Error: no ticket type</pre>
+  console.log('DisplayPhases - ticketType', ticketType)
+  if ( !ticketType ) return <pre>Error: no ticket type!</pre>
   const phases: PhaseAnd<NameAnd<Action>> = ticketType.actions
   const pStatus: Status = useStatus ()
   const ps = phaseStatus ( phases, pStatus )

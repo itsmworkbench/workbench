@@ -56,7 +56,6 @@ export interface ItsmState {
   kaList: ListNamesResult
   conversation: Conversation
   selectionState: ItsmSelectionState
-  ticket?: Ticket
   sideeffects: SideEffect[]
   log: SideeffectResult<any>[],
   variables: NameAnd<Variables>

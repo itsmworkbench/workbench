@@ -1,6 +1,6 @@
 import { NameAnd } from "@laoban/utils";
 import { JSONPrimitive } from "@itsmworkbench/utils";
-import { ErrorEvent, Event, isAppendEvent, isInfoEvent, isSetIdEvent, isSetValueEvent, isZeroEvent } from "./events";
+import { ErrorEvent, Event, isAppendEvent, isErrorEvent, isInfoEvent, isSetIdEvent, isSetValueEvent, isZeroEvent } from "./events";
 
 
 export const parseEvent = ( extraContext: NameAnd<JSONPrimitive> ) => ( s: string ): Event => {
@@ -15,6 +15,7 @@ export const parseEvent = ( extraContext: NameAnd<JSONPrimitive> ) => ( s: strin
     event.context = { ...extraContext, ...event.context }
     if ( isZeroEvent ( event ) ) return event
     if ( isInfoEvent ( event ) ) return event
+    if (isErrorEvent(event)) return event
     if ( !('path' in event) ) return makeError ( `No path in event ` )
     if ( isSetIdEvent ( event ) ) return ('id' in event) ? event : makeError ( `No id` );
     if ( isSetValueEvent ( event ) ) return ('value' in event) ? event : makeError ( `No value` );
