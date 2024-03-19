@@ -12,8 +12,7 @@ import { useVariables } from "@itsmworkbench/components";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 
 interface EnterTicketDetailsComp<S> extends LensProps<S, NewTicketWizardData, any> {
-  next: ( enabled: boolean ) => React.ReactElement
-  prev: React.ReactElement
+
 }
 
 
@@ -32,23 +31,15 @@ export function EnterTicketDetails<S> ( { state }: LensProps<S, NewTicketWizardD
   let stepState = state.focusOn ( 'currentStep' );
   console.log ( 'comp', Comp, enterTicketDetailsComp, stepState )
   if ( Comp === undefined ) throw Error ( 'No component for ticket source ' + ticketSource );
-  return <Comp state={state}
-               next={enabled => <NextNewWizardStepButton state={stepState} enabled={enabled}/>}
-               prev={<PreviousNewWizardStepButton state={stepState}/>}/>
+  return <Comp state={state}/>
 }
 
-export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTicketDetailsComp<S> ) {
-  const variableState = useVariables<S> ()
+export function ManuallyTicketDetailsEntry<S> ( { state }: EnterTicketDetailsComp<S> ) {
   const aiFn = useAiVariables ()
-  const addSe = useSideEffects ( state )
   const [ ai, setAi ] = React.useState<TicketVariables> ( {} )
   const data = state.optJson () || {} as any
-  const se = {
-    command: 'addNewTicket',
-    organisation: 'me',
-    ...data,
-    aiAddedVariables: ai
-  };
+  const canNext = data.ticketName && data.ticketName.length > 0 && data.ticketDetails && data.ticketDetails.length > 0
+  console.log ( 'canNext', canNext )
   return (
     <Box sx={{ '& > *': { mb: 2 } }}> {/* This applies margin-bottom to all immediate children */}
       <Typography variant="h6">New Ticket</Typography>
@@ -68,34 +59,13 @@ export function ManuallyTicketDetailsEntry<S> ( { state, next, prev }: EnterTick
         rows={12}
         state={state.focusOn ( 'ticketDetails' )}
       />
-
-      <Button
-        variant="contained"
-        color="primary"
-        endIcon={<SendIcon/>}
-        onClick={() => aiFn ( data.ticketDetails ).then ( setAi )}
-      >
-        Calc variables
-      </Button>
-
-      <Typography>Variables</Typography>
-      <DisplayJson json={ai} maxHeight='200px'/>
-      {prev}
-      {next ( true )}
-      <Button
-        variant="contained"
-        color="primary"
-        disabled={data?.ticketName === undefined || data?.ticketName.length === 0}
-        endIcon={<SendIcon/>}
-        onClick={() => addSe ( se )}
-      >
-        Create or Replace Ticket
-      </Button>
+      <PreviousNewWizardStepButton state={state.focusOn ( 'currentStep' )}/>
+      <NextNewWizardStepButton enabled={canNext === true} state={state.focusOn ( 'currentStep' )}/>
     </Box>
   );
 }
 
-export function NotSupportYetTicketDetailsEntry<S> ( { state, prev }: EnterTicketDetailsComp<S> ) {
+export function NotSupportYetTicketDetailsEntry<S> ( { state }: EnterTicketDetailsComp<S> ) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
       <Typography variant="h6" gutterBottom>
@@ -104,7 +74,10 @@ export function NotSupportYetTicketDetailsEntry<S> ( { state, prev }: EnterTicke
       <Typography variant="body1" gutterBottom>
         This method is not yet supported.
       </Typography>
-      <Box sx={{ mt: 2, display: 'flex', width: '100%', justifyContent: 'start' }}>{prev}</Box>
+      <Box sx={{ mt: 2, display: 'flex', width: '100%', justifyContent: 'start' }}>
+        <PreviousNewWizardStepButton state={state.focusOn ( 'currentStep' )}/>
+
+      </Box>
     </Box>
   );
 }

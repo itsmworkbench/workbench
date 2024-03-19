@@ -1,22 +1,16 @@
-import { LensProps, LensState2, LensState3 } from "@focuson/state";
+import { LensProps, LensState2 } from "@focuson/state";
 import { ThemeProvider, Toolbar } from "@mui/material";
-import {
-  DisplayMarkdown, EnrichedEventsProvider, MainAppLayout, SideEffectsProvider,
-  VariablesProvider, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn,
-  SuccessFailureButton, theme, AiVariablesProvider
-} from "@itsmworkbench/components";
+import { DisplayMarkdown, EnrichedEventsProvider, MainAppLayout, SideEffectsProvider, SilentTabsContainer, SimpleTabPanel, SuccessFailContextFn, SuccessFailureButton, theme, VariablesProvider } from "@itsmworkbench/components";
 import React from "react";
-import { actionO, enrichedEventsL, enrichedEventsO, eventsL, eventsO, ItsmState, sideEffectsL, statusL } from "../state/itsm.state";
+import { actionO, enrichedEventsO, eventsL, eventsO, ItsmState, sideEffectsL } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
 import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplayReceiveEmailWorkbench, DisplayReviewTicketWorkbench, DisplaySelectKnowledgeArticleWorkbench, DisplaySqlWorkbench, SendTicketForEmailButton } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { NewTicketWizard } from "@itsmworkbench/react_new_ticket";
 import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents, EnrichedEventsAndChat } from "@itsmworkbench/react_events";
-import { Capability, PhaseAnd } from "@itsmworkbench/domain";
+import { Capability } from "@itsmworkbench/domain";
 import { ActionButton, DisplayPhases } from "@itsmworkbench/react_phases";
-import { NameAnd } from "@laoban/utils";
-import { Action } from "@itsmworkbench/actions";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/url";
@@ -52,7 +46,8 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   const pathToStatus = 'forTicket.status'
 
   const successFailState = state.doubleUp ().focus1On ( 'sideeffects' ).focus2On ( 'selectionState' ).focus2On ( 'tabs' )
-  const successButton = ( context: SuccessFailContextFn ) => <SuccessFailureButton state={successFailState} successOrFail={true} pathToStatus={pathToStatus} context={context}/>
+  const successButton = ( context: SuccessFailContextFn ) =>
+    <SuccessFailureButton state={successFailState} successOrFail={true} pathToStatus={pathToStatus} context={context}/>
   const failureButton = ( context: SuccessFailContextFn ) => <SuccessFailureButton state={successFailState} successOrFail={false} pathToStatus={pathToStatus} context={context}/>
 
   const currentTicketId = wholeState?.selectionState?.ticketId
@@ -96,10 +91,11 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                   focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'action' ).//
                   focus2On ( 'variables' )
 
-                } SuggestButton={<SendTicketForEmailButton state={state.tripleUp ().//
-                  focus1On ( 'selectionState' ).focus1On ( 'tabs' ).//
-                  focus2On ( 'forTicket' ).focus2On ( 'ticket' ).//
-                  focus3On ( 'sideeffects' )}/>} SuccessButton={successButton} FailureButton={failureButton}/>
+                } SuggestButton={
+                  <SendTicketForEmailButton state={state.tripleUp ().//
+                    focus1On ( 'selectionState' ).focus1On ( 'tabs' ).//
+                    focus2On ( 'forTicket' ).focus2On ( 'ticket' ).//
+                    focus3On ( 'sideeffects' )}/>} SuccessButton={successButton} FailureButton={failureButton}/>
               </SimpleTabPanel>
               <SimpleTabPanel title='LDAPWorkbench'>
                 <DisplayLdapWorkbench state={state.doubleUp ().focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'action' )} SuccessButton={successButton} FailureButton={failureButton}/>

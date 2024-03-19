@@ -86,13 +86,12 @@ export function DisplayPhase ( { ticketType, phase, status, Action }: DisplayPha
   </Box>
 }
 export interface DisplayPhasesForTicketTypeProps extends DisplayPhasesProps {
-  ticketType: TicketType
+  ticketType: TicketType | undefined
 
   pStatus: Status
 }
 
 export function DisplayPhasesForTicketType ( { ticketType, pStatus, Action }: DisplayPhasesForTicketTypeProps ) {
-  console.log ( 'DisplayPhasesForTicketType - ticketType', ticketType )
   if ( !ticketType ) return <pre>No ticket type!</pre>
   const phases: PhaseAnd<NameAnd<Action>> = ticketType.actions
   const ps = phaseStatus ( phases, pStatus )

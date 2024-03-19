@@ -14,11 +14,12 @@ export interface SelectAndLoadUrlProps<S, T> extends LensProps<S, IdAnd<T>, any>
   pageSize?: number
   targetPath: string
   Title: React.ReactNode
+  Text: React.ReactNode
   Summary: ( idAndItem: IdAnd<T> | undefined ) => React.ReactNode
   Save: ( idAndItem: IdAnd<T> | undefined ) => React.ReactNode
 }
 
-export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace, pageSize, Title, Summary, Save }: SelectAndLoadUrlProps<S, T> ) {
+export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace, pageSize, Title, Text, Summary, Save }: SelectAndLoadUrlProps<S, T> ) {
   if ( pageSize === undefined ) pageSize = 10;
   const urlStore = useUrlStore ();
   const [ filter, setFilter ] = useState ( '' );
@@ -49,6 +50,7 @@ export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace,
       <Grid item xs={12}>
         {Title}
       </Grid>
+      <Grid item xs={4}>{Text}</Grid>
       <Grid item xs={4}>
         <TextField
           label="Filter"
@@ -58,16 +60,8 @@ export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace,
           margin="normal"
         />
       </Grid>
-      <Grid item xs={8}>
+      <Grid item xs={4}>
         <ResultsList items={kas} onSelect={setSummaryLoad}/>
-      </Grid>
-      <Grid item xs={12}>
-        {Save ( summary )}
-      </Grid>
-      <Grid item xs={12}>
-        {Summary ( summary )}
-      </Grid>
-      <Grid item xs={12}>
         <Pagination
           onChange={( event, page ) => setPage ( page )}
           color="primary"
@@ -75,8 +69,14 @@ export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace,
           shape="rounded"
         />
       </Grid>
+      <Grid item xs={12}>
+        {Save ( summary )}
+      </Grid>
+      <Grid item xs={12}>
+        {Summary ( summary )}
+      </Grid>
     </Grid>
-  );
+  )
 }
 interface ResultsListProps {
   items: ErrorsAnd<ListNamesResult> | undefined;

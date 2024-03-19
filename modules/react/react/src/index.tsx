@@ -22,7 +22,7 @@ import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
 import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin, displaySqlEventPlugin } from '@itsmworkbench/react_capabilities';
-import { AiVariablesProvider, UrlStoreProvider } from '@itsmworkbench/components';
+import { AiEmailContext, AiEmailProvider, AiVariablesProvider, UrlStoreProvider } from '@itsmworkbench/components';
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -53,12 +53,12 @@ const eventPlugins = [
   displayTicketTypeEventPlugin<ItsmState> (),
   displayMessageEventPlugin<ItsmState> () ];
 addEventStoreListener ( container, (( oldS, s, setJson ) => {
-  return root.render ( <UrlStoreProvider urlStore={urlStore}> <AiVariablesProvider aiVariables={aiVariables}><App
+  return root.render ( <UrlStoreProvider urlStore={urlStore}> <AiEmailProvider aiEmail={aiEmails}><AiVariablesProvider aiVariables={aiVariables}><App
     state={lensState ( s, setJson, 'Container', {} )}
     plugins={[]}
     eventPlugins={eventPlugins}
     // plugins={[ operatorConversationPlugin ( operatorL ) ]}
-  /></AiVariablesProvider></UrlStoreProvider> );
+  /></AiVariablesProvider></AiEmailProvider></UrlStoreProvider> );
 }) );
 
 const enricher = defaultEventEnricher ( urlStore )

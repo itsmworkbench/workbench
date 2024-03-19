@@ -56,12 +56,12 @@ export const simpleTicketType: TicketType = ({
   capabilities: [ 'Email', 'ReceiveEmail' ],
   actions: {
     CheckTicket: {
-      ReviewTicket: {
-        by: 'ReviewTicket',
-      },
       SelectKnowledgeArticle: {
         by: 'SelectKnowledgeArticle',
         recordInCapability: false,
+      },
+      ReviewTicket: {
+        by: 'ReviewTicket',
       },
       RequestMoreData: {
         by: 'Email',

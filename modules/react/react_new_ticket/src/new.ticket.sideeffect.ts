@@ -59,19 +59,19 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
               ticketTypeDetails
             }
           }
-          const initialVariablesEvent: SetValueEvent = {
-            event: 'setValue', path: variablesPath, value: se.aiAddedVariables ||{},
-            context: { display: { title: 'Ticket Variables', type: 'variables', hide: true }, }
-          }
+          // const initialVariablesEvent: SetValueEvent = {
+          //   event: 'setValue', path: variablesPath, value: se.aiAddedVariables ||{},
+          //   context: { display: { title: 'Ticket Variables', type: 'variables', hide: true }, }
+          // }
           const setTicketTypeEvent: SetValueEvent = {
             event: 'setValue', path: ticketTypePath, value: { ticketTypeDetails, ticketType },
             context: { display: { title: 'Ticket Type', type: 'ticketType', hide: true }, }
           }
           console.log('addNewTicketSideeffectProcessor - initialTicketEvent', initialTicketEvent)
           console.log('addNewTicketSideeffectProcessor - setTicketTypeEvent', setTicketTypeEvent)
-          console.log('addNewTicketSideeffectProcessor - initialVariablesEvent', initialVariablesEvent)
+          // console.log('addNewTicketSideeffectProcessor - initialVariablesEvent', initialVariablesEvent)
 
-          return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ setTicketTypeEvent, initialTicketEvent, initialVariablesEvent ] ),
+          return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ setTicketTypeEvent, initialTicketEvent ] ),
             async ticketevents => {
               console.log ( 'addNewTicketSideeffectProcessor - ticketevents ', ticketeventsUrl, ticketevents )
               return { ticket, ticketevents }

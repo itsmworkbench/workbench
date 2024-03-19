@@ -1,13 +1,13 @@
 import React from "react";
 import { LensProps } from "@focuson/state";
 import { NewTicketWizardData } from "./new.ticket.wizard.domain";
-import { PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
+import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
 import { DisplayPhasesForTicketType } from "@itsmworkbench/react_phases";
 import { detailsToTicketType, TicketType } from "@itsmworkbench/tickettype";
-import { SelectAndLoadFromUrlStore, Status } from "@itsmworkbench/components";
+import { SelectAndLoadFromUrlStore, Status, useSideEffects } from "@itsmworkbench/components";
 import { IdAnd } from "@itsmworkbench/utils";
 import Typography from "@mui/material/Typography";
-import { Tooltip } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 
@@ -22,11 +22,16 @@ const initialState = detailsToTicketType ( {
 } );
 export function NewSelectKa<S> ( { state }: NewSelectKaProps<S> ) {
   const data = state.optJson () || {} as any
+  const addSe = useSideEffects<S> ( state )
   return <div>
     <SelectAndLoadFromUrlStore basicData={{ organisation: 'me', operator: undefined as any }}
                                namespace='ka'
                                Title={<h1>Knowledge Article</h1>}
-                               Summary={( ka: IdAnd<TicketType> ) =>
+                               Text={<Typography variant="body1" gutterBottom>
+                                 Select a knowledge article to associate with this ticket. If there is no existing knowledge article for this ticket,
+                                 select 'No Existing Knowledge Article'
+                               </Typography>}
+                               Summary={( ka: IdAnd<TicketType> | undefined ) =>
                                  <DisplayPhasesForTicketType ticketType={ka?.item} pStatus={{} as Status} Action={
                                    ( phase, name, action, status ) => <Tooltip title={JSON.stringify ( action )}>
                                      <Typography
@@ -52,21 +57,28 @@ export function NewSelectKa<S> ( { state }: NewSelectKaProps<S> ) {
                                    command: 'addNewTicket',
                                    organisation: 'me',
                                    ...data,
+                                   ticketType: ka?.item,
                                    aiAddedVariables: {}
                                  };
-                                 return <Button
-                                   variant="contained"
-                                   color="primary"
-                                   disabled={data?.ticketName === undefined || data?.ticketName.length === 0}
-                                   endIcon={<SendIcon/>}
-                                   // onClick={() => addSe ( se )}
-                                 >
-                                   Create or Replace Ticket
-                                 </Button>;
+                                 return (
+                                   <Box
+                                     display="flex"
+                                     justifyContent="center"
+                                     alignItems="center"
+                                     gap={2} // Adjust the gap as needed
+                                   > <PreviousNewWizardStepButton state={state.focusOn ( 'currentStep' )}/>
+                                     <NextNewWizardStepButton state={state.focusOn ( 'currentStep' )} title='No existing knowledge Article'/>
+                                     <Button
+                                       variant="contained"
+                                       color="primary"
+                                       disabled={ka?.id === undefined || ka?.id?.length === 0 || data?.ticketName === undefined || data?.ticketName.length === 0}
+                                       endIcon={<SendIcon/>}
+                                       onClick={() => {
+                                         return addSe ( se );
+                                       }}
+                                     >Create or Replace Ticket</Button>
+                                   </Box>);
                                }}/>
-
-
-    <PreviousNewWizardStepButton state={state.focusOn ( 'currentStep' )}/>
   </div>
 
 }
