@@ -32,16 +32,15 @@ export function polling<T> (
   }
 }
 async function poll<T> ( details: PollingDetails<T> ) {
-  if ( details.debug ) console.log ( 'polling', details )
   if ( !details.polling ) return; // Exit if polling has been stopped
   const newPoll = details.poll ()
   if ( newPoll !== details.currentPoll ) {
     details.start = 0
     details.currentPoll = newPoll
     details.currentPollNamed = parseNamedUrlOrErrors ( newPoll )
-    if ( details.debug ) console.log ( 'polling - new poll', details )
   }
   if ( newPoll === undefined ) return setTimeout ( () => poll ( details ), details.pollingInterval );
+    if ( details.debug ) console.log ( 'polling - new poll', details )
   let currentPollNamed = details.currentPollNamed;
   if ( currentPollNamed !== undefined && hasErrors ( currentPollNamed ) ) return setTimeout ( () => poll ( details ), details.pollingInterval );
   try {

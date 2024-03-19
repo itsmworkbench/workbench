@@ -1,1 +1,1 @@
-Price
+Some price

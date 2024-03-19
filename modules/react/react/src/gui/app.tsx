@@ -27,7 +27,6 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   let showDevMode = wholeState?.debug?.showDevMode;
   let showPhases = wholeState?.selectionState?.ticketId !== undefined;
   let showWelcome = wholeState?.selectionState?.tabs?.workspaceTab === undefined;
-  console.log ( 'state', wholeState );
   const convState = state.tripleUp ().//
     focus1On ( 'conversation' ).//
     chain2 ( enrichedEventsO ).//

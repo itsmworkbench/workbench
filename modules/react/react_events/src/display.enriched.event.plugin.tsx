@@ -37,7 +37,7 @@ export interface DisplayEnrichedEventsUsingPluginProps<S> extends LensProps<S, E
 }
 export function DisplayEnrichedEventsUsingPlugin<S> ( { state, plugins, devMode }: DisplayEnrichedEventsUsingPluginProps<S> ) {
   const events = state.optJson () || []
-  console.log ( 'DisplayEnrichedEventsUsingPlugin events', events, 'devMode', devMode, 'plugins', plugins )
+  // console.log ( 'DisplayEnrichedEventsUsingPlugin events', events, 'devMode', devMode, 'plugins', plugins )
   return <div>{events.map ( ( event, i ) =>
     <div key={i} style={{ margin: '6px' }}>
       {(devMode || !event.hide) && <DisplayEnrichedEventUsingPlugin key={i}

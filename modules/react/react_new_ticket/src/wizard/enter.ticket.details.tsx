@@ -26,10 +26,10 @@ export const enterTicketDetailsComp = <S extends any> (): TicketSourceAnd<React.
 export function EnterTicketDetails<S> ( { state }: LensProps<S, NewTicketWizardData, any> ) {
   const ticketSource = state.optJson ()?.whereIsTicket;
   if ( ticketSource === undefined ) throw Error ( 'No ticket source' );
-  console.log ( 'ticketSource', ticketSource, state );
+  // console.log ( 'ticketSource', ticketSource, state );
   const Comp = enterTicketDetailsComp<S> ()[ ticketSource ];
   let stepState = state.focusOn ( 'currentStep' );
-  console.log ( 'comp', Comp, enterTicketDetailsComp, stepState )
+  // console.log ( 'comp', Comp, enterTicketDetailsComp, stepState )
   if ( Comp === undefined ) throw Error ( 'No component for ticket source ' + ticketSource );
   return <Comp state={state}/>
 }
@@ -39,7 +39,7 @@ export function ManuallyTicketDetailsEntry<S> ( { state }: EnterTicketDetailsCom
   const [ ai, setAi ] = React.useState<TicketVariables> ( {} )
   const data = state.optJson () || {} as any
   const canNext = data.ticketName && data.ticketName.length > 0 && data.ticketDetails && data.ticketDetails.length > 0
-  console.log ( 'canNext', canNext )
+  // console.log ( 'canNext', canNext )
   return (
     <Box sx={{ '& > *': { mb: 2 } }}> {/* This applies margin-bottom to all immediate children */}
       <Typography variant="h6">New Ticket</Typography>

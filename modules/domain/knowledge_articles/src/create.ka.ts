@@ -18,9 +18,9 @@ export function findWorkbenchEventFor ( e: Event[], phase: string, action: strin
 
 export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType, e: Event[], phase: string, action: string ) {
   const found = ticketType?.actions?.[ phase ]?.[ action ] || {}
-  console.log ( 'findActionsInEventsMergeWithTicketType - found', phase, action, found )
+  // console.log ( 'findActionsInEventsMergeWithTicketType - found', phase, action, found )
   const workBenchEvent: EventWithWorkBenchContext<any> = findWorkbenchEventFor ( e, phase, action )
-  console.log ( 'findActionsInEventsMergeWithTicketType - workBenchEvent', workBenchEvent )
+  // console.log ( 'findActionsInEventsMergeWithTicketType - workBenchEvent', workBenchEvent )
   if ( workBenchEvent ) {
     const result = { ...found, by: workBenchEvent.context.capability, ...workBenchEvent.context.data } as Action
     return result
@@ -29,7 +29,7 @@ export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType,
 }
 export function findActionInEventsFor ( e: EnrichedEvent<any, any>[], phase: string, action: string ): Action {
   const ticketType: TicketType = lastTicketType ( e )
-  console.log ( 'findActionInEventsFor - ticketType', ticketType )
+  // console.log ( 'findActionInEventsFor - ticketType', ticketType )
   return findActionsInEventsMergeWithTicketType ( ticketType, e, phase, action )
 }
 
@@ -110,7 +110,7 @@ export function makeKnowledgeArticle ( e: Event[], variables: Record<string, str
     ticketType.actions[ event.context.where.phase ] = actions
   }
   const variablesUsed = createVariablesUsedFrom ( e, variables )
-  console.log ( 'variablesUsed', variablesUsed )
+  // console.log ( 'variablesUsed', variablesUsed )
   return { variables: [ ...new Set ( variablesUsed ) ].sort (), capabilities: [ ...new Set ( capabilities ) ].sort (), actions: ticketType.actions } as any
 }
 

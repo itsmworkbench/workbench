@@ -40,7 +40,7 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
       const ticketUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticket', name: se.ticketName }
       const ticketeventsUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticketevents', name: se.ticketName }
       const ticketTypeDetails = se.ticketTypeDetails || defaultTicketTypeDetails
-      const ticketType = detailsToTicketType ( ticketTypeDetails )
+      const ticketType = se.ticketType ?? detailsToTicketType ( ticketTypeDetails )
 
 
       //what we should do instead of this
@@ -67,8 +67,8 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
             event: 'setValue', path: ticketTypePath, value: { ticketTypeDetails, ticketType },
             context: { display: { title: 'Ticket Type', type: 'ticketType', hide: true }, }
           }
-          console.log('addNewTicketSideeffectProcessor - initialTicketEvent', initialTicketEvent)
-          console.log('addNewTicketSideeffectProcessor - setTicketTypeEvent', setTicketTypeEvent)
+          console.log ( 'addNewTicketSideeffectProcessor - initialTicketEvent', initialTicketEvent )
+          console.log ( 'addNewTicketSideeffectProcessor - setTicketTypeEvent', setTicketTypeEvent )
           // console.log('addNewTicketSideeffectProcessor - initialVariablesEvent', initialVariablesEvent)
 
           return mapErrorsK ( await urlSaveFn ( ticketeventsUrl, [ setTicketTypeEvent, initialTicketEvent ] ),

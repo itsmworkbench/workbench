@@ -24,7 +24,7 @@ export function FocusedTextInput<S> ( props: FocusTextAreaProps<S> ) {
   const actualError = errorFn && value.length>0 ? errorFn ( value ) : undefined
   const isError = actualError !== undefined
   const helperText = isError ? actualError : rest.helperText
-  console.log('FocusedTextInput', `[${value}]`,value?.length, isError, helperText)
+  // console.log('FocusedTextInput', `[${value}]`,value?.length, isError, helperText)
   return <TextField {...rest} value={value}
                     error={isError}
                     helperText={helperText}
