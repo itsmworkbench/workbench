@@ -4,7 +4,7 @@ import { DisplayMarkdown, EnrichedEventsProvider, MainAppLayout, SideEffectsProv
 import React from "react";
 import { actionO, enrichedEventsO, eventsL, eventsO, ItsmState, sideEffectsL } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
-import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplayReceiveEmailWorkbench, DisplayReviewTicketWorkbench, DisplaySelectKnowledgeArticleWorkbench, DisplaySqlWorkbench, SendTicketForEmailButton } from "@itsmworkbench/react_capabilities";
+import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplayReceiveEmailWorkbench, DisplayReviewTicketWorkbench, DisplaySelectKnowledgeArticleWorkbench, DisplaySqlWorkbench, SuggestEmailForTicketButton } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { NewTicketWizard } from "@itsmworkbench/react_new_ticket";
@@ -91,10 +91,10 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                   focus2On ( 'variables' )
 
                 } SuggestButton={
-                  <SendTicketForEmailButton state={state.tripleUp ().//
+                  <SuggestEmailForTicketButton state={state.tripleUp ().//
                     focus1On ( 'selectionState' ).focus1On ( 'tabs' ).//
                     focus2On ( 'forTicket' ).focus2On ( 'ticket' ).//
-                    focus3On ( 'sideeffects' )}/>} SuccessButton={successButton} FailureButton={failureButton}/>
+                    focus3On ( 'forTicket' ).focus3On('tempData').focus3On('action')}/>} SuccessButton={successButton} FailureButton={failureButton}/>
               </SimpleTabPanel>
               <SimpleTabPanel title='LDAPWorkbench'>
                 <DisplayLdapWorkbench state={state.doubleUp ().focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'action' )} SuccessButton={successButton} FailureButton={failureButton}/>

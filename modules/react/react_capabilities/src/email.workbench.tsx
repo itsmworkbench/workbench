@@ -1,28 +1,34 @@
-import { LensProps2, LensProps3, LensState } from "@focuson/state";
+import {LensProps2, LensProps3, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
-import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn } from "@itsmworkbench/components";
-import { SideEffect, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
-import { Ticket } from "@itsmworkbench/tickets";
+import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, useAiEmail } from "@itsmworkbench/components";
+import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { AiEmailSideEffect } from "./ai.email.sideeffect";
-import { EmailWorkBenchContext } from "@itsmworkbench/domain";
+import { EmailWorkBenchContext, isEmailWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
+import { Ticket } from "@itsmworkbench/tickets";
 
 
-export interface SendTicketForEmailButtonProps<S> extends LensProps3<S, TabPhaseAndActionSelectionState, Ticket, SideEffect[], any> {
+export interface SuggestEmailForTicketButtonProps<S> extends LensProps3<S, TabPhaseAndActionSelectionState, Ticket, Action, any> {
 }
-export function SendTicketForEmailButton<S> ( { state }: SendTicketForEmailButtonProps<S> ) {
+export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicketButtonProps<S> ) {
+  const ai = useAiEmail ()
+  const ticket = state.optJson2 ()
+  const actionState: LensState<S, any, any> = state.state3 ();
+  const action = state.optJson3 ()
+  console.log('SuggestEmailForTicketButton - action', action)
   function onClick () {
-    const existing = state.optJson3 () ?? []
-    const aiEmailSideEffect: AiEmailSideEffect = {
-      command: 'aiEmail',
-      ticketId: '',
-      purpose: state.state1 ().optJson ()?.action as any,
-      ticket: state.optJson2 ()?.description ?? ''
-    };
-    state.state3 ().setJson ( [ ...existing, aiEmailSideEffect ], '' )
+    ai ( {
+      purpose: 'requestApproval',
+      ticketId: ticket.id,
+      ticket: ticket.description
+    } ).then ( res => {
+      console.log ( 'SuggestEmailForTicketButton - stat', state.state2 () )
+      console.log ( 'SuggestEmailForTicketButton - result', res )
+      actionState.focusOn('email').setJson ( res.email || JSON.stringify ( res.error, null, 2 ), '' )
+      // state.state3 ().focusOn ( 'description' ).setJson ( res.email || JSON.stringify ( res.error, null, 2 ), '' )
+    } )
   }
   return <Button variant="contained" color="primary" endIcon={<TestIcon/>} onClick={onClick}>Suggest Email </Button>
 }
