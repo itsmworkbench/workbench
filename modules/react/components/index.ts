@@ -10,6 +10,7 @@ export * from './src/buttons/focusOnToggleButton';
 export * from './src/buttons/messageButton';
 export * from './src/buttons/success.failure.button';
 export * from './src/debug/display.debug';
+export * from './src/debug/display.variables';
 export * from './src/displayRaw/display.json';
 export * from './src/displayRaw/display.markdown';
 export * from './src/displayRaw/display.text';

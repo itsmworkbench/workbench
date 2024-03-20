@@ -39,6 +39,7 @@ export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
     <FocusOnSetValueButton aria-label='Show settings' startIcon={<SettingsIcon/>} valueToSet={{ workspaceTab: 'settings' }} state={tabsState} sx={buttonSx}>Settings</FocusOnSetValueButton>
     <FocusOnToggleButton aria-label='Toggle Developer Mode' startIcon={<DeveloperModeIcon/>} state={state.focusOn ( 'debug' ).focusOn ( 'showDevMode' )} sx={buttonSx}>Developer Mode</FocusOnToggleButton>
     {showDevMode && <>
+        <FocusOnSetValueButton aria-label='Debug Variables' valueToSet={{ workspaceTab: 'debugVariables' }} state={tabsState} sx={buttonSx}>Debug Variables</FocusOnSetValueButton>
         <FocusOnSetValueButton aria-label='Debug Events' startIcon={<EventIcon/>} valueToSet={{ workspaceTab: 'debugEvents' }} state={tabsState} sx={buttonSx}>Debug Events</FocusOnSetValueButton>
         <FocusOnSetValueButton aria-label='Debug Enriched Events' startIcon={<EventIcon/>} valueToSet={{ workspaceTab: 'debugEnrichedEvents' }} state={tabsState} sx={buttonSx}>Debug Enriched Events</FocusOnSetValueButton>
         <FocusOnSetValueButton aria-label='Chat' startIcon={<ChatIcon/>} valueToSet={{ workspaceTab: 'chat' }} state={tabsState} sx={buttonSx}>Chat</FocusOnSetValueButton>
