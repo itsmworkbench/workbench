@@ -6,7 +6,9 @@ export function deref ( a: Action, s: string, dic: any ) {
 }
 export function dereferenceSqlAction ( a: Action, variables: Record<string, string> ): Action {
   if ( a.by !== 'SQL' ) return a
-  return { by: 'SQL', sql: deref ( a, a.sql, variables ) } //explict: the action could have a lot of things in it we don't want to copy
+  let sql = deref ( a, a.sql, variables );
+  console.log('sql', a.sql, variables, sql)
+  return { by: 'SQL', sql } //explict: the action could have a lot of things in it we don't want to copy
 }
 export function dereferenceEmailAction ( a: Action, variables: Record<string, string> ): Action {
   if ( a.by !== 'Email' ) return a

@@ -11,6 +11,7 @@ describe('reverseTemplate', () => {
     expect(reverseTemplate(inputString, variables)).toBe(expectedTemplate);
   });
 
+
   it('handles input with no variables correctly', () => {
     const variables = {};
     const inputString = "Hello, John Doe! You are 30 years old.";

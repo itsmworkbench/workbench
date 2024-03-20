@@ -20,6 +20,7 @@ export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicke
   const action = state.optJson3 ()
   console.log ( 'SuggestEmailForTicketButton - action', action )
   function onClick () {
+    if ( ticket === undefined ) return
     ai ( {
       purpose,
       ticketId: ticket.id,
@@ -31,6 +32,7 @@ export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicke
       // state.state3 ().focusOn ( 'description' ).setJson ( res.email || JSON.stringify ( res.error, null, 2 ), '' )
     } )
   }
+  if ( ticket === undefined ) return <span>Software error: cannot find the ticket</span>
   return <Button variant="contained" color="primary" endIcon={<TestIcon/>} onClick={onClick}>Suggest Email </Button>
 }
 

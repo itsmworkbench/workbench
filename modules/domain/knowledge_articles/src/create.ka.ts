@@ -64,7 +64,9 @@ export function basics ( a: Action ): NameAnd<any> {
 
 export function reverseSqlAction ( variables: Record<string, string>, a: Action, c: SqlWorkBenchContext ): Action {
   if ( a.by !== 'SQL' ) return a
-  return { ...basics ( a ), by: "SQL", sql: reverseTemplate ( c.data.sql, variables ) } //explict: the action could have a lot of things in it we don't want to copy
+  let sql = reverseTemplate ( c.data.sql, variables );
+  console.log ( 'reverseSqlAction - sql', sql )
+  return { ...basics ( a ), by: "SQL", sql } //explict: the action could have a lot of things in it we don't want to copy
 }
 export function reverseEmailAction ( variables: Record<string, string>, a: Action, c: EmailWorkBenchContext ): Action {
   if ( a.by !== 'Email' ) return a
@@ -89,6 +91,7 @@ export function reverseReceiveEmailAction ( variables: Record<string, string>, a
   return a
 }
 export function reverseAction ( variables: Record<string, string>, e: EventWithWorkBenchContext<any>, a: Action ): Action {
+  console.log ( 'reverseAction', a, e.context )
   if ( isSqlWorkBenchContext ( e.context ) ) return reverseSqlAction ( variables, a, e.context )
   if ( isEmailWorkBenchContext ( e.context ) ) return reverseEmailAction ( variables, a, e.context )
   if ( isLdapWorkBenchContext ( e.context ) ) return reverseLdapAction ( variables, a, e.context )
@@ -97,20 +100,21 @@ export function reverseAction ( variables: Record<string, string>, e: EventWithW
 }
 
 
-export function makeKnowledgeArticle ( e: Event[], variables: Record<string, string> ): ErrorsAnd<TicketType> {
-  const ticketType: TicketType = lastTicketType ( e )
+export function makeKnowledgeArticle ( e: Event[], ticketType: TicketType, variables: Record<string, string> ): ErrorsAnd<TicketType> {
   if ( ticketType == undefined ) return [ 'Could not find ticket type event' ]
+  const copy = JSON.parse ( JSON.stringify ( ticketType ) )
   const capabilities: Capability[] = []
   const workBenchEvents = allWorkbenchEvents ( e );
   for ( const event of workBenchEvents ) {
     capabilities.push ( event.context.capability )
-    const action = findActionsInEventsMergeWithTicketType ( ticketType, e, event.context.where.phase, event.context.where.action )
-    const actions: NameAnd<Action> = ticketType.actions[ event.context.where.phase ] || {}
+    const action = findActionsInEventsMergeWithTicketType ( copy, e, event.context.where.phase, event.context.where.action )
+    const actions: NameAnd<Action> = copy.actions[ event.context.where.phase ] || {}
     actions[ event.context.where.action ] = reverseAction ( variables, event, action )
-    ticketType.actions[ event.context.where.phase ] = actions
+    copy.actions[ event.context.where.phase ] = actions
   }
   const variablesUsed = createVariablesUsedFrom ( e, variables )
   // console.log ( 'variablesUsed', variablesUsed )
-  return { variables: [ ...new Set ( variablesUsed ) ].sort (), capabilities: [ ...new Set ( capabilities ) ].sort (), actions: ticketType.actions } as any
+  console.log ( 'copy.actions', copy?.actions )
+  return { variables: [ ...new Set ( variablesUsed ) ].sort (), capabilities: [ ...new Set ( capabilities ) ].sort (), actions: copy.actions } as any
 }
 

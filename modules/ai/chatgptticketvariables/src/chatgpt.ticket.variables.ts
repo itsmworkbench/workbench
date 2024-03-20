@@ -1,8 +1,9 @@
 import {
+  AIKnownTicketVariablesFn,
   AiTicketVariablesFn,
   TicketVariables
 } from "@itsmworkbench/ai_ticketvariables";
-import {OpenAI} from "openai";
+import { OpenAI } from "openai";
 
 export const clientSecret = process.env[ 'CHATGPT_CLIENT_SECRET' ]
 
@@ -10,10 +11,13 @@ const openai = new OpenAI ( {
   apiKey: clientSecret,
 } );
 
+export const chatgptKnownTicketVariables: AIKnownTicketVariablesFn = async ( ticket: string, attributes: string[] ): Promise<TicketVariables> => {
+  return {}
+}
 
 export const chatgptTicketVariables: AiTicketVariablesFn = async ( ticket: string ): Promise<TicketVariables> => {
   const systemPrompt = `You will be provided with a ITSM work ticket, and your task is to extract important variables from it. Return these variables only as in JSON format.`;
-  console.log('chat gpt ticket variables', ticket)
+  console.log ( 'chat gpt ticket variables', ticket )
   const chatCompletion = await openai.chat.completions.create ( {
     messages: [
       { role: 'system', content: systemPrompt },
@@ -76,7 +80,6 @@ Please update the price of the discombobulator`
 
   return JSON.parse ( variablesString );
 };
-
 
 
 export const generalChat: AiTicketVariablesFn = async ( ticket: string ): Promise<TicketVariables> => {

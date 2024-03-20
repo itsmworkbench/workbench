@@ -7,8 +7,8 @@ import { ListIds } from "@itsmworkbench/listids";
 import { getUrls, listUrls, putUrls } from "./api.for.url.store";
 import { NameSpaceDetails, UrlStore } from "@itsmworkbench/url";
 import { NameAnd } from "@laoban/utils";
-import { executeAIForEmail, executeAIForVariables } from "./api.for.ai";
-import { AIEmailsFn, AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
+import { executeAIForEmail, executeAIForKnownVariables, executeAIForVariables } from "./api.for.ai";
+import { AIEmailsFn, AIKnownTicketVariablesFn, AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
 
 
 export const ids = ( idstore: IdStore, debug: boolean ): KoaPartialFunction => ({
@@ -85,13 +85,14 @@ export const appendPostPF: KoaPartialFunction = {
   }
 }
 
-export const wizardOfOzApiHandlers = (idStore: IdStore, getIds: ListIds, aiForVariables: AiTicketVariablesFn, aiForEmail: AIEmailsFn,
+export const wizardOfOzApiHandlers = (idStore: IdStore, getIds: ListIds, aiForVariables: AiTicketVariablesFn,aiForKnownVariables: AIKnownTicketVariablesFn, aiForEmail: AIEmailsFn,
                                       debug: boolean,
                                       details: NameAnd<NameSpaceDetails>,
                                       urlStore: UrlStore, ...handlers: KoaPartialFunction[] ): ( from: ContextAndStats ) => Promise<void> =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
     executeAIForVariables ( aiForVariables ),
     executeAIForEmail( aiForEmail ),
+    executeAIForKnownVariables(aiForKnownVariables),
     listUrls ( urlStore.list ),
     getUrls ( urlStore ),
     putUrls ( urlStore.save, details ),

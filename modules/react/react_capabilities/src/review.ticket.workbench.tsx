@@ -44,7 +44,7 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
       <DisplayMarkdown md={ticket.description} maxHeight='500px'/>
       <Typography variant="subtitle1" gutterBottom>Attributes (this is Yaml)</Typography>
       <YamlEditor yaml={attributes}
-                  Save={yaml => SuccessButton ( contextFn ( yaml.toString () ) )}
+                  Save={yaml => SuccessButton ( contextFn ( (yaml || '{}').toString () ) )}
                   Suggest={setYaml =>
                     <Button
                       variant="contained"
@@ -53,7 +53,7 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
                       onClick={() => ai ( ticket.description ).then ( res => setYaml ( yamlWriter ( res ).toString () ) )}
                     >Have AI suggest attributes</Button>}
       />
-      {FailureButton ( contextFn )}
+      {FailureButton ( contextFn ( '' ) )}
     </Box>
   </Container>
 }

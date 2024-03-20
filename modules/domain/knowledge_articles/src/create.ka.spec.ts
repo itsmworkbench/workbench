@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { Event } from "@itsmworkbench/events";
-import { findActionInEventsFor, makeKnowledgeArticle } from "./create.ka";
+import { findActionInEventsFor, lastTicketType, makeKnowledgeArticle } from "./create.ka";
 
 const raw = `
 {"event":"setValue","path":"blackboard.ticketType","value":{"ticketTypeDetails":{"ticketType":"Update Database","approvalState":"Needs Approval","validateInvolvedParties":true},"ticketType":{"capabilities":["Email","KnowledgeArticle","LDAP","ReceiveEmail","SQL"],"actions":{"CheckTicket":{"checkProblemExists":{"by":"SQL"},"checkUser":{"safe":true,"by":"LDAP","who":"issuer.email"},"checkApprover":{"safe":true,"by":"LDAP","who":"approval.to"}},"Approval":{"requestApproval":{"by":"Email","to":"approval.to","waitingFor":[]},"receiveApproval":{"by":"ReceiveEmail","from":"approval.to","waitingFor":["requestApproval"]}},"Resolve":{"checkIssueStillExists":{"by":"SQL"},"resolveTheIssue":{"by":"SQL","waitingFor":["checkIssueStillExists"]}},"Close":{"requestClosure":{"by":"Email","to":"issuer.email","waitingFor":[]},"agreeClosure":{"by":"ReceiveEmail","from":"issuer.email","waitingFor":["requestClosure"]},"closed":{"by":"Ticket","waitingFor":["agreeClosure"]}},"Review":{"createKnowledgeArticle":{"by":"KnowledgeArticle"}}}}},"context":{"display":{"title":"Ticket Type","type":"ticketType","hide":true}}}
@@ -19,7 +19,8 @@ const raw = `
 const events: Event[] = raw.split ( '\n' ).filter ( t => t.length > 0 ).map ( t => t.trim () ).map ( line => JSON.parse ( line ) )
 describe ( 'createKnowledgeArticle', () => {
   it ( 'should create a knowledge article', () => {
-    expect ( makeKnowledgeArticle ( events ,{"approval.to":"someName"}) ).toEqual ( {
+    const tt = lastTicketType ( events )
+    expect ( makeKnowledgeArticle ( events, tt, { "approval.to": "someName" } ) ).toEqual ( {
       "actions": {
         "Approval": {
           "receiveApproval": {

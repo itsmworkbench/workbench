@@ -52,10 +52,11 @@ export interface DisplayPhaseProps {
   ticketType: TicketType
   phase: PhaseName
   status: boolean | undefined
+  showStatus?: boolean
   Action: ( phase: PhaseName, name: string, action: Action, status: boolean | undefined ) => React.ReactNode
 }
 
-export function DisplayPhase ( { ticketType, phase, status, Action }: DisplayPhaseProps ) {
+export function DisplayPhase ( { ticketType, phase, status, Action, showStatus }: DisplayPhaseProps ) {
 
   const nameAndActions: NameAnd<Action> = ticketType?.actions?.[ phase ]
   const statusForActionsinPhase = useStatus ()?.[ phase ]
@@ -79,7 +80,7 @@ export function DisplayPhase ( { ticketType, phase, status, Action }: DisplayPha
         {splitAndCapitalize ( phase )}
       </Typography>
 
-      <StatusIndicator value={status}/>
+      {showStatus && <StatusIndicator value={status}/>}
     </Box>
     {Object.entries ( nameAndActions || {} ).map ( ( [ name, action ] ) =>
       Action ( phase, name, action, statusForActionsinPhase?.[ name ] ) )}
@@ -88,14 +89,14 @@ export function DisplayPhase ( { ticketType, phase, status, Action }: DisplayPha
 export interface DisplayPhasesForTicketTypeProps extends DisplayPhasesProps {
   ticketType: TicketType | undefined
 
-  pStatus: Status
+  pStatus?: Status
 }
 
 export function DisplayPhasesForTicketType ( { ticketType, pStatus, Action }: DisplayPhasesForTicketTypeProps ) {
   if ( !ticketType ) return <pre>No ticket type!</pre>
   const phases: PhaseAnd<NameAnd<Action>> = ticketType.actions
-  const ps = phaseStatus ( phases, pStatus )
-  let previousPhaseOk: boolean = true
+  const ps =  phaseStatus ( phases, pStatus )
+  let previousPhaseOk: boolean|undefined = true
   return <Box sx={{ margin: 2 }}><Grid container spacing={2}>
     {Object.entries ( phases ).map ( ( [ name, actions ] ) => {
       const rawPhaseStatus = ps ( name as PhaseName )
@@ -103,7 +104,7 @@ export function DisplayPhasesForTicketType ( { ticketType, pStatus, Action }: Di
       if ( previousPhaseOk === true ) previousPhaseOk = rawPhaseStatus;
       return (
         <Grid item key={name}>
-          <DisplayPhase ticketType={ticketType} phase={name as PhaseName} status={thisPhaseStatus} Action={Action}/>
+          <DisplayPhase ticketType={ticketType} phase={name as PhaseName} showStatus={pStatus !== undefined} status={thisPhaseStatus} Action={Action}/>
         </Grid>
       );
     } )}

@@ -8,7 +8,7 @@ export interface StatusProviderProps {
   status: Status
   children: React.ReactNode;
 }
-export const StatusProviderContext = React.createContext<Status> ( {} as any );
+export const StatusProviderContext = React.createContext<Status|undefined> ( undefined );
 export function StatusProvider ( { children, status }: StatusProviderProps ) {
   return <StatusProviderContext.Provider value={status || {} as any}> {children} </StatusProviderContext.Provider>;
 }

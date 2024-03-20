@@ -27,9 +27,9 @@ export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace,
   const [ summary, setSummary ] = useState<IdAnd<T> | undefined> ( undefined );
   const [ kas, setKas ] = useState<ErrorsAnd<ListNamesResult> | undefined> ( undefined );
   const addSe = useSideEffects ( state )
-  useEffect ( () => {
-    urlStore.list ( { filter, order: 'name', org: basicData.organisation, namespace, pageQuery: { page, pageSize } } ).then ( setKas ), [ filter ]
-  } )
+  useEffect ( () => {urlStore.list ( { filter, order: 'name', org: basicData.organisation, namespace, pageQuery: { page, pageSize } } ).then ( setKas )},
+    [ filter ]
+  )
 
   function setSummaryLoad ( item: string ) {
     urlStore.loadNamed<T> ( { scheme: 'itsm', name: item, organisation: basicData.organisation, namespace } ).then ( res => {

@@ -12,7 +12,7 @@ export interface BaseAction {
 }
 export function isBaseAction ( a: any ) {
   if ( a === undefined || a === null ) return false
-  return a.by !== undefined
+  return a?.by !== undefined
 }
 export interface SqlAction extends BaseAction {
   by: 'SQL'
@@ -67,12 +67,12 @@ export interface SafeAction extends BaseAction {
   safe?: true
 }
 export function isSafeAction ( x: any ): x is SafeAction {
-  return x.safe === true
+  return x?.safe === true
 }
 
-export const phaseStatus = ( actions: PhaseAnd<NameAnd<Action>>, status: PhaseAnd<NameAnd<boolean>> ) => ( phase: string ) => {
-  const phaseActions = actions[ phase ] || {} as any
-  const phaseStatus = status[ phase ]
+export const phaseStatus = ( actions?: PhaseAnd<NameAnd<Action>> , status?: PhaseAnd<NameAnd<boolean>>  ) => ( phase: string ): (boolean | undefined) => {
+  const phaseActions = actions?.[ phase ] || {} as any
+  const phaseStatus = status?.[ phase ]
   let result: boolean = true;
   if ( Object.keys ( phaseActions ).length === 0 ) return true;
   for ( const action in phaseActions ) {

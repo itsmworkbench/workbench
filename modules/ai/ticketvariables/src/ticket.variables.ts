@@ -42,3 +42,5 @@ export type EmailResult = {
 export type AiTicketVariablesFn = ( ticket: string ) => Promise<TicketVariables>
 
 export type AIEmailsFn = ( email: EmailData ) => Promise<EmailResult>
+
+export type AIKnownTicketVariablesFn = ( ticket: string , attributes: string[]) => Promise<TicketVariables>

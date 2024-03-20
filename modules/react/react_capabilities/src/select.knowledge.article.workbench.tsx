@@ -30,7 +30,7 @@ export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButt
                                Title={<h1>Knowledge Article</h1>}
                                Text={<Typography variant="body1" gutterBottom>You can change the knowledge article for this ticket by selecting in the right
                                  column and then selecting 'Success' below</Typography>}
-                               Summary={ka => <DisplayPhasesForTicketType ticketType={ka?.item} pStatus={{} as Status} Action={
+                               Summary={ka => <DisplayPhasesForTicketType ticketType={ka?.item} Action={
                                  ( phase, name, action, status ) => <Tooltip title={JSON.stringify ( action )}>
                                    <Typography
                                      component="span"
