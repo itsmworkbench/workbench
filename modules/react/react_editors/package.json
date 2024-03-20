@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/react_capabilities",
-  "description": "Developer mode",
+  "name": "@itsmworkbench/react_editors",
+  "description": "The react chat area",
   "version": "0.0.3",
   "browserslist": {
     "development": [
@@ -15,9 +15,11 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/domain": "0.0.3",
+    "@monaco-editor/react": "^4.6.0",
     "@itsmworkbench/components": "0.0.3",
-    "@itsmworkbench/react_editors": "0.0.3",
+    "@itsmworkbench/events": "0.0.3",
+    "@itsmworkbench/url": "0.0.3",
+    "@itsmworkbench/yaml": "0.0.3",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

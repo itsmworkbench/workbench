@@ -1,17 +1,18 @@
 {
   "template":    "react_library",
-  "name":        "@itsmworkbench/react_capabilities",
-  "description": "Developer mode",
+  "name":        "@itsmworkbench/react_editors",
+  "description": "The react chat area",
   "packageJson": {
     "files":        ["build/"],
     "dependencies": {
-    },
-    "scripts":      {"start": "react-scripts start"}
+      "@monaco-editor/react": "^4.6.0"
+    }
   },
   "links":       [
-    "@itsmworkbench/domain",
     "@itsmworkbench/components",
-    "@itsmworkbench/react_editors"
+    "@itsmworkbench/events",
+    "@itsmworkbench/url",
+    "@itsmworkbench/yaml"
   ],
   "guards":      {
     "compile": true,

@@ -72,8 +72,7 @@ export function isReviewTicketWorkBenchContext ( context: any ): context is Revi
   return isWorkBenchContext<ReviewTicketData> ( context ) && context.capability === 'ReviewTicket'
 }
 export interface ReviewTicketData {
-  locatedAttributes: NameAnd<string>
-  editedAttributes: string
+  attributes: NameAnd<string>
 }
 
 export type SelectKnowledgeArticleWorkBenchContext = WorkBenchContext<SelectKnowledgeArticleData>

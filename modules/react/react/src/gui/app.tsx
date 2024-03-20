@@ -94,17 +94,16 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                   <SuggestEmailForTicketButton state={state.tripleUp ().//
                     focus1On ( 'selectionState' ).focus1On ( 'tabs' ).//
                     focus2On ( 'forTicket' ).focus2On ( 'ticket' ).//
-                    focus3On ( 'forTicket' ).focus3On('tempData').focus3On('action')}/>} SuccessButton={successButton} FailureButton={failureButton}/>
+                    focus3On ( 'forTicket' ).focus3On ( 'tempData' ).focus3On ( 'action' )}/>} SuccessButton={successButton} FailureButton={failureButton}/>
               </SimpleTabPanel>
               <SimpleTabPanel title='LDAPWorkbench'>
                 <DisplayLdapWorkbench state={state.doubleUp ().focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'action' )} SuccessButton={successButton} FailureButton={failureButton}/>
               </SimpleTabPanel>
 
               <SimpleTabPanel title='ReviewTicketWorkbench'>
-                <DisplayReviewTicketWorkbench state={state.tripleUp ().//
+                <DisplayReviewTicketWorkbench state={state.doubleUp ().//
                   focus1On ( 'forTicket' ).focus1On ( 'ticket' ).//
-                  chain2 ( actionO ).//
-                  focus3On ( 'forTicket' ).focus3On ( 'tempData' ).focus3On ( 'ticketType' ).focus3On ( 'item' )}
+                  chain2 ( actionO )}
                                               SuccessButton={successButton}
                                               FailureButton={failureButton}
                 />

@@ -1,4 +1,4 @@
-import {LensProps2, LensProps3, LensState } from "@focuson/state";
+import { LensProps2, LensProps3, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
@@ -14,19 +14,20 @@ export interface SuggestEmailForTicketButtonProps<S> extends LensProps3<S, TabPh
 }
 export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicketButtonProps<S> ) {
   const ai = useAiEmail ()
+  const purpose = state.state1 ().optJson ()?.action as any
   const ticket = state.optJson2 ()
   const actionState: LensState<S, any, any> = state.state3 ();
   const action = state.optJson3 ()
-  console.log('SuggestEmailForTicketButton - action', action)
+  console.log ( 'SuggestEmailForTicketButton - action', action )
   function onClick () {
     ai ( {
-      purpose: 'requestApproval',
+      purpose,
       ticketId: ticket.id,
       ticket: ticket.description
     } ).then ( res => {
       console.log ( 'SuggestEmailForTicketButton - stat', state.state2 () )
       console.log ( 'SuggestEmailForTicketButton - result', res )
-      actionState.focusOn('email').setJson ( res.email || JSON.stringify ( res.error, null, 2 ), '' )
+      actionState.focusOn ( 'email' ).setJson ( res.email || JSON.stringify ( res.error, null, 2 ), '' )
       // state.state3 ().focusOn ( 'description' ).setJson ( res.email || JSON.stringify ( res.error, null, 2 ), '' )
     } )
   }
