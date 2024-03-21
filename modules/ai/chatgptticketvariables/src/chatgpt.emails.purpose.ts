@@ -9,7 +9,7 @@ const openai = new OpenAI ( {
 } );
 
 const generateEmailPrompt = (emailData: EmailData): string => {
-  let purposeDescription = '';
+  let purposeDescription: string;
   switch (emailData.purpose) {
     case 'requestApproval':
       purposeDescription = 'to request approval for a pending task or project';
@@ -25,6 +25,7 @@ const generateEmailPrompt = (emailData: EmailData): string => {
   return `Given the following ticket ID: ${emailData.ticketId} and details: ${JSON.stringify(emailData.ticket, null, 2)}
 Generate a professional email from an employee to their employer ${purposeDescription}. Include a subject and body in the email. 
 Annotate the subject with <!-- SUBJECT START --> and <!-- SUBJECT END -->. Annotate the email body with <!-- EMAIL START --> and <!-- EMAIL END -->. 
+Do not use salutations. In the end of email, the name of the sender is "Philip". 
 Use these details to craft the email content.`;
 };
 
