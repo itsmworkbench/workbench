@@ -1,0 +1,147 @@
+variables:
+  - currentPrice
+  - customer
+  - environment
+  - itemCode
+  - itemName
+  - newPrice
+  - system
+capabilities:
+  - Email
+  - LDAP
+  - ReviewTicket
+  - SQL
+actions:
+  CheckTicket:
+    SelectKnowledgeArticle:
+      by: SelectKnowledgeArticle
+      recordInCapability: false
+    ReviewTicket:
+      by: ReviewTicket
+    RequestMoreData:
+      by: Email
+      to: issuer.email
+      optional: true
+      highlyVariant: true
+    checkProblemExists:
+      by: SQL
+      sql: Select * from projects where project_id = '${itemCode}'
+    checkUser:
+      safe: true
+      by: LDAP
+      who: ${customer}
+    checkApprover:
+      safe: true
+      by: LDAP
+      who: approval.to
+  Approval:
+    requestApproval:
+      waitingFor: []
+      by: Email
+      to: approval.to
+      subject: >-
+        Request to approve price update in epx ${environment} for item code
+        999-33 (${itemName}) to ${newPrice}
+      email: >-
+        I hope this message finds you well. 
+
+
+        I am writing to seek your approval for a task that requires immediate
+        attention. In the ${system} system, the global item with the item code
+        ${itemCode} has an incorrect price listed. Currently, the price is set
+        at ${currentPrice}, whereas it should be updated to ${newPrice} to
+        reflect the accurate pricing.
+
+
+        To rectify this error, I propose to update the price for the global item
+        in the ${system} ${environment} environment. This adjustment is crucial
+        to ensure that accurate pricing information is reflected across all
+        platforms and systems.
+
+
+        I have attached the details of the ticket ID:
+        itsmid/me/ticket/d598ce1e4c8aa3f1150a714cfc54cea50da4946e for your
+        reference. Your approval for this task will allow me to proceed with
+        making the necessary changes promptly.
+
+
+        Please let me know if you require any further information or
+        clarification regarding this matter. Your prompt attention to this
+        request is highly appreciated.
+
+
+        Thank you for your consideration.
+
+
+        Best regards,
+
+
+        [Your Name]
+    receiveApproval:
+      by: ReceiveEmail
+      from: approval.to
+      waitingFor:
+        - requestApproval
+  Resolve:
+    resolveTheIssue:
+      waitingFor:
+        - checkIssueStillExists
+      by: SQL
+      sql: delete from projects where project_id = '${itemCode}'
+    checkIssueStillExists:
+      by: SQL
+      sql: Select * from projects where project_id = '${itemCode}'
+  Close:
+    requestClosure:
+      waitingFor: []
+      by: Email
+      to: issuer.email
+      subject: >-
+        Request you review ticket and close it (change price of ${itemName} to
+        ${newPrice})
+      email: >-
+        I am writing to inform you that I have successfully updated the price
+        for the global item code ${itemCode} in the ${system} ${environment}
+        system. The incorrect price of ${currentPrice} has been rectified and
+        now reflects the correct price of ${newPrice}, as per your instructions.
+
+
+        I have thoroughly tested the system to ensure that the updated price is
+        displaying accurately and functioning as intended. Everything appears to
+        be in order, and I believe the task has been completed satisfactorily.
+
+
+        As such, I kindly request that you review the changes made and proceed
+        with closing the ticket associated with this task (Ticket ID:
+        itsmid/me/ticket/d598ce1e4c8aa3f1150a714cfc54cea50da4946e). If there are
+        any additional steps or approvals required from your end, please let me
+        know so that I can assist accordingly.
+
+
+        Thank you for entrusting me with this task. I appreciate the opportunity
+        to contribute to our team's projects and initiatives. Should you have
+        any feedback or further tasks for me, please do not hesitate to reach
+        out.
+
+
+        Looking forward to your confirmation of the task closure. 
+
+
+        Best regards,
+
+
+        [Your Name]
+    agreeClosure:
+      by: ReceiveEmail
+      from: issuer.email
+      waitingFor:
+        - requestClosure
+    closed:
+      by: Ticket
+      waitingFor:
+        - agreeClosure
+  Review:
+    createKnowledgeArticle:
+      by: CreateKnowledgeArticle
+      recordInCapability: false
+      optional: true

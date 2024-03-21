@@ -1,0 +1,142 @@
+variables:
+  - currentPrice
+  - environment
+  - itemCode
+  - itemName
+  - newPrice
+  - system
+capabilities:
+  - Email
+  - LDAP
+  - ReviewTicket
+  - SQL
+actions:
+  CheckTicket:
+    SelectKnowledgeArticle:
+      by: SelectKnowledgeArticle
+      recordInCapability: false
+    ReviewTicket:
+      by: ReviewTicket
+    RequestMoreData:
+      by: Email
+      to: issuer.email
+      optional: true
+      highlyVariant: true
+    checkProblemExists:
+      by: SQL
+      sql: >-
+        Select * from projects where project_id = 'Select * from projects where
+        project_id = 'P-1222'
+    checkUser:
+      safe: true
+      by: LDAP
+      who: a.customer@example.com
+    checkApprover:
+      safe: true
+      by: LDAP
+      who: approval.to
+  Approval:
+    requestApproval:
+      waitingFor: []
+      by: Email
+      to: the.boss@example.com
+      subject: >-
+        Update price of ${itemName} in the ${system} system for item code 999-14
+        to ${currentPrice}
+      email: >-
+        I hope this message finds you well. I am writing to seek your approval
+        for a crucial update that needs to be made in the ${system}
+        ${environment} system.
+
+
+        As per ticket ID
+        itsmid/me/ticket/d598ce1e4c8aa3f1150a714cfc54cea50da4946e, I have
+        identified an error regarding the price of the global item with the item
+        code ${itemCode}. Currently, the price is set at ${currentPrice}, which
+        is incorrect. After thorough review, it has been determined that the
+        correct price for this item should be ${newPrice}.
+
+
+        In order to rectify this mistake and ensure accurate pricing in our
+        ${environment} system, I kindly request your approval to proceed with
+        updating the price of the global item to ${newPrice} in the ${system}
+        ${environment} environment.
+
+
+        Your prompt attention to this matter would be greatly appreciated.
+        Please let me know if you require any further information or
+        clarification regarding this update.
+
+
+        Thank you for considering my request. I look forward to receiving your
+        approval to proceed with this task.
+
+
+        Warm regards,
+
+
+        [Your Name]
+    receiveApproval:
+      by: ReceiveEmail
+      from: approval.to
+      waitingFor:
+        - requestApproval
+  Resolve:
+    resolveTheIssue:
+      waitingFor:
+        - checkIssueStillExists
+      by: SQL
+      sql: delete from projects where project_id = '${itemCode}'
+    checkIssueStillExists:
+      by: SQL
+      sql: >-
+        Select * from projects where project_id = 'Select * from projects where
+        project_id = 'P-1222'
+  Close:
+    requestClosure:
+      waitingFor: []
+      by: Email
+      to: issuer.email
+      subject: ''
+      email: >-
+        Dear [Employer's Name],
+
+
+        I hope this message finds you well. I am writing to inform you that I
+        have successfully completed the task of updating the price for the
+        global item code ${itemCode} in the ${system} ${environment} system. 
+
+
+        The incorrect price of ${currentPrice} has been rectified, and the new
+        price of ${newPrice} has been implemented as per your instructions. The
+        necessary changes have been made and verified to ensure accuracy.
+
+
+        I kindly request that you review the updates made and provide
+        confirmation for the closure of this task. If there are any additional
+        tasks or projects you would like me to focus on next, please do not
+        hesitate to inform me.
+
+
+        Thank you for entrusting me with this assignment. I look forward to your
+        feedback and guidance.
+
+
+        Best regards,
+
+
+        [Your Name]
+    agreeClosure:
+      by: ReceiveEmail
+      from: issuer.email
+      waitingFor:
+        - requestClosure
+    closed:
+      by: Ticket
+      waitingFor:
+        - agreeClosure
+  Review:
+    createKnowledgeArticle:
+      by: CreateKnowledgeArticle
+      recordInCapability: false
+      optional: true

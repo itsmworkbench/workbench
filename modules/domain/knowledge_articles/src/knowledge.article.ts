@@ -81,6 +81,7 @@ export function kaPlugin ( yaml: YamlCapability, rootPath: string ): DomainPlugi
 
 export function knowledgeArticleNameSpaceDetails ( yaml: YamlCapability ) {
   return nameSpaceDetailsForGit ( 'ka', {
+    extension: 'yaml',
     parser: camelCaseAndIdYamlParser ( yaml ),
     writer: yaml.writer
   } );

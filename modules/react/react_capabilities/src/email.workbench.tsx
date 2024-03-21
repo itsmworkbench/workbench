@@ -1,11 +1,11 @@
-import { LensProps2, LensProps3, LensState } from "@focuson/state";
+import { LensProps, LensProps3, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
-import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, useAiEmail } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, useAiEmail, useVariables } from "@itsmworkbench/components";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { EmailWorkBenchContext, isEmailWorkBenchContext } from "@itsmworkbench/domain";
+import { EmailWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { Ticket } from "@itsmworkbench/tickets";
 
@@ -37,18 +37,18 @@ export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicke
 }
 
 
-export interface DisplayEmailWorkbenchProps<S> extends LensProps2<S, Action, any, any> {
+export interface DisplayEmailWorkbenchProps<S> extends LensProps<S, Action, any> {
   SuggestButton: React.ReactNode
   SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
   FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
 export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton, FailureButton }: DisplayEmailWorkbenchProps<S> ) {
-  const action: any = state.optJson1 ()
+  const action: any = state.optJson ()
   const to = action.to || ''
   const subject = action.subject || ''
   const email = action.email || ''
-  const variables = state.optJson2 () || {}
+  const variables = useVariables ()
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): EmailWorkBenchContext => ({
     capability: 'Email',
@@ -61,7 +61,7 @@ export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton
     data: { to, subject, email }
   })
 
-  const actionState: LensState<S, any, any> = state.state1 ();
+  const actionState: LensState<S, any, any> = state;
   return <Container maxWidth="md">
     <Typography variant="h4" gutterBottom>Email</Typography>
 

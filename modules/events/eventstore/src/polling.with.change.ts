@@ -40,13 +40,13 @@ async function poll<T> ( details: PollingDetails<T> ) {
     details.currentPollNamed = parseNamedUrlOrErrors ( newPoll )
   }
   if ( newPoll === undefined ) return setTimeout ( () => poll ( details ), details.pollingInterval );
-    if ( details.debug ) console.log ( 'polling - new poll', details )
+  if ( details.debug ) console.log ( 'polling - new poll', details )
   let currentPollNamed = details.currentPollNamed;
   if ( currentPollNamed !== undefined && hasErrors ( currentPollNamed ) ) return setTimeout ( () => poll ( details ), details.pollingInterval );
   try {
     const loaded: ErrorsAnd<NamedLoadResult<T>> = await details.load ( value ( currentPollNamed ), details.start )
     if ( hasErrors ( loaded ) ) {
-      console.error('polling', loaded)
+      console.error ( 'polling', loaded )
       return details.errors ( loaded )
     }
     const { result, fileSize } = loaded

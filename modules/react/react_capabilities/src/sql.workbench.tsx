@@ -1,4 +1,4 @@
-import { LensProps2, LensState } from "@focuson/state";
+import { LensProps, LensState } from "@focuson/state";
 import React from "react";
 
 import { findSqlDataDetails } from "@itsmworkbench/defaultdomains";
@@ -6,23 +6,23 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { SqlDataTable } from "./SqlData";
-import { FocusedTextArea, SuccessFailContextFn } from "@itsmworkbench/components";
+import { FocusedTextArea, SuccessFailContextFn, useVariables } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { SqlWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 
 
 //Note this is an action where as in fact it's really a SQLData
-export interface DisplaySqlWorkbenchProps<S> extends LensProps2<S, Action, any, any> {
+export interface DisplaySqlWorkbenchProps<S> extends LensProps<S, Action, any> {
   SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
   FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
 export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplaySqlWorkbenchProps<S> ) {
-  const action: any = state.optJson1 ()
+  const action: any = state.optJson ()
   const sql = action?.sql || ''
   const response = action?.response || ''
-  const variables = state.optJson2 () || {}
+  const variables = useVariables ()
   const details = findSqlDataDetails ( sql || '', variables )
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): SqlWorkBenchContext => ({
@@ -36,7 +36,7 @@ export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }
     },
   })
 
-  const actionState: LensState<S, any, any> = state.state1 ();
+  const actionState: LensState<S, any, any> = state;
   return <Container>
     <Typography variant="h4" gutterBottom>SQL</Typography>
     <Box marginBottom={2}>

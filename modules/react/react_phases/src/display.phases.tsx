@@ -6,10 +6,11 @@ import { Action, BaseAction, phaseStatus } from "@itsmworkbench/actions";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { TabPhaseAndActionSelectionState, workbenchName } from "@itsmworkbench/react_core";
-import { Status, StatusIndicator, useActionInEventsFor, useStatus, useTicketType } from "@itsmworkbench/components";
+import { Status, StatusIndicator, useActionInEventsFor, useStatus, useTicketType, useVariables } from "@itsmworkbench/components";
 import { dereferenceAction } from "@itsmworkbench/knowledge_articles";
 import { TicketType } from "@itsmworkbench/tickettype";
 
+//the first any is actually an Action
 export interface ActionButtonProps<S> extends LensProps2<S, any, TabPhaseAndActionSelectionState, any> {
   name: string
   phase: PhaseName
@@ -18,12 +19,12 @@ export interface ActionButtonProps<S> extends LensProps2<S, any, TabPhaseAndActi
 }
 export function ActionButton<S> ( { name, action, phase, status, state }: ActionButtonProps<S> ) {
   const foundAction = useActionInEventsFor ( phase, name );
+  const variables =  useVariables()
   let buttonOnClick = () => {
-    console.log ( 'ActionButton - action', foundAction )
-    const variables: any = state.optJson2 () || {}
+    console.log ( 'ActionButton - action', foundAction,variables )
     let derefed = dereferenceAction ( foundAction, variables )
-    console.log ( 'ActionButton - derefed', foundAction )
-    state.setJson ( foundAction, { workspaceTab: workbenchName ( derefed.by ), phase, action: name }, derefed );
+    console.log ( 'ActionButton - derefed', derefed )
+    state.setJson ( derefed, { workspaceTab: workbenchName ( derefed.by ), phase, action: name }, derefed );
   };
   return <><Button
     variant="text"

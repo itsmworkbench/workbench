@@ -2,9 +2,10 @@ import { Action } from "@itsmworkbench/actions";
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
 
 export function deref ( a: Action, s: string, dic: any ) {
-  return derefence ( `dereferenceTemplateToActions ${JSON.stringify ( a )}`, dic, s, { variableDefn: dollarsBracesVarDefn, emptyTemplateReturnsSelf: true } )
+  return derefence ( `dereferenceTemplateToActions ${JSON.stringify ( a )}`, dic, s, { variableDefn: dollarsBracesVarDefn,allowUndefined: true } )
 }
 export function dereferenceSqlAction ( a: Action, variables: Record<string, string> ): Action {
+  console.log('dereferenceSqlAction', a, variables)
   if ( a.by !== 'SQL' ) return a
   let sql = deref ( a, a.sql, variables );
   console.log('sql', a.sql, variables, sql)

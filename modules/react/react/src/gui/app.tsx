@@ -83,14 +83,10 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                 <div><Toolbar/> Settings go here</div>
               </SimpleTabPanel>
               <SimpleTabPanel title='SQLWorkbench'>
-                <DisplaySqlWorkbench state={state.doubleUp ().chain1 ( actionO )} SuccessButton={successButton} FailureButton={failureButton}/>
+                <DisplaySqlWorkbench state={state.chainLens ( actionO )} SuccessButton={successButton} FailureButton={failureButton}/>
               </SimpleTabPanel>
               <SimpleTabPanel title='EmailWorkbench'>
-                <DisplayEmailWorkbench state={state.doubleUp ().//
-                  focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'action' ).//
-                  focus2On ( 'variables' )
-
-                } SuggestButton={
+                <DisplayEmailWorkbench state={state.chainLens ( actionO )} SuggestButton={
                   <SuggestEmailForTicketButton state={state.tripleUp ().//
                     focus1On ( 'selectionState' ).focus1On ( 'tabs' ).//
                     focus2On ( 'forTicket' ).focus2On ( 'ticket' ).//

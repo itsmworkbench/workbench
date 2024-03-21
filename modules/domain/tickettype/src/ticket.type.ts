@@ -173,7 +173,7 @@ export const installSoftwareTT: TicketType = ({
 })
 export function ticketTypeNamespaceDetails ( yaml: YamlCapability, ) {
   return nameSpaceDetailsForGit ( 'ka', {
-    extension: 'md',
+    extension: 'yaml',
     mimeType: 'text/markdown; charset=UTF-8',
     parser: ( id, s ) => yaml.parser ( s ),
     writer: yaml.writer,
