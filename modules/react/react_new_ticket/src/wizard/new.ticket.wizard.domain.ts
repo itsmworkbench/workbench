@@ -7,6 +7,7 @@ export type NewTicketWizardData = {
   currentStep: NewTicketWizardStep
   whereIsTicket: TicketSourceMethod
   ticketName: string
+  issuer: string
   ticketDetails: string
   ticketTypeDetails: TicketTypeDetails
   ticketType: TicketType
@@ -19,7 +20,7 @@ export type NewTicketWizardStepAnd<T> = {
   createTicket: T
   howToProcessTicket: T
 }
-export const newTicketWizardSteps: NewTicketWizardStep[] = [ 'whereIsTicket', 'createTicket' , 'selectKnowledgeArticle', 'howToProcessTicket' ]
+export const newTicketWizardSteps: NewTicketWizardStep[] = [ 'whereIsTicket', 'createTicket', 'selectKnowledgeArticle', 'howToProcessTicket' ]
 export const firstNewTicketWizardStep: NewTicketWizardStep = 'whereIsTicket'
 
 export type TicketSourceMethod = 'manually' | 'fromAzureDevOps' | 'fromJira' | 'fromServiceNow';

@@ -50,7 +50,13 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
       //if not error we want to change the page. How do we do that? How do we say where we want to go? We shouldn't know...we should be told...
 
       const res: ErrorsAnd<TicketAndTicketEvents> = await mapErrorsK (
-        await urlSaveFn ( ticketUrl, { description: se.ticketDetails } ), async ticket => {
+        await urlSaveFn ( ticketUrl, {
+          description: se.ticketDetails,
+          attributes: {
+            ticketName: se.ticketName,
+            issuer: se.issuer
+          }
+        } ), async ticket => {
           console.log ( 'addNewTicketSideeffectProcessor - ticket ', ticketUrl, ticket )
 
           const initialTicketEvent: SetIdEvent = {

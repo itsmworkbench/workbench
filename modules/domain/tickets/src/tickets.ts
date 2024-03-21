@@ -6,6 +6,7 @@ import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
 
 export interface Ticket {
   id: string
+  attributes: NameAnd<any>
   description: string
 }
 
@@ -15,10 +16,11 @@ export function variablesFromTicket ( sofar: NameAnd<any>, t: Ticket ): ErrorsAn
 }
 
 export const ticketParser: ParserStoreParser = ( id, s ) => {
-  let ticket: Ticket = { id, description: s }
-  return ticket
+  const index = s.indexOf ( '\n---\n' )
+  if ( index === -1 ) return { attributes: {}, description: s }
+  return { attributes: JSON.parse ( s.substring ( 0, index ).trim () ), description: s.substring ( index + 5 ) }
 }
-export const ticketWriter = ( ticket: Ticket ) => ticket.description;
+export const ticketWriter = ( ticket: Ticket ) => `${JSON.stringify(ticket.attributes, null, 2)}\n---\n${ticket.description}`
 export function ticketsPlugin ( rootPath: string ): DomainPlugin<Ticket> {
   return {
     prefix: 'ticket',

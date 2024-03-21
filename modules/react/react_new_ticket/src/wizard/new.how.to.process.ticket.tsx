@@ -52,7 +52,7 @@ export function NewHowToProcessTicket<S> ( { state }: LensProps<S, NewTicketWiza
   const se = {
     command: 'addNewTicket',
     organisation: 'me',
-    ...wizardData
+    ...wizardData,
   };
   console
   return <>

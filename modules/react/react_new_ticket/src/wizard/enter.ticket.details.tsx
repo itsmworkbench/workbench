@@ -51,6 +51,13 @@ export function ManuallyTicketDetailsEntry<S> ( { state }: EnterTicketDetailsCom
         errorFn={mustBeIdentifier ( 'Can only contain letters, numbers, and underscores' )}
         state={state.focusOn ( 'ticketName' )}
       />
+      <FocusedTextInput
+        variant="outlined"
+        fullWidth
+        label="Issuer"
+        errorFn={mustBeIdentifier ( 'Can only contain letters, numbers, and underscores' )}
+        state={state.focusOn ( 'issuer' )}
+      />
       <FocusedTextArea
         variant="outlined"
         fullWidth

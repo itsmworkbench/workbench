@@ -99,7 +99,7 @@ export function DisplayPhasesForTicketType ( { ticketType, pStatus, Action }: Di
   const ps =  phaseStatus ( phases, pStatus )
   let previousPhaseOk: boolean|undefined = true
   return <Box sx={{ margin: 2 }}><Grid container spacing={2}>
-    {Object.entries ( phases ).map ( ( [ name, actions ] ) => {
+    {Object.entries ( phases ||{}).map ( ( [ name, actions ] ) => {
       const rawPhaseStatus = ps ( name as PhaseName )
       const thisPhaseStatus = previousPhaseOk === true ? rawPhaseStatus : undefined
       if ( previousPhaseOk === true ) previousPhaseOk = rawPhaseStatus;

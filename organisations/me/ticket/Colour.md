@@ -1,10 +1,11 @@
-Customer: a.customer@example.com
-Name: Change the colour of the button
+{
+  "ticketName": "Colour",
+  "issuer": "a.b@example.com"
+}
 ---
 
-Issue:
 * in the EPX production environment the colour of the button is wrong. It should be blue and is red.
-* The button is button id but-blue-123
+  * The button is button id but-blue-123
 
 Action requested:
 * Please change the colour of the button to blue

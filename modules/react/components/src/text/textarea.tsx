@@ -11,7 +11,7 @@ export type FocusTextAreaProps<S> = TextFieldProps & {
 export const mustBeEmpty = ( errorMessage: string ) :ErrorFn=> s => !s || s.trim ().length === 0 ? undefined : errorMessage;
 export const mustNotBeEmpty = ( errorMessage: string ):ErrorFn => s => s && s.trim ().length > 0 ? undefined : errorMessage;
 export const mustBeEmail = ( errorMessage: string ):ErrorFn => s => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test ( s ) ? undefined : errorMessage;
-export const mustBeIdentifier = ( errorMessage: string ):ErrorFn => s =>  /^[a-zA-Z_][a-zA-Z0-9_]*$/.test ( s ) ? undefined : errorMessage;
+export const mustBeIdentifier = ( errorMessage: string ):ErrorFn => s =>  /^[a-zA-Z_-][.a-z@-A-Z0-9_]*$/.test ( s ) ? undefined : errorMessage;
 export const mustBeAlpha = ( errorMessage: string ):ErrorFn => s =>  /^[a-zA-Z0-9_]*$/.test ( s ) ? undefined : errorMessage;
 export const urlFriendly = ( errorMessage: string ):ErrorFn => s => /^[a-zA-Z0-9\-_~]+$/.test ( s ) ? undefined : errorMessage;
 export const mustBeNumeric = ( errorMessage: string ):ErrorFn=> s => !isNaN ( parseFloat ( s ) ) ? undefined : errorMessage;
