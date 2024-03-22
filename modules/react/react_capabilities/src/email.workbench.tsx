@@ -28,7 +28,9 @@ export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicke
     } ).then ( res => {
       console.log ( 'SuggestEmailForTicketButton - stat', state.state2 () )
       console.log ( 'SuggestEmailForTicketButton - result', res )
-      actionState.focusOn ( 'email' ).setJson ( res.email || JSON.stringify ( res.error, null, 2 ), '' )
+      actionState.doubleUp().focus1On('subject').focus2On ( 'email' ).setJson (
+        res.subject || '',
+        res.email || JSON.stringify ( res.error, null, 2 ), '' )
       // state.state3 ().focusOn ( 'description' ).setJson ( res.email || JSON.stringify ( res.error, null, 2 ), '' )
     } )
   }
