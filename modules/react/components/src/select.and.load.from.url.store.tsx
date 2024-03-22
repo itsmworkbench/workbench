@@ -15,11 +15,12 @@ export interface SelectAndLoadUrlProps<S, T> extends LensProps<S, IdAnd<T>, any>
   targetPath: string
   Title: React.ReactNode
   Text: React.ReactNode
+  TextIfNoKas: React.ReactNode
   Summary: ( idAndItem: IdAnd<T> | undefined ) => React.ReactNode
   Save: ( idAndItem: IdAnd<T> | undefined ) => React.ReactNode
 }
 
-export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace, pageSize, Title, Text, Summary, Save }: SelectAndLoadUrlProps<S, T> ) {
+export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace, pageSize, Title, Text, TextIfNoKas, Summary, Save }: SelectAndLoadUrlProps<S, T> ) {
   if ( pageSize === undefined ) pageSize = 10;
   const urlStore = useUrlStore ();
   const [ filter, setFilter ] = useState ( '' );
@@ -50,7 +51,7 @@ export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace,
       <Grid item xs={12}>
         {Title}
       </Grid>
-      <Grid item xs={4}>{Text}</Grid>
+      <Grid item xs={4}>{!hasErrors ( kas ) && kas?.names.length === 0 ? TextIfNoKas : Text}</Grid>
       <Grid item xs={4}>
         <TextField
           label="Filter"

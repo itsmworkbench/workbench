@@ -18,6 +18,7 @@
     "@itsmworkbench/domain": "0.0.3",
     "@itsmworkbench/components": "0.0.3",
     "@itsmworkbench/react_editors": "0.0.3",
+    "@itsmworkbench/i18n": "0.0.3",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

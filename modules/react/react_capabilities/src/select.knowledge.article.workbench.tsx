@@ -1,13 +1,14 @@
 import { LensProps2, LensState } from "@focuson/state";
 import React from "react";
-import { DisplayYaml, SelectAndLoadFromUrlStore, Status, SuccessFailContextFn, useTicketType } from "@itsmworkbench/components";
+import { SelectAndLoadFromUrlStore, SuccessFailContextFn, useTicketType } from "@itsmworkbench/components";
 import { IdAnd, splitAndCapitalize } from "@itsmworkbench/utils";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { SelectKnowledgeArticleWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
+import { MultiParagraphText } from "@itsmworkbench/i18n";
 import { Tooltip, Typography } from "@mui/material";
 import { parseIdentityUrlOrThrow } from "@itsmworkbench/url";
-import { DisplayPhasesForTicketType } from "@itsmworkbench/react_phases/dist/src/display.phases";
+import { DisplayPhasesForTicketType } from "@itsmworkbench/react_phases";
 
 
 //bit hacky... need to clean this up
@@ -23,13 +24,12 @@ export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButt
   const ticketType: TicketType = action.ticketType || {}
   const actionState = state.state1 () as LensState<S, any, any>
 
-
   return <>
     <SelectAndLoadFromUrlStore basicData={{ organisation: 'me', operator: undefined as any }}
                                namespace='ka'
                                Title={<h1>Knowledge Article</h1>}
-                               Text={<Typography variant="body1" gutterBottom>You can change the knowledge article for this ticket by selecting in the right
-                                 column and then selecting 'Success' below</Typography>}
+                               Text={<MultiParagraphText i18nKey={[ 'knowledge.article.workbench.text', 'knowledge.article.workbench.kas' ]}/>}
+                               TextIfNoKas={<MultiParagraphText i18nKey={[ 'knowledge.article.workbench.text', 'knowledge.article.workbench.nokas' ]}/>}
                                Summary={ka => <DisplayPhasesForTicketType ticketType={ka?.item} Action={
                                  ( phase, name, action, status ) => <Tooltip title={JSON.stringify ( action )}>
                                    <Typography

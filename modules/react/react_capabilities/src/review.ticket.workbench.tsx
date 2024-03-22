@@ -9,6 +9,7 @@ import { Ticket } from "@itsmworkbench/tickets";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { YamlEditor } from "@itsmworkbench/react_editors";
 import SendIcon from "@mui/icons-material/Send";
+import { MultiParagraphText } from "@itsmworkbench/i18n";
 
 
 export interface DisplayReviewTicketWorkbenchProps<S> extends LensProps2<S, Ticket, Action, any> {
@@ -37,25 +38,36 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
     data: { attributes: yamlParser ( yaml ) as any }
   })
 
-  return <Container maxWidth="md">
-    <Typography variant="h4" gutterBottom>Review Ticket</Typography>
+  return <> <Typography variant="h4" gutterBottom>Review Ticket</Typography>
     <Box marginBottom={2}>
-      <Typography variant="subtitle1" gutterBottom>Ticket</Typography>
-      <DisplayMarkdown md={ticket.description} maxHeight='500px'/>
-      <Typography variant="subtitle1" gutterBottom>Attributes (this is Yaml)</Typography>
-      <YamlEditor yaml={attributes}
-                  Save={yaml => SuccessButton ( contextFn ( (yaml || '{}').toString () ) )}
-                  Suggest={setYaml =>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      endIcon={<SendIcon/>}
-                      onClick={() => ai ( ticket.description ).then ( res => setYaml ( yamlWriter ( res ).toString () ) )}
-                    >Have AI suggest attributes</Button>}
-      />
-      {FailureButton ( contextFn ( '' ) )}
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <MultiParagraphText i18nKey='review.ticket.workbench.text'/>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Box>
+            <Typography variant="subtitle1" gutterBottom>Ticket</Typography>
+            <DisplayMarkdown md={ticket.description} maxHeight='500px'/>
+          </Box>
+          <Box>
+            <Typography variant="subtitle1" gutterBottom>Attributes (this is Yaml)</Typography>
+            <YamlEditor
+              yaml={attributes}
+              Save={yaml => SuccessButton ( contextFn ( (yaml || '{}').toString () ) )}
+              Suggest={setYaml =>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  endIcon={<SendIcon/>}
+                  onClick={() => ai ( ticket.description ).then ( res => setYaml ( yamlWriter ( res ).toString () ) )}
+                >Have AI suggest attributes</Button>}
+            />
+          </Box>
+          {FailureButton ( contextFn ( '' ) )}
+        </Grid>
+      </Grid>
     </Box>
-  </Container>
+  </>
 }
 
 

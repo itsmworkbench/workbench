@@ -11,7 +11,8 @@
   "links":       [
     "@itsmworkbench/domain",
     "@itsmworkbench/components",
-    "@itsmworkbench/react_editors"
+    "@itsmworkbench/react_editors",
+    "@itsmworkbench/i18n"
   ],
   "guards":      {
     "compile": true,

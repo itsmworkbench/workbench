@@ -1,0 +1,22 @@
+{
+  "knowledge.article.workbench.text":  [
+    "A knowledge article is a set of instructions to the workbench on how to help you with a ticket",
+    "They are normally trivially easy to write: you can make one at the end of resolving a ticket"
+  ],
+  "knowledge.article.workbench.kas":   [
+    "To the right is a list of knowledge articles. If you select one you will be able to see what it looks like underneath",
+    "to actually use it you need to select 'Success' below"
+  ],
+  "knowledge.article.workbench.nokas": [
+    "Currently you have no knowledge articles, so you can't use this feature",
+    "At the end of this tickt try making one and that will make it easier for future tickets"
+  ],
+  "review.ticket.workbench.ka":        [
+    "Since we have selected a knowledge article we need to be sure that the facts we need are in the ticket",
+    "You can ask the AI to load th"
+  ],
+  "review.ticket.workbench.noka":      [
+    "When we review the ticket we are going to extract facts and then check we have enough facts",
+    "These facts are easy for us to cut and paste into emails / SQL and other tools"
+  ]
+}
