@@ -17,6 +17,7 @@
   "dependencies": {
     "@itsmworkbench/apiclienteventstore": "0.0.3",
     "@itsmworkbench/apiclient_ai": "0.0.3",
+    "@itsmworkbench/apiclientmailer": "0.0.3",
     "@itsmworkbench/components": "0.0.3",
     "@itsmworkbench/domain": "0.0.3",
     "@itsmworkbench/events": "0.0.3",

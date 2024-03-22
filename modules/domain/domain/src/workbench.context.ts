@@ -51,6 +51,7 @@ export interface EmailTempData {
   to: string
   subject: string
   email: string
+  response?: string
 }
 export interface ReceiveEmailWorkbenchContext extends WorkBenchContext<ReceiveEmailData> {
   capability: 'ReceiveEmail'

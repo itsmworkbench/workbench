@@ -6,7 +6,7 @@ import { NewTicketWizardData, TicketSourceAnd } from "./new.ticket.wizard.domain
 import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
 import { FocusedTextArea, FocusedTextInput, mustBeIdentifier, useAiVariables } from "@itsmworkbench/components";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
-import { MultiParagraphText } from "@itsmworkbench/i18n/dist/src/multiple.paragraph.text";
+import { MultiParagraphText } from "@itsmworkbench/i18n";
 
 interface EnterTicketDetailsComp<S> extends LensProps<S, NewTicketWizardData, any> {
 

@@ -10,19 +10,19 @@ import { ticketTypeNamespaceDetails } from "@itsmworkbench/tickettype";
 
 
 //Even though this is 'for git' it can be safely used by the 'for api' version
-export function defaultNameSpaceDetails ( yaml: YamlCapability ): NameAnd<NameSpaceDetailsForGit> {
+export function defaultNameSpaceDetails ( yaml: YamlCapability, env: NameAnd<string> ): NameAnd<NameSpaceDetailsForGit> {
   return {
     ks: knowledgeArticleNameSpaceDetails ( yaml ),
     ka: ticketTypeNamespaceDetails ( yaml ),
     sc: softwareCatalogNameSpaceDetails ( yaml ),
     ticket: ticketNamespaceDetails (),
-    operator: operatorNameSpaceDetails ( yaml ),
+    operator: operatorNameSpaceDetails ( yaml, env ),
     ticketevents: ticketEventsNameSpaceDetails ()
   }
 }
-export function defaultOrganisationUrlStoreConfig ( yaml: YamlCapability ): OrganisationUrlStoreConfigForGit {
+export function defaultOrganisationUrlStoreConfig ( yaml: YamlCapability, env: NameAnd<string> ): OrganisationUrlStoreConfigForGit {
   return {
     baseDir: 'organisations',
-    nameSpaceDetails: defaultNameSpaceDetails ( yaml )
+    nameSpaceDetails: defaultNameSpaceDetails ( yaml, env )
   }
 }

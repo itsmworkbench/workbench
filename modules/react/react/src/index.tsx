@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom/client';
 import { lensState } from "@focuson/state";
 
 import { addEventStoreListener, addEventStoreModifier, eventStore, polling, setEventStoreValue, startPolling } from "@itsmworkbench/eventstore";
-import { apiIdStore, apiLoading, ApiLoading, sendEvents, SendEvents, } from "@itsmworkbench/apiclienteventstore";
+import { apiLoading, ApiLoading, } from "@itsmworkbench/apiclienteventstore";
 import { defaultEventProcessor, Event, processEvents } from "@itsmworkbench/events";
 
 import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
-import { defaultNameSpaceDetails, defaultParserStore, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { emailDataL, enrichedEventsO, eventsL, ItsmState, ticketListO, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketVariablesL } from "./state/itsm.state";
+import { defaultNameSpaceDetails, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
+import { emailDataL, enrichedEventsO, eventsL, ItsmState, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketListO, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
@@ -22,7 +22,8 @@ import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
 import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin, displaySqlEventPlugin } from '@itsmworkbench/react_capabilities';
-import { AiEmailContext, AiEmailProvider, AiVariablesProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
+import { AiEmailProvider, AiVariablesProvider, EmailFnProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
+import { sendEmailApiClient } from "@itsmworkbench/apiclientmailer";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -30,11 +31,10 @@ if ( !rootElement ) throw new Error ( 'Failed to find the root element' );
 const root = ReactDOM.createRoot ( rootElement );
 
 const yaml: YamlCapability = jsYaml ()
-const apiDetails: ApiLoading = apiLoading ( "http://localhost:1235/url/" )
-const aiDetails: ApiLoading = apiLoading ( "http://localhost:1235/ai/" )
-const saveDetails: SendEvents = sendEvents ( "http://localhost:1235/file1" )
-const idStoreDetails = apiIdStore ( "http://localhost:1235", defaultParserStore ( yaml ) )
-const urlStoreconfig: UrlStoreApiClientConfig = { apiUrlPrefix: "http://localhost:1235/url", details: defaultNameSpaceDetails ( yaml ) }
+let rootUrl = "http://localhost:1235/";
+const aiDetails: ApiLoading = apiLoading ( rootUrl + "ai/" )
+const nameSpaceDetails = defaultNameSpaceDetails ( yaml, {} );
+const urlStoreconfig: UrlStoreApiClientConfig = { apiUrlPrefix: rootUrl + "url", details: nameSpaceDetails }
 const urlStore = urlStoreFromApi ( urlStoreconfig )
 const aiVariables = apiClientForTicketVariables ( aiDetails )
 const aiEmails = apiClientForEmail ( aiDetails )
@@ -52,19 +52,24 @@ const eventPlugins = [
   displayVariablesEventPlugin<ItsmState> (),
   displayTicketTypeEventPlugin<ItsmState> (),
   displayMessageEventPlugin<ItsmState> () ];
+
+const emailFn = sendEmailApiClient ( rootUrl + "api/email" )
+
 addEventStoreListener ( container, (( oldS, s, setJson ) => {
   return root.render ( <UrlStoreProvider urlStore={urlStore}>
-    <AiEmailProvider aiEmail={aiEmails}>
-      <AiVariablesProvider aiVariables={aiVariables}>
-        <YamlProvider yamlCapability={yaml}>
-          <App
-            state={lensState ( s, setJson, 'Container', {} )}
-            plugins={[]}
-            eventPlugins={eventPlugins}
-          />
-        </YamlProvider>
-      </AiVariablesProvider>
-    </AiEmailProvider>
+    <EmailFnProvider emailFn={emailFn}>
+      <AiEmailProvider aiEmail={aiEmails}>
+        <AiVariablesProvider aiVariables={aiVariables}>
+          <YamlProvider yamlCapability={yaml}>
+            <App
+              state={lensState ( s, setJson, 'Container', {} )}
+              plugins={[]}
+              eventPlugins={eventPlugins}
+            />
+          </YamlProvider>
+        </AiVariablesProvider>
+      </AiEmailProvider>
+    </EmailFnProvider>
   </UrlStoreProvider> );
 }) );
 

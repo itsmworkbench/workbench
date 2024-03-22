@@ -8,7 +8,7 @@ import { TicketType } from "@itsmworkbench/tickettype";
 import { SaveKnowledgeArticleButton } from "./save.ka.sideeffect";
 import { ErrorsAnd, hasErrors } from "@laoban/utils";
 import { SideEffect } from "@itsmworkbench/react_core";
-import { DisplayPhasesForTicketType } from "@itsmworkbench/react_phases/dist/src/display.phases";
+import { DisplayPhasesForTicketType } from "@itsmworkbench/react_phases";
 
 export interface KnowledgeArticleTempData {
   name: string,

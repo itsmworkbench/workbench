@@ -18,6 +18,7 @@
     "@itsmworkbench/defaultdomains",
     "@itsmworkbench/fileloading",
     "@itsmworkbench/koa",
+    "@itsmworkbench/mailer",
     "@itsmworkbench/shell_git",
     "@itsmworkbench/url",
     "@itsmworkbench/urlstorenode",

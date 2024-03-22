@@ -27,6 +27,7 @@
     "@itsmworkbench/defaultdomains": "0.0.3",
     "@itsmworkbench/fileloading": "0.0.3",
     "@itsmworkbench/koa": "0.0.3",
+    "@itsmworkbench/mailer": "0.0.3",
     "@itsmworkbench/shell_git": "0.0.3",
     "@itsmworkbench/url": "0.0.3",
     "@itsmworkbench/urlstorenode": "0.0.3",

@@ -1,4 +1,4 @@
-import { CommandFn, HasCurrentDirectory } from "@itsmworkbench/cli";
+import { CommandFn, HasCurrentDirectory, HasEnv } from "@itsmworkbench/cli";
 import { startKoa } from "@itsmworkbench/koa";
 import { wizardOfOzApiHandlers } from "./api";
 import { loadFromIdStore } from "@itsmworkbench/idstore";
@@ -7,12 +7,13 @@ import { findListIds } from "@itsmworkbench/listids";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { nodeUrlstore } from "@itsmworkbench/urlstorenode";
 import { shellGitsops } from "@itsmworkbench/shell_git";
-import { chatgptKnownTicketVariables, chatgptTicketVariables, generalChat } from "@itsmworkbench/ai_chatgptticketvariables";
+import { chatgptKnownTicketVariables, chatgptTicketVariables, generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
 import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
-import { generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
+import { sendEmailFnFromUrlStore } from "@itsmworkbench/nodemailer";
+import { EmailFn } from "@itsmworkbench/mailer";
 
 
-export function apiCommand<Commander, Context extends HasCurrentDirectory, Config> ( yaml: YamlCapability ): CommandFn<Commander, Context, Config> {
+export function apiCommand<Commander, Context extends HasCurrentDirectory & HasEnv, Config> ( yaml: YamlCapability ): CommandFn<Commander, Context, Config> {
   return ( context, config ) => ({
     cmd: 'api ',
     description: 'Runs the api that supports the Wizard Of Oz',
@@ -28,14 +29,16 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory, Confi
       const aiVariables = chatgptTicketVariables
       const aiKnownVariables = chatgptKnownTicketVariables
       const aiEmails: AIEmailsFn = generalEmail
+
       const idStore = loadFromIdStore ( details )
       const allIds = findListIds ( details )
-      const orgs = defaultOrganisationUrlStoreConfig ( yaml )
+      console.log('lby', context.env['LBY'])
+      const orgs = defaultOrganisationUrlStoreConfig ( yaml, context.env )
       const gitOps = shellGitsops ( false )
       const urlStore = nodeUrlstore ( gitOps, orgs )
-
+      const emailFn: EmailFn = await sendEmailFnFromUrlStore ( urlStore, "me", "me" )
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,
-        wizardOfOzApiHandlers ( idStore, allIds, aiVariables, aiKnownVariables,aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore ) )
+        wizardOfOzApiHandlers ( idStore, allIds, aiVariables, aiKnownVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore, emailFn ) )
     }
   })
 

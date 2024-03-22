@@ -1,2 +1,7 @@
-name: phil 2
-email: phil.rice2@example.com
+name: phil
+email: liubaoyu2014@gmail.com
+smtp:
+  service: gmail
+  auth:
+    user: liubaoyu2014@gmail.com
+    pass: ${env.LBY}

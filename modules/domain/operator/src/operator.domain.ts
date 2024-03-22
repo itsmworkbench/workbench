@@ -4,6 +4,7 @@ import { Variables } from "@itsmworkbench/variables";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
 import { camelCaseAndIdYamlParser, DomainPlugin } from "@itsmworkbench/domain";
+import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
 
 
 export interface Operator {
@@ -25,9 +26,12 @@ export function operatorPlugin ( yaml: YamlCapability, rootPath: string ): Domai
     idStoreDetails: { extension: 'yaml', rootPath, mimeType: 'text/yaml; charset=UTF-8' }
   }
 }
-export function operatorNameSpaceDetails ( yaml: YamlCapability ) {
+export function operatorNameSpaceDetails ( yaml: YamlCapability, env: NameAnd<string> ) {
   return nameSpaceDetailsForGit ( 'operator', {
-    parser: camelCaseAndIdYamlParser ( yaml ),
+    parser: ( id, s ) => {
+      const transformed = derefence ( `emailConfig`, {env}, s, { variableDefn: dollarsBracesVarDefn, emptyTemplateReturnsSelf: true } )
+      return camelCaseAndIdYamlParser ( yaml ) ( id, transformed )
+    },
     writer: yaml.writer,
   } );
 }

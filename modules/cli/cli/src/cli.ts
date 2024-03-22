@@ -35,9 +35,12 @@ export interface HasNameAndVersion {
 }
 export interface HasCurrentDirectory {
   currentDirectory: string
+}
+export interface HasEnv {
+  env: NameAnd<string>
 
 }
-export interface CliContext extends HasNameAndVersion, HasCurrentDirectory {
+export interface CliContext extends HasNameAndVersion, HasCurrentDirectory, HasEnv {
   env: NameAnd<string>
   args: string[]
   fileOps: FileOps

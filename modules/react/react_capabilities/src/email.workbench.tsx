@@ -2,10 +2,10 @@ import { LensProps, LensProps3, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
-import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, useAiEmail, useVariables } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, useAiEmail, useEmailFn, useVariables } from "@itsmworkbench/components";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { EmailWorkBenchContext } from "@itsmworkbench/domain";
+import { EmailTempData, EmailWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { Ticket } from "@itsmworkbench/tickets";
 
@@ -28,7 +28,7 @@ export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicke
     } ).then ( res => {
       console.log ( 'SuggestEmailForTicketButton - stat', state.state2 () )
       console.log ( 'SuggestEmailForTicketButton - result', res )
-      actionState.doubleUp().focus1On('subject').focus2On ( 'email' ).setJson (
+      actionState.doubleUp ().focus1On ( 'subject' ).focus2On ( 'email' ).setJson (
         res.subject || '',
         res.email || JSON.stringify ( res.error, null, 2 ), '' )
       // state.state3 ().focusOn ( 'description' ).setJson ( res.email || JSON.stringify ( res.error, null, 2 ), '' )
@@ -45,11 +45,28 @@ export interface DisplayEmailWorkbenchProps<S> extends LensProps<S, Action, any>
   FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
+
+function SendEmailButton<S> ( { state }: LensProps<S, EmailTempData, any> ) {
+  const emailFn = useEmailFn ()
+  function onClick () {
+    const email = state.optJson ()
+    if ( email )
+      emailFn ( {
+        to: email.to,
+        subject: email.subject,
+        text: email.email
+      } ).then ( response => {
+        state.focusOn ( 'response' ).setJson ( JSON.stringify ( response, null, 2 ), '' )
+      } )
+  }
+  return <Button variant="contained" color="primary" onClick={onClick} endIcon={<TestIcon/>}>Send Email </Button>;
+}
 export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton, FailureButton }: DisplayEmailWorkbenchProps<S> ) {
   const action: any = state.optJson ()
   const to = action.to || ''
   const subject = action.subject || ''
   const email = action.email || ''
+  const response = action.response
   const variables = useVariables ()
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): EmailWorkBenchContext => ({
@@ -60,7 +77,7 @@ export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton
       type: 'Email',
       successOrFail
     },
-    data: { to, subject, email }
+    data: { to, subject, email, response }
   })
 
   const actionState: LensState<S, any, any> = state;
@@ -76,10 +93,11 @@ export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton
       {SuggestButton}
       <FocusedTextArea fullWidth variant="outlined" multiline rows={12} state={actionState.focusOn ( 'email' )}/>
       <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1}>
-        <Button variant="contained" color="primary" endIcon={<TestIcon/>}>Send Email </Button>
+        <SendEmailButton state={actionState}/>
         <Button variant="contained" color="primary" endIcon={<TestIcon/>}> Test Connection </Button>
         <Button variant="contained" color="primary" endIcon={<RefreshIcon/>}> Reset</Button>
       </Box>
+      {action.response && <pre>{action.response}</pre>}
       {SuccessButton ( contextFn )}
       {FailureButton ( contextFn )}
     </Box>

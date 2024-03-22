@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import { Box, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
-import { MultiParagraphText } from "@itsmworkbench/i18n/dist/src/multiple.paragraph.text";
+import { MultiParagraphText } from "@itsmworkbench/i18n";
 
 export interface NewSelectKaProps<S> extends LensProps<S, NewTicketWizardData, any> {
 

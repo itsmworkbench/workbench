@@ -1,13 +1,11 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/operator",
-  "description": "Information about the operator",
+  "name":        "@itsmworkbench/apiclientmailer",
+  "description": "interacting with email: apiclient",
   "packageJson": {
     "dependencies":    {
       "@laoban/utils":     "1.4.45",
-      "@laoban/variables": "1.4.45",
-      "@focuson/lens":     "1.44.3",
-      "@focuson/state":    "1.44.3"
+      "@laoban/variables": "1.4.45"
     },
     "devDependencies": {},
     "browser":         {
@@ -15,7 +13,8 @@
     }
   },
   "links":       [
-    "@itsmworkbench/domain"
+    "@itsmworkbench/utils",
+    "@itsmworkbench/mailer"
   ],
   "guards":      {
     "compile": true,
