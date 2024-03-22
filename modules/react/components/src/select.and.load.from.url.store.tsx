@@ -6,7 +6,7 @@ import { ListNamesResult } from "@itsmworkbench/url";
 import { ErrorsAnd, hasErrors } from '@laoban/utils';
 import { Grid, List, ListItem, ListItemText, Pagination, TextField } from "@mui/material";
 import { useSideEffects } from "./hooks/useSideEffects";
-import { IdAnd } from "@itsmworkbench/utils";
+import { IdAnd, IdAndName, IdNameAnd } from "@itsmworkbench/utils";
 
 export interface SelectAndLoadUrlProps<S, T> extends LensProps<S, IdAnd<T>, any> {
   basicData: BasicData
@@ -16,8 +16,8 @@ export interface SelectAndLoadUrlProps<S, T> extends LensProps<S, IdAnd<T>, any>
   Title: React.ReactNode
   Text: React.ReactNode
   TextIfNoKas: React.ReactNode
-  Summary: ( idAndItem: IdAnd<T> | undefined ) => React.ReactNode
-  Save: ( idAndItem: IdAnd<T> | undefined ) => React.ReactNode
+  Summary: ( idAndItem: IdNameAnd<T> | undefined ) => React.ReactNode
+  Save: ( idAndItem: IdNameAnd<T> | undefined ) => React.ReactNode
 }
 
 export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace, pageSize, Title, Text, TextIfNoKas, Summary, Save }: SelectAndLoadUrlProps<S, T> ) {
@@ -25,7 +25,7 @@ export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace,
   const urlStore = useUrlStore ();
   const [ filter, setFilter ] = useState ( '' );
   const [ page, setPage ] = useState ( 1 );
-  const [ summary, setSummary ] = useState<IdAnd<T> | undefined> ( undefined );
+  const [ summary, setSummary ] = useState<IdNameAnd<T> | undefined> ( undefined );
   const [ kas, setKas ] = useState<ErrorsAnd<ListNamesResult> | undefined> ( undefined );
   const addSe = useSideEffects ( state )
   useEffect ( () => {urlStore.list ( { filter, order: 'name', org: basicData.organisation, namespace, pageQuery: { page, pageSize } } ).then ( setKas )},
@@ -39,7 +39,9 @@ export function SelectAndLoadFromUrlStore<S, T> ( { state, basicData, namespace,
         console.error ( res )
       else {
         // state.setJson({ id: res.id, item: res.result }, '')
-        setSummary ( { id: res.id, item: res.result } )
+        console.log('setSummaryLoad', res.id, res.result, item)
+        console.log('setSummaryLoad - item', item)
+        setSummary ( { id: res.id, item: res.result, name: item } )
         // console.log ( 'setSummaryLoad', state, res.result )
         // const se: EventSideEffect = { command: 'event', event: { event: 'setId', id: res.id, path: targetPath, context: { data: res.result } } }
         // addSe ( se )

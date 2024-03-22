@@ -1,11 +1,12 @@
-import { DisplayMarkdown, useTicketTypeVariables, useVariables, useYaml } from "@itsmworkbench/components";
+import { DisplayMarkdown, useTicketType, useTicketTypeVariables, useVariables, useYaml } from "@itsmworkbench/components";
 import React from "react";
 import { ItsmState } from "../state/itsm.state";
 import { LensProps } from "@focuson/state";
 import { deepCombineTwoObjects } from "@laoban/utils";
 import CopyClipboardButton from "@itsmworkbench/components/dist/src/buttons/copy.clipboard.button";
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material"; // Import the error icon
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { writeUrl } from "@itsmworkbench/url"; // Import the error icon
 
 export interface DisplayNameProps {
   name: string
@@ -75,15 +76,26 @@ export function DisplayInfoVariables<S> ( { state }: LensProps<S, ItsmState, any
     </TableContainer>
   );
 }
+export function DisplayKnowledgeArticleDetails () {
+  const tt = useTicketType ()
+  if ( tt?.id === undefined ) return <></>
+  return <div>
+    <Typography component="h2" variant="h6">
+      Knowledge Article [
+      <Tooltip title={`Knowledge model id is ${tt?.id}`}>
+        <span>{tt?.name}</span>
+      </Tooltip>] needs the following
+    </Typography>
+  </div>
+}
 
 export function DisplayInfoPanel<S> ( { state }: LensProps<S, ItsmState, any> ) {
-  const variables: any = useVariables ()
-  const yamlCapability = useYaml ()
   const ticket = state.optJson ()?.forTicket?.ticket;
   console.log ( 'DisplayInfoPanel - ticket', ticket )
   const description = ticket?.description || state.optJson ()?.forTicket?.tempData?.newTicket?.ticketDetails
   return <div>
     <DisplayMarkdown md={description}/>
+    <DisplayKnowledgeArticleDetails/>
     <DisplayInfoVariables state={state}/>
   </div>
 }

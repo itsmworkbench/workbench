@@ -2,6 +2,7 @@ export type IdAnd<T> = {
   id: string
   item: T
 }
+export type IdNameAnd<T> = IdAnd<T> & { name: string }
 
 export type IdAndName = {
   id: string

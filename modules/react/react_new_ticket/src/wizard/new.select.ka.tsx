@@ -28,7 +28,7 @@ export function NewSelectKa<S> ( { state }: NewSelectKaProps<S> ) {
     <SelectAndLoadFromUrlStore basicData={{ organisation: 'me', operator: undefined as any }}
                                namespace='ka'
                                Title={<h1>Knowledge Article</h1>}
-                               Text={<MultiParagraphText i18nKey={[ "knowledge.article.description", "knowledge.article.kas" ,"knowledge.article.newticket.select"]}/>}
+                               Text={<MultiParagraphText i18nKey={[ "knowledge.article.description", "knowledge.article.kas", "knowledge.article.newticket.select" ]}/>}
                                TextIfNoKas={<MultiParagraphText i18nKey={[ "knowledge.article.description", "knowledge.article.nokas" ]}/>}
                                Summary={( ka: IdAnd<TicketType> | undefined ) =>
                                  <DisplayPhasesForTicketType ticketType={ka?.item} pStatus={{} as Status} Action={
@@ -56,7 +56,7 @@ export function NewSelectKa<S> ( { state }: NewSelectKaProps<S> ) {
                                    command: 'addNewTicket',
                                    organisation: 'me',
                                    ...data,
-                                   ticketType: ka?.item,
+                                   ticketType: { ...(ka?.item) || {}, id: ka?.id, name: ka?.name },
                                    aiAddedVariables: {}
                                  };
                                  return (

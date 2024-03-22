@@ -57,7 +57,7 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
             issuer: se.issuer
           }
         } ), async ticket => {
-          console.log ( 'addNewTicketSideeffectProcessor - ticket ', ticketUrl, ticket )
+            console.log ( 'addNewTicketSideeffectProcessor - ticket ', ticketUrl, ticket )
 
           const initialTicketEvent: SetIdEvent = {
             event: 'setId', id: ticket.id, path: ticketPath, context: {

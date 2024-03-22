@@ -59,7 +59,7 @@ export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButt
                                    },
                                    data: {
                                      id: parseIdentityUrlOrThrow ( idAndTicketType?.id || '' ),
-                                     ticketType: idAndTicketType?.item || {}
+                                     ticketType: {id: idAndTicketType?.id, name: idAndTicketType.name, ...(idAndTicketType?.item || {})},
                                    }
                                  })
                                  return SuccessButton ( contextFn )

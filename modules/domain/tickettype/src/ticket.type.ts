@@ -1,11 +1,13 @@
 import { Capability, PhaseAnd } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { NameAnd } from "@laoban/utils";
-import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
+import { IdentityUrl, nameSpaceDetailsForGit } from "@itsmworkbench/url";
 import { Ticket } from "@itsmworkbench/tickets";
 import { YamlCapability } from "@itsmworkbench/yaml";
 
 export interface TicketType {
+  name?: string
+  id?: IdentityUrl
   variables?: string[]
   capabilities: Capability[]
   actions: PhaseAnd<NameAnd<Action>>
@@ -102,7 +104,7 @@ export const simpleTicketType: TicketType = ({
   }
 })
 export const usingTicketTypeTT: TicketType = {
-  capabilities: [  ],
+  capabilities: [],
   actions: {
     CheckTicket: {},
     Approval: {},
@@ -117,7 +119,7 @@ export const usingTicketTypeTT: TicketType = {
   }
 }
 export const usingKATT: TicketType = {
-  capabilities: [  ],
+  capabilities: [],
   actions: {
     CheckTicket: {},
     Approval: {},
