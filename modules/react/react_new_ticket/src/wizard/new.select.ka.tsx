@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import { Box, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
+import { MultiParagraphText } from "@itsmworkbench/i18n/dist/src/multiple.paragraph.text";
 
 export interface NewSelectKaProps<S> extends LensProps<S, NewTicketWizardData, any> {
 
@@ -27,10 +28,8 @@ export function NewSelectKa<S> ( { state }: NewSelectKaProps<S> ) {
     <SelectAndLoadFromUrlStore basicData={{ organisation: 'me', operator: undefined as any }}
                                namespace='ka'
                                Title={<h1>Knowledge Article</h1>}
-                               Text={<Typography variant="body1" gutterBottom>
-                                 Select a knowledge article to associate with this ticket. If there is no existing knowledge article for this ticket,
-                                 select 'No Existing Knowledge Article'
-                               </Typography>}
+                               Text={<MultiParagraphText i18nKey={[ "knowledge.article.description", "knowledge.article.kas" ,"knowledge.article.newticket.select"]}/>}
+                               TextIfNoKas={<MultiParagraphText i18nKey={[ "knowledge.article.description", "knowledge.article.nokas" ]}/>}
                                Summary={( ka: IdAnd<TicketType> | undefined ) =>
                                  <DisplayPhasesForTicketType ticketType={ka?.item} pStatus={{} as Status} Action={
                                    ( phase, name, action, status ) => <Tooltip title={JSON.stringify ( action )}>

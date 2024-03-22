@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
-import { toArray } from "@laoban/utils";
+import { flatMap, toArray } from "@laoban/utils";
 
 interface MultiParagraphTextProps {
   i18nKey: string | string[]; // Comma-separated keys
@@ -12,15 +12,8 @@ export const MultiParagraphText: React.FC<MultiParagraphTextProps> = ( { i18nKey
   // Split the i18nKey string by commas to handle multiple keys
   const keys = toArray ( i18nKey );
   // Reduce the keys to a single array containing all paragraphs
-  const paragraphs = keys.reduce ( ( acc: string[], key ) => {
-    const translation: string | string[] = t ( key, { returnObjects: true } );
-    if ( Array.isArray ( translation ) ) {
-      acc.push ( ...translation );
-    } else {
-      acc.push ( translation );
-    }
-    return acc;
-  }, [] );
+  const paragraphs = flatMap ( keys, key =>
+    toArray ( t ( key, { returnObjects: true } ) as string | string[] ) );
 
   return (
     <>

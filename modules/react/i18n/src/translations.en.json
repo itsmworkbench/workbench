@@ -1,22 +1,31 @@
 {
-  "knowledge.article.workbench.text":  [
+  "knowledge.article.description":      [
     "A knowledge article is a set of instructions to the workbench on how to help you with a ticket",
     "They are normally trivially easy to write: you can make one at the end of resolving a ticket"
   ],
-  "knowledge.article.workbench.kas":   [
-    "To the right is a list of knowledge articles. If you select one you will be able to see what it looks like underneath",
-    "to actually use it you need to select 'Success' below"
+  "knowledge.article.kas":              [
+    "To the right is a list of knowledge articles. If you select one you will be able to see what it looks like underneath"
   ],
-  "knowledge.article.workbench.nokas": [
+  "knowledge.article.workbench.select": [
+    "To actually use it you need to select 'Success' below"
+  ],
+  "knowledge.article.newticket.select": [
+    "to actually use it you need to select 'Create Or Replace Ticket' below",
+    "If none of them look suitable then you can select 'No Existing Knowledge Article' below"
+  ],
+  "knowledge.article.nokas":            [
     "Currently you have no knowledge articles, so you can't use this feature",
     "At the end of this ticket try making one and that will make it easier for future tickets"
   ],
-  "review.ticket.workbench.ka":        [
-    "Since we have selected a knowledge article we need to be sure that the facts we need are in the ticket",
-    "You can ask the AI to load th"
+  "new.ticket.details.description":     [
+    "Can you fill in the details of the ticket you are working on?",
+    "Normally this will be cut and paste from something like ServiceNow or Jira.",
+    "The Ticket Name is the ServiceNow or Jira ticket. The Issuer is the email of the person who raised the ticket"
   ],
-  "review.ticket.workbench.noka":      [
-    "When we review the ticket we are going to extract facts and then check we have enough facts",
-    "These facts are easy for us to cut and paste into emails / SQL and other tools"
+  "review.ticket.workbench.text":       [
+    "Since we have selected a knowledge article we need to be sure that the facts we need are in the ticket",
+    "You can ask the AI to analyse the ticket to see if it has the facts we need",
+    "You can also add them manually if you need to",
+    "If the ticket doesn't have all the facts needed, that's normal. We can 'Request More Data' as a different activity"
   ]
 }

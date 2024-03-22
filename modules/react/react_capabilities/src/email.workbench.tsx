@@ -72,7 +72,6 @@ export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton
       <FocusedTextInput fullWidth variant="outlined" state={actionState.focusOn ( 'to' )}/>
       <Typography variant="subtitle1" gutterBottom>Subject</Typography>
       <FocusedTextInput fullWidth variant="outlined" state={actionState.focusOn ( 'subject' )}/>
-
       <Typography variant="subtitle1" gutterBottom>Email</Typography>
       {SuggestButton}
       <FocusedTextArea fullWidth variant="outlined" multiline rows={12} state={actionState.focusOn ( 'email' )}/>

@@ -1,15 +1,12 @@
 import React from "react";
 import { LensProps } from "@focuson/state";
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { NewTicketWizardData, TicketSourceAnd } from "./new.ticket.wizard.domain";
 import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
-import { FocusedTextArea, FocusedTextInput, mustBeIdentifier, useAiVariables, useSideEffects } from "@itsmworkbench/components";
-import Button from "@mui/material/Button";
-import SendIcon from "@mui/icons-material/Send";
-import { DisplayJson } from "@itsmworkbench/components";
-import { useVariables } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, mustBeIdentifier, useAiVariables } from "@itsmworkbench/components";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
+import { MultiParagraphText } from "@itsmworkbench/i18n/dist/src/multiple.paragraph.text";
 
 interface EnterTicketDetailsComp<S> extends LensProps<S, NewTicketWizardData, any> {
 
@@ -41,34 +38,40 @@ export function ManuallyTicketDetailsEntry<S> ( { state }: EnterTicketDetailsCom
   const canNext = data.ticketName && data.ticketName.length > 0 && data.ticketDetails && data.ticketDetails.length > 0
   // console.log ( 'canNext', canNext )
   return (
-    <Box sx={{ '& > *': { mb: 2 } }}> {/* This applies margin-bottom to all immediate children */}
-      <Typography variant="h6">New Ticket</Typography>
+    <Grid container spacing={2}>
+      <Grid item xs={4}>
+        <MultiParagraphText i18nKey={[ "new.ticket.details.description" ]}/>
+      </Grid>
+      <Grid item xs={8}>
 
-      <FocusedTextInput
-        variant="outlined"
-        fullWidth
-        label="Ticket Name"
-        errorFn={mustBeIdentifier ( 'Can only contain letters, numbers, and underscores' )}
-        state={state.focusOn ( 'ticketName' )}
-      />
-      <FocusedTextInput
-        variant="outlined"
-        fullWidth
-        label="Issuer"
-        errorFn={mustBeIdentifier ( 'Can only contain letters, numbers, and underscores' )}
-        state={state.focusOn ( 'issuer' )}
-      />
-      <FocusedTextArea
-        variant="outlined"
-        fullWidth
-        label="Ticket Contents"
-        multiline
-        rows={12}
-        state={state.focusOn ( 'ticketDetails' )}
-      />
-      <PreviousNewWizardStepButton state={state.focusOn ( 'currentStep' )}/>
-      <NextNewWizardStepButton enabled={canNext === true} state={state.focusOn ( 'currentStep' )}/>
-    </Box>
+        <Box sx={{ '& > *': { mb: 2 } }}> {/* This applies margin-bottom to all immediate children */}
+          <Typography variant="h6">New Ticket</Typography>
+
+          <FocusedTextInput
+            variant="outlined"
+            fullWidth
+            label="Ticket Name"
+            errorFn={mustBeIdentifier ( 'Can only contain letters, numbers, and underscores' )}
+            state={state.focusOn ( 'ticketName' )}
+          />
+          <FocusedTextInput
+            variant="outlined"
+            fullWidth
+            label="Issuer"
+            errorFn={mustBeIdentifier ( 'Can only contain letters, numbers, and underscores' )}
+            state={state.focusOn ( 'issuer' )}
+          />
+          <FocusedTextArea
+            variant="outlined"
+            fullWidth
+            label="Ticket Contents"
+            multiline
+            rows={12}
+            state={state.focusOn ( 'ticketDetails' )}
+          />
+          <PreviousNewWizardStepButton state={state.focusOn ( 'currentStep' )}/>
+          <NextNewWizardStepButton enabled={canNext === true} state={state.focusOn ( 'currentStep' )}/>
+        </Box></Grid></Grid>
   );
 }
 

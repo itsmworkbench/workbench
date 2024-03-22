@@ -1,7 +1,7 @@
 import { LensProps2, LensProps3, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import { DisplayMarkdown, DisplayYaml, FocusedTextArea, SelectAndLoadFromUrlStore, SuccessFailContextFn, useAiVariables, useYaml } from "@itsmworkbench/components";
+import { DisplayMarkdown, DisplayYaml, FocusedTextArea, SelectAndLoadFromUrlStore, SuccessFailContextFn, useAiVariables, useTicketType, useYaml } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { ReviewTicketWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
@@ -10,6 +10,7 @@ import { TicketType } from "@itsmworkbench/tickettype";
 import { YamlEditor } from "@itsmworkbench/react_editors";
 import SendIcon from "@mui/icons-material/Send";
 import { MultiParagraphText } from "@itsmworkbench/i18n";
+import CopyToClipboardButton from "@itsmworkbench/components/dist/src/buttons/copy.clipboard.button";
 
 
 export interface DisplayReviewTicketWorkbenchProps<S> extends LensProps2<S, Ticket, Action, any> {
@@ -26,6 +27,8 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
   const yamlParser = yamlCapability.parser
   const yamlWriter = yamlCapability.writer
   const ai = useAiVariables ()
+  const ticktType = useTicketType ()
+  const ttVariables = ticktType?.variables || []
 
   const contextFn = ( yaml: string ): SuccessFailContextFn => ( tab, phase, action, successOrFail ): ReviewTicketWorkBenchContext => ({
     where: { phase, action, tab },
@@ -41,10 +44,12 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
   return <> <Typography variant="h4" gutterBottom>Review Ticket</Typography>
     <Box marginBottom={2}>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <MultiParagraphText i18nKey='review.ticket.workbench.text'/>
+          {ttVariables.length > 0 && <Typography variant="subtitle1" gutterBottom>The knowledge article you have selected needs these</Typography>}
+          <ul>{ttVariables.map ( v => <li key={v}>{v}<CopyToClipboardButton textToCopy={v}/></li> )}</ul>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={8}>
           <Box>
             <Typography variant="subtitle1" gutterBottom>Ticket</Typography>
             <DisplayMarkdown md={ticket.description} maxHeight='500px'/>

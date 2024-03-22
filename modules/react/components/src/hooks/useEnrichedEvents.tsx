@@ -29,6 +29,9 @@ export function useTicketType (): TicketType {
   let result = lastTicketType ( enriched );
   return result
 }
+export function useTicketTypeVariables (): string[] {
+  return useTicketType ()?.variables || []
+}
 
 
 export function useActionInEventsFor ( phase: string, action: string ) {

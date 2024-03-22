@@ -28,8 +28,8 @@ export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButt
     <SelectAndLoadFromUrlStore basicData={{ organisation: 'me', operator: undefined as any }}
                                namespace='ka'
                                Title={<h1>Knowledge Article</h1>}
-                               Text={<MultiParagraphText i18nKey={[ 'knowledge.article.workbench.text', 'knowledge.article.workbench.kas' ]}/>}
-                               TextIfNoKas={<MultiParagraphText i18nKey={[ 'knowledge.article.workbench.text', 'knowledge.article.workbench.nokas' ]}/>}
+                               Text={<MultiParagraphText i18nKey={[ "knowledge.article.description", "knowledge.article.kas" ]}/>}
+                               TextIfNoKas={<MultiParagraphText i18nKey={[ "knowledge.article.description", "knowledge.article.nokas" ]}/>}
                                Summary={ka => <DisplayPhasesForTicketType ticketType={ka?.item} Action={
                                  ( phase, name, action, status ) => <Tooltip title={JSON.stringify ( action )}>
                                    <Typography
