@@ -22,10 +22,14 @@
     "Normally this will be cut and paste from something like ServiceNow or Jira.",
     "The Ticket Name is the ServiceNow or Jira ticket. The Issuer is the email of the person who raised the ticket"
   ],
-  "review.ticket.workbench.text":       [
+  "review.ticket.workbench.haska.text": [
     "Since we have selected a knowledge article we need to be sure that the facts we need are in the ticket",
     "You can ask the AI to analyse the ticket to see if it has the facts we need",
     "You can also add them manually if you need to",
     "If the ticket doesn't have all the facts needed, that's normal. We can 'Request More Data' as a different activity"
+  ],
+  "review.ticket.workbench.noka.text":  [
+    "There is no knowledge article selected so just make sure that the 'important details' are listed",
+    "You can ask the AI to analyse the ticket and that will come up with a list. If you think it's missing any then just add them"
   ]
 }

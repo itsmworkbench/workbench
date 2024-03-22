@@ -1,0 +1,21 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/react_displayinfo",
+  "description": "The react gui about displaying summary info ",
+  "packageJson": {
+    "files":        ["build/"],
+    "dependencies": {
+    }
+  },
+  "links":       [
+    "@itsmworkbench/components",
+    "@itsmworkbench/tickettype",
+    "@itsmworkbench/react_newticket"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false,
+    "react":   false
+  }
+}

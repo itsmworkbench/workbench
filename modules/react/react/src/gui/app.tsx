@@ -15,7 +15,7 @@ import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/url";
 import { Welcome } from "./welcome";
-import { DisplayInfoPanel } from "./display.info.panel";
+import { DisplayInfoPanel } from "@itsmworkbench/react_displayinfo";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
@@ -63,7 +63,8 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
                          layout={{ leftDrawerWidth: '240px', height: '100vh' }}
                          state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
                          Nav={<GuiNav state={state}/>}
-                         Details={<DisplayInfoPanel state={state}/>}>
+                         Details={<DisplayInfoPanel state={state.doubleUp().focus1On('forTicket').focus1On('ticket').//
+                         focus2On('forTicket').focus2On('tempData').focus2On('newTicket')}/>}>
             <Toolbar/>
             {showPhases && <DisplayPhases Action={( phase, name, action, status ) =>
               <ActionButton state={state.doubleUp ().//

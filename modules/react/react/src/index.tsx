@@ -9,7 +9,7 @@ import { defaultEventProcessor, Event, processEvents } from "@itsmworkbench/even
 import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, defaultParserStore, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { emailDataL, enrichedEventsO, eventsL, ItsmState, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketVariablesL } from "./state/itsm.state";
+import { emailDataL, enrichedEventsO, eventsL, ItsmState, ticketListO, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
@@ -71,7 +71,16 @@ addEventStoreListener ( container, (( oldS, s, setJson ) => {
 const enricher = defaultEventEnricher ( urlStore )
 
 const pollingDetails = polling<Event[]> ( 1000, () => container.state.selectionState.ticketId,
-  async ( poll, offset ) => await urlStore.loadNamed ( poll, offset ),
+  async ( poll, offset ) => {
+    if ( container.state.ticketList === undefined ) {
+      const ticketList = await urlStore.list ( { org: "me", namespace: "ticketevents", pageQuery: { page: 1, pageSize: 10 }, order: "date" } )
+      if ( !hasErrors ( ticketList ) ) {
+        const thisJson = container.state
+        setJson ( { ...thisJson, ticketList } )
+      }
+    }
+    return await urlStore.loadNamed ( poll, offset );
+  },
   async ( events: Event[] ) => {
     if ( events.length === 0 ) return
     console.log ( 'polling', typeof events, events )
@@ -83,6 +92,7 @@ const pollingDetails = polling<Event[]> ( 1000, () => container.state.selectionS
       const withEvents = eventsL.map ( state, old => [ ...(old || []), ...events ] )
       const newState = enrichedEventsO.map ( withEvents, old => [ ...(old || []), ...enrichedEvents ] )
       setJson ( newState )
+
     }
   }, 0, true
 )
@@ -96,9 +106,9 @@ addEventStoreModifier ( container,
       addAiEmailSideEffectProcessor ( aiEmails, emailDataL ),
       addSaveKnowledgeArticleSideEffect ( urlStore.save, 'me' ),
       // addLoadKaSideEffect ( urlStore.loadNamed, newTicketL.focusOn ( 'ticketDetails' ) ),
-      addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, 'forTicket.ticket', 'forTicket.variables', 'forTicket.tempData.ticketType' )
+      addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, ticketListO, 'forTicket.ticket', 'forTicket.tempData.ticketType' )
     ] ),
-    sideEffectsL, logsL ) )
+    sideEffectsL, logsL, true ) )
 
 
 loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataResult ) => {

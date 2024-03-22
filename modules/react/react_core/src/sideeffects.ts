@@ -98,7 +98,7 @@ export function processSideEffectsInState<S> ( sep: ISideEffectProcessor<S, Side
     const newLog = [ ...existingLog, ...results ]
     if ( debug ) console.log ( 'processSideEffectsInState', 'newLog', newLog )
     let withLog = seLens.set ( logL.set ( state, newLog ), [] );
-    console.log ( 'processSideEffectsInState', 'txs', txs )
+    if ( debug )  console.log ( 'processSideEffectsInState', 'txs', txs )
     const final = massTransform ( withLog, ...txs )
     if ( debug ) console.log ( 'processSideEffectsInState', 'final', final )
     return final

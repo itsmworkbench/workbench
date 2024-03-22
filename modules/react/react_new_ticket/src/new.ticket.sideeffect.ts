@@ -1,6 +1,6 @@
 import { ISideEffectProcessor, SideEffect, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
-import { NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
+import { ListNamesResult, NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
 import { Optional, Transform } from "@focuson/lens";
 import { Event, SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
@@ -30,8 +30,8 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
                                                      eventL: Optional<S, Event[]>,
                                                      ticketIdL: Optional<S, string>,
                                                      newTicketL: Optional<S, NewTicketWizardData>,
+                                                     tickListO: Optional<S, ListNamesResult>,
                                                      ticketPath: string,
-                                                     variablesPath: string,
                                                      ticketTypePath: string ): ISideEffectProcessor<S, AddNewTicketSideEffect, TicketAndTicketEvents> {
   return ({
     accept: ( s: SideEffect ): s is AddNewTicketSideEffect => s.command === 'addNewTicket',
@@ -87,6 +87,7 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
         [ setPage, _ => ({ workspaceTab: 'chat' }) ],
         [ eventL, _ => [] ], //clear all the events. The next line will trigger a reload via polling
         [ ticketIdL, _ => writeUrl ( ticketeventsUrl ) ],
+        [ tickListO, _ => undefined ],
         [ newTicketL, _ => ({ organisation: se.organisation, ticketType: defaultTicketTypeDetails, name: '', ticket: '' }) ]
       ]
       return hasErrors ( res ) ? { result: res } : {

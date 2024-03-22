@@ -9,12 +9,13 @@ export interface YamlEditorProps {
   yaml: any
   Suggest: ( setYaml: ( yaml: string ) => void ) => React.ReactNode
   Save: ( yaml: string | string[] | undefined ) => React.ReactNode | undefined
+  onChange: ( yaml: string ) => void
   height?: string
 }
 
-export function YamlEditor<S> ( { yaml, Save, height, Suggest }: YamlEditorProps ) {
+export function YamlEditor<S> ( { yaml, Save, height, Suggest, onChange }: YamlEditorProps ) {
   const yamlCapability = useYaml ()
-  const [ yamlContent, setYamlContent ] = useState <string|undefined>( yamlWriterToStringWithErrorsEmbedded ( yamlCapability.writer ) ( yaml || {} ) );
+  const [ yamlContent, setYamlContent ] = useState<string | undefined> ( yamlWriterToStringWithErrorsEmbedded ( yamlCapability.writer ) ( yaml || {} ) );
   const yamlString = hasErrors ( yamlContent ) ? 'Errors\n' + yamlContent.join ( '\n' ) : yamlContent
   const monaco = useMonaco (); // needed to initialise
   return (<>
@@ -25,7 +26,10 @@ export function YamlEditor<S> ( { yaml, Save, height, Suggest }: YamlEditorProps
         options={{
           minimap: { enabled: false },
         }}
-        onChange={e => setYamlContent ( e )}
+        onChange={e => {
+          onChange ( e )
+          setYamlContent ( e );
+        }}
       />
       {Suggest ( setYamlContent )}
       {Save ( yamlContent )}

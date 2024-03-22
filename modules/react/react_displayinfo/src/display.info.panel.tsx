@@ -1,12 +1,11 @@
-import { DisplayMarkdown, useTicketType, useTicketTypeVariables, useVariables, useYaml } from "@itsmworkbench/components";
+import { CopyToClipboardButton, DisplayMarkdown, useTicketType, useTicketTypeVariables, useVariables } from "@itsmworkbench/components";
 import React from "react";
-import { ItsmState } from "../state/itsm.state";
-import { LensProps } from "@focuson/state";
+import { LensProps2 } from "@focuson/state";
 import { deepCombineTwoObjects } from "@laoban/utils";
-import CopyClipboardButton from "@itsmworkbench/components/dist/src/buttons/copy.clipboard.button";
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
-import { writeUrl } from "@itsmworkbench/url"; // Import the error icon
+import { Ticket } from "@itsmworkbench/tickets";
+import { NewTicketWizardData } from "@itsmworkbench/react_new_ticket"; // Import the error icon
 
 export interface DisplayNameProps {
   name: string
@@ -30,9 +29,11 @@ export function DisplayValue ( { name, value, ttVariables }: DisplayNameProps & 
     return <>{thisValue}</>;
 }
 
-export function DisplayInfoVariables<S> ( { state }: LensProps<S, ItsmState, any> ) {
-  const variables: any = useVariables ();
-  const ticket = state.optJson ()?.forTicket?.ticket;
+export interface DisplayInfoVariablesProps {
+  ticket?: Ticket
+  variables: any
+}
+export function DisplayInfoVariables<S> ( { variables, ticket }: DisplayInfoVariablesProps ) {
   const attributes = deepCombineTwoObjects ( ticket?.attributes || {}, variables );
   const ttVariables = useTicketTypeVariables ();
   const names = [ ...new Set ( [ ...ttVariables, ...Object.keys ( attributes ) ] ) ].sort ();
@@ -67,7 +68,7 @@ export function DisplayInfoVariables<S> ( { state }: LensProps<S, ItsmState, any
                 <DisplayValue name={name} ttVariables={ttVariables} value={attributes}/>
               </TableCell>
               <TableCell>
-                {attributes[ name ] !== undefined && <CopyClipboardButton textToCopy={attributes[ name ]}/>}
+                {attributes[ name ] !== undefined && <CopyToClipboardButton textToCopy={attributes[ name ]}/>}
               </TableCell>
             </TableRow>
           ) )}
@@ -78,24 +79,25 @@ export function DisplayInfoVariables<S> ( { state }: LensProps<S, ItsmState, any
 }
 export function DisplayKnowledgeArticleDetails () {
   const tt = useTicketType ()
+
   if ( tt?.id === undefined ) return <></>
   return <div>
-    <Typography component="h2" variant="h6">
-      Knowledge Article [
+    <Typography component="h2" variant="h6">You have selected Knowledge Article [
       <Tooltip title={`Knowledge model id is ${tt?.id}`}>
         <span>{tt?.name}</span>
-      </Tooltip>] needs the following
+      </Tooltip>] for this ticket.
     </Typography>
   </div>
 }
 
-export function DisplayInfoPanel<S> ( { state }: LensProps<S, ItsmState, any> ) {
-  const ticket = state.optJson ()?.forTicket?.ticket;
+export function DisplayInfoPanel<S> ( { state }: LensProps2<S, Ticket, NewTicketWizardData, any> ) {
+  const ticket = state.optJson1 ();
   console.log ( 'DisplayInfoPanel - ticket', ticket )
-  const description = ticket?.description || state.optJson ()?.forTicket?.tempData?.newTicket?.ticketDetails
+  const description = ticket?.description || state.optJson2 ()?.ticketDetails
+  const variables: any = useVariables ();
   return <div>
     <DisplayMarkdown md={description}/>
     <DisplayKnowledgeArticleDetails/>
-    <DisplayInfoVariables state={state}/>
+    <DisplayInfoVariables variables={variables} ticket={ticket}/>
   </div>
 }

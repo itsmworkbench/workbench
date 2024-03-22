@@ -1,16 +1,16 @@
-import { LensProps2, LensProps3, LensState } from "@focuson/state";
+import { LensProps2, LensState } from "@focuson/state";
 import React from "react";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import { DisplayMarkdown, DisplayYaml, FocusedTextArea, SelectAndLoadFromUrlStore, SuccessFailContextFn, useAiVariables, useTicketType, useYaml } from "@itsmworkbench/components";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { DisplayMarkdown, SuccessFailContextFn, useAiVariables, useTicketType, useYaml } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { ReviewTicketWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { Ticket } from "@itsmworkbench/tickets";
-import { TicketType } from "@itsmworkbench/tickettype";
 import { YamlEditor } from "@itsmworkbench/react_editors";
 import SendIcon from "@mui/icons-material/Send";
 import { MultiParagraphText } from "@itsmworkbench/i18n";
-import CopyToClipboardButton from "@itsmworkbench/components/dist/src/buttons/copy.clipboard.button";
+import { DisplayInfoVariables } from "@itsmworkbench/react_displayinfo";
+import { yamlWriterToStringWithErrorsEmbedded } from "@itsmworkbench/yaml";
 
 
 export interface DisplayReviewTicketWorkbenchProps<S> extends LensProps2<S, Ticket, Action, any> {
@@ -24,11 +24,12 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
   const action: any = (state.optJson2 () || {})
   const attributes = action.attributes || {}
   let yamlCapability = useYaml ();
+  const [yaml,setYaml] = React.useState<string> ( yamlWriterToStringWithErrorsEmbedded  (yamlCapability.writer)( attributes ) )
   const yamlParser = yamlCapability.parser
   const yamlWriter = yamlCapability.writer
   const ai = useAiVariables ()
-  const ticktType = useTicketType ()
-  const ttVariables = ticktType?.variables || []
+  const hasKa = useTicketType ()?.id !== undefined
+  const textKey = hasKa ? 'review.ticket.workbench.haska.text' : 'review.ticket.workbench.noka.text'
 
   const contextFn = ( yaml: string ): SuccessFailContextFn => ( tab, phase, action, successOrFail ): ReviewTicketWorkBenchContext => ({
     where: { phase, action, tab },
@@ -45,9 +46,8 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
     <Box marginBottom={2}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>
-          <MultiParagraphText i18nKey='review.ticket.workbench.text'/>
-          {ttVariables.length > 0 && <Typography variant="subtitle1" gutterBottom>The knowledge article you have selected needs these</Typography>}
-          <ul>{ttVariables.map ( v => <li key={v}>{v}<CopyToClipboardButton textToCopy={v}/></li> )}</ul>
+          <MultiParagraphText i18nKey={textKey}/>
+          {hasKa && <DisplayInfoVariables ticket={ticket} variables={yamlParser ( yaml ) as any}/>}
         </Grid>
         <Grid item xs={12} sm={8}>
           <Box>
@@ -59,12 +59,16 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
             <YamlEditor
               yaml={attributes}
               Save={yaml => SuccessButton ( contextFn ( (yaml || '{}').toString () ) )}
-              Suggest={setYaml =>
+              onChange={setYaml}
+              Suggest={setEditorYaml =>
                 <Button
                   variant="contained"
                   color="primary"
                   endIcon={<SendIcon/>}
-                  onClick={() => ai ( ticket.description ).then ( res => setYaml ( yamlWriter ( res ).toString () ) )}
+                  onClick={() => ai ( ticket.description ).then ( res => {
+                    let newYaml = yamlWriter ( res ).toString ();
+                    setYaml(newYaml)
+                    return setEditorYaml ( newYaml );} )}
                 >Have AI suggest attributes</Button>}
             />
           </Box>
