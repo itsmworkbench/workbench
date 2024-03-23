@@ -2,14 +2,15 @@ import { Action } from "@itsmworkbench/actions";
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
 
 export function deref ( a: Action, s: string, dic: any ) {
-  return derefence ( `dereferenceTemplateToActions ${JSON.stringify ( a )}`, dic, s, { variableDefn: dollarsBracesVarDefn,allowUndefined: true } )
+  return derefence ( `dereferenceTemplateToActions ${JSON.stringify ( a )}`, dic, s, { variableDefn: dollarsBracesVarDefn, allowUndefined: true } )
 }
 export function dereferenceSqlAction ( a: Action, variables: Record<string, string> ): Action {
-  console.log('dereferenceSqlAction', a, variables)
+  console.log ( 'dereferenceSqlAction', a, variables )
   if ( a.by !== 'SQL' ) return a
   let sql = deref ( a, a.sql, variables );
-  console.log('sql', a.sql, variables, sql)
-  return { by: 'SQL', sql } //explict: the action could have a lot of things in it we don't want to copy
+  let env = deref ( a, a.env, variables );
+  console.log ( 'sql', a.sql, variables, sql )
+  return { by: 'SQL', sql, env } //explict: the action could have a lot of things in it we don't want to copy
 }
 export function dereferenceEmailAction ( a: Action, variables: Record<string, string> ): Action {
   if ( a.by !== 'Email' ) return a

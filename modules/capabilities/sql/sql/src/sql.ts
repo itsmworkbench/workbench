@@ -11,8 +11,12 @@ export type SqlQueryFn = ( sql: string[], env: string ) => Promise<ErrorsAnd<Sql
 export type SqlUpdateFn = ( sql: string[], env: string ) => Promise<ErrorsAnd<number>>;
 export type SqlTestFn = ( env: string ) => Promise<ErrorsAnd<string>>;
 
+//environementname and then some attribute values about that environemnt
+export type SqlEnvsFn = (  ) => Promise<ErrorsAnd<NameAnd<NameAnd<string>>>>;
+
 export type Sqler = {
   query: SqlQueryFn,
   update: SqlUpdateFn,
   test: SqlTestFn
+  listEnvs: SqlEnvsFn
 }

@@ -27,6 +27,7 @@ export function isSqlWorkBenchContext ( context: any ): context is SqlWorkBenchC
   return isWorkBenchContext<SqlData> ( context ) && context.capability === 'SQL'
 }
 export interface SqlData {
+  env: string
   sql: string
   response: string
 }

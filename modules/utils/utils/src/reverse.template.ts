@@ -7,6 +7,7 @@ export function escapeRegExp ( string: string ) {
 }
 
 export function reverseTemplate ( inputString: string, variables: Record<string, string> ): string {
+  if (inputString===undefined) return undefined;
   let template = inputString;
   for ( const varName in variables ) {
     const varValue = variables[ varName ];

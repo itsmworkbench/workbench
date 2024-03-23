@@ -11,7 +11,7 @@ import { executeAIForEmail, executeAIForKnownVariables, executeAIForVariables } 
 import { AIEmailsFn, AIKnownTicketVariablesFn, AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
 import { Mailer } from "@itsmworkbench/mailer";
 import { Sqler } from "@itsmworkbench/sql";
-import { apiForSqler } from "./api.for.sqler";
+import { apiForSqlerPosts } from "./api.for.sqler";
 import { apiForMailer } from "./api.for.mailer";
 
 
@@ -103,7 +103,7 @@ export const wizardOfOzApiHandlers = ( idStore: IdStore, getIds: ListIds, aiForV
     listUrls ( urlStore.list ),
     getUrls ( urlStore ),
     putUrls ( urlStore.save, details ),
-    apiForSqler ( sqler ),
+    apiForSqlerPosts ( sqler ),
     apiForMailer ( mailer ),
     // appendPostPF,
     handleFile,

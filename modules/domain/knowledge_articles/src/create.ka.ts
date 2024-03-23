@@ -65,8 +65,9 @@ export function basics ( a: Action ): NameAnd<any> {
 export function reverseSqlAction ( variables: Record<string, string>, a: Action, c: SqlWorkBenchContext ): Action {
   if ( a.by !== 'SQL' ) return a
   let sql = reverseTemplate ( c.data.sql, variables );
+  let env = reverseTemplate ( c.data.env, variables );
   console.log ( 'reverseSqlAction - sql', sql )
-  return { ...basics ( a ), by: "SQL", sql } //explict: the action could have a lot of things in it we don't want to copy
+  return { ...basics ( a ), by: "SQL", sql, env } //explict: the action could have a lot of things in it we don't want to copy
 }
 export function reverseEmailAction ( variables: Record<string, string>, a: Action, c: EmailWorkBenchContext ): Action {
   if ( a.by !== 'Email' ) return a

@@ -17,6 +17,7 @@ export function isBaseAction ( a: any ) {
 export interface SqlAction extends BaseAction {
   by: 'SQL'
   sql?: string
+  env?: string
 
 }
 export interface LdapAction extends BaseAction {
