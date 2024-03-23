@@ -17,6 +17,9 @@ const generateEmailPrompt = (emailData: EmailData): string => {
     case 'requestClosure':
       purposeDescription = 'to inform about the completion of a task or project and request its closure';
       break;
+    case 'requestMoreData': //todo: this one is a placeholder until real non-existing variables are found
+      purposeDescription = 'to request additional information or data that is essential for completing a work ticket';
+      break;
       // Add more cases as needed for other purposes
     default:
       purposeDescription = 'for a general inquiry or update';
@@ -25,7 +28,7 @@ const generateEmailPrompt = (emailData: EmailData): string => {
   return `Given the following ticket ID: ${emailData.ticketId} and details: ${JSON.stringify(emailData.ticket, null, 2)}
 Generate a professional email from an employee to their employer ${purposeDescription}. Include a subject and body in the email. 
 Annotate the subject with <!-- SUBJECT START --> and <!-- SUBJECT END -->. Annotate the email body with <!-- EMAIL START --> and <!-- EMAIL END -->. 
-Do not use salutations. In the end of email, the name of the sender is "Philip". 
+Do not use salutations and signatures. 
 Use these details to craft the email content.`;
 };
 

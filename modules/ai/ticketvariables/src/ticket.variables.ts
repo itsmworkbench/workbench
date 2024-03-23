@@ -3,7 +3,7 @@ import { NameAnd } from "@laoban/utils";
 export type TicketVariables = NameAnd<string>
 
 
-export type EmailPurpose = 'requestApproval' | 'requestClosure'
+export type EmailPurpose = 'requestApproval' | 'requestClosure' | 'requestMoreData'
 export type EmailData = {
   purpose: EmailPurpose
   ticketId: string,
@@ -12,6 +12,7 @@ export type EmailData = {
 export type EmailPurposeAnd<T> = {
   requestApproval: T
   requestClosure: T
+  requestMoreData: T
 }
 
 

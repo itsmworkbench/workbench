@@ -6,12 +6,17 @@ import {
 const requestClosure: EmailStringFn = async ( email: EmailData ): Promise<string> => {
   return generateAllPurposeEmail(email);
 }
-const requestApproval: EmailStringFn = async ( email ) => {
+const requestApproval: EmailStringFn = async ( email: EmailData ): Promise<string> => {
   return generateAllPurposeEmail(email);
 }
+const requestMoreData: EmailStringFn = async ( email: EmailData ): Promise<string> => {
+  return generateAllPurposeEmail(email);
+}
+
 export const chatGptEmailProcessors: EmailPurposeAnd<EmailStringFn> = {
   requestApproval,
-  requestClosure
+  requestClosure,
+  requestMoreData
 }
 
 function extractEmailResultFromRagString(s: string): EmailResult{
