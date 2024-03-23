@@ -1,16 +1,73 @@
 import { LensProps, LensState } from "@focuson/state";
 import React from "react";
-
 import { findSqlDataDetails } from "@itsmworkbench/defaultdomains";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { SqlDataTable } from "./SqlData";
-import { FocusedTextArea, SuccessFailContextFn, useVariables } from "@itsmworkbench/components";
+import { DisplayJson, FocusedTextArea, MonospaceText, SuccessFailContextFn, useSqler, useVariables } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { SqlWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
-import { useSqler } from "@itsmworkbench/components";
+import { isSqlQueryResult, SqlQueryResult } from "@itsmworkbench/sql";
+import { ErrorsAnd, hasErrors } from "@laoban/utils";
+
+export type SqlResultTableProps = {
+  data: SqlQueryResult
+}
+function SqlResultTable ( { data }: SqlResultTableProps ) {
+  const theme = useTheme (); // Use the theme hook
+  const { cols, rows } = data;
+  return (
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            {cols.map ( ( columnName ) => (
+              <TableCell
+                key={columnName}
+                sx={{
+                  fontWeight: 'bold',
+                  backgroundColor: theme.palette.primary.main, // Use primary color from theme
+                  color: theme.palette.primary.contrastText, // Ensure text color contrasts with the background
+                  fontSize: '0.875rem', // You can adjust this as needed
+                }}
+              >
+                {columnName}
+              </TableCell>
+            ) )}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map ( ( row, index ) => (
+            <TableRow
+              key={index}
+              sx={{
+                '&:nth-of-type(odd)': { backgroundColor: theme.palette.action.hover },
+                '&:nth-of-type(even)': { backgroundColor: theme.palette.background.default },
+              }} // Use theme colors for alternating row background
+            >
+              {cols.map ( ( columnName ) => (
+                <TableCell key={`${index}-${columnName}`}>
+                  {row[ columnName ]}
+                </TableCell>
+              ) )}
+            </TableRow>
+          ) )}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+export type SqlResultOrErrorProps = {
+  data: ErrorsAnd<SqlQueryResult>
+}
+export function SqlResultOrError ( { data }: SqlResultOrErrorProps ) {
+  if ( isSqlQueryResult ( data ) ) return <SqlResultTable data={data}/>
+  if ( typeof data === 'string' ) return <MonospaceText text={data}/>
+  if ( hasErrors ( data ) ) return <MonospaceText text={data.join ( '\n' )}/>
+  return <DisplayJson json={data}/>
+}
 
 
 //Note this is an action where as in fact it's really a SQLData
@@ -46,7 +103,7 @@ export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }
   let queryOnClick = () => {
     if ( action?.sql )
       sqler.query ( [ action.sql ], 'oracle' ).then ( ( res ) => {
-        actionState.focusOn ( 'response' ).setJson ( JSON.stringify ( res, null, 2 ), '' )
+        actionState.focusOn ( 'response' ).setJson ( res, '' )
       } )
   };
   return <Container>
@@ -60,12 +117,11 @@ export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }
         <Button variant="contained" color="primary" endIcon={<RefreshIcon/>}> Reset</Button>
       </Box>
       <Typography variant="subtitle1" gutterBottom>SQL Result</Typography>
-      <FocusedTextArea state={actionState.focusOn ( 'response' )} rows={4}/>
+      <SqlResultOrError data={action.response}/>
       {SuccessButton ( contextFn )}
       {FailureButton ( contextFn )}
     </Box>
 
-    <SqlDataTable details={details}/>
   </Container>
 }
 

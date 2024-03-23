@@ -6,9 +6,9 @@ export const executeScriptInShell: ExecuteInShellFn = ( cwd: string, cmd: string
   if ( debug ) console.log ( 'executeScriptInShell', cwd, cmd.trim () )
   return new Promise<ShellResult> ( resolve => {
     cp.exec ( cmd, { cwd, env: process.env, encoding }, ( error, stdout, stdErr ) => {
-      console.log ( 'exec - error ', error, )
-      console.log ( 'exec - stdout', stdout )
-      console.log ( 'exec - strError', stdErr )
+      if ( debug ) console.log ( 'exec - error ', error )
+      if ( debug ) console.log ( 'exec - stdout', stdout )
+      if ( debug ) console.log ( 'exec - strError', stdErr )
       if ( stdErr === '' && (error === null || error.code === 0) )
         resolve ( { message: stdout.toString (), code: 0 } )
       else

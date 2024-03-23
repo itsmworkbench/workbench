@@ -9,8 +9,8 @@ export function makeSqlerForDbPathShell ( executeFn: ExecuteInShellFn, cwd: stri
       if ( debug ) console.log ( 'query - cmd:', cmd )
       return mapErrors ( await execute ( executeFn, cwd, cmd, 'utf8', debug ), ( res ) => {
         console.log ( 'res:', res )
-        const cols: NameAnd<string>[] = JSON.parse ( res );
-        const rows: string[] = cols.length === 0 ? [] : Object.keys ( cols[ 0 ] ).sort ();
+        const rows: NameAnd<string>[] = JSON.parse ( res );
+        const cols: string[] = rows.length === 0 ? [] : Object.keys ( rows[ 0 ] ).sort ();
         const result: SqlQueryResult = { cols, rows };
         if ( debug ) console.log ( 'query - result:', JSON.stringify ( result, null, 2 ) )
         return result;
