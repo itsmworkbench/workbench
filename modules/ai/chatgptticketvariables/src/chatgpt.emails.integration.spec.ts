@@ -50,7 +50,7 @@ Thanks`;
 describe('ChatGPTEmailGeneration', () => {
     test('should generate email content with specific markers from EmailData', async () => {
         const emailData: EmailData = {
-            purpose: "requestApproval",
+            purpose: "requestMoreData",
             ticketId: "SR5542",
             ticket: sampleTicket
         };
