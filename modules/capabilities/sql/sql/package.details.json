@@ -1,17 +1,19 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/git",
-  "description": "git operations. This is just the interface. We have implementations elsewhere",
+  "name":        "@itsmworkbench/sql",
+  "description": "interacting with sql: the interfaces",
   "packageJson": {
-    "dependencies":    {"@laoban/utils": "1.4.45"},
+    "dependencies":    {
+      "@laoban/utils":     "1.4.45",
+      "@laoban/variables": "1.4.45"
+    },
     "devDependencies": {},
     "browser":         {
       "child_process": false
     }
   },
   "links":       [
-    "@itsmworkbench/domain",
-    "@itsmworkbench/shell"
+    "@itsmworkbench/utils"
   ],
   "guards":      {
     "compile": true,

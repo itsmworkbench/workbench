@@ -13,7 +13,12 @@
       "child_process": false
     }
   },
-  "links":       ["@itsmworkbench/domain", "@itsmworkbench/git"],
+  "links":       [
+    "@itsmworkbench/domain",
+    "@itsmworkbench/git",
+    "@itsmworkbench/nodeshell",
+    "@itsmworkbench/shell"
+  ],
   "guards":      {
     "compile": true,
     "publish": true,

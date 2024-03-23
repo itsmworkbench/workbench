@@ -1,24 +1,11 @@
-import { OrganisationGitData } from "./git.config";
+import { ShellResult } from "@itsmworkbench/shell";
 
-export interface SuccessfulGitResult {
-  message: string
-  code: 0
-}
-export function isSuccessfulGitResult ( t: GitResult ): t is SuccessfulGitResult {
-  return t.code === 0
-}
-export interface FailedGitResult {
-  message?: string
-  error: string
-  code: number
-}
-export type GitResult = SuccessfulGitResult | FailedGitResult
 
 export interface GitOps {
-  init: ( repo: string ) => Promise<GitResult>
-  commit: ( repo: string, message: string ) => Promise<GitResult>
+  init: ( repo: string ) => Promise<ShellResult>
+  commit: ( repo: string, message: string ) => Promise<ShellResult>
   hashFor: ( repo: string, fileName: string ) => Promise<string>
   sizeForHash: ( repo: string, hash: string ) => Promise<number>
   fileFor: ( repo: string, hash: string, encoding: BufferEncoding ) => Promise<string>
-  status: ( repo: string ) => Promise<GitResult>
+  status: ( repo: string ) => Promise<ShellResult>
 }

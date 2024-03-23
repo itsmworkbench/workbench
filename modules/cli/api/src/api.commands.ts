@@ -11,6 +11,9 @@ import { chatgptKnownTicketVariables, chatgptTicketVariables, generalEmail } fro
 import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
 import { mailerFromUrlStore } from "@itsmworkbench/nodemailer";
 import { EmailFn, Mailer } from "@itsmworkbench/mailer";
+import { Sqler } from "@itsmworkbench/sql";
+import { makeSqlerForDbPathShell } from "@itsmworkbench/dbpathsql/dist/src/dbpath.sql";
+import { executeScriptInShell } from "@itsmworkbench/nodeshell";
 
 
 export function apiCommand<Commander, Context extends HasCurrentDirectory & HasEnv, Config> ( yaml: YamlCapability ): CommandFn<Commander, Context, Config> {
@@ -37,8 +40,9 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory & HasE
       const gitOps = shellGitsops ( false )
       const urlStore = nodeUrlstore ( gitOps, orgs )
       const mailer: Mailer = await mailerFromUrlStore ( urlStore, "me", "me" )
+      const sqlerL: Sqler = makeSqlerForDbPathShell ( executeScriptInShell, context.currentDirectory, opts.debug === true )
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,
-        wizardOfOzApiHandlers ( idStore, allIds, aiVariables, aiKnownVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore, mailer ) )
+        wizardOfOzApiHandlers ( idStore, allIds, aiVariables, aiKnownVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore, mailer,sqlerL ) )
     }
   })
 

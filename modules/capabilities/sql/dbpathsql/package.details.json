@@ -1,0 +1,25 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/dbpathsql",
+  "description": "interacting with sql: using dbpath",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":     "1.4.45",
+      "@laoban/variables": "1.4.45"
+    },
+    "devDependencies": {},
+    "browser":         {
+      "child_process": false
+    }
+  },
+  "links":       [
+    "@itsmworkbench/shell",
+    "@itsmworkbench/sql",
+    "@itsmworkbench/utils"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

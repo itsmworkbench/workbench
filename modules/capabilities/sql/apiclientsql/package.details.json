@@ -1,0 +1,24 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/apiclientsql",
+  "description": "interacting with sql: the api client",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":     "1.4.45",
+      "@laoban/variables": "1.4.45"
+    },
+    "devDependencies": {},
+    "browser":         {
+      "child_process": false
+    }
+  },
+  "links":       [
+    "@itsmworkbench/sql",
+    "@itsmworkbench/utils"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

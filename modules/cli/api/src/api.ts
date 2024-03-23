@@ -10,6 +10,8 @@ import { NameAnd } from "@laoban/utils";
 import { executeAIForEmail, executeAIForKnownVariables, executeAIForVariables } from "./api.for.ai";
 import { AIEmailsFn, AIKnownTicketVariablesFn, AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
 import { Mailer } from "@itsmworkbench/mailer";
+import { Sqler } from "@itsmworkbench/sql";
+import { apiForSqler } from "./api.for.sqler";
 import { apiForMailer } from "./api.for.mailer";
 
 
@@ -87,21 +89,22 @@ export const appendPostPF: KoaPartialFunction = {
   }
 }
 
-export const wizardOfOzApiHandlers = (idStore: IdStore, getIds: ListIds, aiForVariables: AiTicketVariablesFn,aiForKnownVariables: AIKnownTicketVariablesFn, aiForEmail: AIEmailsFn,
-                                      debug: boolean,
-                                      details: NameAnd<NameSpaceDetails>,
-                                      urlStore: UrlStore,
-                                      mailer: Mailer,
-
-                                      ...handlers: KoaPartialFunction[] ): ( from: ContextAndStats ) => Promise<void> =>
+export const wizardOfOzApiHandlers = ( idStore: IdStore, getIds: ListIds, aiForVariables: AiTicketVariablesFn, aiForKnownVariables: AIKnownTicketVariablesFn, aiForEmail: AIEmailsFn,
+                                       debug: boolean,
+                                       details: NameAnd<NameSpaceDetails>,
+                                       urlStore: UrlStore,
+                                       mailer: Mailer,
+                                       sqler: Sqler,
+                                       ...handlers: KoaPartialFunction[] ): ( from: ContextAndStats ) => Promise<void> =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
     executeAIForVariables ( aiForVariables ),
-    executeAIForEmail( aiForEmail ),
-    executeAIForKnownVariables(aiForKnownVariables),
+    executeAIForEmail ( aiForEmail ),
+    executeAIForKnownVariables ( aiForKnownVariables ),
     listUrls ( urlStore.list ),
     getUrls ( urlStore ),
     putUrls ( urlStore.save, details ),
-    apiForMailer(mailer),
+    apiForSqler ( sqler ),
+    apiForMailer ( mailer ),
     // appendPostPF,
     handleFile,
     ...handlers,

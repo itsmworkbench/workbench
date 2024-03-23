@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/git",
-  "description": "git operations. This is just the interface. We have implementations elsewhere",
+  "name": "@itsmworkbench/nodeshell",
+  "description": "executing commands in a shell using node",
   "version": "0.0.3",
   "main": "dist/index",
   "types": "dist/index",
@@ -21,8 +21,10 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.45",
-    "@itsmworkbench/domain": "0.0.3",
+    "@laoban/variables": "1.4.45",
     "@itsmworkbench/shell": "0.0.3",
+    "@itsmworkbench/utils": "0.0.3",
+    "@itsmworkbench/url": "0.0.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {
