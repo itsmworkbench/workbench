@@ -17,6 +17,8 @@
     "@itsmworkbench/eventstore",
     "@itsmworkbench/react_core",
     "@itsmworkbench/variables",
+    "@itsmworkbench/mailer",
+    "@itsmworkbench/sql",
     "@itsmworkbench/yaml"
   ],
   "guards":      {

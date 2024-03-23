@@ -10,6 +10,7 @@ import { FocusedTextArea, SuccessFailContextFn, useVariables } from "@itsmworkbe
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { SqlWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
+import { useSqler } from "@itsmworkbench/components";
 
 
 //Note this is an action where as in fact it's really a SQLData
@@ -24,7 +25,7 @@ export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }
   const response = action?.response || ''
   const variables = useVariables ()
   const details = findSqlDataDetails ( sql || '', variables )
-
+  const sqler = useSqler ()
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): SqlWorkBenchContext => ({
     capability: 'SQL',
     where: { phase, action, tab },
@@ -37,14 +38,25 @@ export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }
   })
 
   const actionState: LensState<S, any, any> = state;
+  let testOnClick = () => {
+    sqler.test ( 'oracle' ).then ( ( res ) => {
+      actionState.focusOn ( 'response' ).setJson ( res.toString (), '' )
+    } )
+  };
+  let queryOnClick = () => {
+    if ( action?.sql )
+      sqler.query ( [ action.sql ], 'oracle' ).then ( ( res ) => {
+        actionState.focusOn ( 'response' ).setJson ( JSON.stringify ( res, null, 2 ), '' )
+      } )
+  };
   return <Container>
     <Typography variant="h4" gutterBottom>SQL</Typography>
     <Box marginBottom={2}>
       <Typography variant="subtitle1" gutterBottom>SQL to execute</Typography>
       <FocusedTextArea state={actionState.focusOn ( 'sql' )} rows={4}/>
       <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1}>
-        <Button variant="contained" color="primary" endIcon={<TestIcon/>}>Execute </Button>
-        <Button variant="contained" color="primary" endIcon={<TestIcon/>}> Test Connection </Button>
+        <Button variant="contained" color="primary" endIcon={<TestIcon/>} onClick={queryOnClick}>Execute </Button>
+        <Button variant="contained" color="primary" endIcon={<TestIcon/>} onClick={testOnClick}> Test Connection </Button>
         <Button variant="contained" color="primary" endIcon={<RefreshIcon/>}> Reset</Button>
       </Box>
       <Typography variant="subtitle1" gutterBottom>SQL Result</Typography>

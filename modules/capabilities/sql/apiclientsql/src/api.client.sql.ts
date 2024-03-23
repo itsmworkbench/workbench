@@ -8,9 +8,11 @@ const call = async ( url: string, payload: any ) => {
     },
     body: JSON.stringify ( payload )
   } );
-  return response.json ();
+  let result = await (response.status < 400 && response.headers.get ( 'content-type' ) === 'application/json' ? response.json () : response.text ());
+  console.log ( 'apiClientSqler', result )
+  return result;
 };
-export function apiClientSql ( url: string ): Sqler {
+export function apiClientSqler ( url: string ): Sqler {
   return {
     query: ( sql, env ) => call ( url + '/query', { sql, env } ),
     update: ( sql, env ) => call ( url + '/update', { sql, env } ),

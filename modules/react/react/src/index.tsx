@@ -24,6 +24,8 @@ import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/a
 import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin, displaySqlEventPlugin } from '@itsmworkbench/react_capabilities';
 import { AiEmailProvider, AiVariablesProvider, MailerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/apiclientmailer";
+import { apiClientSqler } from "@itsmworkbench/apiclientsql";
+import { SqlerProvider } from "@itsmworkbench/components";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -54,21 +56,24 @@ const eventPlugins = [
   displayMessageEventPlugin<ItsmState> () ];
 
 const mailer = apiClientMailer ( rootUrl + "api/email" )
+const sqler = apiClientSqler ( rootUrl + "api/sql" )
 
 addEventStoreListener ( container, (( oldS, s, setJson ) => {
   return root.render ( <UrlStoreProvider urlStore={urlStore}>
     <MailerProvider mailer={mailer}>
-      <AiEmailProvider aiEmail={aiEmails}>
-        <AiVariablesProvider aiVariables={aiVariables}>
-          <YamlProvider yamlCapability={yaml}>
-            <App
-              state={lensState ( s, setJson, 'Container', {} )}
-              plugins={[]}
-              eventPlugins={eventPlugins}
-            />
-          </YamlProvider>
-        </AiVariablesProvider>
-      </AiEmailProvider>
+      <SqlerProvider sqler={sqler}>
+        <AiEmailProvider aiEmail={aiEmails}>
+          <AiVariablesProvider aiVariables={aiVariables}>
+            <YamlProvider yamlCapability={yaml}>
+              <App
+                state={lensState ( s, setJson, 'Container', {} )}
+                plugins={[]}
+                eventPlugins={eventPlugins}
+              />
+            </YamlProvider>
+          </AiVariablesProvider>
+        </AiEmailProvider>
+      </SqlerProvider>
     </MailerProvider>
   </UrlStoreProvider> );
 }) );

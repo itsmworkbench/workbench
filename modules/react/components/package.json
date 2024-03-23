@@ -23,6 +23,8 @@
     "@itsmworkbench/eventstore": "0.0.3",
     "@itsmworkbench/react_core": "0.0.3",
     "@itsmworkbench/variables": "0.0.3",
+    "@itsmworkbench/mailer": "0.0.3",
+    "@itsmworkbench/sql": "0.0.3",
     "@itsmworkbench/yaml": "0.0.3",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",

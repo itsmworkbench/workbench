@@ -35,6 +35,7 @@
     "@itsmworkbench/react_templates",
     "@itsmworkbench/react_ticket",
     "@itsmworkbench/react_variables",
+    "@itsmworkbench/apiclientsql",
     "@itsmworkbench/update_value_in_database_ticket_type",
     "@itsmworkbench/variables"
   ],

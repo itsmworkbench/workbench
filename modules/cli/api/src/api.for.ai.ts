@@ -6,7 +6,6 @@ export const executeAIForVariables = ( ai: AiTicketVariablesFn ): KoaPartialFunc
     const match = /^\/ai\/variables/.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'POST';
     let result = match && isMethodMatch;
-    console.log('AI: isDefinedAt', ctx.context.request.path,result, isMethodMatch, match)
     return result;
   },
   apply: async ( ctx ) => {

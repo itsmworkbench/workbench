@@ -7,7 +7,6 @@ export const apiForMailer = ( mailer: Mailer ): KoaPartialFunction => ({
     const match = /^\/api\/email/.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'POST';
     let result = match && isMethodMatch;
-    console.log ( 'Email: isDefinedAt', ctx.context.request.path, result, isMethodMatch, match )
     return result;
   },
   apply: async ( ctx ) => {

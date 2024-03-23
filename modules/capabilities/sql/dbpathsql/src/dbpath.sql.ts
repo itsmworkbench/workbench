@@ -1,12 +1,11 @@
 import { execute, ExecuteInShellFn } from "@itsmworkbench/shell";
 import { Sqler, SqlQueryResult } from "@itsmworkbench/sql";
 import { ErrorsAnd, mapErrors, NameAnd } from "@laoban/utils";
-import { escapeForSql } from "@itsmworkbench/utils";
 
 export function makeSqlerForDbPathShell ( executeFn: ExecuteInShellFn, cwd: string, debug?: boolean ): Sqler {
   return {
     query: async ( sql, env ): Promise<ErrorsAnd<SqlQueryResult>> => {
-      const cmd = `dbpath sql --env ${env} --json "${sql.map ( escapeForSql ).join ( ' ' )}"`;
+      const cmd = `dbpath sql --env ${env} --json "${sql.join ( ' ' )}"`;
       if ( debug ) console.log ( 'query - cmd:', cmd )
       return mapErrors ( await execute ( executeFn, cwd, cmd, 'utf8', debug ), ( res ) => {
         console.log ( 'res:', res )
