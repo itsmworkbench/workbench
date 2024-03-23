@@ -1,2 +1,2 @@
-export * from './src/emails';
-export * from './src/email.config';
+export * from './src/mailer';
+export * from './src/mailer.config';

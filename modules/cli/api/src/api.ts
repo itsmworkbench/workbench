@@ -9,8 +9,8 @@ import { NameSpaceDetails, UrlStore } from "@itsmworkbench/url";
 import { NameAnd } from "@laoban/utils";
 import { executeAIForEmail, executeAIForKnownVariables, executeAIForVariables } from "./api.for.ai";
 import { AIEmailsFn, AIKnownTicketVariablesFn, AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
-import { apiForEmail } from "./api.for.email";
-import { EmailFn } from "@itsmworkbench/mailer";
+import { Mailer } from "@itsmworkbench/mailer";
+import { apiForMailer } from "./api.for.mailer";
 
 
 export const ids = ( idstore: IdStore, debug: boolean ): KoaPartialFunction => ({
@@ -91,7 +91,7 @@ export const wizardOfOzApiHandlers = (idStore: IdStore, getIds: ListIds, aiForVa
                                       debug: boolean,
                                       details: NameAnd<NameSpaceDetails>,
                                       urlStore: UrlStore,
-                                      emailFn: EmailFn,
+                                      mailer: Mailer,
 
                                       ...handlers: KoaPartialFunction[] ): ( from: ContextAndStats ) => Promise<void> =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
@@ -101,7 +101,7 @@ export const wizardOfOzApiHandlers = (idStore: IdStore, getIds: ListIds, aiForVa
     listUrls ( urlStore.list ),
     getUrls ( urlStore ),
     putUrls ( urlStore.save, details ),
-    apiForEmail(emailFn),
+    apiForMailer(mailer),
     // appendPostPF,
     handleFile,
     ...handlers,

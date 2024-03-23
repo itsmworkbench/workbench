@@ -17,7 +17,7 @@ export * from './src/displayRaw/display.yaml';
 export * from './src/hooks/useAiEmail';
 export * from './src/hooks/useYaml';
 export * from './src/hooks/useAiVariables';
-export * from './src/hooks/useEmailFn';
+export * from './src/hooks/useMailer';
 export * from './src/hooks/useEnrichedEvents';
 export * from './src/hooks/useStatus';
 export * from './src/hooks/useSideEffects';

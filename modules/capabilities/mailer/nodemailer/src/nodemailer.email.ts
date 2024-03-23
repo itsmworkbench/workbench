@@ -1,15 +1,38 @@
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-import { emailConfigFromUrlStore, EmailFn } from "@itsmworkbench/mailer";
+import { emailConfigFromUrlStore, EmailFn, Mailer } from "@itsmworkbench/mailer";
+import Mail from "nodemailer/lib/mailer";
 
-export function sendEmail ( transport: SMTPTransport | SMTPTransport.Options | string,
-                            from: string ): EmailFn {
-  console.log('transport', transport)
-  let transporter = nodemailer.createTransport ( transport )
-  return async email => await transporter.sendMail ( { ...email, from } )
+export function sendEmailRaw ( transporter: Mail<SMTPTransport.SentMessageInfo>,
+                               from: string ): EmailFn {
+  return async email => {
+    try {
+      return await transporter.sendMail ( { ...email, from } )
+    } catch ( e ) {
+      return [ e.toString () ]
+    }
+  }
 }
-export async function sendEmailFnFromUrlStore ( urlStore: any, organisation: string, name: string ): Promise<EmailFn> {
+
+function testEmail ( transporter: Mail<SMTPTransport.SentMessageInfo> ) {
+  return async () => {
+    try {
+      await transporter.verify ();
+      return 'Test connection OK'
+    } catch ( e ) {
+      return [ e.toString () ]
+    }
+  };
+}
+export async function mailerFromConfig ( config: any ): Promise<Mailer> {
+  let transporter: Mail<SMTPTransport.SentMessageInfo> = nodemailer.createTransport ( config.smtp )
+  return {
+    sendEmail: sendEmailRaw ( transporter, config.email ),
+    test: testEmail ( transporter )
+  }
+}
+export async function mailerFromUrlStore ( urlStore: any, organisation: string, name: string ): Promise<Mailer> {
   const config: any = await emailConfigFromUrlStore ( urlStore, organisation, name )
-  console.log('config', config)
-  return sendEmail ( config.smtp, config.email )
+  console.log ( 'config', config )
+  return mailerFromConfig ( config )
 }

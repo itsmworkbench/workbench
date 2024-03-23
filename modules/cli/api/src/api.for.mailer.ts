@@ -1,8 +1,8 @@
 import { AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
 import { KoaPartialFunction } from "@itsmworkbench/koa";
-import { EmailFn } from "@itsmworkbench/mailer";
+import { Mailer } from "@itsmworkbench/mailer";
 
-export const apiForEmail = ( emailFn: EmailFn ): KoaPartialFunction => ({
+export const apiForMailer = ( mailer: Mailer ): KoaPartialFunction => ({
   isDefinedAt: ( ctx ) => {
     const match = /^\/api\/email/.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'POST';
@@ -11,10 +11,11 @@ export const apiForEmail = ( emailFn: EmailFn ): KoaPartialFunction => ({
     return result;
   },
   apply: async ( ctx ) => {
+    const test = ctx.context.request.path.endsWith ( '/test' )
     let email = JSON.parse ( ctx.context.request.rawBody );
     console.log ( 'Email', email )
     try {
-      const result = await emailFn ( email );
+      const result = await (test ? mailer.test () : mailer.sendEmail ( email ));
       console.log ( 'Email: result', result )
       ctx.context.body = JSON.stringify ( result, null, 2 );
       ctx.context.set ( 'Content-Type', 'application/json' );

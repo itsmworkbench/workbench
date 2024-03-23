@@ -1,11 +1,8 @@
-import { sendEmail } from "./nodemailer.email";
+import { mailerFromConfig, sendEmailRaw } from "./nodemailer.email";
+import { hasErrors } from "@laoban/utils";
 
 const jsyaml = require ( 'js-yaml' );
-
-describe ( "nodeemail integration test", () => {
-  it ( "should send email", async () => {
-    // Arrange
-    const configstring = `
+const goodConfig = `
 name: phil
 email: liubaoyu2014@gmail.com
 smtp:
@@ -14,16 +11,65 @@ smtp:
     user: liubaoyu2014@gmail.com
     pass: ${process.env.LBY}
 `
-    const config = jsyaml.load ( configstring )
-    console.log ( config )
+const badConfig = `
+name: phil
+email: liubaoyu2014@gmail.com
+smtp:
+  service: gmail
+  auth:
+    user: liubaoyu2014@gmail.com
+    pass: notSetUpSoDoesntWork
+`
 
-    const result = await sendEmail ( config.smtp, config.email ) ( {
+describe ( "nodeemail integration test", () => {
+  describe ( "sendEmail", () => {
+    it ( "should send email", async () => {
+      const config = jsyaml.load ( goodConfig )
+      const mailer = await mailerFromConfig ( config )
 
-      to: 'phil.rice@validoc.org',
-      subject: "Email from automated test",
-      text: "Here is the email from the automated test"
+      const result = await mailer.sendEmail ( {
+        to: 'phil.rice@validoc.org',
+        subject: "Email from automated test",
+        text: "Here is the email from the automated test"
+      } )
+      console.log ( result )
+      if ( hasErrors ( result ) ) {
+        throw new Error ( result.toString () )
+      }
+
     } )
-    console.log ( result )
 
+    it ( "should report when not set up properly", async () => {
+      const config = jsyaml.load ( badConfig )
+      const mailer = await mailerFromConfig ( config )
+      const result = await mailer.sendEmail ( {
+        to: 'phil.rice@validoc.org',
+        subject: "Email from automated test",
+        text: "Here is the email from the automated test"
+      } )
+      if ( !hasErrors ( result ) ) {
+        fail ( 'Should have failed' )
+      }
+      let errorMsg = result.toString ();
+      expect ( errorMsg ).toContain ( 'Invalid login' )
+      expect ( errorMsg ).toContain ( 'Username and Password not accepted' )
+    } )
+  } )
+  describe ( "testEmail", () => {
+    it ( "should report OK with good config", async () => {
+      const config = jsyaml.load ( goodConfig )
+      const mailer = await mailerFromConfig ( config )
+      const result = await mailer.test ()
+      expect ( result ).toBe ( 'OK' )
+
+    } )
+    it ( "should report error with bad config", async () => {
+      const config = jsyaml.load ( badConfig )
+      const mailer = await mailerFromConfig ( config )
+      const result = await mailer.test ()
+      let errorMsg = result.toString ();
+      expect ( errorMsg ).toContain ( 'Invalid login' )
+      expect ( errorMsg ).toContain ( 'Username and Password not accepted' )
+    } )
   } )
 } )

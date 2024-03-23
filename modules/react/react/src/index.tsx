@@ -22,8 +22,8 @@ import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
 import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin, displaySqlEventPlugin } from '@itsmworkbench/react_capabilities';
-import { AiEmailProvider, AiVariablesProvider, EmailFnProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
-import { sendEmailApiClient } from "@itsmworkbench/apiclientmailer";
+import { AiEmailProvider, AiVariablesProvider, MailerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
+import { apiClientMailer } from "@itsmworkbench/apiclientmailer";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -53,11 +53,11 @@ const eventPlugins = [
   displayTicketTypeEventPlugin<ItsmState> (),
   displayMessageEventPlugin<ItsmState> () ];
 
-const emailFn = sendEmailApiClient ( rootUrl + "api/email" )
+const mailer = apiClientMailer ( rootUrl + "api/email" )
 
 addEventStoreListener ( container, (( oldS, s, setJson ) => {
   return root.render ( <UrlStoreProvider urlStore={urlStore}>
-    <EmailFnProvider emailFn={emailFn}>
+    <MailerProvider mailer={mailer}>
       <AiEmailProvider aiEmail={aiEmails}>
         <AiVariablesProvider aiVariables={aiVariables}>
           <YamlProvider yamlCapability={yaml}>
@@ -69,7 +69,7 @@ addEventStoreListener ( container, (( oldS, s, setJson ) => {
           </YamlProvider>
         </AiVariablesProvider>
       </AiEmailProvider>
-    </EmailFnProvider>
+    </MailerProvider>
   </UrlStoreProvider> );
 }) );
 

@@ -1,7 +1,7 @@
-import { EmailFn } from "@itsmworkbench/mailer";
+import { EmailFn, Mailer } from "@itsmworkbench/mailer";
 
-export function sendEmailApiClient ( url: string ): EmailFn {
-  return async email => {
+function sendEmail ( url: string ) {
+  return async ( email: any ) => {
     const response = await fetch ( url, {
       method: 'POST',
       headers: {
@@ -10,5 +10,11 @@ export function sendEmailApiClient ( url: string ): EmailFn {
       body: JSON.stringify ( email )
     } );
     return response.json ();
+  };
+}
+export function apiClientMailer ( url: string ): Mailer {
+  return {
+    sendEmail: sendEmail ( url ),
+    test: () => sendEmail ( url + "/test" ) ( {} )
   }
 }

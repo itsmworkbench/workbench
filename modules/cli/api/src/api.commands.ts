@@ -9,8 +9,8 @@ import { nodeUrlstore } from "@itsmworkbench/urlstorenode";
 import { shellGitsops } from "@itsmworkbench/shell_git";
 import { chatgptKnownTicketVariables, chatgptTicketVariables, generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
 import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
-import { sendEmailFnFromUrlStore } from "@itsmworkbench/nodemailer";
-import { EmailFn } from "@itsmworkbench/mailer";
+import { mailerFromUrlStore } from "@itsmworkbench/nodemailer";
+import { EmailFn, Mailer } from "@itsmworkbench/mailer";
 
 
 export function apiCommand<Commander, Context extends HasCurrentDirectory & HasEnv, Config> ( yaml: YamlCapability ): CommandFn<Commander, Context, Config> {
@@ -32,13 +32,13 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory & HasE
 
       const idStore = loadFromIdStore ( details )
       const allIds = findListIds ( details )
-      console.log('lby', context.env['LBY'])
+      console.log ( 'lby', context.env[ 'LBY' ] )
       const orgs = defaultOrganisationUrlStoreConfig ( yaml, context.env )
       const gitOps = shellGitsops ( false )
       const urlStore = nodeUrlstore ( gitOps, orgs )
-      const emailFn: EmailFn = await sendEmailFnFromUrlStore ( urlStore, "me", "me" )
+      const mailer: Mailer = await mailerFromUrlStore ( urlStore, "me", "me" )
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,
-        wizardOfOzApiHandlers ( idStore, allIds, aiVariables, aiKnownVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore, emailFn ) )
+        wizardOfOzApiHandlers ( idStore, allIds, aiVariables, aiKnownVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore, mailer ) )
     }
   })
 
