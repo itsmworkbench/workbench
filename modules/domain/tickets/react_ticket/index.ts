@@ -1,5 +1,6 @@
 export * from './src/ticket/display.ticket'
 export * from './src/ticket/display.ticket.event'
+export * from './src/ticket/review.ticket.workbench'
 export * from './src/newticket/new.ticket.button'
 export * from './src/newticket/new.ticket.wizard'
 export * from './src/newticket/new.ticket.wizard.domain'

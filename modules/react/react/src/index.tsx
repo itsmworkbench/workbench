@@ -15,11 +15,11 @@ import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
 import { hasErrors, mapK, value } from "@laoban/utils";
 import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor, displayTicketEventPlugin } from '@itsmworkbench/reactticket';
-import { displayTicketTypeEventPlugin } from '@itsmworkbench/reacttickettype';
+import { addSaveKnowledgeArticleSideEffect, displayTicketTypeEventPlugin } from '@itsmworkbench/reacttickettype';
 
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
-import { addSaveKnowledgeArticleSideEffect, displayLdapEventPlugin, displayReceiveEmailEventPlugin } from '@itsmworkbench/react_capabilities';
+import {  displayLdapEventPlugin, displayReceiveEmailEventPlugin } from '@itsmworkbench/react_capabilities';
 import { AiEmailProvider, AiVariablesProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";

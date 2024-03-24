@@ -4,13 +4,13 @@ import { DisplayVariables, EnrichedEventsProvider, MainAppLayout, SideEffectsPro
 import React from "react";
 import { actionO, enrichedEventsO, eventsL, eventsO, ItsmState, sideEffectsL } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
-import { DisplayCapabilitiesMenu, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplayReceiveEmailWorkbench, DisplayReviewTicketWorkbench, DisplaySelectKnowledgeArticleWorkbench } from "@itsmworkbench/react_capabilities";
+import { DisplayCapabilitiesMenu, DisplayLdapWorkbench, DisplayReceiveEmailWorkbench } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 
 import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents, EnrichedEventsAndChat } from "@itsmworkbench/reactevents";
 import { Capability } from "@itsmworkbench/domain";
-import { ActionButton, DisplayPhases } from "@itsmworkbench/reacttickettype";
+import { ActionButton, DisplayKnowledgeArticleWorkbench, DisplayPhases, DisplaySelectKnowledgeArticleWorkbench } from "@itsmworkbench/reacttickettype";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/urlstore";
@@ -18,7 +18,7 @@ import { Welcome } from "./welcome";
 import { DisplayInfoPanel } from "@itsmworkbench/react_displayinfo";
 import { DisplaySqlWorkbench } from "@itsmworkbench/reactsql";
 import { DisplayEmailWorkbench, SuggestEmailForTicketButton } from "@itsmworkbench/reactmailer";
-import { NewTicketWizard } from "@itsmworkbench/reactticket";
+import { DisplayReviewTicketWorkbench, NewTicketWizard } from "@itsmworkbench/reactticket";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]

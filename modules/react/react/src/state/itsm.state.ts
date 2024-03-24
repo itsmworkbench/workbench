@@ -6,17 +6,14 @@ import { ListNamesResult } from "@itsmworkbench/urlstore";
 import { NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
 import { Operator } from "@itsmworkbench/operator";
-import { Event } from "@itsmworkbench/events";
+import { EnrichedEvent, Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
 import { EmailResult, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
-import { DisplayTicketListSelectionState, NewTicketData } from "@itsmworkbench/reactticket";
+import { DisplayTicketListSelectionState, NewTicketData, NewTicketState, NewTicketWizardData } from "@itsmworkbench/reactticket";
 import { defaultTicketTypeDetails, TicketType } from "@itsmworkbench/tickettype";
-import { KnowledgeArticleTempData } from "@itsmworkbench/react_capabilities";
 import { Action } from "@itsmworkbench/actions";
-import { EnrichedEvent } from "@itsmworkbench/events";
 import { IdAnd } from "@itsmworkbench/utils";
-import { NewTicketState } from "@itsmworkbench/reactticket";
-import { NewTicketWizardData } from "@itsmworkbench/reactticket";
+import { KnowledgeArticleTempData } from "@itsmworkbench/reacttickettype";
 
 export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {
   mainScreen?: MainAppMainState
