@@ -24,7 +24,7 @@ import { AiEmailProvider, AiVariablesProvider, MailerProvider, SqlerProvider, Ur
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
 import { displaySqlEventPlugin } from '@itsmworkbench/reactsql';
-import { addAiEmailSideEffectProcessor, displayEmailEventPlugin } from '@itsmworkbench/reactmailer';
+import { addAiMailerSideEffectProcessor, displayEmailEventPlugin } from '@itsmworkbench/reactmailer';
 import { displayMessageEventPlugin } from "@itsmworkbench/reactevents";
 
 
@@ -113,7 +113,7 @@ addEventStoreModifier ( container,
     processSideEffect ( [
       eventSideeffectProcessor ( urlStore.save, 'me', ticketIdL ),
       addAiTicketSideeffectProcessor ( aiVariables, ticketVariablesL ),
-      addAiEmailSideEffectProcessor ( aiEmails, emailDataL ),
+      addAiMailerSideEffectProcessor ( aiEmails, emailDataL ),
       addSaveKnowledgeArticleSideEffect ( urlStore.save, 'me' ),
       // addLoadKaSideEffect ( urlStore.loadNamed, newTicketL.focusOn ( 'ticketDetails' ) ),
       addNewTicketSideeffectProcessor ( urlStore.save, tabsL, forTicketO, ticketIdL, newTicketL, ticketListO, 'forTicket.ticket', 'forTicket.tempData.ticketType' )

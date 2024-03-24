@@ -1,3 +1,4 @@
-export * from './src/ai.email.sideeffect'
-export * from './src/display.email.event'
-export * from './src/email.workbench'
+export * from './src/ai.mailer.sideeffect'
+export * from './src/display.mailer.event'
+export * from './src/display.mailer.plugin'
+export * from './src/mailer.workbench'

@@ -1,10 +1,9 @@
-import { LensProps, LensProps2, LensProps3 } from "@focuson/state";
+import { LensProps3 } from "@focuson/state";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { PhaseName } from "@itsmworkbench/domain";
 import { Button } from "@mui/material";
 import React from "react";
-import { TicketType } from "@itsmworkbench/tickettype";
-import { allWorkbenchEvents, findActionInEventsFor, findWorkbenchEventFor, lastTicketType } from "@itsmworkbench/actions";
+import { findActionInEventsFor } from "@itsmworkbench/defaultdomains";
 import { Event } from "@itsmworkbench/events";
 
 //this is driven from the events...

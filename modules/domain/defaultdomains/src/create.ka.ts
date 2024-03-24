@@ -2,8 +2,9 @@ import { EnrichedEvent, Event } from "@itsmworkbench/events";
 import { Capability, EmailWorkBenchContext, isEmailWorkBenchContext, isLdapWorkBenchContext, isReceiveEmailWorkbenchContext, isReviewTicketWorkBenchContext, isSqlWorkBenchContext, isWorkBenchContext, LdapWorkBenchContext, ReceiveEmailWorkbenchContext, ReviewTicketWorkBenchContext, SqlWorkBenchContext, WorkBenchContext } from "@itsmworkbench/domain";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
-import { Action, isBaseAction } from "./actions";
+
 import { findUsedVariables, reverseTemplate } from "@itsmworkbench/utils";
+import { Action, isBaseAction } from "@itsmworkbench/actions";
 
 export type EventWithWorkBenchContext<T> = Event & { context: WorkBenchContext<T> }
 
