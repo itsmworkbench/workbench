@@ -2,7 +2,7 @@ import React from "react";
 import { LensProps } from "@focuson/state";
 import { NewTicketWizardData } from "./new.ticket.wizard.domain";
 import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
-import { DisplayPhasesForTicketType } from "@itsmworkbench/react_phases";
+import { DisplayPhasesForTicketType } from "@itsmworkbench/reacttickettype";
 import { detailsToTicketType, TicketType } from "@itsmworkbench/tickettype";
 import { SelectAndLoadFromUrlStore, Status, useSideEffects } from "@itsmworkbench/components";
 import { IdAnd } from "@itsmworkbench/utils";

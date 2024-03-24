@@ -27,7 +27,6 @@
     "@itsmworkbench/react_knowledge_articles",
     "@itsmworkbench/react_ldap",
     "@itsmworkbench/react_capabilities",
-    "@itsmworkbench/react_phases",
     "@itsmworkbench/reactmailer",
     "@itsmworkbench/react_softwarecatalog",
     "@itsmworkbench/reactsql",

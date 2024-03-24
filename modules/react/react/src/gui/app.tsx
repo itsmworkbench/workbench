@@ -10,7 +10,7 @@ import { DevMode } from "@itsmworkbench/react_devmode";
 
 import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents, EnrichedEventsAndChat } from "@itsmworkbench/reactevents";
 import { Capability } from "@itsmworkbench/domain";
-import { ActionButton, DisplayPhases } from "@itsmworkbench/react_phases";
+import { ActionButton, DisplayPhases } from "@itsmworkbench/reacttickettype";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/urlstore";

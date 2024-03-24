@@ -8,7 +8,7 @@ import { Action } from "@itsmworkbench/actions";
 import { MultiParagraphText } from "@itsmworkbench/i18n";
 import { Tooltip, Typography } from "@mui/material";
 import { parseIdentityUrlOrThrow } from "@itsmworkbench/urlstore";
-import { DisplayPhasesForTicketType } from "@itsmworkbench/react_phases";
+import { DisplayPhasesForTicketType } from "@itsmworkbench/reacttickettype"
 
 
 //bit hacky... need to clean this up
@@ -59,7 +59,7 @@ export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButt
                                    },
                                    data: {
                                      id: parseIdentityUrlOrThrow ( idAndTicketType?.id || '' ),
-                                     ticketType: {id: idAndTicketType?.id, name: idAndTicketType?.name, ...(idAndTicketType?.item || {})},
+                                     ticketType: { id: idAndTicketType?.id, name: idAndTicketType?.name, ...(idAndTicketType?.item || {}) },
                                    }
                                  })
                                  return SuccessButton ( contextFn )

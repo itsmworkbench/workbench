@@ -9,10 +9,11 @@
     "scripts":      {"start": "react-scripts start"}
   },
   "links":       [
-    "@itsmworkbench/react_core" ,
+    "@itsmworkbench/react_core",
     "@itsmworkbench/components",
     "@itsmworkbench/tickets",
-    "@itsmworkbench/reactevents"
+    "@itsmworkbench/reactevents",
+    "@itsmworkbench/reacttickettype"
   ],
   "guards":      {
     "compile": true,

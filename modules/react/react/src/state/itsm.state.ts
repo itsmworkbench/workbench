@@ -84,6 +84,7 @@ export const operatorL: Lens<ItsmState, Operator> = basicDataL.focusOn ( 'operat
 // export const setPageL: Optional<ItsmState, string> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'workspaceTab' )
 export const ticketIdL: Optional<ItsmState, string> = selectionStateL.focusQuery ( 'ticketId' )
 export const forTicketL = itsmIdL.focusOn ( 'forTicket' );
+export const forTicketO = itsmIdL.focusQuery ( 'forTicket' );
 export const tempDataL = forTicketL.focusQuery ( 'tempData' );
 export const newTicketL: Optional<ItsmState, NewTicketWizardData> = tempDataL.focusQuery ( 'newTicket' )
 export const ticketVariablesL: Optional<ItsmState, TicketVariables> = forTicketL.focusQuery ( 'variables' )

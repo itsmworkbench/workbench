@@ -602,22 +602,6 @@
     "@laoban/utils" "1.4.45"
     debug "^4.3.4"
 
-"@itsmworkbench/react_actions@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@itsmworkbench/react_actions/-/react_actions-0.0.3.tgz#30d8cbb139a1f5683f0f76e1a3f70e2889edb332"
-  integrity sha512-XD7QuqQX/XNH6JR6PPP0C++nykSL5zdPX1HhybJYXJUYiUs/hyU/awG2I7b8DF/f15TychTlH/oCcM0qszok3g==
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/actions" "0.0.3"
-    "@itsmworkbench/components" "0.0.3"
-    "@laoban/utils" "1.4.45"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
 "@itsmworkbench/react_knowledge_articles@0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@itsmworkbench/react_knowledge_articles/-/react_knowledge_articles-0.0.3.tgz#c5d2afa56479ba34a05493cf9cb56c88036c54f6"

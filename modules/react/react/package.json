@@ -32,7 +32,6 @@
     "@itsmworkbench/react_knowledge_articles": "0.0.3",
     "@itsmworkbench/react_ldap": "0.0.3",
     "@itsmworkbench/react_capabilities": "0.0.3",
-    "@itsmworkbench/react_phases": "0.0.3",
     "@itsmworkbench/reactmailer": "0.0.3",
     "@itsmworkbench/react_softwarecatalog": "0.0.3",
     "@itsmworkbench/reactsql": "0.0.3",
