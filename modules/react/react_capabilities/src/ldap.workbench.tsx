@@ -1,4 +1,4 @@
-import { LensProps2, LensState } from "@focuson/state";
+import { LensProps, LensProps2, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
@@ -7,6 +7,9 @@ import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn } from "@itsmwo
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { LdapWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
+import { Event } from "@itsmworkbench/events";
+import { ActionPluginDetails } from "@itsmworkbench/react_core";
+import { DisplayEvents } from "@itsmworkbench/reactevents/dist/src/display.events";
 
 
 export interface DisplayLdapWorkbenchProps<S> extends LensProps2<S, Action, any, any> {
@@ -50,4 +53,12 @@ export function DisplayLdapWorkbench<S> ( { state, SuccessButton, FailureButton 
   </Container>
 }
 
+export const displayLdapPlugin = ( SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode,
+                                   FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode ) =>
+  <S, > ( props: <State, >( s: LensState<State, S, any> ) => LensProps2<S, Action, any, any> ): ActionPluginDetails<S, LensProps2<S, Action, any, any>> =>
+    ({
+      by: "LDAPWorkbench",
+      props,
+      render: ( props ) => <DisplayLdapWorkbench {...props} SuccessButton={SuccessButton} FailureButton={FailureButton}/>
+    })
 

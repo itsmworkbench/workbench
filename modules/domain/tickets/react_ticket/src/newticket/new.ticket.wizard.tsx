@@ -1,5 +1,5 @@
 import { getCurrentStep, NewTicketWizardData } from "./new.ticket.wizard.domain";
-import { LensProps } from "@focuson/state";
+import { LensProps, LensProps2, LensState } from "@focuson/state";
 import { WizardBreadcrumbs } from "./new.ticket.breadcrumbs";
 import React from "react";
 import { TicketSourceSelection } from "./ticketSourceSelection";
@@ -7,6 +7,10 @@ import { EnterTicketDetails } from "./enter.ticket.details";
 import { Box, Container } from "@mui/material";
 import { NewHowToProcessTicket } from "./new.how.to.process.ticket";
 import { NewSelectKa } from "./new.select.ka";
+import { SuccessFailContextFn } from "@itsmworkbench/components/dist/src/buttons/success.failure.button";
+import { Action } from "@itsmworkbench/actions";
+import { ActionPluginDetails } from "@itsmworkbench/react_core";
+import { DisplayLdapWorkbench } from "@itsmworkbench/react_capabilities/dist/src/ldap.workbench";
 
 
 export function DisplayNewTicketWizardStep<S> ( { state }: LensProps<S, NewTicketWizardData, any> ) {
@@ -20,7 +24,7 @@ export function DisplayNewTicketWizardStep<S> ( { state }: LensProps<S, NewTicke
     case 'howToProcessTicket':
       return <NewHowToProcessTicket state={state}/>
     case 'selectKnowledgeArticle':
-      return <NewSelectKa  state={state} />
+      return <NewSelectKa state={state}/>
   }
 }
 export function NewTicketWizard<S> ( { state }: LensProps<S, NewTicketWizardData, any> ) {
@@ -35,3 +39,10 @@ export function NewTicketWizard<S> ( { state }: LensProps<S, NewTicketWizardData
     </Container>
   );
 }
+export const displayNewTicketWizard =
+               <S, > ( props: <State, >( s: LensState<State, S, any> ) => LensProps<S, NewTicketWizardData, any> ): ActionPluginDetails<S, LensProps<S, NewTicketWizardData, any>> =>
+                 ({
+                   by: "newTicket",
+                   props,
+                   render: ( props ) => <NewTicketWizard {...props} />
+                 })

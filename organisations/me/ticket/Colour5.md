@@ -1,0 +1,10 @@
+{
+  "ticketName": "Colour5",
+  "issuer": "phil.rice@validoc.org"
+}
+---
+in the EPX production environment the colour of the button is wrong. It should be blue and is red.
+The button is button id but-blue-123
+Action requested:
+
+Please change the colour of the button to blue

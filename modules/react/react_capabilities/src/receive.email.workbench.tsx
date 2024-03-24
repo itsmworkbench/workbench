@@ -7,6 +7,8 @@ import { FocusedTextArea, SuccessFailContextFn } from "@itsmworkbench/components
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { ReceiveEmailWorkbenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
+import { DisplayLdapWorkbench, DisplayLdapWorkbenchProps } from "./ldap.workbench";
+import { ActionPluginDetails } from "@itsmworkbench/react_core";
 
 
 export interface DisplayReceiveEmailWorkbenchProps<S> extends LensProps2<S, Action, any, any> {
@@ -54,3 +56,11 @@ export function DisplayReceiveEmailWorkbench<S> ( { state, SuccessButton, Failur
 }
 
 
+export const displayReceiveEmailPlugin = ( SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode,
+                                           FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode ) =>
+  <S, > ( props: <State, >( s: LensState<State, S, any> ) => LensProps2<S, Action, any, any> ): ActionPluginDetails<S, LensProps2<S, Action, any, any>> =>
+    ({
+      by: "ReceiveEmailWorkbench",
+      props,
+      render: ( props ) => <DisplayReceiveEmailWorkbench {...props} SuccessButton={SuccessButton} FailureButton={FailureButton}/>
+    })

@@ -6,7 +6,7 @@ import { addEventStoreListener, addEventStoreModifier, eventStore, polling, setE
 import { apiLoading, ApiLoading, } from "@itsmworkbench/apiclienteventstore";
 import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent, Event, processEvents } from "@itsmworkbench/events";
 
-import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
+import { ActionPluginDetails, eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
 import { emailDataL, enrichedEventsO, eventsL, forTicketO, ItsmState, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketListO, ticketVariablesL } from "./state/itsm.state";
@@ -19,7 +19,7 @@ import { addSaveKnowledgeArticleSideEffect, displayTicketTypeEventPlugin } from 
 
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
-import {  displayLdapEventPlugin, displayReceiveEmailEventPlugin } from '@itsmworkbench/react_capabilities';
+import { displayLdapEventPlugin, displayLdapPlugin, displayReceiveEmailEventPlugin } from '@itsmworkbench/react_capabilities';
 import { AiEmailProvider, AiVariablesProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
@@ -44,6 +44,7 @@ const aiEmails = apiClientForEmail ( aiDetails )
 const container = eventStore<ItsmState> ()
 const setJson = setEventStoreValue ( container );
 const sep1 = defaultEventProcessor<ItsmState> ( '', startAppState, urlStore.loadIdentity )
+
 
 const eventPlugins = [
   displayTicketEventPlugin<ItsmState> (),

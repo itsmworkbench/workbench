@@ -1,12 +1,14 @@
 import { EnrichedEvent } from "@itsmworkbench/events";
 import { SetValueEvent } from "@itsmworkbench/events";
-import { LensProps } from "@focuson/state";
-import { PROPSAndIcons } from "@itsmworkbench/components";
+import { LensProps, LensState } from "@focuson/state";
+import { PROPSAndIcons, SuccessFailContextFn } from "@itsmworkbench/components";
 import React from "react";
 import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn } from "@itsmworkbench/reactevents";
 
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { isReceiveEmailWorkbenchContext } from "@itsmworkbench/domain";
+import { ActionPluginDetails } from "@itsmworkbench/react_core";
+import { DisplayLdapWorkbench, DisplayLdapWorkbenchProps } from "./ldap.workbench";
 
 
 export interface DisplayReceiveEmailEventProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetValueEvent, any>, any>> {
@@ -45,3 +47,4 @@ export function displayReceiveEmailEventPlugin<S extends any> (): DisplayEnriche
     fullDisplay: DisplayReceiveEmailEventFull
   };
 }
+

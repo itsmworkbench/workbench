@@ -1,12 +1,13 @@
-import { EnrichedEvent } from "@itsmworkbench/events";
+import { EnrichedEvent, Event } from "@itsmworkbench/events";
 import { SetValueEvent } from "@itsmworkbench/events";
-import { LensProps } from "@focuson/state";
+import { LensProps, LensState } from "@focuson/state";
 import { PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";
-import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn } from "@itsmworkbench/reactevents";
+import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn, DisplayEvents } from "@itsmworkbench/reactevents";
 
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { isLdapWorkBenchContext } from "@itsmworkbench/domain";
+import { ActionPluginDetails } from "@itsmworkbench/react_core";
 
 
 export interface DisplayLdapEventProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetValueEvent, any>, any>> {
@@ -45,3 +46,4 @@ export function displayLdapEventPlugin<S extends any> (): DisplayEnrichedEventPl
     fullDisplay: DisplayLdapEventFull
   };
 }
+
