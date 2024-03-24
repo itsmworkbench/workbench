@@ -55,11 +55,13 @@ export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState
   const currentUrl = currentTicketId ? parseNamedUrlOrThrow ( currentTicketId ) : undefined
   const currentTicketText = currentTicketId ? ` - ${currentUrl?.name}` : ``
 
+  let enrichedEvents = enrichedEventsO.getOption ( wholeState || {} as ItsmState ) || [];
+  console.log ( 'app - enrichedEvents', enrichedEvents )
   return <>
     return <ThemeProvider theme={theme}>
     <SideEffectsProvider sideEffectL={sideEffectsL}>
       <StatusProvider status={wholeState?.forTicket?.status || {} as any}>
-        <EnrichedEventsProvider enrichedEvents={enrichedEventsO.getOption ( wholeState || {} as ItsmState )}>
+        <EnrichedEventsProvider enrichedEvents={enrichedEvents}>
           <MainAppLayout title={`ITSM Workbench ${currentTicketText}`}
                          layout={{ leftDrawerWidth: '240px', height: '100vh' }}
                          state={state.focusOn ( "selectionState" ).focusOn ( 'mainScreen' )}
