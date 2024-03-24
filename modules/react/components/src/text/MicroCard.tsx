@@ -2,7 +2,7 @@ import React from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import { Box } from '@mui/material';
-import { DisplayEnrichedEventProps } from "@itsmworkbench/react_events/";
+import { DisplayEnrichedEventProps } from "@itsmworkbench/reactevents/";
 import { EnrichedEvent } from "@itsmworkbench/events";
 import { BaseEvent } from "@itsmworkbench/events";
 import { StatusIndicator } from "../status.indicator";

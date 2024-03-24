@@ -1,6 +1,6 @@
 {
   "template":    "react_library",
-  "name":        "@itsmworkbench/react_events",
+  "name":        "@itsmworkbench/reactevents",
   "description": "The react gui about displaying events",
   "packageJson": {
     "files":        ["build/"],

@@ -3,7 +3,7 @@ import { SetValueEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
 import { DisplayYaml, microCard, MicroCard, PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";
-import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn, DisplayEnrichedEventProps } from "@itsmworkbench/react_events";
+import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn, DisplayEnrichedEventProps } from "@itsmworkbench/reactevents";
 
 import { Box, Card, CardContent, CardHeader } from "@mui/material";
 import { SelectTicketType } from "./select.ticket.type";

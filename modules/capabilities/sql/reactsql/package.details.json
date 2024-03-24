@@ -9,7 +9,7 @@
     "scripts":      {"start": "react-scripts start"}
   },
   "links":       [
-    "@itsmworkbench/react_events",
+    "@itsmworkbench/reactevents",
     "@itsmworkbench/components"
   ],
   "guards":      {

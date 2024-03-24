@@ -167,7 +167,7 @@ function EnvDropdownWithTooltip<S> ( { state }: EnvDropdownWithTooltipProps<S> )
           ) )}
         </Select>
       </FormControl>
-      <Tooltip title={<Typography>{envName ? JSON.stringify ( envs?.[ envName ], null, 2 ) : 'No Environment Selected'}</Typography>} placement="right">
+      <Tooltip title={<Typography>{hasErrors ( envs ) ? JSON.stringify ( envs, null, 2 ) : envName ? JSON.stringify ( envs?.[ envName ], null, 2 ) : 'No Environment Selected'}</Typography>} placement="right">
         <InfoIcon/>
       </Tooltip>
     </div>

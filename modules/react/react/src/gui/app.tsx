@@ -8,7 +8,7 @@ import { DisplayCapabilitiesMenu, DisplayKnowledgeArticleWorkbench, DisplayLdapW
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { NewTicketWizard } from "@itsmworkbench/react_new_ticket";
-import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents, EnrichedEventsAndChat } from "@itsmworkbench/react_events";
+import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents, EnrichedEventsAndChat } from "@itsmworkbench/reactevents";
 import { Capability } from "@itsmworkbench/domain";
 import { ActionButton, DisplayPhases } from "@itsmworkbench/react_phases";
 import { TicketType } from "@itsmworkbench/tickettype";

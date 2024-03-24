@@ -3,7 +3,7 @@ import { AppendEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
 import { DisplayMarkdown, microCard, PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";
-import { DisplayEnrichedEventPlugIn } from "@itsmworkbench/react_events";
+import { DisplayEnrichedEventPlugIn } from "@itsmworkbench/reactevents";
 import { Box, Card, CardContent, CardHeader, Typography } from '@mui/material';
 
 

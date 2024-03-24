@@ -12,7 +12,7 @@
     "@itsmworkbench/ai_ticketvariables",
     "@itsmworkbench/actions",
     "@itsmworkbench/components",
-    "@itsmworkbench/react_events",
+    "@itsmworkbench/reactevents",
     "@itsmworkbench/tickets"
   ],
   "guards":      {

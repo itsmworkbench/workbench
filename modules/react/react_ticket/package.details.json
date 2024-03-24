@@ -12,7 +12,7 @@
     "@itsmworkbench/react_core" ,
     "@itsmworkbench/components",
     "@itsmworkbench/tickets",
-    "@itsmworkbench/react_events"
+    "@itsmworkbench/reactevents"
   ],
   "guards":      {
     "compile": true,

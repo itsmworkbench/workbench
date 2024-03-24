@@ -2,7 +2,7 @@ import React from "react";
 import { EnrichedEvent, SetValueEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
 import { PROPSAndIcons } from "@itsmworkbench/components";
-import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn } from "@itsmworkbench/react_events";
+import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn } from "@itsmworkbench/reactevents";
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { isEmailWorkBenchContext } from "@itsmworkbench/domain";
 

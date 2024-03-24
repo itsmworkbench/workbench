@@ -1,5 +1,5 @@
 {
-  "name": "@itsmworkbench/react_events",
+  "name": "@itsmworkbench/reactevents",
   "description": "The react gui about displaying events",
   "version": "0.0.3",
   "browserslist": {

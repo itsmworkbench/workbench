@@ -581,6 +581,15 @@
     "@laoban/utils" "1.4.45"
     debug "^4.3.4"
 
+"@itsmworkbench/parser@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/parser/-/parser-0.0.3.tgz#2f4c36649b76f6225de0b8d7d3a873dfda5769f8"
+  integrity sha512-QoryOiHNjX1Ku331b/tewDylx3SmzCNxDHJSn6hRdUn5Inw/XhRKUEF4KwOo40oEsC39Hc7rTBaZZK/chq+VFg==
+  dependencies:
+    "@itsmworkbench/utils" "0.0.3"
+    "@laoban/utils" "1.4.45"
+    debug "^4.3.4"
+
 "@itsmworkbench/questions@0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@itsmworkbench/questions/-/questions-0.0.3.tgz#6dd88f0204fe626dd2b8ab038b1d64277ad5ad9d"
