@@ -1,5 +1,5 @@
 import { Event } from "@itsmworkbench/events";
-import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
+import { EnrichedEvent } from "@itsmworkbench/events";
 
 export interface EventsAndEnriched {
   events: Event[]

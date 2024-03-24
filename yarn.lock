@@ -572,6 +572,15 @@
     "@laoban/utils" "1.4.45"
     debug "^4.3.4"
 
+"@itsmworkbench/listids@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/listids/-/listids-0.0.3.tgz#f0af25822c438b625c0278fde64b23e47a1328e3"
+  integrity sha512-fY6va+lfRugWXCULUDrBq4b+TBphh7VqCscoaBF44JPct0J+9jejSAMtyjb3zoOIX4VfKT9gRufSQfN0DO1/kw==
+  dependencies:
+    "@itsmworkbench/utils" "0.0.3"
+    "@laoban/utils" "1.4.45"
+    debug "^4.3.4"
+
 "@itsmworkbench/react_actions@0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@itsmworkbench/react_actions/-/react_actions-0.0.3.tgz#30d8cbb139a1f5683f0f76e1a3f70e2889edb332"
@@ -629,6 +638,24 @@
     debug "^4.3.4"
     react "^18.2.0"
     react-dom "^18.2.0"
+
+"@itsmworkbench/softwarecatalog@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/softwarecatalog/-/softwarecatalog-0.0.3.tgz#84616524242ea34313efa7a32e8ba39aacb17bb4"
+  integrity sha512-dHfB9xJrhTEs7Lgw2XxFrc6kdGLZRqiMA4PvKsOpvkh2DuHr29X3zrVDdMeX9tUpx/eIplrWAFz0GfY/F/R82g==
+  dependencies:
+    "@itsmworkbench/domain" "0.0.3"
+    "@itsmworkbench/yaml" "0.0.3"
+    "@laoban/utils" "1.4.45"
+    debug "^4.3.4"
+
+"@itsmworkbench/templates@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/templates/-/templates-0.0.3.tgz#0fb0f128a4dcf6d115de2e320af8a82e482c5ae2"
+  integrity sha512-SlztdWqFV86Q8jgWufkS2ggpOF+7aKmDut/1e2DQdusuFi9pRKJfZ0hurilUGRdq6dEC+seFjYSYcJykz4i04w==
+  dependencies:
+    "@itsmworkbench/domain" "0.0.3"
+    debug "^4.3.4"
 
 "@itsmworkbench/update_value_in_database_ticket_type@0.0.3":
   version "0.0.3"

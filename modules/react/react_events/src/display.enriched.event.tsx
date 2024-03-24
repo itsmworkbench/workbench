@@ -4,7 +4,7 @@ import { Event } from "@itsmworkbench/events";
 
 import { microCard, PROPSAndIcons, SelectableSize } from "@itsmworkbench/components";
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
-import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
+import { EnrichedEvent } from "@itsmworkbench/events";
 
 export type DisplayEnrichedEventProps<S> = PROPSAndIcons<LensProps<S, EnrichedEvent<any, any>, any>>
 export function DisplayDefaultEnrichedEventMicro<S extends any> ( { state, icons }: DisplayEnrichedEventProps<S> ) {

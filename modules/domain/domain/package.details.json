@@ -17,7 +17,6 @@
     "@itsmworkbench/utils",
     "@itsmworkbench/events",
     "@itsmworkbench/eventstore",
-    "@itsmworkbench/parser",
     "@itsmworkbench/variables",
     "@itsmworkbench/yaml"
   ],

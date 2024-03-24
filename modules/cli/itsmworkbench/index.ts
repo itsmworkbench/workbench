@@ -5,11 +5,9 @@ import { cliContext, CliContext, CliTc, CliTcFinder, defaultTo, fileConfig, make
 import { fileOpsNode } from "@laoban/filesops-node";
 import { CleanConfig, Config, configCommands } from "@itsmworkbench/config";
 import { hasErrors, reportErrors } from "@laoban/utils";
-import { eventStoreCommands } from "./src/event.store.cli";
+
 
 import { apiCommand } from "@itsmworkbench/api";
-import { idStoreCommands } from "./src/id.store.cli";
-import { addVariableCommands } from "./src/variables.cli";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { jsYaml } from "@itsmworkbench/jsyaml";
 
@@ -36,9 +34,6 @@ makeCli<Commander12, CliContext, Config, CleanConfig> ( context, configFinder, c
     process.exit ( 1 )
   }
   cliTc.addSubCommand ( commander, configCommands ( commander ) )
-  cliTc.addSubCommand ( commander, eventStoreCommands<Commander12, CliContext, CleanConfig> ( yaml ) )
-  cliTc.addSubCommand ( commander, idStoreCommands<Commander12, CliContext, CleanConfig> ( yaml ) )
-  cliTc.addSubCommand ( commander, addVariableCommands<Commander12, CliContext, CleanConfig> ( yaml ) )
   cliTc.addCommands ( commander, [ apiCommand ( yaml ) ] )
   return await cliTc.execute ( commander.commander, context.args )
 } )

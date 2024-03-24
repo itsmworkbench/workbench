@@ -1,4 +1,4 @@
-import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
+import { EnrichedEvent } from "@itsmworkbench/events";
 import { AppendEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
 import { DisplayMarkdown, microCard, PROPSAndIcons } from "@itsmworkbench/components";

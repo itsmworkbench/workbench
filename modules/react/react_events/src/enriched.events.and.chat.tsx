@@ -3,7 +3,7 @@ import { LensProps3 } from "@focuson/state";
 import { Conversation } from "@itsmworkbench/domain";
 import { SideEffect } from "@itsmworkbench/react_core";
 import { MainAndTypingLayout } from "@itsmworkbench/components";
-import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
+import { EnrichedEvent } from "@itsmworkbench/events";
 import { DisplayEnrichedEventPlugIn, DisplayEnrichedEventsUsingPlugin } from "./display.enriched.event.plugin";
 import { ConversationPlugin, DisplayChatArea, UserTypingBox } from "@itsmworkbench/react_conversation";
 

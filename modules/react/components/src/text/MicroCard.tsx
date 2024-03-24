@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import { Box } from '@mui/material';
 import { DisplayEnrichedEventProps } from "@itsmworkbench/react_events/";
-import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
+import { EnrichedEvent } from "@itsmworkbench/events";
 import { BaseEvent } from "@itsmworkbench/events";
 import { StatusIndicator } from "../status.indicator";
 

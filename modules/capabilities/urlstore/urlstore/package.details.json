@@ -1,0 +1,18 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/urlstore",
+  "description": "urls used with intellimaintain. 'itsm:organisation:namespace/name:nameOrHash'",
+  "packageJson": {
+    "dependencies":    {"@laoban/utils": "1.4.45"},
+    "devDependencies": {},
+    "browser":         {
+      "child_process": false
+    }
+  },
+  "links":       [],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    true
+  }
+}

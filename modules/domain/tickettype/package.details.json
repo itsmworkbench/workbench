@@ -12,6 +12,7 @@
   "links":       [
     "@itsmworkbench/actions",
     "@itsmworkbench/domain",
+    "@itsmworkbench/tickets",
     "@itsmworkbench/yaml"
   ],
   "guards":      {

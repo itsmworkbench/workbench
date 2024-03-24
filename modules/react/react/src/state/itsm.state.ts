@@ -14,7 +14,7 @@ import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
 import { defaultTicketTypeDetails, TicketType } from "@itsmworkbench/tickettype";
 import { KnowledgeArticleTempData } from "@itsmworkbench/react_capabilities";
 import { Action } from "@itsmworkbench/actions";
-import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
+import { EnrichedEvent } from "@itsmworkbench/events";
 import { IdAnd } from "@itsmworkbench/utils";
 
 export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {

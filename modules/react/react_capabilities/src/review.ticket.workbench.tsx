@@ -24,7 +24,7 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
   const action: any = (state.optJson2 () || {})
   const attributes = action.attributes || {}
   let yamlCapability = useYaml ();
-  const [yaml,setYaml] = React.useState<string> ( yamlWriterToStringWithErrorsEmbedded  (yamlCapability.writer)( attributes ) )
+  const [ yaml, setYaml ] = React.useState<string | undefined> ( yamlWriterToStringWithErrorsEmbedded ( yamlCapability.writer ) ( attributes ) )
   const yamlParser = yamlCapability.parser
   const yamlWriter = yamlCapability.writer
   const ai = useAiVariables ()
@@ -47,7 +47,7 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>
           <MultiParagraphText i18nKey={textKey}/>
-          {hasKa && <DisplayInfoVariables ticket={ticket} variables={yamlParser ( yaml ) as any}/>}
+          {hasKa && <DisplayInfoVariables ticket={ticket} variables={yamlParser ( yaml || '{}' ) as any}/>}
         </Grid>
         <Grid item xs={12} sm={8}>
           <Box>
@@ -67,8 +67,9 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
                   endIcon={<SendIcon/>}
                   onClick={() => ai ( ticket.description ).then ( res => {
                     let newYaml = yamlWriter ( res ).toString ();
-                    setYaml(newYaml)
-                    return setEditorYaml ( newYaml );} )}
+                    setYaml ( newYaml )
+                    return setEditorYaml ( newYaml );
+                  } )}
                 >Have AI suggest attributes</Button>}
             />
           </Box>

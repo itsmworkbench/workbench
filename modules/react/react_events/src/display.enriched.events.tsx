@@ -3,7 +3,7 @@ import React from "react";
 import { Event } from "@itsmworkbench/events";
 import { List, ListItem } from "@material-ui/core";
 import { Lenses } from "@focuson/lens";
-import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
+import { EnrichedEvent } from "@itsmworkbench/events";
 import { DisplayEnrichedEvent } from "./display.enriched.event";
 
 export interface DisplayEnrichedEventsProps<S> extends LensProps<S,EnrichedEvent<any, any>[], any> {

@@ -1,5 +1,4 @@
-import { ExtractVariablesFn, VariablesExtractor } from "@itsmworkbench/variables";
-import { ParserStoreParser } from "@itsmworkbench/parser";
+import { ExtractVariablesFn } from "@itsmworkbench/variables";
 import { IdStoreDetails } from "@itsmworkbench/idstore";
 import { UrlStoreParser, UrlStoreWriter } from "@itsmworkbench/urlstore";
 

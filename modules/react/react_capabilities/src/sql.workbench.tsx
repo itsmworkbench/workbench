@@ -108,7 +108,7 @@ export function DisplaySqlWorkbench<S> ( { state, SuccessButton, FailureButton }
     } )
   };
   let queryOnClick = () => {
-    if ( action?.sql&& env )
+    if ( action?.sql && env )
       sqler.query ( [ action.sql ], env ).then ( ( res ) => {
         actionState.focusOn ( 'response' ).setJson ( res, '' )
       } )
@@ -144,12 +144,9 @@ function EnvDropdownWithTooltip<S> ( { state }: EnvDropdownWithTooltipProps<S> )
     sqler.listEnvs ().then ( setEnvs )
   }, [] )
 
-  // Function to format the data for the tooltip
-  const formatTooltipContent = ( key ) => {
-    const attributes = envs[ key ];
-    return Object.entries ( attributes ).map ( ( [ attr, value ] ) => `${attr}: ${value}` ).join ( ', ' );
-  };
+
   const selectedValue = state.optJson () || ''
+  let envName = state.optJson ();
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}> {/* Adjust the gap as needed */}
       <FormControl sx={{ width: '100%', minWidth: 120 }} size="small">
@@ -170,7 +167,7 @@ function EnvDropdownWithTooltip<S> ( { state }: EnvDropdownWithTooltipProps<S> )
           ) )}
         </Select>
       </FormControl>
-      <Tooltip title={<Typography>{JSON.stringify ( envs?.[ state.optJson () ] || 'No Environment Selected', null, 2 )}</Typography>} placement="right">
+      <Tooltip title={<Typography>{envName ? JSON.stringify ( envs?.[ envName ], null, 2 ) : 'No Environment Selected'}</Typography>} placement="right">
         <InfoIcon/>
       </Tooltip>
     </div>

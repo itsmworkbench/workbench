@@ -2,7 +2,7 @@ import { CommandFn, HasCurrentDirectory, HasEnv } from "@itsmworkbench/cli";
 import { startKoa } from "@itsmworkbench/koa";
 import { wizardOfOzApiHandlers } from "./api";
 import { loadFromIdStore } from "@itsmworkbench/idstore";
-import { defaultIdStoreDetails, defaultOrganisationUrlStoreConfig, defaultParserStore } from "@itsmworkbench/defaultdomains";
+import {  defaultOrganisationUrlStoreConfig } from "@itsmworkbench/defaultdomains";
 import { findListIds } from "@itsmworkbench/listids";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { nodeUrlstore } from "@itsmworkbench/nodeurlstore";
@@ -28,21 +28,17 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory & HasE
     },
     action: async ( commander, opts ) => {
       const { port, debug, directory } = opts
-      let details = defaultIdStoreDetails ( opts.id.toString (), yaml, defaultParserStore ( yaml ) );
       const aiVariables = chatgptTicketVariables
       const aiKnownVariables = chatgptKnownTicketVariables
       const aiEmails: AIEmailsFn = generalEmail
 
-      const idStore = loadFromIdStore ( details )
-      const allIds = findListIds ( details )
-      console.log ( 'lby', context.env[ 'LBY' ] )
       const orgs = defaultOrganisationUrlStoreConfig ( yaml, context.env )
       const gitOps = shellGitsops ( false )
       const urlStore = nodeUrlstore ( gitOps, orgs )
       const mailer: Mailer = await mailerFromUrlStore ( urlStore, "me", "me" )
       const sqlerL: Sqler = makeSqlerForDbPathShell ( executeScriptInShell, context.currentDirectory, opts.debug === true )
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,
-        wizardOfOzApiHandlers ( idStore, allIds, aiVariables, aiKnownVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore, mailer,sqlerL ) )
+        wizardOfOzApiHandlers (  aiVariables, aiKnownVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore, mailer,sqlerL ) )
     }
   })
 

@@ -25,7 +25,6 @@
     "@focuson/lens": "1.44.3",
     "@itsmworkbench/utils": "0.0.3",
     "@itsmworkbench/idstore": "0.0.3",
-    "@itsmworkbench/parser": "0.0.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {

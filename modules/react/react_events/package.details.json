@@ -10,7 +10,7 @@
   "links":       [
     "@itsmworkbench/components",
     "@itsmworkbench/events",
-    "@itsmworkbench/enrichedevents",
+    "@itsmworkbench/events",
     "@itsmworkbench/urlstore"
   ],
   "guards":      {

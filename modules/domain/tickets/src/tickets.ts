@@ -1,7 +1,6 @@
 import { DomainPlugin } from "@itsmworkbench/domain";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { addVariables, extractVariablesFromMarkdown, Variables } from "@itsmworkbench/variables";
-import { ParserStoreParser } from "@itsmworkbench/parser";
 import { nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
 
 export interface Ticket {
@@ -15,7 +14,7 @@ export function variablesFromTicket ( sofar: NameAnd<any>, t: Ticket ): ErrorsAn
   return addVariables ( extractVariablesFromMarkdown ( t.description ), { id: t.id } )
 }
 
-export const ticketParser: ParserStoreParser = ( id, s ) => {
+export const ticketParser = ( id, s ) => {
   const index = s.indexOf ( '\n---\n' )
   if ( index === -1 ) return { attributes: {}, description: s }
   return { attributes: JSON.parse ( s.substring ( 0, index ).trim () ), description: s.substring ( index + 5 ) }

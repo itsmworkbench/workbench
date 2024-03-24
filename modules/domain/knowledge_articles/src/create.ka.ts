@@ -4,7 +4,7 @@ import { TicketType } from "@itsmworkbench/tickettype";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { Action, isBaseAction } from "@itsmworkbench/actions";
 import { findUsedVariables, reverseTemplate } from "@itsmworkbench/utils";
-import { EnrichedEvent } from "@itsmworkbench/enrichedevents";
+import { EnrichedEvent } from "@itsmworkbench/events";
 
 export type EventWithWorkBenchContext<T> = Event & { context: WorkBenchContext<T> }
 

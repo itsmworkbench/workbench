@@ -26,7 +26,6 @@
     "@itsmworkbench/utils": "0.0.3",
     "@itsmworkbench/events": "0.0.3",
     "@itsmworkbench/eventstore": "0.0.3",
-    "@itsmworkbench/parser": "0.0.3",
     "@itsmworkbench/variables": "0.0.3",
     "@itsmworkbench/yaml": "0.0.3",
     "debug": "^4.3.4"

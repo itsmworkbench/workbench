@@ -1,8 +1,3 @@
-import { ListIds } from "@itsmworkbench/listids";
-import { KnowledgeArticle, KnowledgeArticles } from "@itsmworkbench/knowledge_articles";
-import { SoftwareCatalog, SoftwareCatalogs } from "@itsmworkbench/softwarecatalog";
-import { Template, Templates } from "@itsmworkbench/templates";
-import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
 import { Operator } from "@itsmworkbench/operator";
 import { ListNamesResult, NamedLoadResult, parseNamedUrlOrThrow, UrlStore } from "@itsmworkbench/urlstore";
 import { ErrorsAnd } from "@laoban/utils";

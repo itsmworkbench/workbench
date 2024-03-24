@@ -1,6 +1,6 @@
 import { findIdKeyAndPath, PartialFunctionK, transformKeysToCamelCase } from "@itsmworkbench/utils";
 import { YamlCapability } from "@itsmworkbench/yaml";
-import { ParserStoreParser } from "@itsmworkbench/parser";
+
 import { ErrorsAnd, mapErrors } from "@laoban/utils";
 
 export interface BaseMessage {
@@ -27,7 +27,7 @@ export type Conversation = {
 
 export type QuestionPFK<S> = PartialFunctionK<S, ChatDisplayData<any>>
 
-export const camelCaseAndIdYamlParser = ( yaml: YamlCapability ): ParserStoreParser => <T> ( id, s ): ErrorsAnd<T> => {
+export const camelCaseAndIdYamlParser = ( yaml: YamlCapability ) => <T> ( id, s ): ErrorsAnd<T> => {
   let json = yaml.parser ( s );
   console.log ( 'id', id, 'json', json )
   return mapErrors ( json, ( doc: any ) => {
@@ -41,7 +41,7 @@ export const camelCaseAndIdYamlParser = ( yaml: YamlCapability ): ParserStorePar
 }
 
 
-export const camelCaseAndIdAndNameParser = ( yaml: YamlCapability ): ParserStoreParser => ( id, s ) => {
+export const camelCaseAndIdAndNameParser = ( yaml: YamlCapability ) => ( id, s ) => {
   return mapErrors ( yaml.parser ( s ), input => {
     const doc = transformKeysToCamelCase<any> ( input )
     const { key, path: name } = findIdKeyAndPath ( id );

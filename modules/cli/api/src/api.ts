@@ -89,7 +89,7 @@ export const appendPostPF: KoaPartialFunction = {
   }
 }
 
-export const wizardOfOzApiHandlers = ( idStore: IdStore, getIds: ListIds, aiForVariables: AiTicketVariablesFn, aiForKnownVariables: AIKnownTicketVariablesFn, aiForEmail: AIEmailsFn,
+export const wizardOfOzApiHandlers = ( aiForVariables: AiTicketVariablesFn, aiForKnownVariables: AIKnownTicketVariablesFn, aiForEmail: AIEmailsFn,
                                        debug: boolean,
                                        details: NameAnd<NameSpaceDetails>,
                                        urlStore: UrlStore,

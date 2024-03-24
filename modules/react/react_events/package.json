@@ -17,7 +17,6 @@
   "dependencies": {
     "@itsmworkbench/components": "0.0.3",
     "@itsmworkbench/events": "0.0.3",
-    "@itsmworkbench/enrichedevents": "0.0.3",
     "@itsmworkbench/urlstore": "0.0.3",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",

@@ -4,7 +4,7 @@ import { operatorNameSpaceDetails } from "@itsmworkbench/operator";
 import { ticketNamespaceDetails } from "@itsmworkbench/tickets";
 import { NameAnd } from "@laoban/utils";
 import { knowledgeArticleNameSpaceDetails } from "@itsmworkbench/knowledge_articles";
-import { softwareCatalogNameSpaceDetails } from "@itsmworkbench/softwarecatalog";
+
 import { ticketEventsNameSpaceDetails } from "@itsmworkbench/ticketevents";
 import { ticketTypeNamespaceDetails } from "@itsmworkbench/tickettype";
 
@@ -14,7 +14,6 @@ export function defaultNameSpaceDetails ( yaml: YamlCapability, env: NameAnd<str
   return {
     ks: knowledgeArticleNameSpaceDetails ( yaml ),
     ka: ticketTypeNamespaceDetails ( yaml ),
-    sc: softwareCatalogNameSpaceDetails ( yaml ),
     ticket: ticketNamespaceDetails (),
     operator: operatorNameSpaceDetails ( yaml, env ),
     ticketevents: ticketEventsNameSpaceDetails ()

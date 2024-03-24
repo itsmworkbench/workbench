@@ -15,7 +15,7 @@ import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
 import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
 import { hasErrors, mapK, value } from "@laoban/utils";
-import { defaultEventEnricher, EnrichedEvent, enrichEvent } from "@itsmworkbench/enrichedevents";
+import { defaultEventEnricher, EnrichedEvent, enrichEvent } from "@itsmworkbench/events";
 import { displayTicketEventPlugin } from '@itsmworkbench/react_ticket';
 import { displayTicketTypeEventPlugin } from '@itsmworkbench/react_tickettype';
 import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";

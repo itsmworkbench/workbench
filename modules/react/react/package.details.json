@@ -24,7 +24,7 @@
     "@itsmworkbench/react_devmode",
     "@itsmworkbench/react_displayinfo",
     "@itsmworkbench/react_events",
-    "@itsmworkbench/enrichedevents",
+    "@itsmworkbench/events",
     "@itsmworkbench/react_knowledge_articles",
     "@itsmworkbench/react_ldap",
     "@itsmworkbench/react_new_ticket",
