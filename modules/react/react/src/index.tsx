@@ -15,7 +15,7 @@ import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
 import { hasErrors, mapK, value } from "@laoban/utils";
 import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor, displayTicketEventPlugin } from '@itsmworkbench/reactticket';
-import { addSaveKnowledgeArticleSideEffect, displayTicketTypeEventPlugin } from '@itsmworkbench/reacttickettype';
+import { addSaveKnowledgeArticleSideEffect, displayCreateKnowledgeArticlePlugin, displaySelectKnowledgeArticlePlugin, displayTicketTypeEventPlugin } from '@itsmworkbench/reacttickettype';
 
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
@@ -27,6 +27,8 @@ import { displaySqlEventPlugin } from '@itsmworkbench/reactsql';
 import { addAiMailerSideEffectProcessor, displayEmailEventPlugin, displayMailerPlugin } from '@itsmworkbench/reactmailer';
 import { displayMessageEventPlugin } from "@itsmworkbench/reactevents";
 import { displayEventPlugins } from "@itsmworkbench/reactevents/dist/src/display.events.plugins";
+import { displayReviewTicketWorkbench } from "@itsmworkbench/reactticket/dist/src/ticket/display.ticket.plugins";
+import { displaySqlPlugin } from "@itsmworkbench/reactsql/dist/src/display.sql.plugin";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -58,11 +60,15 @@ const eventPlugins = [
   displayMessageEventPlugin<ItsmState> () ];
 
 
-const displPlugins: ActionPlugIn<ItsmState, any>[] = [
+const displayPlugins: ActionPlugIn<ItsmState, any>[] = [
   ...displayEventPlugins<ItsmState> ( ( s: ItsmState ) => s?.debug?.showDevMode, eventPlugins, [], <div>Plus Menu</div> ),
   displayMailerPlugin<ItsmState>,
-  // displayReceiveEmailPlugin (),
-
+  displayReceiveEmailPlugin<ItsmState>,
+  displayLdapPlugin<ItsmState>,
+  displayReviewTicketWorkbench<ItsmState>,
+  displaySqlPlugin<ItsmState>,
+  displaySelectKnowledgeArticlePlugin<ItsmState>,
+  displayCreateKnowledgeArticlePlugin<ItsmState>,
 ]
 
 const mailer = apiClientMailer ( rootUrl + "api/email" )
