@@ -1,7 +1,6 @@
 export * from './src/ai.email.sideeffect'
 export * from './src/display.capabilities.list';
 export * from './src/display.ldap.event';
-export * from './src/display.sql.event';
 export * from './src/display.email.event';
 export * from './src/display.receiveemail.event';
 export * from './src/capabilities.menu'
@@ -12,5 +11,3 @@ export * from './src/select.knowledge.article.workbench'
 export * from './src/ldap.workbench';
 export * from './src/ka.workspace'
 export * from './src/save.ka.sideeffect'
-export * from './src/sql.workbench';
-export * from './src/SqlData';

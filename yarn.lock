@@ -581,6 +581,18 @@
     "@laoban/utils" "1.4.45"
     debug "^4.3.4"
 
+"@itsmworkbench/questions@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/questions/-/questions-0.0.3.tgz#6dd88f0204fe626dd2b8ab038b1d64277ad5ad9d"
+  integrity sha512-hJJ03f0ZWjGl+ATeLySE5vGOE/n9XUXl4hqh5SCTUxLyRRBWEZXMmTPlN6PRTf3h8I1GXM2k0fjl9tDrwQs99w==
+  dependencies:
+    "@focuson/lens" "1.44.3"
+    "@focuson/state" "1.44.3"
+    "@itsmworkbench/domain" "0.0.3"
+    "@itsmworkbench/tickets" "0.0.3"
+    "@laoban/utils" "1.4.45"
+    debug "^4.3.4"
+
 "@itsmworkbench/react_actions@0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@itsmworkbench/react_actions/-/react_actions-0.0.3.tgz#30d8cbb139a1f5683f0f76e1a3f70e2889edb332"
@@ -618,10 +630,10 @@
     react "^18.2.0"
     react-dom "^18.2.0"
 
-"@itsmworkbench/react_sql@0.0.3":
+"@itsmworkbench/react_softwarecatalog@0.0.3":
   version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@itsmworkbench/react_sql/-/react_sql-0.0.3.tgz#d4667e045b3787a4e08a2eb38150c070887ab509"
-  integrity sha512-UMXGyIXZn//6BEpmHk+/9f5cQYBxnsoj+afSGOpHxGUa3x3MyYMpMhtCAAimv3qxuhC/c4KrKthDlscxTporfw==
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/react_softwarecatalog/-/react_softwarecatalog-0.0.3.tgz#9659e7c2e4ebcb80c1cfd130f6d64212d290e5b1"
+  integrity sha512-4pYmeLpc3mNBs16/1jF68omfPMbc7xa9NGY+iMaQRzXo0gOC2NYLJh3kE+rm3NN8/3KIRJpUAnSpNWq5ag0V8Q==
   dependencies:
     "@emotion/react" "^11.11.3"
     "@emotion/styled" "^11.11.0"
@@ -629,15 +641,11 @@
     "@focuson/state" "1.44.3"
     "@itsmworkbench/components" "0.0.3"
     "@itsmworkbench/domain" "0.0.3"
-    "@itsmworkbench/react_core" "0.0.3"
-    "@itsmworkbench/react_softwarecatalog" "0.0.3"
-    "@itsmworkbench/variables" "0.0.3"
+    "@itsmworkbench/softwarecatalog" "0.0.3"
     "@laoban/utils" "1.4.45"
     "@mui/icons-material" "^5.15.10"
     "@mui/material" "^5.15.10"
     debug "^4.3.4"
-    react "^18.2.0"
-    react-dom "^18.2.0"
 
 "@itsmworkbench/softwarecatalog@0.0.3":
   version "0.0.3"

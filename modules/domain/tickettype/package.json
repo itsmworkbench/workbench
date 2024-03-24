@@ -23,6 +23,7 @@
     "@laoban/utils": "1.4.45",
     "@itsmworkbench/actions": "0.0.3",
     "@itsmworkbench/domain": "0.0.3",
+    "@itsmworkbench/tickets": "0.0.3",
     "@itsmworkbench/yaml": "0.0.3",
     "debug": "^4.3.4"
   },

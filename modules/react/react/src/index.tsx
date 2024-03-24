@@ -4,7 +4,7 @@ import { lensState } from "@focuson/state";
 
 import { addEventStoreListener, addEventStoreModifier, eventStore, polling, setEventStoreValue, startPolling } from "@itsmworkbench/eventstore";
 import { apiLoading, ApiLoading, } from "@itsmworkbench/apiclienteventstore";
-import { defaultEventProcessor, Event, processEvents } from "@itsmworkbench/events";
+import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent, Event, processEvents } from "@itsmworkbench/events";
 
 import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
@@ -15,17 +15,16 @@ import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
 import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
 import { hasErrors, mapK, value } from "@laoban/utils";
-import { defaultEventEnricher, EnrichedEvent, enrichEvent } from "@itsmworkbench/events";
 import { displayTicketEventPlugin } from '@itsmworkbench/react_ticket';
 import { displayTicketTypeEventPlugin } from '@itsmworkbench/react_tickettype';
 import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
-import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin, displaySqlEventPlugin } from '@itsmworkbench/react_capabilities';
-import { AiEmailProvider, AiVariablesProvider, MailerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
+import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin } from '@itsmworkbench/react_capabilities';
+import { AiEmailProvider, AiVariablesProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
-import { SqlerProvider } from "@itsmworkbench/components";
+import { displaySqlEventPlugin } from '@itsmworkbench/reactsql';
 
 
 const rootElement = document.getElementById ( 'root' );

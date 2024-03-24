@@ -1,0 +1,21 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/reactsql",
+  "description": "How to display sql in react",
+  "packageJson": {
+    "files":        ["build/"],
+    "dependencies": {
+    },
+    "scripts":      {"start": "react-scripts start"}
+  },
+  "links":       [
+    "@itsmworkbench/react_events",
+    "@itsmworkbench/components"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false,
+    "react":   false
+  }
+}

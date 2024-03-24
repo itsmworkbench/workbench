@@ -4,7 +4,7 @@ import { DisplayVariables, EnrichedEventsProvider, MainAppLayout, SideEffectsPro
 import React from "react";
 import { actionO, enrichedEventsO, eventsL, eventsO, ItsmState, sideEffectsL } from "../state/itsm.state";
 import { ConversationPlugin } from "@itsmworkbench/react_conversation";
-import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplayReceiveEmailWorkbench, DisplayReviewTicketWorkbench, DisplaySelectKnowledgeArticleWorkbench, DisplaySqlWorkbench, SuggestEmailForTicketButton } from "@itsmworkbench/react_capabilities";
+import { DisplayCapabilitiesMenu, DisplayEmailWorkbench, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplayReceiveEmailWorkbench, DisplayReviewTicketWorkbench, DisplaySelectKnowledgeArticleWorkbench,  SuggestEmailForTicketButton } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
 import { NewTicketWizard } from "@itsmworkbench/react_new_ticket";
@@ -16,6 +16,7 @@ import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/urlstore";
 import { Welcome } from "./welcome";
 import { DisplayInfoPanel } from "@itsmworkbench/react_displayinfo";
+import { DisplaySqlWorkbench } from "@itsmworkbench/reactsql";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
