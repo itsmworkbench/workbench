@@ -17,7 +17,7 @@ import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor } from 
 import { hasErrors, mapK, value } from "@laoban/utils";
 import { displayTicketEventPlugin } from '@itsmworkbench/react_ticket';
 import { displayTicketTypeEventPlugin } from '@itsmworkbench/react_tickettype';
-import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
+
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
 import { addSaveKnowledgeArticleSideEffect, displayLdapEventPlugin, displayReceiveEmailEventPlugin } from '@itsmworkbench/react_capabilities';
@@ -26,6 +26,7 @@ import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
 import { displaySqlEventPlugin } from '@itsmworkbench/reactsql';
 import { addAiEmailSideEffectProcessor, displayEmailEventPlugin } from '@itsmworkbench/reactmailer';
+import { displayMessageEventPlugin } from "@itsmworkbench/reactevents";
 
 
 const rootElement = document.getElementById ( 'root' );
