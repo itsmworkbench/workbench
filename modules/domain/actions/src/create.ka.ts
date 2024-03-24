@@ -1,10 +1,9 @@
-import { Event } from "@itsmworkbench/events";
+import { EnrichedEvent, Event } from "@itsmworkbench/events";
 import { Capability, EmailWorkBenchContext, isEmailWorkBenchContext, isLdapWorkBenchContext, isReceiveEmailWorkbenchContext, isReviewTicketWorkBenchContext, isSqlWorkBenchContext, isWorkBenchContext, LdapWorkBenchContext, ReceiveEmailWorkbenchContext, ReviewTicketWorkBenchContext, SqlWorkBenchContext, WorkBenchContext } from "@itsmworkbench/domain";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
-import { Action, isBaseAction } from "@itsmworkbench/actions";
+import { Action, isBaseAction } from "./actions";
 import { findUsedVariables, reverseTemplate } from "@itsmworkbench/utils";
-import { EnrichedEvent } from "@itsmworkbench/events";
 
 export type EventWithWorkBenchContext<T> = Event & { context: WorkBenchContext<T> }
 
@@ -90,7 +89,7 @@ export function reverseLdapAction ( variables: Record<string, string>, a: Action
 
 export function reverseReviewTicketAction ( variables: Record<string, string>, a: Action, c: ReviewTicketWorkBenchContext ): Action {
   return {
-    ...basics(a),
+    ...basics ( a ),
     by: 'ReviewTicket',
   }
 }
@@ -103,7 +102,7 @@ export function reverseAction ( variables: Record<string, string>, e: EventWithW
   if ( isEmailWorkBenchContext ( e.context ) ) return reverseEmailAction ( variables, a, e.context )
   if ( isLdapWorkBenchContext ( e.context ) ) return reverseLdapAction ( variables, a, e.context )
   if ( isReceiveEmailWorkbenchContext ( e.context ) ) return reverseReceiveEmailAction ( variables, a, e.context )
-  if (isReviewTicketWorkBenchContext(e.context)) return reverseReviewTicketAction(variables, a, e.context)
+  if ( isReviewTicketWorkBenchContext ( e.context ) ) return reverseReviewTicketAction ( variables, a, e.context )
   return a
 }
 

@@ -1,5 +1,5 @@
-import { Action } from "@itsmworkbench/actions";
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
+import { Action } from "./actions";
 
 export function deref ( a: Action, s: string, dic: any ) {
   return derefence ( `dereferenceTemplateToActions ${JSON.stringify ( a )}`, dic, s, { variableDefn: dollarsBracesVarDefn, allowUndefined: true } )

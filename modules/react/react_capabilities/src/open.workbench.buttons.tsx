@@ -4,7 +4,7 @@ import { PhaseName } from "@itsmworkbench/domain";
 import { Button } from "@mui/material";
 import React from "react";
 import { TicketType } from "@itsmworkbench/tickettype";
-import { allWorkbenchEvents, findActionInEventsFor, findWorkbenchEventFor, lastTicketType } from "@itsmworkbench/knowledge_articles";
+import { allWorkbenchEvents, findActionInEventsFor, findWorkbenchEventFor, lastTicketType } from "@itsmworkbench/actions";
 import { Event } from "@itsmworkbench/events";
 
 //this is driven from the events...

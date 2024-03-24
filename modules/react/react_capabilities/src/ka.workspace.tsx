@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Container, Tooltip, Typography } from "@mui/material";
 import { DisplayYaml, FocusedTextInput, mustBeIdentifier, Status, SuccessFailContextFn, useTicketType, useVariables } from "@itsmworkbench/components";
 import { Event } from "@itsmworkbench/events";
-import { makeKnowledgeArticle } from "@itsmworkbench/knowledge_articles";
+import { makeKnowledgeArticle } from "@itsmworkbench/actions";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { SaveKnowledgeArticleButton } from "./save.ka.sideeffect";
 import { ErrorsAnd, hasErrors } from "@laoban/utils";

@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 import { EnrichedEvent } from "@itsmworkbench/events";
 import { TicketType } from "@itsmworkbench/tickettype";
-import { findActionsInEventsMergeWithTicketType, lastTicketType } from "@itsmworkbench/knowledge_articles";
+import { findActionsInEventsMergeWithTicketType, lastTicketType } from "@itsmworkbench/actions";
 
 
 export interface EnrichedEventsProviderProps {

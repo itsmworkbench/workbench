@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import { Event } from "@itsmworkbench/events";
 import { findActionInEventsFor, lastTicketType, makeKnowledgeArticle } from "./create.ka";
 

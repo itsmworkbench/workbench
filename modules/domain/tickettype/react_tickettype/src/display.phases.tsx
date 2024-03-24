@@ -7,7 +7,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { TabPhaseAndActionSelectionState, workbenchName } from "@itsmworkbench/react_core";
 import { Status, StatusIndicator, useActionInEventsFor, useStatus, useTicketType, useVariables } from "@itsmworkbench/components";
-import { dereferenceAction } from "@itsmworkbench/knowledge_articles";
+import { dereferenceAction } from "@itsmworkbench/actions";
 import { TicketType } from "@itsmworkbench/tickettype";
 
 //the first any is actually an Action

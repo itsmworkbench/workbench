@@ -572,6 +572,16 @@
     "@laoban/utils" "1.4.45"
     debug "^4.3.4"
 
+"@itsmworkbench/knowledge_articles@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@itsmworkbench/knowledge_articles/-/knowledge_articles-0.0.3.tgz#dbc446fadc3ceab7728af110cfff0d2250afad83"
+  integrity sha512-i4R965/VpklKQWR7D9XbdJ93ETGd/uvGswB0WthDz20P9DCQuCOA5f277U8lBF2gUwdjzifc3Kol1kIT3yo5OA==
+  dependencies:
+    "@itsmworkbench/actions" "0.0.3"
+    "@itsmworkbench/domain" "0.0.3"
+    "@itsmworkbench/yaml" "0.0.3"
+    debug "^4.3.4"
+
 "@itsmworkbench/listids@0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@itsmworkbench/listids/-/listids-0.0.3.tgz#f0af25822c438b625c0278fde64b23e47a1328e3"

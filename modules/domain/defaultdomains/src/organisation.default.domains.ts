@@ -3,7 +3,7 @@ import { YamlCapability } from "@itsmworkbench/yaml";
 import { operatorNameSpaceDetails } from "@itsmworkbench/operator";
 import { ticketNamespaceDetails } from "@itsmworkbench/tickets";
 import { NameAnd } from "@laoban/utils";
-import { knowledgeArticleNameSpaceDetails } from "@itsmworkbench/knowledge_articles";
+import { knowledgeArticleNameSpaceDetails } from "@itsmworkbench/actions";
 
 import { ticketEventsNameSpaceDetails } from "@itsmworkbench/ticketevents";
 import { ticketTypeNamespaceDetails } from "@itsmworkbench/tickettype";
