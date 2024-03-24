@@ -44,5 +44,5 @@ export const displayNewTicketWizard =
                  ({
                    by: "newTicket",
                    props,
-                   render: ( props ) => <NewTicketWizard {...props} />
+                   render: ( s, props ) => <NewTicketWizard {...props} />
                  })

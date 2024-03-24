@@ -2,7 +2,7 @@ import React from "react";
 import { LensProps, LensProps3, LensState } from "@focuson/state";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
-import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, useAiEmail, useMailer, useVariables } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, SuccessFailureButton, useAiEmail, useMailer, useVariables } from "@itsmworkbench/components";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { EmailTempData, EmailWorkBenchContext } from "@itsmworkbench/domain";
@@ -41,8 +41,6 @@ export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicke
 
 export interface DisplayEmailWorkbenchProps<S> extends LensProps<S, Action, any> {
   SuggestButton: React.ReactNode
-  SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
-  FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
 
@@ -72,7 +70,7 @@ export function TestMailerConnectionButton<S> ( { state }: LensProps<S, any, any
   return <Button variant="contained" color="primary" onClick={testConnection} endIcon={<TestIcon/>}> Test Connection </Button>
 
 }
-export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton, FailureButton }: DisplayEmailWorkbenchProps<S> ) {
+export function DisplayEmailWorkbench<S> ( { state, SuggestButton }: DisplayEmailWorkbenchProps<S> ) {
   const action: any = state.optJson ()
   const to = action.to || ''
   const subject = action.subject || ''
@@ -109,8 +107,7 @@ export function DisplayEmailWorkbench<S> ( { state, SuggestButton, SuccessButton
         <Button variant="contained" color="primary" endIcon={<RefreshIcon/>}> Reset</Button>
       </Box>
       {action.response && <pre>{action.response}</pre>}
-      {SuccessButton ( contextFn )}
-      {FailureButton ( contextFn )}
+      <SuccessFailureButton title='Click when have sent the email' successOrFail={true} context={contextFn}/>
     </Box>
 
   </Container>

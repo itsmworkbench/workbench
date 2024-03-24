@@ -1,7 +1,7 @@
 import { LensProps3 } from "@focuson/state";
 import React from "react";
 import { Container, Tooltip, Typography } from "@mui/material";
-import { DisplayYaml, FocusedTextInput, mustBeIdentifier, SuccessFailContextFn, useTicketType, useVariables } from "@itsmworkbench/components";
+import { DisplayYaml, FocusedTextInput, mustBeIdentifier, useTicketType, useVariables } from "@itsmworkbench/components";
 import { Event } from "@itsmworkbench/events";
 import { makeKnowledgeArticle } from "@itsmworkbench/defaultdomains";
 import { TicketType } from "@itsmworkbench/tickettype";
@@ -17,11 +17,9 @@ export interface KnowledgeArticleTempData {
 
 
 export interface DisplayKnowledgeArticleWorkbenchProps<S> extends LensProps3<S, KnowledgeArticleTempData, Event[], SideEffect[], any> {
-  SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
-  FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
-export function DisplayKnowledgeArticleWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplayKnowledgeArticleWorkbenchProps<S> ) {
+export function DisplayKnowledgeArticleWorkbench<S> ( { state }: DisplayKnowledgeArticleWorkbenchProps<S> ) {
   const {} = state.optJson1 () || {}
   const variables = useVariables ()
   const ticketType = useTicketType ()

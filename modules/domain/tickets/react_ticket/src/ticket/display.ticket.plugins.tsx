@@ -7,6 +7,6 @@ import { DisplayReviewTicketWorkbench, DisplayReviewTicketWorkbenchProps } from 
 export const displayReviewTicketWorkbench = <S, > ( props: <State, >( s: LensState<State, S, any> ) => DisplayReviewTicketWorkbenchProps<S> ): ActionPluginDetails<S, DisplayReviewTicketWorkbenchProps<S>> => ({
   by: "ReviewTicketWorkbench",
   props,
-  render: ( props ) => <DisplayReviewTicketWorkbench {...props} />
+  render: ( s, props ) => <DisplayReviewTicketWorkbench {...props} />
 });
 

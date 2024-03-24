@@ -7,5 +7,5 @@ import { DisplayEmailWorkbench, DisplayEmailWorkbenchProps } from "./mailer.work
 export const displayMailerPlugin = <S, > ( props: <State, >( s: LensState<State, S, any> ) => DisplayEmailWorkbenchProps<S> ): ActionPluginDetails<S, DisplayEmailWorkbenchProps<S>> => ({
   by: "EmailReviewTicketWorkbench",
   props,
-  render: ( props ) => <DisplayEmailWorkbench {...props} />
+  render: ( s, props ) => <DisplayEmailWorkbench {...props} />
 });

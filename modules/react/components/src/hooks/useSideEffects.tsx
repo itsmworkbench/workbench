@@ -1,9 +1,8 @@
-import { PhaseAnd } from "@itsmworkbench/domain";
 import React, { useContext } from "react";
-import { NameAnd } from "@laoban/utils";
 import { Lens } from "@focuson/lens";
-import { SideEffect } from "@itsmworkbench/react_core";
+import { SideEffect, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { LensState } from "@focuson/state";
+import { SelectionContext } from "./useSelection";
 
 
 export interface SideEffectsProviderProps {
@@ -27,4 +26,20 @@ export function useSideEffects<S> ( s: LensState<S, any, any> ): AddSideEffectFn
     const oldSes = seState.optJson () || []
     seState.setJson ( [ ...(oldSes || []), ...ses ], 'useSideEffect' )
   };
+}
+
+export type SetSelectionAndAddSideEffectFn = ( sel: string, ...sideEffects: SideEffect[] ) => void | Promise<void>
+export function useSideEffectsAndSelection (): [ TabPhaseAndActionSelectionState | undefined, SetSelectionAndAddSideEffectFn ] {
+  const seLens = useContext ( SideEffectsProviderContext );
+  if ( seLens === undefined ) throw new Error ( "useSideEffectsAndSelection must be used within a SideEffectsProvider" );
+
+  const selState: LensState<any, TabPhaseAndActionSelectionState, any> |undefined= useContext ( SelectionContext );
+  if ( selState === undefined ) throw new Error ( "useSideEffectsAndSelection must be used within a SelectionProvider" );
+
+  const state2 = selState.addSecond ( seLens ).focus1On ( 'workspaceTab' )
+  const existingTab = selState.optJson ()
+  return [ existingTab, ( tab, ...ses ) => {
+    const oldSes = seLens.getOption ( selState.main ) || []
+    state2.setJson ( tab, [ ...(oldSes || []), ...ses ], 'useSideEffectsAndSelection' )
+  } ]
 }

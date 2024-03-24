@@ -1,35 +1,31 @@
-import { LensProps2 } from "@focuson/state";
 import React from "react";
 import { Button, ButtonProps } from "@mui/material";
 import { PhaseName } from "@itsmworkbench/domain";
-import { EventSideEffect, SideEffect, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
+import { EventSideEffect } from "@itsmworkbench/react_core";
 import { SetValueEvent } from "@itsmworkbench/events";
+import { useSideEffectsAndSelection } from "../hooks/useSideEffects";
 
 
 export type SuccessFailContextFn = ( tab: string | undefined, phase: PhaseName | undefined, action: string | undefined, successOrFail: boolean | undefined ) => any
-export interface SuccessFailureButtonProps<S> extends LensProps2<S, SideEffect[], TabPhaseAndActionSelectionState, any>, ButtonProps {
-  title?: string;
-  pathToStatus: string
+export interface SuccessFailureButtonProps<S> extends ButtonProps {
+  pathToStatus?: string
   successOrFail: boolean;
   context: SuccessFailContextFn
 }
-export function SuccessFailureButton<S> ( { state, successOrFail, title, pathToStatus, context, ...rest }: SuccessFailureButtonProps<S> ) {
+export function SuccessFailureButton<S> ( { successOrFail, title, pathToStatus, context, ...rest }: SuccessFailureButtonProps<S> ) {
   const display = title ?? (successOrFail ? 'Success' : 'Failure');
-
+  const [ existingSelection, setJson ] = useSideEffectsAndSelection ()
+  if ( pathToStatus === undefined ) pathToStatus = 'forTicket.status'//TODO horrible hack. fix this when have lens jumping across network boundaries nicely
   function onClick () {
-    const existingSelection = state.optJson2 () || {};
-    const phase: PhaseName = existingSelection.phase as PhaseName;
-    const action = existingSelection.action;
+    const phase: PhaseName = existingSelection?.phase as PhaseName;
+    const action = existingSelection?.action;
 
     const sve: SetValueEvent = {
       event: 'setValue', value: successOrFail, path: pathToStatus + '.' + phase + '.' + action,
       context: context ( existingSelection?.workspaceTab, phase, action, successOrFail )
     }
     const se: EventSideEffect = { command: 'event', event: sve }
-    const newSelection: TabPhaseAndActionSelectionState = { workspaceTab: 'chat' };
-    const oldSes = state.optJson1 () || []
-    const newSes = [ ...oldSes, se ]
-    state.setJson ( newSes, newSelection, 'Clicked in SuccessFailureButton' )
+    setJson ( 'chat', se )
   }
   return <Button {...rest} variant="contained" onClick={onClick}>{display}</Button>
 

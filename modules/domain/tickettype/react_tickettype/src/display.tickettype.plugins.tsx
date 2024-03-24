@@ -8,11 +8,11 @@ import { DisplayKnowledgeArticleWorkbench, DisplayKnowledgeArticleWorkbenchProps
 export const displaySelectKnowledgeArticlePlugin = <S, > ( props: <State, >( s: LensState<State, S, any> ) => DisplaySelectKnowledgeArticleWorkbenchProps<S> ): ActionPluginDetails<S, DisplaySelectKnowledgeArticleWorkbenchProps<S>> => ({
   by: "SelectKnowledgeArticleWorkbench",
   props,
-  render: ( props ) => <DisplaySelectKnowledgeArticleWorkbench {...props} />
+  render: ( s, props ) => <DisplaySelectKnowledgeArticleWorkbench {...props} />
 });
 
 export const displayCreateKnowledgeArticlePlugin = <S, > ( props: <State, >( s: LensState<State, S, any> ) => DisplayKnowledgeArticleWorkbenchProps<S> ): ActionPluginDetails<S, DisplayKnowledgeArticleWorkbenchProps<S>> => ({
   by: "CreateKnowledgeArticleWorkbench",
   props,
-  render: ( props ) => <DisplayKnowledgeArticleWorkbench {...props} />
+  render: ( s, props ) => <DisplayKnowledgeArticleWorkbench {...props} />
 });

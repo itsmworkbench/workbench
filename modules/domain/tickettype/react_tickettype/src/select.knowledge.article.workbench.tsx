@@ -1,6 +1,6 @@
 import { LensProps2, LensState } from "@focuson/state";
 import React from "react";
-import { SelectAndLoadFromUrlStore, SuccessFailContextFn, useTicketType } from "@itsmworkbench/components";
+import { SelectAndLoadFromUrlStore, SuccessFailContextFn, SuccessFailureButton, useTicketType } from "@itsmworkbench/components";
 import { IdAnd, splitAndCapitalize } from "@itsmworkbench/utils";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { SelectKnowledgeArticleWorkBenchContext } from "@itsmworkbench/domain";
@@ -14,11 +14,9 @@ import { DisplayPhasesForTicketType } from "@itsmworkbench/reacttickettype"
 //bit hacky... need to clean this up
 export interface DisplaySelectKnowledgeArticleWorkbenchProps<S> extends LensProps2<S, Action, IdAnd<TicketType>, any> {
   targetPath: string
-  SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
-  FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
-export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButton, FailureButton, targetPath }: DisplaySelectKnowledgeArticleWorkbenchProps<S> ) {
+export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, targetPath }: DisplaySelectKnowledgeArticleWorkbenchProps<S> ) {
   const action: any = (state.optJson1 () || {})
   const appTT = useTicketType ()
   const ticketType: TicketType = action.ticketType || {}
@@ -62,13 +60,13 @@ export function DisplaySelectKnowledgeArticleWorkbench<S> ( { state, SuccessButt
                                      ticketType: { id: idAndTicketType?.id, name: idAndTicketType?.name, ...(idAndTicketType?.item || {}) },
                                    }
                                  })
-                                 return SuccessButton ( contextFn )
+                                 return <SuccessFailureButton title='Save' successOrFail={true}  context={contextFn}/>
                                }
                                }
                                targetPath={targetPath}
                                state={state.state2 ()}/>
-
   </>
+
 }
 
 

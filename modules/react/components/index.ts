@@ -19,6 +19,7 @@ export * from './src/hooks/useYaml';
 export * from './src/hooks/useAiVariables';
 export * from './src/hooks/useMailer';
 export * from './src/hooks/useEnrichedEvents';
+export * from './src/hooks/useSelection';
 export * from './src/hooks/useSideEffects';
 export * from './src/hooks/useSqler';
 export * from './src/hooks/useStatus';

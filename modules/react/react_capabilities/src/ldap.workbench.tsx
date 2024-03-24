@@ -1,23 +1,19 @@
-import { LensProps, LensProps2, LensState } from "@focuson/state";
+import { LensProps2, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, SuccessFailureButton } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { LdapWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
-import { Event } from "@itsmworkbench/events";
 import { ActionPluginDetails } from "@itsmworkbench/react_core";
-import { DisplayEvents } from "@itsmworkbench/reactevents/dist/src/display.events";
 
 
 export interface DisplayLdapWorkbenchProps<S> extends LensProps2<S, Action, any, any> {
-  SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
-  FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
-export function DisplayLdapWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplayLdapWorkbenchProps<S> ) {
+export function DisplayLdapWorkbench<S> ( { state }: DisplayLdapWorkbenchProps<S> ) {
   let actionState: LensState<S, any, any> = state.state1 ();
   const action: any = state.optJson1 ()
   const email = action?.email || ''
@@ -47,18 +43,16 @@ export function DisplayLdapWorkbench<S> ( { state, SuccessButton, FailureButton 
       </Box>
       <Typography variant="subtitle1" gutterBottom>LDAP Result</Typography>
       <FocusedTextArea fullWidth variant="outlined" state={actionState.focusOn ( 'response' )}/>
-      {SuccessButton ( contextFn )}
-      {FailureButton ( contextFn )}
+      <SuccessFailureButton title='The LDAP details are good' successOrFail={true} context={contextFn}/>
+      <SuccessFailureButton title='The LDAP details show a problem' successOrFail={false} context={contextFn}/>
     </Box>
   </Container>
 }
 
-export const displayLdapPlugin = ( SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode,
-                                   FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode ) =>
-  <S, > ( props: <State, >( s: LensState<State, S, any> ) => LensProps2<S, Action, any, any> ): ActionPluginDetails<S, LensProps2<S, Action, any, any>> =>
-    ({
-      by: "LDAPWorkbench",
-      props,
-      render: ( props ) => <DisplayLdapWorkbench {...props} SuccessButton={SuccessButton} FailureButton={FailureButton}/>
-    })
+export const displayLdapPlugin = <S, > ( props: <State, >( s: LensState<State, S, any> ) => DisplayLdapWorkbenchProps<S> ): ActionPluginDetails<S, DisplayLdapWorkbenchProps<S>> =>
+  ({
+    by: "LDAPWorkbench",
+    props,
+    render: ( s, props ) => <DisplayLdapWorkbench {...props} />
+  })
 

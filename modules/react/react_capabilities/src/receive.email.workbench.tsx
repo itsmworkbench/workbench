@@ -3,20 +3,17 @@ import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { FocusedTextArea, SuccessFailContextFn } from "@itsmworkbench/components";
+import { FocusedTextArea, SuccessFailContextFn, SuccessFailureButton } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { ReceiveEmailWorkbenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
-import { DisplayLdapWorkbench, DisplayLdapWorkbenchProps } from "./ldap.workbench";
 import { ActionPluginDetails } from "@itsmworkbench/react_core";
 
 
 export interface DisplayReceiveEmailWorkbenchProps<S> extends LensProps2<S, Action, any, any> {
-  SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
-  FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
-export function DisplayReceiveEmailWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplayReceiveEmailWorkbenchProps<S> ) {
+export function DisplayReceiveEmailWorkbench<S> ( { state }: DisplayReceiveEmailWorkbenchProps<S> ) {
   const action: any = state.optJson1 ()
   const email = action?.email || ''
   const from = action?.from || ''
@@ -48,19 +45,17 @@ export function DisplayReceiveEmailWorkbench<S> ( { state, SuccessButton, Failur
       </Box>
       <Typography variant="subtitle1" gutterBottom>Email</Typography>
       <FocusedTextArea state={actionState.focusOn ( 'email' )}/>
-      {SuccessButton ( contextFn )}
-      {FailureButton ( contextFn )}
+      <SuccessFailureButton title='Email read successfully' successOrFail={true} context={contextFn}/>
     </Box>
 
   </Container>
 }
 
 
-export const displayReceiveEmailPlugin = ( SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode,
-                                           FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode ) =>
-  <S, > ( props: <State, >( s: LensState<State, S, any> ) => LensProps2<S, Action, any, any> ): ActionPluginDetails<S, LensProps2<S, Action, any, any>> =>
-    ({
-      by: "ReceiveEmailWorkbench",
-      props,
-      render: ( props ) => <DisplayReceiveEmailWorkbench {...props} SuccessButton={SuccessButton} FailureButton={FailureButton}/>
-    })
+export const displayReceiveEmailPlugin =
+               <S, > ( props: <State, >( s: LensState<State, S, any> ) => LensProps2<S, Action, any, any> ): ActionPluginDetails<S, LensProps2<S, Action, any, any>> =>
+                 ({
+                   by: "ReceiveEmailWorkbench",
+                   props,
+                   render: ( s, props ) => <DisplayReceiveEmailWorkbench {...props} />
+                 })

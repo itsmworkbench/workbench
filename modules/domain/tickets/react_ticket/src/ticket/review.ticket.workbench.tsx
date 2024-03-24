@@ -1,7 +1,7 @@
 import { LensProps2, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { DisplayMarkdown, SuccessFailContextFn, useAiVariables, useTicketType, useYaml } from "@itsmworkbench/components";
+import { DisplayMarkdown, SuccessFailContextFn, SuccessFailureButton, useAiVariables, useTicketType, useYaml } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { ReviewTicketWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
@@ -14,11 +14,9 @@ import { yamlWriterToStringWithErrorsEmbedded } from "@itsmworkbench/yaml";
 
 
 export interface DisplayReviewTicketWorkbenchProps<S> extends LensProps2<S, Ticket, Action, any> {
-  SuccessButton: ( context: SuccessFailContextFn ) => React.ReactNode
-  FailureButton: ( context: SuccessFailContextFn ) => React.ReactNode
 }
 
-export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, FailureButton }: DisplayReviewTicketWorkbenchProps<S> ) {
+export function DisplayReviewTicketWorkbench<S> ( { state }: DisplayReviewTicketWorkbenchProps<S> ) {
   let actionState: LensState<S, any, any> = state.state2 ();
   let ticket: Ticket = state.state1 ().json ()
   const action: any = (state.optJson2 () || {})
@@ -58,7 +56,8 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
             <Typography variant="subtitle1" gutterBottom>Attributes (this is Yaml)</Typography>
             <YamlEditor
               yaml={attributes}
-              Save={yaml => SuccessButton ( contextFn ( (yaml || '{}').toString () ) )}
+              Save={yaml =>
+                <SuccessFailureButton title='The attributes look good for now' successOrFail={true} context={contextFn ( (yaml || '{}').toString () )}/>}
               onChange={setYaml}
               Suggest={setEditorYaml =>
                 <Button
@@ -73,7 +72,7 @@ export function DisplayReviewTicketWorkbench<S> ( { state, SuccessButton, Failur
                 >Have AI suggest attributes</Button>}
             />
           </Box>
-          {FailureButton ( contextFn ( '' ) )}
+          <SuccessFailureButton title='This ticket needs more work' successOrFail={false} context={contextFn ( '{}' )}/>
         </Grid>
       </Grid>
     </Box>
