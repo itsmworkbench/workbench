@@ -6,16 +6,20 @@ import { Optional } from "@focuson/lens";
 
 export interface SelectionProviderProps<S> {
   children: React.ReactNode;
-  state:  LensState<S, TabPhaseAndActionSelectionState, any>
+  state: LensState<S, TabPhaseAndActionSelectionState, any>
 }
 export const SelectionContext = React.createContext<LensState<any, TabPhaseAndActionSelectionState, any> | undefined> ( undefined );
 export function SelectionProvider<S> ( { children, state }: SelectionProviderProps<S> ) {
   return <SelectionContext.Provider value={state}> {children} </SelectionContext.Provider>;
 }
-export function useSelection<S> ( ): LensState<S, TabPhaseAndActionSelectionState, any> {
+export function useSelection<S> (): LensState<S, TabPhaseAndActionSelectionState, any> {
   const context = useContext ( SelectionContext );
   if ( context === undefined ) {
     throw new Error ( "useSelection must be used within a SelectionContext" );
   }
   return context
+}
+export function useCurrentSelection (): TabPhaseAndActionSelectionState | undefined {
+  const state = useSelection ();
+  return state.optJson ();
 }

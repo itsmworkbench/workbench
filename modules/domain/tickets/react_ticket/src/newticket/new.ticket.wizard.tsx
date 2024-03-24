@@ -1,5 +1,5 @@
 import { getCurrentStep, NewTicketWizardData } from "./new.ticket.wizard.domain";
-import { LensProps, LensProps2, LensState } from "@focuson/state";
+import { LensProps, LensState } from "@focuson/state";
 import { WizardBreadcrumbs } from "./new.ticket.breadcrumbs";
 import React from "react";
 import { TicketSourceSelection } from "./ticketSourceSelection";
@@ -7,10 +7,7 @@ import { EnterTicketDetails } from "./enter.ticket.details";
 import { Box, Container } from "@mui/material";
 import { NewHowToProcessTicket } from "./new.how.to.process.ticket";
 import { NewSelectKa } from "./new.select.ka";
-import { SuccessFailContextFn } from "@itsmworkbench/components/dist/src/buttons/success.failure.button";
-import { Action } from "@itsmworkbench/actions";
-import { ActionPluginDetails } from "@itsmworkbench/react_core";
-import { DisplayLdapWorkbench } from "@itsmworkbench/react_capabilities/dist/src/ldap.workbench";
+import { ActionPlugIn, ActionPluginDetails } from "@itsmworkbench/react_core";
 
 
 export function DisplayNewTicketWizardStep<S> ( { state }: LensProps<S, NewTicketWizardData, any> ) {
@@ -40,9 +37,10 @@ export function NewTicketWizard<S> ( { state }: LensProps<S, NewTicketWizardData
   );
 }
 export const displayNewTicketWizard =
-               <S, > ( props: <State, >( s: LensState<State, S, any> ) => LensProps<S, NewTicketWizardData, any> ): ActionPluginDetails<S, LensProps<S, NewTicketWizardData, any>> =>
-                 ({
-                   by: "newTicket",
-                   props,
-                   render: ( s, props ) => <NewTicketWizard {...props} />
-                 })
+               <S, State> (): ActionPlugIn<S, State, LensProps<S, NewTicketWizardData, any>> =>
+                 ( props: ( s: LensState<S, State, any> ) => LensProps<S, NewTicketWizardData, any> ): ActionPluginDetails<S, State, LensProps<S, NewTicketWizardData, any>> =>
+                   ({
+                     by: "newTicket",
+                     props,
+                     render: ( s, props ) => <NewTicketWizard {...props} />
+                   })

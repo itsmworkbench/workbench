@@ -1,24 +1,23 @@
-import { LensProps2, LensState } from "@focuson/state";
+import { LensProps, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, SuccessFailureButton } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, SuccessFailureButton, useVariables } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { LdapWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { ActionPluginDetails } from "@itsmworkbench/react_core";
 
 
-export interface DisplayLdapWorkbenchProps<S> extends LensProps2<S, Action, any, any> {
+export interface DisplayLdapWorkbenchProps<S> extends LensProps<S, Action, any> {
 }
 
 export function DisplayLdapWorkbench<S> ( { state }: DisplayLdapWorkbenchProps<S> ) {
-  let actionState: LensState<S, any, any> = state.state1 ();
-  const action: any = state.optJson1 ()
+  let actionState: LensState<S, any, any> = state;
+  const action: any = state.optJson ()
   const email = action?.email || ''
   const response = action?.response || ''
-  const variables = state.optJson2 () || {}
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): LdapWorkBenchContext => ({
     where: { phase, action, tab },
@@ -49,7 +48,7 @@ export function DisplayLdapWorkbench<S> ( { state }: DisplayLdapWorkbenchProps<S
   </Container>
 }
 
-export const displayLdapPlugin = <S, > ( props: <State, >( s: LensState<State, S, any> ) => DisplayLdapWorkbenchProps<S> ): ActionPluginDetails<S, DisplayLdapWorkbenchProps<S>> =>
+export const displayLdapPlugin = <S, State> () => ( props: ( s: LensState<S, State, any> ) => DisplayLdapWorkbenchProps<S> ): ActionPluginDetails<S, State, DisplayLdapWorkbenchProps<S>> =>
   ({
     by: "LDAPWorkbench",
     props,

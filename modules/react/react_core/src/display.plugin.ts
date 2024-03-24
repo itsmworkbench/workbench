@@ -1,23 +1,23 @@
 import { LensProps, LensState } from "@focuson/state";
 import { Event } from "@itsmworkbench/events";
+import { Optional } from "@focuson/lens";
 
-export interface DisplayPluginDetails<S, Props> {
-  props: <State>( s: LensState<State, S, any> ) => Props
-  render: ( s: S, props: Props ) => React.ReactElement
+export interface DisplayPluginDetails<S, State,Props> {
+  props: ( s: LensState<S, State, any> ) => Props
+  render: ( s: State, props: Props ) => React.ReactElement
 }
 
-export type ActionPlugIn<S, Props> = ( props: <State, >( s: LensState<State, S, any> ) => Props ) => ActionPluginDetails<S, Props>
-export interface ActionPluginDetails<S, Props> extends DisplayPluginDetails<S, Props> {
+export type ActionPlugIn<S, State,Props> = ( props: ( s: LensState<S, State, any> ) => Props ) => ActionPluginDetails<S,State, Props>
+export interface ActionPluginDetails<S, State,Props> extends DisplayPluginDetails<S,State, Props> {
   by: string
 }
 
-export const DisplayPlugin = <State, S> ( state: LensState<State, S, any> ) =>
-  <Props> ( plugin: DisplayPluginDetails<S, Props> ) => { return plugin.render ( state.optJson (), plugin.props ( state ) )}
 
-
-export const DisplayActionPlugin = <S, Props> ( plugins: ActionPluginDetails<S, Props>[], def: () => React.ReactElement | undefined ) =>
-  <State, > ( state: LensState<State, S, any>, byFn: ( s: S | undefined ) => string ) => {
-    const by = byFn ( state.optJson () )
+export function displayActionPlugin<S, State> ( plugins: ActionPluginDetails<S, State, any>[], def: () => (React.ReactElement | undefined), byO: Optional<State, string> ) {
+  return  ( state: LensState<S, State, any> ): React. ReactElement|undefined => {
+    let s = state.optJson ();
+    const by = s !== undefined && byO.getOption ( s )
     const plugin = plugins.find ( p => p.by === by )
-    return plugin ? plugin.render ( state.optJson (), plugin.props ( state ) ) : def;
-  }
+    return plugin ? plugin.render ( s, plugin.props ( state ) ) : def();
+  };
+}

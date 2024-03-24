@@ -1,11 +1,12 @@
 import React from "react";
-import { ActionPluginDetails } from "@itsmworkbench/react_core";
+import { ActionPlugIn, ActionPluginDetails } from "@itsmworkbench/react_core";
 import { DisplaySqlWorkbench, DisplaySqlWorkbenchProps } from "./sql.workbench";
 import { LensState } from "@focuson/state";
 
 
-export const displaySqlPlugin = <S, > ( props: <State, >( s: LensState<State, S, any> ) => DisplaySqlWorkbenchProps<S> ): ActionPluginDetails<S, DisplaySqlWorkbenchProps<S>> => ({
-  by: "SQLWorkbench",
-  props,
-  render: ( s,props ) => <DisplaySqlWorkbench {...props} />
-});
+export const displaySqlPlugin = <S, State> (): ActionPlugIn<S, State, DisplaySqlWorkbenchProps<S>> =>
+  ( props: ( s: LensState<S, State, any> ) => DisplaySqlWorkbenchProps<S> ): ActionPluginDetails<S, State, DisplaySqlWorkbenchProps<S>> => ({
+    by: "SQLWorkbench",
+    props,
+    render: ( s, props ) => <DisplaySqlWorkbench {...props} />
+  });

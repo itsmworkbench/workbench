@@ -6,10 +6,10 @@ import { addEventStoreListener, addEventStoreModifier, eventStore, polling, setE
 import { apiLoading, ApiLoading, } from "@itsmworkbench/apiclienteventstore";
 import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent, Event, processEvents } from "@itsmworkbench/events";
 
-import { ActionPlugIn, ActionPluginDetails, eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
+import { ActionPluginDetails, eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { emailDataL, enrichedEventsO, eventsL, forTicketO, ItsmState, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketListO, ticketVariablesL } from "./state/itsm.state";
+import { actionO, conversationL, emailDataL, enrichedEventsO, eventsL, eventsO, forTicketO, ItsmState, kaO, logsL, newTicketL, sideEffectsL, startAppState, tabO, tabsL, ticketIdL, ticketL, ticketListO, ticketTypeO, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
@@ -20,15 +20,16 @@ import { addSaveKnowledgeArticleSideEffect, displayCreateKnowledgeArticlePlugin,
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
 import { displayLdapEventPlugin, displayLdapPlugin, displayReceiveEmailEventPlugin, displayReceiveEmailPlugin } from '@itsmworkbench/react_capabilities';
-import { AiEmailProvider, AiVariablesProvider, MailerProvider, SelectionProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
+import { AiEmailProvider, AiVariablesProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
 import { displaySqlEventPlugin } from '@itsmworkbench/reactsql';
-import { addAiMailerSideEffectProcessor, displayEmailEventPlugin, displayMailerPlugin } from '@itsmworkbench/reactmailer';
+import { addAiMailerSideEffectProcessor, displayEmailEventPlugin, displayMailerPlugin, SuggestEmailForTicketButton } from '@itsmworkbench/reactmailer';
 import { displayMessageEventPlugin } from "@itsmworkbench/reactevents";
-import { displayEventPlugins } from "@itsmworkbench/reactevents/dist/src/display.events.plugins";
-import { displayReviewTicketWorkbench } from "@itsmworkbench/reactticket/dist/src/ticket/display.ticket.plugins";
-import { displaySqlPlugin } from "@itsmworkbench/reactsql/dist/src/display.sql.plugin";
+import { displayEventPlugins } from "@itsmworkbench/reactevents";
+import {  } from "@itsmworkbench/reactticket";
+  import { displaySqlPlugin } from "@itsmworkbench/reactsql";
+import { displayReviewTicketWorkbench } from "@itsmworkbench/reactticket";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -48,7 +49,6 @@ const container = eventStore<ItsmState> ()
 const setJson = setEventStoreValue ( container );
 const sep1 = defaultEventProcessor<ItsmState> ( '', startAppState, urlStore.loadIdentity )
 
-
 const eventPlugins = [
   displayTicketEventPlugin<ItsmState> (),
   displaySqlEventPlugin<ItsmState> (),
@@ -59,22 +59,36 @@ const eventPlugins = [
   displayTicketTypeEventPlugin<ItsmState> (),
   displayMessageEventPlugin<ItsmState> () ];
 
-
-const displayPlugins: ActionPlugIn<ItsmState, any>[] = [
-  ...displayEventPlugins<ItsmState> ( ( s: ItsmState ) => s?.debug?.showDevMode, eventPlugins, [], <div>Plus Menu</div> ),
-  displayMailerPlugin<ItsmState>,
-  displayReceiveEmailPlugin<ItsmState>,
-  displayLdapPlugin<ItsmState>,
-  displayReviewTicketWorkbench<ItsmState>,
-  displaySqlPlugin<ItsmState>,
-  displaySelectKnowledgeArticlePlugin<ItsmState>,
-  displayCreateKnowledgeArticlePlugin<ItsmState>,
-]
+const displayPlugins: ActionPluginDetails<ItsmState, ItsmState, any>[] = [
+  ...displayEventPlugins<ItsmState, ItsmState> (
+    ( s: ItsmState ) => s?.debug?.showDevMode,
+    eventsO,
+    enrichedEventsO,
+    conversationL,
+    sideEffectsL,
+    eventPlugins,
+    [],
+    <div>Plus Menu</div> ),
+  displayMailerPlugin<ItsmState, ItsmState> () ( s => ({
+    state: s.chainLens ( actionO ),
+    SuggestButton: <SuggestEmailForTicketButton state={s.doubleUp ().chain1 ( ticketL ).chain2 ( actionO )}/>
+  }) ),
+  displayReceiveEmailPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( actionO ) }) ),
+  displayLdapPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( actionO ) }) ),
+  displayReviewTicketWorkbench<ItsmState, ItsmState> () ( s => ({ state: s.doubleUp ().chain1 ( ticketL ).chain2 ( actionO ) }) ),
+  displaySqlPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( actionO ) }) ),
+  displaySelectKnowledgeArticlePlugin<ItsmState, ItsmState> () ( s => (
+    {
+      targetPath: 'forTicket.tempData.newTicket.ticketDetails',
+      state: s.doubleUp ().chain1 ( actionO ).chain2 ( ticketTypeO )
+    }) ),
+  displayCreateKnowledgeArticlePlugin<ItsmState, ItsmState> () ( s =>
+    ({ state: s.tripleUp ().chain1 ( kaO ).chain2 ( eventsO ).chainLens3 ( sideEffectsL ) }) ) ]
 
 const mailer = apiClientMailer ( rootUrl + "api/email" )
 const sqler = apiClientSqler ( rootUrl + "api/sql" )
 
-addEventStoreListener ( container, (( oldS, s, setJson ) => {
+addEventStoreListener ( container, (( _, s, setJson ) => {
   return root.render ( <UrlStoreProvider urlStore={urlStore}>
     <MailerProvider mailer={mailer}>
       <SqlerProvider sqler={sqler}>
@@ -82,6 +96,8 @@ addEventStoreListener ( container, (( oldS, s, setJson ) => {
           <AiVariablesProvider aiVariables={aiVariables}>
             <YamlProvider yamlCapability={yaml}>
               <App
+                actionPlugins={displayPlugins}
+                byO={tabO}
                 state={lensState ( s, setJson, 'Container', {} )}
                 plugins={[]}
                 eventPlugins={eventPlugins}
@@ -150,5 +166,5 @@ loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataRe
     kaList
   }
   setJson ( withInitialData )
-  startPolling ( pollingDetails )
+  await startPolling ( pollingDetails )
 } )

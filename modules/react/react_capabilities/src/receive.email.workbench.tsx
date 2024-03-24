@@ -1,23 +1,23 @@
-import { LensProps2, LensState } from "@focuson/state";
+import { LensProps, LensProps2, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { FocusedTextArea, SuccessFailContextFn, SuccessFailureButton } from "@itsmworkbench/components";
+import { FocusedTextArea, SuccessFailContextFn, SuccessFailureButton, useVariables } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { ReceiveEmailWorkbenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
-import { ActionPluginDetails } from "@itsmworkbench/react_core";
+import { ActionPlugIn, ActionPluginDetails } from "@itsmworkbench/react_core";
 
 
-export interface DisplayReceiveEmailWorkbenchProps<S> extends LensProps2<S, Action, any, any> {
+export interface DisplayReceiveEmailWorkbenchProps<S> extends LensProps<S, Action, any> {
 }
 
 export function DisplayReceiveEmailWorkbench<S> ( { state }: DisplayReceiveEmailWorkbenchProps<S> ) {
-  const action: any = state.optJson1 ()
+  const action: any = state.optJson ()
   const email = action?.email || ''
   const from = action?.from || ''
-  const variables = state.optJson2 () || {}
+  const variables = useVariables ()
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): ReceiveEmailWorkbenchContext => ({
     capability: 'ReceiveEmail',
@@ -30,8 +30,7 @@ export function DisplayReceiveEmailWorkbench<S> ( { state }: DisplayReceiveEmail
     data: { email, from }
   })
 
-  let actionState: LensState<S, any, any>;
-  actionState = state.state1 ();
+  let actionState: LensState<S, any, any> = state;
   return <Container maxWidth="md">
     <Typography variant="h4" gutterBottom>Receive Email</Typography>
 
@@ -52,10 +51,10 @@ export function DisplayReceiveEmailWorkbench<S> ( { state }: DisplayReceiveEmail
 }
 
 
-export const displayReceiveEmailPlugin =
-               <S, > ( props: <State, >( s: LensState<State, S, any> ) => LensProps2<S, Action, any, any> ): ActionPluginDetails<S, LensProps2<S, Action, any, any>> =>
-                 ({
-                   by: "ReceiveEmailWorkbench",
-                   props,
-                   render: ( s, props ) => <DisplayReceiveEmailWorkbench {...props} />
-                 })
+export const displayReceiveEmailPlugin = <S, State> (): ActionPlugIn<S, State, LensProps<S, Action, any>> =>
+  ( props: ( s: LensState<S, State, any> ) => LensProps<S, Action, any> ): ActionPluginDetails<S, State, LensProps<S, Action, any>> =>
+    ({
+      by: "ReceiveEmailWorkbench",
+      props,
+      render: ( s, props ) => <DisplayReceiveEmailWorkbench {...props} />
+    })

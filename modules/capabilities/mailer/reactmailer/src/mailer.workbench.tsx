@@ -1,23 +1,22 @@
 import React from "react";
-import { LensProps, LensProps3, LensState } from "@focuson/state";
+import { LensProps, LensProps2, LensState } from "@focuson/state";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
-import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, SuccessFailureButton, useAiEmail, useMailer, useVariables } from "@itsmworkbench/components";
-import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
+import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, SuccessFailureButton, useAiEmail, useCurrentSelection, useMailer, useVariables } from "@itsmworkbench/components";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { EmailTempData, EmailWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { Ticket } from "@itsmworkbench/tickets";
 
 
-export interface SuggestEmailForTicketButtonProps<S> extends LensProps3<S, TabPhaseAndActionSelectionState, Ticket, Action, any> {
+export interface SuggestEmailForTicketButtonProps<S> extends LensProps2<S, Ticket, Action, any> {
 }
 export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicketButtonProps<S> ) {
   const ai = useAiEmail ()
-  const purpose = state.state1 ().optJson ()?.action as any
-  const ticket = state.optJson2 ()
-  const actionState: LensState<S, any, any> = state.state3 ();
-  const action = state.optJson3 ()
+  const purpose = useCurrentSelection ()?.action as any
+  const ticket: Ticket | undefined = state.optJson1 ()
+  const actionState: LensState<S, any, any> = state.state2 ();
+  const action = state.optJson2 ()
   console.log ( 'SuggestEmailForTicketButton - action', action )
   function onClick () {
     if ( ticket === undefined ) return
