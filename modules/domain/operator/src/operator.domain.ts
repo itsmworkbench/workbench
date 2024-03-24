@@ -2,7 +2,7 @@ import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
 
 import { YamlCapability } from "@itsmworkbench/yaml";
-import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
+import { nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
 import { camelCaseAndIdYamlParser, DomainPlugin } from "@itsmworkbench/domain";
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
 

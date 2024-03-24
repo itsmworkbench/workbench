@@ -7,7 +7,7 @@ import { SelectKnowledgeArticleWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { MultiParagraphText } from "@itsmworkbench/i18n";
 import { Tooltip, Typography } from "@mui/material";
-import { parseIdentityUrlOrThrow } from "@itsmworkbench/url";
+import { parseIdentityUrlOrThrow } from "@itsmworkbench/urlstore";
 import { DisplayPhasesForTicketType } from "@itsmworkbench/react_phases";
 
 

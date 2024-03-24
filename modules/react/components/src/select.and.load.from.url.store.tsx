@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { LensProps } from "@focuson/state";
 import { LoadingValue, useUrlStore } from '@itsmworkbench/components';
 import { BasicData } from "@itsmworkbench/react_core";
-import { ListNamesResult } from "@itsmworkbench/url";
+import { ListNamesResult } from "@itsmworkbench/urlstore";
 import { ErrorsAnd, hasErrors } from '@laoban/utils';
 import { Grid, List, ListItem, ListItemText, Pagination, TextField } from "@mui/material";
 import { useSideEffects } from "./hooks/useSideEffects";

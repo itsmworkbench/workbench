@@ -1,7 +1,7 @@
 import { ExtractVariablesFn, VariablesExtractor } from "@itsmworkbench/variables";
 import { ParserStoreParser } from "@itsmworkbench/parser";
 import { IdStoreDetails } from "@itsmworkbench/idstore";
-import { UrlStoreParser, UrlStoreWriter } from "@itsmworkbench/url";
+import { UrlStoreParser, UrlStoreWriter } from "@itsmworkbench/urlstore";
 
 /** How to get a domain artifact from an id store, parsing it, and so on. All the stuff you nee apart from react
  *

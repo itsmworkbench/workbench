@@ -11,7 +11,7 @@
   "links":       [
     "@itsmworkbench/apiclienteventstore",
     "@itsmworkbench/apiclient_ai",
-    "@itsmworkbench/apiclientmailer",
+    "@itsmworkbench/browsermailer",
     "@itsmworkbench/components",
     "@itsmworkbench/domain",
     "@itsmworkbench/events",
@@ -35,7 +35,7 @@
     "@itsmworkbench/react_templates",
     "@itsmworkbench/react_ticket",
     "@itsmworkbench/react_variables",
-    "@itsmworkbench/apiclientsql",
+    "@itsmworkbench/browsersql",
     "@itsmworkbench/update_value_in_database_ticket_type",
     "@itsmworkbench/variables"
   ],

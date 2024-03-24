@@ -7,7 +7,7 @@ import { DatabaseAndEnvironments } from "./database.config";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { Simulate } from "react-dom/test-utils";
 import input = Simulate.input;
-import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
+import { nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
 
 const yaml = require ( 'js-yaml' );
 

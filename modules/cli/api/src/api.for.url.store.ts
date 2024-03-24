@@ -1,4 +1,4 @@
-import { ListNamesOrder, loadFromString, NameSpaceDetails, parseNamedUrlOrThrow, parseUrl, UrlListFn, UrlLoaders, UrlSaveFn, UrlStoreResult, urlToDetails } from "@itsmworkbench/url";
+import { ListNamesOrder, loadFromString, NameSpaceDetails, parseNamedUrlOrThrow, parseUrl, UrlListFn, UrlLoaders, UrlSaveFn, UrlStoreResult, urlToDetails } from "@itsmworkbench/urlstore";
 
 import { ErrorsAnd, hasErrors, mapErrorsK, NameAnd } from "@laoban/utils";
 import { KoaPartialFunction } from "@itsmworkbench/koa";

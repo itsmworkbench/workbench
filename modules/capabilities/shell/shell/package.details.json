@@ -14,7 +14,7 @@
   },
   "links":       [
     "@itsmworkbench/utils",
-    "@itsmworkbench/url"
+    "@itsmworkbench/urlstore"
   ],
   "guards":      {
     "compile": true,

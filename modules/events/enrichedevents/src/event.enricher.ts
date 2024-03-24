@@ -1,5 +1,5 @@
 import { AppendEvent, BaseEvent, ErrorEvent, EventNameAnd, InfoEvent, SetIdEvent, SetValueEvent, ZeroEvent } from "@itsmworkbench/events";
-import { loadFromString, UrlLoaders, UrlLoadIdentityFn, UrlStore } from "@itsmworkbench/url";
+import { loadFromString, UrlLoaders, UrlLoadIdentityFn, UrlStore } from "@itsmworkbench/urlstore";
 import { mapErrorsK } from "@laoban/utils";
 
 export type EnrichedEvent<E extends BaseEvent, D> = E & { displayData: D, hide: boolean }

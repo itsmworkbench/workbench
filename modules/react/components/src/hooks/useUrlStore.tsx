@@ -1,5 +1,5 @@
 // Service implementation
-import { UrlStore } from "@itsmworkbench/url";
+import { UrlStore } from "@itsmworkbench/urlstore";
 import React, { useContext } from "react";
 
 

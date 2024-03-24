@@ -5,7 +5,7 @@ import { promises as fs } from 'fs';
 import { IdStore, IdStoreResult, isBadIdStoreResult } from "@itsmworkbench/idstore";
 import { ListIds } from "@itsmworkbench/listids";
 import { getUrls, listUrls, putUrls } from "./api.for.url.store";
-import { NameSpaceDetails, UrlStore } from "@itsmworkbench/url";
+import { NameSpaceDetails, UrlStore } from "@itsmworkbench/urlstore";
 import { NameAnd } from "@laoban/utils";
 import { executeAIForEmail, executeAIForKnownVariables, executeAIForVariables } from "./api.for.ai";
 import { AIEmailsFn, AIKnownTicketVariablesFn, AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";

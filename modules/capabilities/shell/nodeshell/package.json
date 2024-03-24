@@ -24,7 +24,7 @@
     "@laoban/variables": "1.4.45",
     "@itsmworkbench/shell": "0.0.3",
     "@itsmworkbench/utils": "0.0.3",
-    "@itsmworkbench/url": "0.0.3",
+    "@itsmworkbench/urlstore": "0.0.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {

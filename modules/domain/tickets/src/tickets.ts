@@ -2,7 +2,7 @@ import { DomainPlugin } from "@itsmworkbench/domain";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { addVariables, extractVariablesFromMarkdown, Variables } from "@itsmworkbench/variables";
 import { ParserStoreParser } from "@itsmworkbench/parser";
-import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
+import { nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
 
 export interface Ticket {
   id: string

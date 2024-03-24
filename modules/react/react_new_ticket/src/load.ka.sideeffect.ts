@@ -1,6 +1,6 @@
 import { ISideEffectProcessor, ResultsAndTransforms, SideEffect } from "@itsmworkbench/react_core";
 import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
-import { NamedLoadResult, NamedUrl, UrlLoadNamedFn, writeUrl } from "@itsmworkbench/url";
+import { NamedLoadResult, NamedUrl, UrlLoadNamedFn, writeUrl } from "@itsmworkbench/urlstore";
 import { Optional, Transform } from "@focuson/lens";
 import { SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
 import { defaultTicketTypeDetails, detailsToTicketType, TicketType } from "@itsmworkbench/tickettype";

@@ -1,6 +1,6 @@
 import { AppendEvent, BaseEvent, ErrorEvent, Event, EventNameAnd, isErrorEvent, isLensPathEvent, SetIdEvent, SetValueEvent, ZeroEvent } from "./events";
 import { pathToLens, PathToLensFn } from "@itsmworkbench/optics";
-import { parseIdentityUrlOrThrow, UrlLoadIdentityFn } from "@itsmworkbench/url";
+import { parseIdentityUrlOrThrow, UrlLoadIdentityFn } from "@itsmworkbench/urlstore";
 import { hasErrors } from "@laoban/utils";
 
 /** Why a promise? Because the IdEvent goes to the id store to get the data. The id store is async. */

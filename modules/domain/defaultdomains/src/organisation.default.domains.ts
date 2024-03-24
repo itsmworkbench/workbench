@@ -1,4 +1,4 @@
-import { NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit } from "@itsmworkbench/url";
+import { NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit } from "@itsmworkbench/urlstore";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { operatorNameSpaceDetails } from "@itsmworkbench/operator";
 import { ticketNamespaceDetails } from "@itsmworkbench/tickets";

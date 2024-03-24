@@ -1,6 +1,6 @@
 import { Capability } from "./capabilities";
 import { NameAnd } from "@laoban/utils";
-import { IdentityUrl } from "@itsmworkbench/url";
+import { IdentityUrl } from "@itsmworkbench/urlstore";
 
 export type WhereContext = { phase?: string, action?: string, tab?: string }
 export type DisplayContext = { title: string, type: string, successOrFail: boolean | undefined }

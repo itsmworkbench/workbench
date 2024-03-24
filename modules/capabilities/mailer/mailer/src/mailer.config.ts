@@ -1,5 +1,5 @@
 import { mapErrors } from "@laoban/utils";
-import { NamedUrl, UrlStore } from "@itsmworkbench/url";
+import { NamedUrl, UrlStore } from "@itsmworkbench/urlstore";
 
 
 export async function emailConfigFromUrlStore ( urlStore: UrlStore, organisation: string, name: string ) {

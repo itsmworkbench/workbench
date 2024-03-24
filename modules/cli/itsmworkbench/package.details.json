@@ -29,7 +29,7 @@
     "@itsmworkbench/idstore",
     "@itsmworkbench/listids",
     "@itsmworkbench/jsyaml",
-    "@itsmworkbench/shell_git",
+    "@itsmworkbench/shellgit",
     "@itsmworkbench/utils"
   ],
   "guards":      {

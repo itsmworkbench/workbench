@@ -1,6 +1,6 @@
 import { ISideEffectProcessor, SideEffect, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
-import { ListNamesResult, NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/url";
+import { ListNamesResult, NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/urlstore";
 import { Optional, Transform } from "@focuson/lens";
 import { Event, SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";

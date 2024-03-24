@@ -16,7 +16,7 @@
   "links":       [
     "@itsmworkbench/utils",
     "@itsmworkbench/events",
-    "@itsmworkbench/url"
+    "@itsmworkbench/urlstore"
   ],
   "guards":      {
     "compile": true,

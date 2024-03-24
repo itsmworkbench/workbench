@@ -13,7 +13,7 @@ import { Capability } from "@itsmworkbench/domain";
 import { ActionButton, DisplayPhases } from "@itsmworkbench/react_phases";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
-import { parseNamedUrlOrThrow } from "@itsmworkbench/url";
+import { parseNamedUrlOrThrow } from "@itsmworkbench/urlstore";
 import { Welcome } from "./welcome";
 import { DisplayInfoPanel } from "@itsmworkbench/react_displayinfo";
 

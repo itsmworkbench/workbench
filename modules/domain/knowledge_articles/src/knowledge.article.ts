@@ -4,7 +4,7 @@ import { Variables } from "@itsmworkbench/variables";
 import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
 import { BaseAction } from "@itsmworkbench/actions";
 import { YamlCapability } from "@itsmworkbench/yaml";
-import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
+import { nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
 
 
 export interface ButtonData {

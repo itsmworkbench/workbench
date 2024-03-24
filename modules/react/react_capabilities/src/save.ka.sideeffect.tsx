@@ -1,7 +1,7 @@
 import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
 import { ErrorsAnd } from "@laoban/utils";
 import { TicketType } from "@itsmworkbench/tickettype";
-import { NamedUrl, UrlSaveFn, UrlStoreResult } from "@itsmworkbench/url";
+import { NamedUrl, UrlSaveFn, UrlStoreResult } from "@itsmworkbench/urlstore";
 import { LensProps2 } from "@focuson/state";
 import React from "react";
 import { Button } from "@mui/material";

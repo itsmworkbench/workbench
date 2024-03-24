@@ -16,7 +16,7 @@
   "links":       [
     "@itsmworkbench/utils",
     "@itsmworkbench/mailer",
-    "@itsmworkbench/url"
+    "@itsmworkbench/urlstore"
   ],
   "guards":      {
     "compile": true,

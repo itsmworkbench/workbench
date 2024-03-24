@@ -15,7 +15,7 @@
   "links":       [
     "@itsmworkbench/shell",
     "@itsmworkbench/utils",
-    "@itsmworkbench/url"
+    "@itsmworkbench/urlstore"
   ],
   "guards":      {
     "compile": true,

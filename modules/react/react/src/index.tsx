@@ -12,7 +12,7 @@ import { defaultNameSpaceDetails, InitialLoadDataResult, loadInitialData } from 
 import { emailDataL, enrichedEventsO, eventsL, ItsmState, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketListO, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
-import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/urlstoreapi";
+import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
 import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
 import { hasErrors, mapK, value } from "@laoban/utils";
 import { defaultEventEnricher, EnrichedEvent, enrichEvent } from "@itsmworkbench/enrichedevents";
@@ -23,8 +23,8 @@ import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
 import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin, displaySqlEventPlugin } from '@itsmworkbench/react_capabilities';
 import { AiEmailProvider, AiVariablesProvider, MailerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
-import { apiClientMailer } from "@itsmworkbench/apiclientmailer";
-import { apiClientSqler } from "@itsmworkbench/apiclientsql";
+import { apiClientMailer } from "@itsmworkbench/browsermailer";
+import { apiClientSqler } from "@itsmworkbench/browsersql";
 import { SqlerProvider } from "@itsmworkbench/components";
 
 

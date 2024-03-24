@@ -4,7 +4,7 @@ import { SoftwareCatalog, SoftwareCatalogs } from "@itsmworkbench/softwarecatalo
 import { Template, Templates } from "@itsmworkbench/templates";
 import { IdAndName, SelectedAndList } from "@itsmworkbench/utils";
 import { Operator } from "@itsmworkbench/operator";
-import { ListNamesResult, NamedLoadResult, parseNamedUrlOrThrow, UrlStore } from "@itsmworkbench/url";
+import { ListNamesResult, NamedLoadResult, parseNamedUrlOrThrow, UrlStore } from "@itsmworkbench/urlstore";
 import { ErrorsAnd } from "@laoban/utils";
 
 export type InitialLoadDataResult = {

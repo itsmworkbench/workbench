@@ -11,7 +11,7 @@
     "@itsmworkbench/components",
     "@itsmworkbench/events",
     "@itsmworkbench/enrichedevents",
-    "@itsmworkbench/url"
+    "@itsmworkbench/urlstore"
   ],
   "guards":      {
     "compile": true,

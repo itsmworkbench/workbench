@@ -1,6 +1,6 @@
 import { ParserStoreParser } from "@itsmworkbench/parser";
 import { Event, stringToEvents } from "@itsmworkbench/events";
-import { nameSpaceDetailsForGit } from "@itsmworkbench/url";
+import { nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
 
 export type TicketEvents = Event[]
 

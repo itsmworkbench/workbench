@@ -18,7 +18,7 @@
     "@itsmworkbench/idstore",
     "@itsmworkbench/optics",
     "@itsmworkbench/parser",
-    "@itsmworkbench/url"
+    "@itsmworkbench/urlstore"
   ],
   "guards":      {
     "compile": true,

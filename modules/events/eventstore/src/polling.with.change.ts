@@ -1,5 +1,5 @@
 import { ErrorsAnd, hasErrors, value } from "@laoban/utils";
-import { NamedLoadResult, NamedUrl, parseNamedUrlOrErrors } from "@itsmworkbench/url";
+import { NamedLoadResult, NamedUrl, parseNamedUrlOrErrors } from "@itsmworkbench/urlstore";
 
 export interface ResultAndNewStart {
   result: string

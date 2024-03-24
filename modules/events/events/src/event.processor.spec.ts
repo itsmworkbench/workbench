@@ -1,6 +1,6 @@
 import { appendEventProcessor, defaultEventProcessor, EventProcessor, infoEventProcessor, setIdEventProcessor, setValueEventProcessor, zeroEventProcessor } from "./event.processor";
 import {} from "./events";
-import { UrlLoadIdentityFn, writeUrl } from "@itsmworkbench/url";
+import { UrlLoadIdentityFn, writeUrl } from "@itsmworkbench/urlstore";
 
 const data = {
   "a": {

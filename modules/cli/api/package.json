@@ -29,9 +29,9 @@
     "@itsmworkbench/fileloading": "0.0.3",
     "@itsmworkbench/koa": "0.0.3",
     "@itsmworkbench/mailer": "0.0.3",
-    "@itsmworkbench/shell_git": "0.0.3",
-    "@itsmworkbench/url": "0.0.3",
-    "@itsmworkbench/urlstorenode": "0.0.3",
+    "@itsmworkbench/shellgit": "0.0.3",
+    "@itsmworkbench/urlstore": "0.0.3",
+    "@itsmworkbench/nodeurlstore": "0.0.3",
     "@itsmworkbench/utils": "0.0.3",
     "debug": "^4.3.4"
   },

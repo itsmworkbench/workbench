@@ -11,7 +11,7 @@
   "links":       [
     "@itsmworkbench/components",
     "@itsmworkbench/events",
-    "@itsmworkbench/url",
+    "@itsmworkbench/urlstore",
     "@itsmworkbench/yaml"
   ],
   "guards":      {

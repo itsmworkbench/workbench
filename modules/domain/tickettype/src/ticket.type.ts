@@ -1,7 +1,7 @@
 import { Capability, PhaseAnd } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { NameAnd } from "@laoban/utils";
-import { IdentityUrl, nameSpaceDetailsForGit } from "@itsmworkbench/url";
+import { IdentityUrl, nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
 import { Ticket } from "@itsmworkbench/tickets";
 import { YamlCapability } from "@itsmworkbench/yaml";
 

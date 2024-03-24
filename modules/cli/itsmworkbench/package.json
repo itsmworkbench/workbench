@@ -38,7 +38,7 @@
     "@itsmworkbench/idstore": "0.0.3",
     "@itsmworkbench/listids": "0.0.3",
     "@itsmworkbench/jsyaml": "0.0.3",
-    "@itsmworkbench/shell_git": "0.0.3",
+    "@itsmworkbench/shellgit": "0.0.3",
     "@itsmworkbench/utils": "0.0.3",
     "debug": "^4.3.4"
   },

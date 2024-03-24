@@ -20,9 +20,9 @@
     "@itsmworkbench/fileloading",
     "@itsmworkbench/koa",
     "@itsmworkbench/mailer",
-    "@itsmworkbench/shell_git",
-    "@itsmworkbench/url",
-    "@itsmworkbench/urlstorenode",
+    "@itsmworkbench/shellgit",
+    "@itsmworkbench/urlstore",
+    "@itsmworkbench/nodeurlstore",
     "@itsmworkbench/utils"
   ],
   "guards":      {
