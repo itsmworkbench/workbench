@@ -1,6 +1,6 @@
 import { LensProps2 } from "@focuson/state";
 import { getCurrentStep, getNextWizardStep, NewTicketWizardStep, TicketSourceMethod, ticketSourceMethods } from "./new.ticket.wizard.domain";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { splitAndCapitalize } from "@itsmworkbench/utils";

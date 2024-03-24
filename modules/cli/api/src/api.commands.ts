@@ -12,7 +12,7 @@ import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
 import { mailerFromUrlStore } from "@itsmworkbench/nodemailer";
 import { EmailFn, Mailer } from "@itsmworkbench/mailer";
 import { Sqler } from "@itsmworkbench/sql";
-import { makeSqlerForDbPathShell } from "@itsmworkbench/dbpathsql/dist/src/dbpath.sql";
+import { makeSqlerForDbPathShell } from "@itsmworkbench/dbpathsql";
 import { executeScriptInShell } from "@itsmworkbench/nodeshell";
 
 

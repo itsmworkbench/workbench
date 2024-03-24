@@ -1,9 +1,8 @@
 import { ISideEffectProcessor, ResultsAndTransforms, SideEffect } from "@itsmworkbench/react_core";
-import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
-import { NamedLoadResult, NamedUrl, UrlLoadNamedFn, writeUrl } from "@itsmworkbench/urlstore";
+import { NamedLoadResult, NamedUrl, UrlLoadNamedFn } from "@itsmworkbench/urlstore";
 import { Optional, Transform } from "@focuson/lens";
-import { SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
-import { defaultTicketTypeDetails, detailsToTicketType, TicketType } from "@itsmworkbench/tickettype";
+import { TicketType } from "@itsmworkbench/tickettype";
+import { ErrorsAnd, hasErrors } from "@laoban/utils";
 
 
 export interface LoadKaSideEffect extends SideEffect {

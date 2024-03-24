@@ -1,5 +1,5 @@
 {
-  "name": "@itsmworkbench/react_tickettype",
+  "name": "@itsmworkbench/reacttickettype",
   "description": "The react gui around tickettypes",
   "version": "0.0.3",
   "browserslist": {

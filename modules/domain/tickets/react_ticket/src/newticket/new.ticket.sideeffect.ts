@@ -1,3 +1,4 @@
+import React from "react";
 import { ISideEffectProcessor, SideEffect, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
 import { ListNamesResult, NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/urlstore";
@@ -5,7 +6,8 @@ import { Optional, Transform } from "@focuson/lens";
 import { Event, SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { defaultTicketTypeDetails, detailsToTicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
-import { NewTicketWizardData } from "./wizard/new.ticket.wizard.domain";
+import { NewTicketWizardData } from "./new.ticket.wizard.domain";
+
 
 //OK Gritting our teeth we aren't worrying about the errors for now. We are just going to assume that everything is going to work.
 //This is so that we can test out the happy path of the gui. We want to see what it will look like. We will come back to the errors later.
@@ -27,7 +29,7 @@ export interface TicketAndTicketEvents {
 }
 export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
                                                      setPage: Optional<S, TabPhaseAndActionSelectionState>,
-                                                     eventL: Optional<S, Event[]>,
+                                                     ticketL: Optional<S,any>,
                                                      ticketIdL: Optional<S, string>,
                                                      newTicketL: Optional<S, NewTicketWizardData>,
                                                      tickListO: Optional<S, ListNamesResult>,
@@ -85,7 +87,7 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
         } )
       const txs: Transform<S, any>[] = [
         [ setPage, _ => ({ workspaceTab: 'chat' }) ],
-        [ eventL, _ => [] ], //clear all the events. The next line will trigger a reload via polling
+        [ ticketL, _ => {} ], //clear all the ticket data
         [ ticketIdL, _ => writeUrl ( ticketeventsUrl ) ],
         [ tickListO, _ => undefined ],
         [ newTicketL, _ => ({ organisation: se.organisation, ticketType: defaultTicketTypeDetails, name: '', ticket: '' }) ]

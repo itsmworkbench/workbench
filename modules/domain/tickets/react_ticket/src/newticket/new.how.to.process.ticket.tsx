@@ -1,9 +1,8 @@
-import { LensProps, LensProps2 } from "@focuson/state";
+import { LensProps } from "@focuson/state";
 import { getCurrentStep, NewTicketWizardData } from "./new.ticket.wizard.domain";
 import React from "react";
-import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
-import { SideEffect } from "@itsmworkbench/react_core";
-import { ApprovalStateSelect, SelectTicketTypeProps, TicketTypeSelect, ValidateInvolvedPartiesCheckbox } from "@itsmworkbench/react_tickettype";
+import { PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
+import { ApprovalStateSelect, SelectTicketTypeProps, TicketTypeSelect, ValidateInvolvedPartiesCheckbox } from "@itsmworkbench/reacttickettype";
 import { Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";

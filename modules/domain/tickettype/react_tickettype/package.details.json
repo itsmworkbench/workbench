@@ -1,6 +1,6 @@
 {
   "template":    "react_library",
-  "name":        "@itsmworkbench/react_tickettype",
+  "name":        "@itsmworkbench/reacttickettype",
   "description": "The react gui around tickettypes",
   "packageJson": {
     "files":        ["build/"],

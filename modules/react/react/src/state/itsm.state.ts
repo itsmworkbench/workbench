@@ -5,17 +5,18 @@ import { ChatDisplayData, Conversation, EmailTempData, LdapData, PhaseAnd, Recei
 import { ListNamesResult } from "@itsmworkbench/urlstore";
 import { NameAnd } from "@laoban/utils";
 import { Variables } from "@itsmworkbench/variables";
-import { NewTicketData, NewTicketState, NewTicketWizardData } from "@itsmworkbench/react_new_ticket";
 import { Operator } from "@itsmworkbench/operator";
 import { Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
 import { EmailResult, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
-import { DisplayTicketListSelectionState } from "@itsmworkbench/react_ticket";
+import { DisplayTicketListSelectionState, NewTicketData } from "@itsmworkbench/reactticket";
 import { defaultTicketTypeDetails, TicketType } from "@itsmworkbench/tickettype";
 import { KnowledgeArticleTempData } from "@itsmworkbench/react_capabilities";
 import { Action } from "@itsmworkbench/actions";
 import { EnrichedEvent } from "@itsmworkbench/events";
 import { IdAnd } from "@itsmworkbench/utils";
+import { NewTicketState } from "@itsmworkbench/reactticket";
+import { NewTicketWizardData } from "@itsmworkbench/reactticket";
 
 export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {
   mainScreen?: MainAppMainState
@@ -82,8 +83,8 @@ export const selectionStateL: Lens<ItsmState, ItsmSelectionState> = itsmIdL.focu
 export const operatorL: Lens<ItsmState, Operator> = basicDataL.focusOn ( 'operator' )
 // export const setPageL: Optional<ItsmState, string> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'workspaceTab' )
 export const ticketIdL: Optional<ItsmState, string> = selectionStateL.focusQuery ( 'ticketId' )
-let forTicketL = itsmIdL.focusOn ( 'forTicket' );
-let tempDataL = forTicketL.focusQuery ( 'tempData' );
+export const forTicketL = itsmIdL.focusOn ( 'forTicket' );
+export const tempDataL = forTicketL.focusQuery ( 'tempData' );
 export const newTicketL: Optional<ItsmState, NewTicketWizardData> = tempDataL.focusQuery ( 'newTicket' )
 export const ticketVariablesL: Optional<ItsmState, TicketVariables> = forTicketL.focusQuery ( 'variables' )
 
@@ -98,4 +99,4 @@ export const enrichedEventsO: Optional<ItsmState, Event[]> = forTicketL.focusOn 
 export const enrichedEventsL: Lens<ItsmState, Event[]> = forTicketL.focusOn ( 'enrichedEvents' )
 export const statusL: Lens<ItsmState, PhaseAnd<NameAnd<boolean>>> = forTicketL.focusOn ( 'status' )
 export const ticketListO: Optional<ItsmState, ListNamesResult> = itsmIdL.focusOn ( 'ticketList' )
-export const actionO = forTicketL.focusOn('tempData').focusOn('action')
+export const actionO = forTicketL.focusOn ( 'tempData' ).focusOn ( 'action' )

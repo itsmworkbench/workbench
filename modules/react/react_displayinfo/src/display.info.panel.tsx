@@ -5,7 +5,7 @@ import { deepCombineTwoObjects } from "@laoban/utils";
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import { Ticket } from "@itsmworkbench/tickets";
-import { NewTicketWizardData } from "@itsmworkbench/react_new_ticket"; // Import the error icon
+import { NewTicketWizardData } from "@itsmworkbench/reactticket";
 
 export interface DisplayNameProps {
   name: string

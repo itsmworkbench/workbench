@@ -1,5 +1,4 @@
-import { EnrichedEvent } from "@itsmworkbench/events";
-import { SetIdEvent } from "@itsmworkbench/events";
+import { EnrichedEvent, SetIdEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
 import { PROPSAndIcons } from "@itsmworkbench/components";
 import React from "react";

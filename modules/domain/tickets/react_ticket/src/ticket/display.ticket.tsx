@@ -1,7 +1,7 @@
 import React from "react";
 import { LensProps3 } from "@focuson/state";
 import { List, ListItem, ListItemText } from "@material-ui/core";
-import { EventsAndEnriched, WorkspaceSelectionState } from "@itsmworkbench/react_core";
+import { WorkspaceSelectionState } from "@itsmworkbench/react_core";
 import { MainAppMainState } from "@itsmworkbench/components";
 
 

@@ -1,12 +1,13 @@
 import React from "react";
 import { LensProps } from "@focuson/state";
-import { Box, Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import { NewTicketWizardData, TicketSourceAnd } from "./new.ticket.wizard.domain";
-import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
+import { Box, Grid, Typography } from "@mui/material";
 import { FocusedTextArea, FocusedTextInput, mustBeIdentifier, useAiVariables } from "@itsmworkbench/components";
 import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
 import { MultiParagraphText } from "@itsmworkbench/i18n";
+import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
+
+
 
 interface EnterTicketDetailsComp<S> extends LensProps<S, NewTicketWizardData, any> {
 

@@ -1,7 +1,7 @@
 import { LensProps, LensState3 } from "@focuson/state";
 import { ItsmSelectionState, ItsmState, ItsmStateDataForTicket } from "../state/itsm.state";
 import { FocusOnSetValueButton, FocusOnToggleButton } from "@itsmworkbench/components";
-import { DisplayTicketList } from "@itsmworkbench/react_ticket";
+import { DisplayTicketList, NewTicketButton } from "@itsmworkbench/reactticket";
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import SettingsIcon from '@mui/icons-material/Settings';
 import React from "react";
@@ -9,7 +9,7 @@ import { Box } from "@mui/material";
 import ChatIcon from '@mui/icons-material/Chat';
 import AddIcon from '@mui/icons-material/Add';
 import EventIcon from '@mui/icons-material/Event';
-import { NewTicketButton } from "@itsmworkbench/react_new_ticket";
+
 
 export function GuiNav<S> ( { state }: LensProps<S, ItsmState, any> ) {
   const buttonSx = {

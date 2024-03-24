@@ -9,14 +9,13 @@ import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent
 import { eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { emailDataL, enrichedEventsO, eventsL, ItsmState, logsL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketListO, ticketVariablesL } from "./state/itsm.state";
+import { emailDataL, enrichedEventsO, eventsL, ItsmState, logsL, forTicketL, newTicketL, sideEffectsL, startAppState, tabsL, ticketIdL, ticketListO, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
-import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor } from "@itsmworkbench/react_new_ticket";
 import { hasErrors, mapK, value } from "@laoban/utils";
-import { displayTicketEventPlugin } from '@itsmworkbench/react_ticket';
-import { displayTicketTypeEventPlugin } from '@itsmworkbench/react_tickettype';
+import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor, displayTicketEventPlugin } from '@itsmworkbench/reactticket';
+import { displayTicketTypeEventPlugin } from '@itsmworkbench/reacttickettype';
 
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
@@ -117,7 +116,7 @@ addEventStoreModifier ( container,
       addAiEmailSideEffectProcessor ( aiEmails, emailDataL ),
       addSaveKnowledgeArticleSideEffect ( urlStore.save, 'me' ),
       // addLoadKaSideEffect ( urlStore.loadNamed, newTicketL.focusOn ( 'ticketDetails' ) ),
-      addNewTicketSideeffectProcessor ( urlStore.save, tabsL, eventsL, ticketIdL, newTicketL, ticketListO, 'forTicket.ticket', 'forTicket.tempData.ticketType' )
+      addNewTicketSideeffectProcessor ( urlStore.save, tabsL, forTicketL, ticketIdL, newTicketL, ticketListO, 'forTicket.ticket', 'forTicket.tempData.ticketType' )
     ] ),
     sideEffectsL, logsL, true ) )
 

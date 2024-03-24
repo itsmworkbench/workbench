@@ -1,6 +1,6 @@
 {
   "template":    "react_library",
-  "name":        "@itsmworkbench/react_ticket",
+  "name":        "@itsmworkbench/reactticket",
   "description": "How to display tickets in react",
   "packageJson": {
     "files":        ["build/"],

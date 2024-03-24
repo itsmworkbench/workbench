@@ -1,7 +1,7 @@
 import { execute, ExecuteInShellFn } from "@itsmworkbench/shell";
 import { Sqler, SqlQueryResult } from "@itsmworkbench/sql";
 import { ErrorsAnd, mapErrors, NameAnd } from "@laoban/utils";
-import { parseColumnsToJSON } from "@itsmworkbench/utils/dist/src/columns.to.json";
+import { parseColumnsToJSON } from "@itsmworkbench/utils";
 
 export function makeSqlerForDbPathShell ( executeFn: ExecuteInShellFn, cwd: string, debug?: boolean ): Sqler {
   return {

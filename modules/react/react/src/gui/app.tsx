@@ -7,7 +7,7 @@ import { ConversationPlugin } from "@itsmworkbench/react_conversation";
 import { DisplayCapabilitiesMenu, DisplayKnowledgeArticleWorkbench, DisplayLdapWorkbench, DisplayReceiveEmailWorkbench, DisplayReviewTicketWorkbench, DisplaySelectKnowledgeArticleWorkbench } from "@itsmworkbench/react_capabilities";
 import { GuiNav } from "./gui.nav";
 import { DevMode } from "@itsmworkbench/react_devmode";
-import { NewTicketWizard } from "@itsmworkbench/react_new_ticket";
+
 import { DisplayEnrichedEventPlugIn, DisplayEnrichedEvents, DisplayEnrichedEventsUsingPlugin, DisplayEvents, EnrichedEventsAndChat } from "@itsmworkbench/reactevents";
 import { Capability } from "@itsmworkbench/domain";
 import { ActionButton, DisplayPhases } from "@itsmworkbench/react_phases";
@@ -18,12 +18,11 @@ import { Welcome } from "./welcome";
 import { DisplayInfoPanel } from "@itsmworkbench/react_displayinfo";
 import { DisplaySqlWorkbench } from "@itsmworkbench/reactsql";
 import { DisplayEmailWorkbench, SuggestEmailForTicketButton } from "@itsmworkbench/reactmailer";
+import { NewTicketWizard } from "@itsmworkbench/reactticket";
 
 export interface AppProps<S, CS> extends LensProps<S, CS, any> {
   plugins: ConversationPlugin<S>[]
   eventPlugins: DisplayEnrichedEventPlugIn<S>[]
-
-
 }
 export function App<S> ( { state, plugins, eventPlugins }: AppProps<S, ItsmState> ) {
   let wholeState = state.optJson ();

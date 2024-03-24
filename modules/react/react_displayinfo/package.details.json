@@ -10,7 +10,7 @@
   "links":       [
     "@itsmworkbench/components",
     "@itsmworkbench/tickettype",
-    "@itsmworkbench/react_new_ticket"
+    "@itsmworkbench/reactticket"
   ],
   "guards":      {
     "compile": true,
