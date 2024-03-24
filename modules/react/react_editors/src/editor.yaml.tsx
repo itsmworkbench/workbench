@@ -9,7 +9,7 @@ export interface YamlEditorProps {
   yaml: any
   Suggest: ( setYaml: ( yaml: string ) => void ) => React.ReactNode
   Save: ( yaml: string | string[] | undefined ) => React.ReactNode | undefined
-  onChange: ( yaml: string ) => void
+  onChange: ( yaml: string|undefined ) => void
   height?: string
 }
 
