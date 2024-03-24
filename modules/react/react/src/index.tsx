@@ -20,11 +20,12 @@ import { displayTicketTypeEventPlugin } from '@itsmworkbench/react_tickettype';
 import { displayMessageEventPlugin } from "@itsmworkbench/react_chat";
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
-import { addAiEmailSideEffectProcessor, addSaveKnowledgeArticleSideEffect, displayEmailEventPlugin, displayLdapEventPlugin, displayReceiveEmailEventPlugin } from '@itsmworkbench/react_capabilities';
+import { addSaveKnowledgeArticleSideEffect, displayLdapEventPlugin, displayReceiveEmailEventPlugin } from '@itsmworkbench/react_capabilities';
 import { AiEmailProvider, AiVariablesProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
 import { displaySqlEventPlugin } from '@itsmworkbench/reactsql';
+import { addAiEmailSideEffectProcessor, displayEmailEventPlugin } from '@itsmworkbench/reactmailer';
 
 
 const rootElement = document.getElementById ( 'root' );

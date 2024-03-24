@@ -146,7 +146,7 @@ function EnvDropdownWithTooltip<S> ( { state }: EnvDropdownWithTooltipProps<S> )
 
 
   const selectedValue = state.optJson () || ''
-  let envName = state.optJson ();
+  let envName = state.optJson () || '';
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}> {/* Adjust the gap as needed */}
       <FormControl sx={{ width: '100%', minWidth: 120 }} size="small">

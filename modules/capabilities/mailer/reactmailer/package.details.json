@@ -1,0 +1,24 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/reactmailer",
+  "description": "How to display emails we want to send in react",
+  "packageJson": {
+    "files":        ["build/"],
+    "dependencies": {
+    },
+    "scripts":      {"start": "react-scripts start"}
+  },
+  "links":       [
+    "@itsmworkbench/ai_ticketvariables",
+    "@itsmworkbench/actions",
+    "@itsmworkbench/components",
+    "@itsmworkbench/react_events",
+    "@itsmworkbench/tickets"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false,
+    "react":   false
+  }
+}

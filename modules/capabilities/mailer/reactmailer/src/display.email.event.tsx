@@ -1,13 +1,10 @@
-import { EnrichedEvent } from "@itsmworkbench/events";
-import { SetValueEvent } from "@itsmworkbench/events";
+import React from "react";
+import { EnrichedEvent, SetValueEvent } from "@itsmworkbench/events";
 import { LensProps } from "@focuson/state";
 import { PROPSAndIcons } from "@itsmworkbench/components";
-import React from "react";
 import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn } from "@itsmworkbench/react_events";
-
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
-import { isEmailWorkBenchContext, EmailWorkBenchContext } from "@itsmworkbench/domain";
-
+import { isEmailWorkBenchContext } from "@itsmworkbench/domain";
 
 export interface DisplayEmailEventProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetValueEvent, any>, any>> {
 }

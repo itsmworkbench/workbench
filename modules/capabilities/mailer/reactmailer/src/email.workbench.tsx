@@ -1,5 +1,5 @@
-import { LensProps, LensProps3, LensState } from "@focuson/state";
 import React from "react";
+import { LensProps, LensProps3, LensState } from "@focuson/state";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, useAiEmail, useMailer, useVariables } from "@itsmworkbench/components";

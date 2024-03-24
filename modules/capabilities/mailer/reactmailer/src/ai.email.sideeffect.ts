@@ -1,8 +1,6 @@
 import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
 import { AIEmailsFn, EmailData, EmailResult } from "@itsmworkbench/ai_ticketvariables";
 import { Optional, Transform } from "@focuson/lens";
-import {  } from "./email.workbench";
-import { EmailTempData } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 
 //OK Gritting our teeth we aren't worrying about the errors for now. We are just going to assume that everything is going to work.
