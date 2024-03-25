@@ -1,6 +1,7 @@
 import { Capability } from "./capabilities";
-import { NameAnd } from "@laoban/utils";
+import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { IdentityUrl } from "@itsmworkbench/urlstore";
+import { SqlQueryResult } from "@itsmworkbench/sql";
 
 export type WhereContext = { phase?: string, action?: string, tab?: string }
 export type DisplayContext = { title: string, type: string, successOrFail: boolean | undefined }
@@ -29,7 +30,7 @@ export function isSqlWorkBenchContext ( context: any ): context is SqlWorkBenchC
 export interface SqlData {
   env: string
   sql: string
-  response: string
+  response:  ErrorsAnd<SqlQueryResult>
 }
 
 export interface LdapWorkBenchContext extends WorkBenchContext<LdapData> {

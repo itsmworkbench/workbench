@@ -7,6 +7,7 @@ import { DisplayDefaultEnrichedEventMicro, DisplayEnrichedEventPlugIn } from "@i
 
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { isSqlWorkBenchContext, SqlWorkBenchContext } from "@itsmworkbench/domain";
+import { SqlResultOrError } from "./sql.workbench";
 
 
 export interface DisplaySqlEventProps<S> extends PROPSAndIcons<LensProps<S, EnrichedEvent<SetValueEvent, any>, any>> {
@@ -30,9 +31,7 @@ export function DisplaySqlEventFull<S> ( { state, icons }: DisplaySqlEventProps<
       <Typography variant="body1" component="pre">
         Sql: {context.data?.sql}
       </Typography>
-      <Typography variant="body1" component="pre">
-        Response: {context.data?.response}
-      </Typography>
+      <SqlResultOrError data={context.data?.response}/>
     </CardContent>
   </Card>
 }
