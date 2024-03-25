@@ -8,7 +8,7 @@ const openai = new OpenAI ( {
   apiKey: clientSecret,
 } );
 
-const generateEmailPrompt = (emailData: EmailData): string => {
+const generateEmailPrompt = (emailData: EmailData ): string => {
   let purposeDescription: string;
   switch (emailData.purpose) {
     case 'requestApproval':
@@ -17,9 +17,9 @@ const generateEmailPrompt = (emailData: EmailData): string => {
     case 'requestClosure':
       purposeDescription = 'to inform about the completion of a task or project and request its closure';
       break;
-    case 'requestMoreData': //todo: this one is a placeholder until real non-existing variables are found
+    case 'requestMoreData':
       if (!isEmailDataWithMissingData(emailData))  throw new Error('Email data is missing missingData field');
-      purposeDescription = 'to request additional information or data for completing a work ticket' +emailData.missingData;
+      purposeDescription = 'to request additional information or data for completing a work ticket. The specific details needed are: ' + emailData.missingData.join(', ');
       break;
       // Add more cases as needed for other purposes
     default:
