@@ -13,6 +13,8 @@ import { Mailer } from "@itsmworkbench/mailer";
 import { Sqler } from "@itsmworkbench/sql";
 import { apiForSqlerPosts } from "./api.for.sqler";
 import { apiForMailer } from "./api.for.mailer";
+import { apiForFetchEmailer } from "./api.for.fetchemailer";
+import { FetchEmailer } from "@itsmworkbench/fetchemail";
 
 
 export const ids = ( idstore: IdStore, debug: boolean ): KoaPartialFunction => ({
@@ -94,6 +96,7 @@ export const wizardOfOzApiHandlers = ( aiForVariables: AiTicketVariablesFn, aiFo
                                        details: NameAnd<NameSpaceDetails>,
                                        urlStore: UrlStore,
                                        mailer: Mailer,
+                                       fetchEmailer: FetchEmailer,
                                        sqler: Sqler,
                                        ...handlers: KoaPartialFunction[] ): ( from: ContextAndStats ) => Promise<void> =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
@@ -105,6 +108,7 @@ export const wizardOfOzApiHandlers = ( aiForVariables: AiTicketVariablesFn, aiFo
     putUrls ( urlStore.save, details ),
     apiForSqlerPosts ( sqler ),
     apiForMailer ( mailer ),
+    apiForFetchEmailer(fetchEmailer),
     // appendPostPF,
     handleFile,
     ...handlers,

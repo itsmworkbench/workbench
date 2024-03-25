@@ -19,6 +19,7 @@
     "@itsmworkbench/defaultdomains",
     "@itsmworkbench/fileloading",
     "@itsmworkbench/koa",
+    "@itsmworkbench/fetchemail",
     "@itsmworkbench/mailer",
     "@itsmworkbench/shellgit",
     "@itsmworkbench/urlstore",

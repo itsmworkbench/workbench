@@ -23,7 +23,7 @@ export interface DisplayKnowledgeArticleWorkbenchProps<S> extends LensProps3<S, 
 
 export function DisplayKnowledgeArticleWorkbench<S> ( { state, ticket }: DisplayKnowledgeArticleWorkbenchProps<S> ) {
   const {} = state.optJson1 () || {}
-  const variables = deepCombineTwoObjects ( ticket.attributes || {}, useVariables () )
+  const variables = deepCombineTwoObjects ( ticket?.attributes || {}, useVariables () )
   console.log ( 'DisplayKnowledgeArticleWorkbench- variables', variables )
   const ticketType = useTicketType ()
   const events = state.optJson2 () || []

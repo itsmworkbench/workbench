@@ -2,7 +2,7 @@ import { CommandFn, HasCurrentDirectory, HasEnv } from "@itsmworkbench/cli";
 import { startKoa } from "@itsmworkbench/koa";
 import { wizardOfOzApiHandlers } from "./api";
 import { loadFromIdStore } from "@itsmworkbench/idstore";
-import {  defaultOrganisationUrlStoreConfig } from "@itsmworkbench/defaultdomains";
+import { defaultOrganisationUrlStoreConfig } from "@itsmworkbench/defaultdomains";
 import { findListIds } from "@itsmworkbench/listids";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { nodeUrlstore } from "@itsmworkbench/nodeurlstore";
@@ -10,10 +10,12 @@ import { shellGitsops } from "@itsmworkbench/shellgit";
 import { chatgptKnownTicketVariables, chatgptTicketVariables, generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
 import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
 import { mailerFromUrlStore } from "@itsmworkbench/nodemailer";
-import { EmailFn, Mailer } from "@itsmworkbench/mailer";
+import { MailerFn, Mailer } from "@itsmworkbench/mailer";
 import { Sqler } from "@itsmworkbench/sql";
 import { makeSqlerForDbPathShell } from "@itsmworkbench/dbpathsql";
 import { executeScriptInShell } from "@itsmworkbench/nodeshell";
+import { FetchEmailer } from "@itsmworkbench/fetchemail";
+import { fetchEmailerFromUrlStore } from "@itsmworkbench/imapflowfetchemail";
 
 
 export function apiCommand<Commander, Context extends HasCurrentDirectory & HasEnv, Config> ( yaml: YamlCapability ): CommandFn<Commander, Context, Config> {
@@ -36,9 +38,10 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory & HasE
       const gitOps = shellGitsops ( false )
       const urlStore = nodeUrlstore ( gitOps, orgs )
       const mailer: Mailer = await mailerFromUrlStore ( urlStore, "me", "me" )
+      const fetchEmailer: FetchEmailer = await fetchEmailerFromUrlStore ( urlStore, "me", "me" )
       const sqlerL: Sqler = makeSqlerForDbPathShell ( executeScriptInShell, context.currentDirectory, opts.debug === true )
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,
-        wizardOfOzApiHandlers (  aiVariables, aiKnownVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore, mailer,sqlerL ) )
+        wizardOfOzApiHandlers ( aiVariables, aiKnownVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore, mailer, fetchEmailer, sqlerL ) )
     }
   })
 

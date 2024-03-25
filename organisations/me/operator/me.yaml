@@ -1,7 +1,15 @@
 name: phil
 email: liubaoyu2014@gmail.com
-smtp:
+smtp: # sending emails
   service: gmail
   auth:
     user: liubaoyu2014@gmail.com
     pass: ${env.LBY}
+imap: # receiving emails
+  host: 'imap.gmail.com'
+  port: 993
+  secure: true
+  auth:
+    user: liubaoyu2014@gmail.com
+    pass: ${env.LBY}
+

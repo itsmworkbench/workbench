@@ -1,4 +1,4 @@
-import { EmailFn, Mailer } from "@itsmworkbench/mailer";
+import { MailerFn, Mailer } from "@itsmworkbench/mailer";
 
 function sendEmail ( url: string ) {
   return async ( email: any ) => {

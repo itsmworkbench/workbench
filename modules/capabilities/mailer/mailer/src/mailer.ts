@@ -10,11 +10,10 @@ export interface EmailDetails {
 }
 export interface EmailResult {
   messageId: string
-
 }
-export type EmailFn = ( email: EmailDetails ) => Promise<ErrorsAnd<EmailResult>>
-export type TestEmailFn = () => Promise<ErrorsAnd<'Test connection OK'>>
+export type MailerFn = ( email: EmailDetails ) => Promise<ErrorsAnd<EmailResult>>
+export type TestMailerFn = () => Promise<ErrorsAnd<'Test connection OK'>>
 export interface Mailer {
-  sendEmail: EmailFn
-  test: TestEmailFn
+  sendEmail: MailerFn
+  test: TestMailerFn
 }

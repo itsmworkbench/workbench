@@ -1,0 +1,97 @@
+variables:
+  - Environment
+  - System
+  - projectId
+capabilities:
+  - Email
+  - LDAP
+  - ReviewTicket
+  - SQL
+actions:
+  CheckTicket:
+    SelectKnowledgeArticle:
+      by: SelectKnowledgeArticle
+      recordInCapability: false
+    ReviewTicket:
+      by: ReviewTicket
+    RequestMoreData:
+      by: Email
+      to: issuer.email
+      optional: true
+      highlyVariant: true
+    checkProblemExists:
+      by: SQL
+      sql: select * from projects where project_id='${projectId}'
+      env: ${Environment}
+    checkUser:
+      safe: true
+      by: LDAP
+      who: phil.rice@validoc.org
+    checkApprover:
+      safe: true
+      by: LDAP
+      who: the.boss@example.com
+  Approval:
+    requestApproval:
+      waitingFor: []
+      by: Email
+      to: the.boss@example.com
+      subject: 'Request for Approval: Deletion of Project ${projectId}'
+      email: >
+        I am writing to request approval for the deletion of project
+        ${projectId}, as requested by the customer, . The project was created in
+        the ${System} ${Environment} environment by mistake.
+
+
+        Please review the details provided in the ticket and let me know if it
+        is appropriate to proceed with deleting this project as per the
+        customer's request.
+
+
+        Thank you for your attention to this matter.
+    receiveApproval:
+      by: ReceiveEmail
+      from: approval.to
+      waitingFor:
+        - requestApproval
+  Resolve:
+    resolveTheIssue:
+      waitingFor:
+        - checkIssueStillExists
+      by: SQL
+      sql: delete  from projects where project_d='${projectId}'
+      env: ${Environment}
+    checkIssueStillExists:
+      by: SQL
+      sql: select * from projects where projectId='${projectId}'
+  Close:
+    requestClosure:
+      waitingFor: []
+      by: Email
+      to: phil.rice@validoc.org
+      subject: 'Completion of Task: Deletion of Project ${projectId}'
+      email: >
+        I am writing to inform you that the task of deleting project
+        ${projectId}, which was created by  and mistakenly placed in the
+        ${System} ${Environment}, has been successfully completed as per the
+        request.
+
+
+        Please proceed with closing the ticket associated with this task.
+
+
+        Thank you for your attention to this matter.
+    agreeClosure:
+      by: ReceiveEmail
+      from: issuer.email
+      waitingFor:
+        - requestClosure
+    closed:
+      by: Ticket
+      waitingFor:
+        - agreeClosure
+  Review:
+    createKnowledgeArticle:
+      by: CreateKnowledgeArticle
+      recordInCapability: false
+      optional: true
