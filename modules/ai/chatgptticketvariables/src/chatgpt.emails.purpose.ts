@@ -29,7 +29,7 @@ const generateEmailPrompt = (emailData: EmailData ): string => {
   return `Given the following ticket ID: ${emailData.ticketId} and details: ${JSON.stringify(emailData.ticket, null, 2)}
 Generate a professional email from an employee to their employer ${purposeDescription}. Include a subject and body in the email. 
 Annotate the subject with <!-- SUBJECT START --> and <!-- SUBJECT END -->. Annotate the email body with <!-- EMAIL START --> and <!-- EMAIL END -->. 
-Do not use salutations and email signatures. No names in the end.
+Do not use salutations(Dear) and email signatures. No names in the end.
 Use these details to craft the email content.`;
 };
 
