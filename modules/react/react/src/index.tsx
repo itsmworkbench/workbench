@@ -14,22 +14,18 @@ import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
 import { hasErrors, mapK, value } from "@laoban/utils";
-import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor, displayTicketEventPlugin } from '@itsmworkbench/reactticket';
+import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor, displayNewTicketWizard, displayReviewTicketWorkbench, displayTicketEventPlugin } from '@itsmworkbench/reactticket';
 import { addSaveKnowledgeArticleSideEffect, displayCreateKnowledgeArticlePlugin, displaySelectKnowledgeArticlePlugin, displayTicketTypeEventPlugin } from '@itsmworkbench/reacttickettype';
 
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
-import { displayLdapEventPlugin, displayLdapPlugin, displayReceiveEmailEventPlugin, displayReceiveEmailPlugin } from '@itsmworkbench/react_capabilities';
+import { DisplayCapabilitiesMenu, displayLdapEventPlugin, displayLdapPlugin, displayReceiveEmailEventPlugin, displayReceiveEmailPlugin } from '@itsmworkbench/react_capabilities';
 import { AiEmailProvider, AiVariablesProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
-import { displaySqlEventPlugin } from '@itsmworkbench/reactsql';
+import { displaySqlEventPlugin, displaySqlPlugin } from '@itsmworkbench/reactsql';
 import { addAiMailerSideEffectProcessor, displayEmailEventPlugin, displayMailerPlugin, SuggestEmailForTicketButton } from '@itsmworkbench/reactmailer';
-import { displayMessageEventPlugin } from "@itsmworkbench/reactevents";
-import { displayEventPlugins } from "@itsmworkbench/reactevents";
-import {  } from "@itsmworkbench/reactticket";
-  import { displaySqlPlugin } from "@itsmworkbench/reactsql";
-import { displayReviewTicketWorkbench } from "@itsmworkbench/reactticket";
+import { debugEnrichedEventsPlugin, debugEventsPlugin, displayEnrichedEventsWithPlugins, displayMessageEventPlugin, enrichedDisplayAndChatPlugin } from "@itsmworkbench/reactevents";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -59,16 +55,19 @@ const eventPlugins = [
   displayTicketTypeEventPlugin<ItsmState> (),
   displayMessageEventPlugin<ItsmState> () ];
 
+const devMode = ( s: ItsmState ) => s?.debug?.showDevMode
 const displayPlugins: ActionPluginDetails<ItsmState, ItsmState, any>[] = [
-  ...displayEventPlugins<ItsmState, ItsmState> (
-    ( s: ItsmState ) => s?.debug?.showDevMode,
-    eventsO,
-    enrichedEventsO,
-    conversationL,
-    sideEffectsL,
-    eventPlugins,
-    [],
-    <div>Plus Menu</div> ),
+  debugEventsPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( eventsO ) }) ),
+  debugEnrichedEventsPlugin<ItsmState, ItsmState> ( devMode, eventPlugins ) ( s => ({ state: s.chainLens ( enrichedEventsO ) }) ),
+  displayEnrichedEventsWithPlugins<ItsmState, ItsmState> ( devMode, eventPlugins ) ( s => ({ state: s.chainLens ( enrichedEventsO ) }) ),
+  enrichedDisplayAndChatPlugin<ItsmState, ItsmState> () ( s =>
+    ({
+      state: s.tripleUp ().chain1 ( conversationL ).chain2 ( enrichedEventsO ).chainLens3 ( sideEffectsL ),
+      eventPlugins,
+      plugins: [],
+      plusMenu: <div/>,
+      devMode: devMode ( s.optJson () as ItsmState ),
+    }) ),
   displayMailerPlugin<ItsmState, ItsmState> () ( s => ({
     state: s.chainLens ( actionO ),
     SuggestButton: <SuggestEmailForTicketButton state={s.doubleUp ().chain1 ( ticketL ).chain2 ( actionO )}/>
@@ -83,7 +82,10 @@ const displayPlugins: ActionPluginDetails<ItsmState, ItsmState, any>[] = [
       state: s.doubleUp ().chain1 ( actionO ).chain2 ( ticketTypeO )
     }) ),
   displayCreateKnowledgeArticlePlugin<ItsmState, ItsmState> () ( s =>
-    ({ state: s.tripleUp ().chain1 ( kaO ).chain2 ( eventsO ).chainLens3 ( sideEffectsL ) }) ) ]
+    ({ state: s.tripleUp ().chain1 ( kaO ).chain2 ( eventsO ).chainLens3 ( sideEffectsL ) }) ),
+  displayNewTicketWizard<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( newTicketL ) }) ),
+
+]
 
 const mailer = apiClientMailer ( rootUrl + "api/email" )
 const sqler = apiClientSqler ( rootUrl + "api/sql" )

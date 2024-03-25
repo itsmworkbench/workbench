@@ -41,25 +41,3 @@ export const enrichedDisplayAndChatPlugin = <S, State> (): ActionPlugIn<S, State
     render: ( s: State, props ) =>
       <EnrichedEventsAndChat {...props} />
   })
-export function displayEventPlugins<S, State> ( devMode: ( s: State ) => boolean | undefined,
-                                                eventsO: Optional<State, Event[]>,
-                                                enrichedO: Optional<State, EnrichedEvent<any, any>[]>,
-                                                conversationO: Lens<State, Conversation>,
-                                                sideEffectsO: Lens<State, SideEffect[]>,
-                                                eventPlugins: DisplayEnrichedEventPlugIn<S>[],
-                                                conversationPlugins: ConversationPlugin<S>[],
-                                                plusMenu: React.ReactElement ): ActionPluginDetails<S, State, any>[] {
-  return [
-    debugEventsPlugin<S, State> () ( s => ({ state: s.chainLens ( eventsO ) }) ),
-    debugEnrichedEventsPlugin<S, State> ( devMode, eventPlugins ) ( s => ({ state: s.chainLens ( enrichedO ) }) ),
-    displayEnrichedEventsWithPlugins<S, State> ( devMode, eventPlugins ) ( s => ({ state: s.chainLens ( enrichedO ) }) ),
-    enrichedDisplayAndChatPlugin<S, State> () ( s =>
-      ({
-        state: s.tripleUp ().chain1 ( conversationO ).chain2 ( enrichedO ).chainLens3 ( sideEffectsO ),
-        eventPlugins,
-        plugins: conversationPlugins,
-        plusMenu,
-        devMode: devMode ( s.optJson () as State)
-      }) ),
-  ];
-}

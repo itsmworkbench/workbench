@@ -1,18 +1,16 @@
 import { LensProps, LensState } from "@focuson/state";
-import React, { useEffect } from "react";
+import React from "react";
 import { findSqlDataDetails } from "@itsmworkbench/defaultdomains";
-import { Box, Button, Container, FormControl, InputLabel, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, useTheme } from "@mui/material";
+import { Box, Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { SqlDataTable } from "./SqlData";
 import { DisplayJson, FocusedTextArea, MonospaceText, SuccessFailContextFn, SuccessFailureButton, useSqler, useVariables } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { SqlWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
-import { isSqlQueryResult, SqlQueryResult } from "@itsmworkbench/sql";
-import { ErrorsAnd, hasErrors, NameAnd } from "@laoban/utils";
-import MenuItem from "@mui/material/MenuItem";
-import InfoIcon from '@mui/icons-material/Info';
+import { isSqlQueryResult, queryOrUpdate, SqlQueryResult } from "@itsmworkbench/sql";
+import { ErrorsAnd, hasErrors } from "@laoban/utils";
+import { EnvDropdownWithTooltip } from "./envDropdownWithTooltip";
 
 export type SqlResultTableProps = {
   data: SqlQueryResult
@@ -107,7 +105,7 @@ export function DisplaySqlWorkbench<S> ( { state }: DisplaySqlWorkbenchProps<S> 
   };
   let queryOnClick = () => {
     if ( action?.sql && env )
-      sqler.query ( [ action.sql ], env ).then ( ( res ) => {
+      queryOrUpdate ( sqler, [ action.sql ], env ).then ( ( res ) => {
         actionState.focusOn ( 'response' ).setJson ( res, '' )
       } )
   };
@@ -131,46 +129,6 @@ export function DisplaySqlWorkbench<S> ( { state }: DisplaySqlWorkbenchProps<S> 
   </Container>
 }
 
-export interface EnvDropdownWithTooltipProps<S> extends LensProps<S, string, any> {
-
-
-}
-function EnvDropdownWithTooltip<S> ( { state }: EnvDropdownWithTooltipProps<S> ) {
-  const sqler = useSqler ()
-  const [ envs, setEnvs ] = React.useState<ErrorsAnd<NameAnd<NameAnd<string>>>> ( {} )
-  useEffect ( () => {
-    sqler.listEnvs ().then ( setEnvs )
-  }, [] )
-
-
-  const selectedValue = state.optJson () || ''
-  let envName = state.optJson () || '';
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}> {/* Adjust the gap as needed */}
-      <FormControl sx={{ width: '100%', minWidth: 120 }} size="small">
-        <InputLabel id="env-select-label">Environment</InputLabel>
-        <Select
-          labelId="env-select-label"
-          value={selectedValue}
-          onChange={( e ) => state.setJson ( e.target.value, '' )}
-          displayEmpty
-          inputProps={{ 'aria-label': 'Without label' }}
-          sx={{ marginTop: 2 }}
-        >
-          <MenuItem disabled value="">
-            <em>Select an environment</em>
-          </MenuItem>
-          {Object.keys ( envs ).map ( ( key ) => (
-            <MenuItem key={key} value={key} sx={{ padding: 2 }}>{key}</MenuItem>
-          ) )}
-        </Select>
-      </FormControl>
-      <Tooltip title={<Typography>{hasErrors ( envs ) ? JSON.stringify ( envs, null, 2 ) : envName ? JSON.stringify ( envs?.[ envName ], null, 2 ) : 'No Environment Selected'}</Typography>} placement="right">
-        <InfoIcon/>
-      </Tooltip>
-    </div>
-  );
-}
 
 
 
