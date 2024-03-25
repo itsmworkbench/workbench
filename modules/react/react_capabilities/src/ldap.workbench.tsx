@@ -16,7 +16,7 @@ export interface DisplayLdapWorkbenchProps<S> extends LensProps<S, Action, any> 
 export function DisplayLdapWorkbench<S> ( { state }: DisplayLdapWorkbenchProps<S> ) {
   let actionState: LensState<S, any, any> = state;
   const action: any = state.optJson ()
-  const email = action?.email || ''
+  const who = action?.who || ''
   const response = action?.response || ''
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): LdapWorkBenchContext => ({
@@ -27,14 +27,14 @@ export function DisplayLdapWorkbench<S> ( { state }: DisplayLdapWorkbenchProps<S
       type: 'LDAP',
       successOrFail,
     },
-    data: { email: email || '', response: response || '' }
+    data: { who: who || '', response: response || '' }
   })
 
   return <Container maxWidth="md">
     <Typography variant="h4" gutterBottom>LDAP Check</Typography>
     <Box marginBottom={2}>
       <Typography variant="subtitle1" gutterBottom>Email to check in LDAP</Typography>
-      <FocusedTextInput fullWidth variant="outlined" state={actionState.focusOn ( 'email' )}/>
+      <FocusedTextInput fullWidth variant="outlined" state={actionState.focusOn ( 'who' )}/>
       <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1}>
         <Button variant="contained" color="primary" endIcon={<TestIcon/>}>Execute </Button>
         <Button variant="contained" color="primary" endIcon={<TestIcon/>}> Test Connection </Button>

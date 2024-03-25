@@ -3,6 +3,8 @@ import { ActionPlugIn, ActionPluginDetails } from "@itsmworkbench/react_core";
 import { LensState } from "@focuson/state";
 import { DisplaySelectKnowledgeArticleWorkbench, DisplaySelectKnowledgeArticleWorkbenchProps } from "./select.knowledge.article.workbench";
 import { DisplayKnowledgeArticleWorkbench, DisplayKnowledgeArticleWorkbenchProps } from "./ka.workspace";
+import { Ticket } from "@itsmworkbench/tickets";
+import { Optional } from "@focuson/lens";
 
 
 export const displaySelectKnowledgeArticlePlugin = <S, State> (): ActionPlugIn<S, State, DisplaySelectKnowledgeArticleWorkbenchProps<S>> =>
@@ -12,7 +14,7 @@ export const displaySelectKnowledgeArticlePlugin = <S, State> (): ActionPlugIn<S
     render: ( s, props ) => <DisplaySelectKnowledgeArticleWorkbench {...props} />
   });
 
-export const displayCreateKnowledgeArticlePlugin = <S, State> (): ActionPlugIn<S, State, DisplayKnowledgeArticleWorkbenchProps<S>> =>
+export const displayCreateKnowledgeArticlePlugin = <S, State> (  ): ActionPlugIn<S, State, DisplayKnowledgeArticleWorkbenchProps<S>> =>
   ( props: ( s: LensState<S, State, any> ) => DisplayKnowledgeArticleWorkbenchProps<S> ): ActionPluginDetails<S, State, DisplayKnowledgeArticleWorkbenchProps<S>> => ({
     by: "CreateKnowledgeArticleWorkbench",
     props,

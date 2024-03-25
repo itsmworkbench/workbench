@@ -83,7 +83,10 @@ const displayPlugins: ActionPluginDetails<ItsmState, ItsmState, any>[] = [
       state: s.doubleUp ().chain1 ( actionO ).chain2 ( ticketTypeO )
     }) ),
   displayCreateKnowledgeArticlePlugin<ItsmState, ItsmState> () ( s =>
-    ({ state: s.tripleUp ().chain1 ( kaO ).chain2 ( eventsO ).chainLens3 ( sideEffectsL ) }) ),
+    ({
+      state: s.tripleUp ().chain1 ( kaO ).chain2 ( eventsO ).chainLens3 ( sideEffectsL ),
+      ticket: s.chainLens ( ticketL ).optJson ()
+    }) ),
   displayNewTicketWizard<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( newTicketL ) }) ),
 
 ]

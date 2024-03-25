@@ -1,6 +1,3 @@
-import React, { useContext } from "react";
-import { SideEffect } from "@itsmworkbench/react_core";
-import { LensState } from "@focuson/state";
 import { useEnrichedEvents } from "./useEnrichedEvents";
 import { EnrichedEvent } from "@itsmworkbench/events";
 

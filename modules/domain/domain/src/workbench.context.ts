@@ -39,7 +39,7 @@ export function isLdapWorkBenchContext ( context: any ): context is LdapWorkBenc
   return isWorkBenchContext<LdapData> ( context ) && context.capability === 'LDAP'
 }
 export interface LdapData {
-  email: string
+  who: string
   response: string
 }
 export interface EmailWorkBenchContext extends WorkBenchContext<EmailTempData> {

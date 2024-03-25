@@ -80,11 +80,15 @@ export function reverseEmailAction ( variables: Record<string, string>, a: Actio
   }
 }
 export function reverseLdapAction ( variables: Record<string, string>, a: Action, c: LdapWorkBenchContext ): Action {
+  console.log('reverseLdapAction - action',a)
+  console.log('reverseLdapAction - context',c)
   if ( a.by !== 'LDAP' ) return a
+  let who = reverseTemplate ( c.data.who, variables );
+  console.log('reverseLdapAction - who', who, c.data.who, variables)
   return {
     ...basics ( a ),
     by: 'LDAP',
-    who: reverseTemplate ( c.data.email, variables )
+    who
   }
 }
 

@@ -6,9 +6,10 @@ import { Event } from "@itsmworkbench/events";
 import { makeKnowledgeArticle } from "@itsmworkbench/defaultdomains";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { SaveKnowledgeArticleButton } from "./save.ka.sideeffect";
-import { ErrorsAnd, hasErrors } from "@laoban/utils";
+import { deepCombineTwoObjects, ErrorsAnd, hasErrors } from "@laoban/utils";
 import { SideEffect } from "@itsmworkbench/react_core";
 import { DisplayPhasesForTicketType } from "@itsmworkbench/reacttickettype";
+import { Ticket } from "@itsmworkbench/tickets";
 
 export interface KnowledgeArticleTempData {
   name: string,
@@ -17,11 +18,13 @@ export interface KnowledgeArticleTempData {
 
 
 export interface DisplayKnowledgeArticleWorkbenchProps<S> extends LensProps3<S, KnowledgeArticleTempData, Event[], SideEffect[], any> {
+  ticket: Ticket | undefined
 }
 
-export function DisplayKnowledgeArticleWorkbench<S> ( { state }: DisplayKnowledgeArticleWorkbenchProps<S> ) {
+export function DisplayKnowledgeArticleWorkbench<S> ( { state, ticket }: DisplayKnowledgeArticleWorkbenchProps<S> ) {
   const {} = state.optJson1 () || {}
-  const variables = useVariables ()
+  const variables = deepCombineTwoObjects ( ticket.attributes, useVariables () )
+  console.log ( 'DisplayKnowledgeArticleWorkbench- variables', variables )
   const ticketType = useTicketType ()
   const events = state.optJson2 () || []
   const ka: ErrorsAnd<TicketType> = makeKnowledgeArticle ( events, ticketType, variables )

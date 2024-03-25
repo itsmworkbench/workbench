@@ -29,7 +29,7 @@ export function DisplayLdapEventFull<S> ( { state, icons }: DisplayLdapEventProp
     />
     <CardContent>
       <Typography variant="body1" component="pre">
-        To: {context.data?.email}
+        To: {context.data?.who}
       </Typography>
       <Typography variant="body1" component="pre">
         Subject: {context.data?.response}
