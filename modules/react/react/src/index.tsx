@@ -56,6 +56,7 @@ const eventPlugins = [
   displayMessageEventPlugin<ItsmState> () ];
 
 const devMode = ( s: ItsmState ) => s?.debug?.showDevMode
+
 const displayPlugins: ActionPluginDetails<ItsmState, ItsmState, any>[] = [
   debugEventsPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( eventsO ) }) ),
   debugEnrichedEventsPlugin<ItsmState, ItsmState> ( devMode, eventPlugins ) ( s => ({ state: s.chainLens ( enrichedEventsO ) }) ),

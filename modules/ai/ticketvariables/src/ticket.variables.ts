@@ -9,6 +9,13 @@ export type EmailData = {
   ticketId: string,
   ticket: string
 }
+export function isEmailData ( t: any ): t is EmailData {
+  return t?.ticketId && t?.ticket && t?.purpose && [ 'requestApproval', 'requestClosure', 'requestMoreData' ].includes ( t.purpose )
+}
+export type EmailDataWithMissingData = EmailData & { missingData: string[] }
+export function isEmailDataWithMissingData ( t: any ): t is EmailDataWithMissingData {
+  return t?.missingData && isEmailData ( t )
+}
 export type EmailPurposeAnd<T> = {
   requestApproval: T
   requestClosure: T
@@ -44,4 +51,4 @@ export type AiTicketVariablesFn = ( ticket: string ) => Promise<TicketVariables>
 
 export type AIEmailsFn = ( email: EmailData ) => Promise<EmailResult>
 
-export type AIKnownTicketVariablesFn = ( ticket: string , attributes: string[]) => Promise<TicketVariables>
+export type AIKnownTicketVariablesFn = ( ticket: string, attributes: string[] ) => Promise<TicketVariables>

@@ -1,8 +1,7 @@
 variables:
-  - Customer
-  - Environment
-  - System
+  - environment
   - projectId
+  - system
 capabilities:
   - Email
   - LDAP
@@ -22,33 +21,37 @@ actions:
       highlyVariant: true
     checkProblemExists:
       by: SQL
-      sql: select * from projects where projectId='${projectId}'
+      sql: select * from projects where project_id = '${projectId}'
+      env: ${environment}
     checkUser:
       safe: true
       by: LDAP
-      who: ${Customer}
+      who: philip.rice@hcl.com
     checkApprover:
       safe: true
       by: LDAP
-      who: approval.to
+      who: the.boss@example.com
   Approval:
     requestApproval:
       waitingFor: []
       by: Email
-      to: approval.to
-      subject: 'Request for Approval: Deletion of Project ${projectId}'
-      email: >
-        I am writing to request approval for the deletion of project
-        ${projectId}, as requested by the customer, ${Customer}. The project was
-        created in the ${System} ${Environment} environment by mistake.
+      to: phil.rice@validoc.org
+      subject: >-
+        Request for Approval: Deletion of Project ${projectId} in ${system}
+        Acceptance Environment
+      email: >-
+        I am writing to seek approval for the deletion of project ${projectId}
+        in the ${system} acceptance environment. This project was created by
+        mistake and needs to be removed promptly to avoid any confusion or
+        issues.
 
 
-        Please review the details provided in the ticket and let me know if it
-        is appropriate to proceed with deleting this project as per the
-        customer's request.
+        Your prompt approval to proceed with the deletion of project
+        ${projectId} would be greatly appreciated. Please let me know if you
+        require any further information or clarification regarding this matter.
 
 
-        Thank you for your attention to this matter.
+        Thank you for your attention to this request.
     receiveApproval:
       by: ReceiveEmail
       from: approval.to
@@ -59,27 +62,31 @@ actions:
       waitingFor:
         - checkIssueStillExists
       by: SQL
-      sql: delete  from projects where projectId='${projectId}'
+      sql: delete from projects where project_id='${projectId}'
+      env: ${environment}
     checkIssueStillExists:
       by: SQL
-      sql: select * from projects where projectId='${projectId}'
+      sql: select * from projects where project_id = '${projectId}'
+      env: ${environment}
   Close:
     requestClosure:
       waitingFor: []
       by: Email
-      to: issuer.email
-      subject: 'Completion of Task: Deletion of Project ${projectId}'
+      to: philip.rice@hcl.com
+      subject: 'Completion of Project ${projectId}: Request for Closure'
       email: >
-        I am writing to inform you that the task of deleting project
-        ${projectId}, which was created by ${Customer} and mistakenly placed in
-        the ${System} ${Environment}, has been successfully completed as per the
-        request.
+        I am writing to inform you that the project ${projectId}, which was
+        mistakenly created in the ${system} acceptance environment, has been
+        successfully deleted as per your request. 
 
 
-        Please proceed with closing the ticket associated with this task.
+        Please proceed with closing the ticket associated with this project. 
 
 
         Thank you for your attention to this matter.
+
+
+        Best regards,
     agreeClosure:
       by: ReceiveEmail
       from: issuer.email

@@ -1,4 +1,4 @@
-import {EmailData, EmailPurpose} from "@itsmworkbench/ai_ticketvariables";
+import { EmailData, EmailPurpose, isEmailDataWithMissingData } from "@itsmworkbench/ai_ticketvariables";
 
 import {OpenAI} from "openai";
 
@@ -18,7 +18,8 @@ const generateEmailPrompt = (emailData: EmailData): string => {
       purposeDescription = 'to inform about the completion of a task or project and request its closure';
       break;
     case 'requestMoreData': //todo: this one is a placeholder until real non-existing variables are found
-      purposeDescription = 'to request additional information or data for completing a work ticket';
+      if (!isEmailDataWithMissingData(emailData))  throw new Error('Email data is missing missingData field');
+      purposeDescription = 'to request additional information or data for completing a work ticket' +emailData.missingData;
       break;
       // Add more cases as needed for other purposes
     default:
