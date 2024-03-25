@@ -93,7 +93,7 @@ export function fetchEmail ( client: () => ImapFlow ): FetchEmailFn {
     console.log ( 'fetchResult-bodyParts', fetchResult.bodyParts )
     const textBody: string[] = toArray ( options.bodyParts ).map ( part => {
       console.log('part', typeof part, part, fetchResult?.bodyParts?.get ( part ))
-      return part + '/' + fetchResult?.bodyParts?.get ( part )?.toString ( 'utf8' ); } )
+      return fetchResult?.bodyParts?.get ( part )?.toString ( 'utf8' ); } )
     return { subject, from, date, textBody }
   } )
 }
@@ -103,7 +103,7 @@ export function fetchEmailFromClient ( client: () => ImapFlow ): FetchEmailer {
     listEmails: listEmails ( client ),
     fetchEmail: fetchEmail ( client ),
     testConnection: async () =>
-      useClient ( client (), async ( _: any ): Promise<'Test connection OK'> => 'Test connection OK' ) ( 'ignore' )
+      useClient ( client , async ( _: any ): Promise<'Test connection OK'> => 'Test connection OK' ) ( 'ignore' )
   }
 }
 

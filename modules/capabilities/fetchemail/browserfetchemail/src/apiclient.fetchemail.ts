@@ -17,7 +17,7 @@ function postToApi ( url: string ) {
 export function apiClientFetchEmailer ( url: string ): FetchEmailer {
   return {
     listEmails: postToApi ( `${url}/list` ),
-    fetchEmail: postToApi ( `${url}/fetchEmail` ),
-    testConnection: () => postToApi ( `${url}/testConnection` ) ( {} )
+    fetchEmail: postToApi ( `${url}/fetch` ),
+    testConnection: () => postToApi ( `${url}/test` ) ( {} )
   }
 }

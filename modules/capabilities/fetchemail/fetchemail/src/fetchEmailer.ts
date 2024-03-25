@@ -16,7 +16,7 @@ export interface EmailSummary {
 
 export interface ListEmailsOptions {
   from: string
-  sinceDays: number // number of days to go back
+  sinceDays?: number // number of days to go back
 }
 
 export interface ListEmailsResult {

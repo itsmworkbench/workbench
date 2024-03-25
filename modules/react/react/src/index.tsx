@@ -19,13 +19,15 @@ import { addSaveKnowledgeArticleSideEffect, displayCreateKnowledgeArticlePlugin,
 
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
-import { DisplayCapabilitiesMenu, displayLdapEventPlugin, displayLdapPlugin, displayReceiveEmailEventPlugin, displayReceiveEmailPlugin } from '@itsmworkbench/react_capabilities';
-import { AiEmailProvider, AiVariablesProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
+import { displayLdapEventPlugin, displayLdapPlugin } from '@itsmworkbench/react_capabilities';
+import { AiEmailProvider, AiVariablesProvider, FetchEmailerProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
 import { displaySqlEventPlugin, displaySqlPlugin } from '@itsmworkbench/reactsql';
 import { addAiMailerSideEffectProcessor, displayEmailEventPlugin, displayMailerPlugin, SuggestEmailForTicketButton } from '@itsmworkbench/reactmailer';
 import { debugEnrichedEventsPlugin, debugEventsPlugin, displayEnrichedEventsWithPlugins, displayMessageEventPlugin, enrichedDisplayAndChatPlugin } from "@itsmworkbench/reactevents";
+import { apiClientFetchEmailer } from "@itsmworkbench/browserfetchemail";
+import { displayReceiveEmailEventPlugin, displayReceiveEmailPlugin } from "@itsmworkbench/reactfetchemail";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -93,26 +95,29 @@ const displayPlugins: ActionPluginDetails<ItsmState, ItsmState, any>[] = [
 
 const mailer = apiClientMailer ( rootUrl + "api/email" )
 const sqler = apiClientSqler ( rootUrl + "api/sql" )
-
+const fetcher = apiClientFetchEmailer ( rootUrl + "api/fetchemail"
+)
 addEventStoreListener ( container, (( _, s, setJson ) => {
   return root.render ( <UrlStoreProvider urlStore={urlStore}>
-    <MailerProvider mailer={mailer}>
-      <SqlerProvider sqler={sqler}>
-        <AiEmailProvider aiEmail={aiEmails}>
-          <AiVariablesProvider aiVariables={aiVariables}>
-            <YamlProvider yamlCapability={yaml}>
-              <App
-                actionPlugins={displayPlugins}
-                byO={tabO}
-                state={lensState ( s, setJson, 'Container', {} )}
-                plugins={[]}
-                eventPlugins={eventPlugins}
-              />
-            </YamlProvider>
-          </AiVariablesProvider>
-        </AiEmailProvider>
-      </SqlerProvider>
-    </MailerProvider>
+    <FetchEmailerProvider fetchEmailer={fetcher}>
+      <MailerProvider mailer={mailer}>
+        <SqlerProvider sqler={sqler}>
+          <AiEmailProvider aiEmail={aiEmails}>
+            <AiVariablesProvider aiVariables={aiVariables}>
+              <YamlProvider yamlCapability={yaml}>
+                <App
+                  actionPlugins={displayPlugins}
+                  byO={tabO}
+                  state={lensState ( s, setJson, 'Container', {} )}
+                  plugins={[]}
+                  eventPlugins={eventPlugins}
+                />
+              </YamlProvider>
+            </AiVariablesProvider>
+          </AiEmailProvider>
+        </SqlerProvider>
+      </MailerProvider>
+    </FetchEmailerProvider>
   </UrlStoreProvider> );
 }) );
 

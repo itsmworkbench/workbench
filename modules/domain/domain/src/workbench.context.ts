@@ -2,6 +2,7 @@ import { Capability } from "./capabilities";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { IdentityUrl } from "@itsmworkbench/urlstore";
 import { SqlQueryResult } from "@itsmworkbench/sql";
+import { EmailSummary, ListEmailsResult } from "@itsmworkbench/fetchemail";
 
 export type WhereContext = { phase?: string, action?: string, tab?: string }
 export type DisplayContext = { title: string, type: string, successOrFail: boolean | undefined }
@@ -30,7 +31,7 @@ export function isSqlWorkBenchContext ( context: any ): context is SqlWorkBenchC
 export interface SqlData {
   env: string
   sql: string
-  response:  ErrorsAnd<SqlQueryResult>
+  response: ErrorsAnd<SqlQueryResult>
 }
 
 export interface LdapWorkBenchContext extends WorkBenchContext<LdapData> {
@@ -63,6 +64,7 @@ export function isReceiveEmailWorkbenchContext ( context: any ): context is Rece
 }
 export interface ReceiveEmailData {
   from: string
+  emailSummary: ErrorsAnd<ListEmailsResult>
   email: string
 }
 
