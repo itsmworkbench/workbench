@@ -1,7 +1,7 @@
 import { LensProps2, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { DisplayMarkdown, SuccessFailContextFn, SuccessFailureButton, useAiVariables, useTicketType, useYaml } from "@itsmworkbench/components";
+import { DisplayMarkdown, SuccessFailContextFn, SuccessFailureButton, useAI, useAiVariables, useTicketType, useYaml } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { ReviewTicketWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
@@ -11,6 +11,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { MultiParagraphText } from "@itsmworkbench/i18n";
 import { DisplayInfoVariables } from "@itsmworkbench/react_displayinfo";
 import { yamlWriterToStringWithErrorsEmbedded } from "@itsmworkbench/yaml";
+import { AI } from "@itsmworkbench/ai";
 
 
 export interface DisplayReviewTicketWorkbenchProps<S> extends LensProps2<S, Ticket, Action, any> {
@@ -25,8 +26,9 @@ export function DisplayReviewTicketWorkbench<S> ( { state }: DisplayReviewTicket
   const [ yaml, setYaml ] = React.useState<string | undefined> ( yamlWriterToStringWithErrorsEmbedded ( yamlCapability.writer ) ( attributes ) )
   const yamlParser = yamlCapability.parser
   const yamlWriter = yamlCapability.writer
-  const ai = useAiVariables ()
-  const hasKa = useTicketType ()?.id !== undefined
+  const ai: AI = useAI ()
+  let ticketType = useTicketType ();
+  const hasKa = ticketType?.id !== undefined
   const textKey = hasKa ? 'review.ticket.workbench.haska.text' : 'review.ticket.workbench.noka.text'
 
   const contextFn = ( yaml: string ): SuccessFailContextFn => ( tab, phase, action, successOrFail ): ReviewTicketWorkBenchContext => ({
@@ -40,6 +42,15 @@ export function DisplayReviewTicketWorkbench<S> ( { state }: DisplayReviewTicket
     data: { attributes: yamlParser ( yaml ) as any }
   })
 
+  function callAi () {
+    if ( hasKa ) {
+      let needed = ticketType?.variables || [];
+      let ticketVariables = ticket?.attributes || {};
+      let withoutTicket = needed.filter ( v => !ticketVariables[ v ] );
+      return ai.knownVariables ( ticket.description, withoutTicket )
+    } else
+      return ai.variables ( ticket.description );
+  }
   return <> <Typography variant="h4" gutterBottom>Review Ticket</Typography>
     <Box marginBottom={2}>
       <Grid container spacing={2}>
@@ -64,7 +75,7 @@ export function DisplayReviewTicketWorkbench<S> ( { state }: DisplayReviewTicket
                   variant="contained"
                   color="primary"
                   endIcon={<SendIcon/>}
-                  onClick={() => ai ( ticket.description ).then ( res => {
+                  onClick={() => callAi ().then ( res => {
                     let newYaml = yamlWriter ( res ).toString ();
                     setYaml ( newYaml )
                     return setEditorYaml ( newYaml );

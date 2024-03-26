@@ -24,7 +24,7 @@ export function useEnrichedEvents (): EnrichedEvent<any, any>[] {
   return results;
 }
 
-export function useTicketType (): TicketType {
+export function useTicketType (): TicketType|undefined {
   let enriched = useEnrichedEvents ();
   let result = lastTicketType ( enriched );
   return result
