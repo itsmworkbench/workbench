@@ -22,6 +22,7 @@ actions:
       to: issuer.email
       optional: true
       highlyVariant: true
+      withMissingData: true
     checkProblemExists:
       by: SQL
       sql: select * from products where product_id = '${itemId}'

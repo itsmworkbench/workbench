@@ -1,7 +1,7 @@
 import { LensProps3 } from "@focuson/state";
 import React from "react";
 import { Container, Tooltip, Typography } from "@mui/material";
-import { DisplayYaml, FocusedTextInput, mustBeIdentifier, useTicketType, useVariables } from "@itsmworkbench/components";
+import { DisplayYaml, FocusedTextInput, mustBeIdentifier, useAllVariables, useTicketType, useVariables } from "@itsmworkbench/components";
 import { Event } from "@itsmworkbench/events";
 import { makeKnowledgeArticle } from "@itsmworkbench/defaultdomains";
 import { TicketType } from "@itsmworkbench/tickettype";
@@ -23,8 +23,8 @@ export interface DisplayKnowledgeArticleWorkbenchProps<S> extends LensProps3<S, 
 
 export function DisplayKnowledgeArticleWorkbench<S> ( { state, ticket }: DisplayKnowledgeArticleWorkbenchProps<S> ) {
   const {} = state.optJson1 () || {}
-  const variables = deepCombineTwoObjects ( ticket?.attributes || {}, useVariables () )
-  console.log ( 'DisplayKnowledgeArticleWorkbench- variables', variables )
+  const variables = useAllVariables(ticket)
+   console.log ( 'DisplayKnowledgeArticleWorkbench- variables', variables )
   const ticketType = useTicketType ()
   const events = state.optJson2 () || []
   const ka: ErrorsAnd<TicketType> = makeKnowledgeArticle ( events, ticketType, variables )

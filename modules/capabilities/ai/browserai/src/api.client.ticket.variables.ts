@@ -1,4 +1,4 @@
-import { AIEmailsFn, AIKnownTicketVariablesFn, AiTicketVariablesFn, EmailResult, TicketVariables } from "@itsmworkbench/ai";
+import { AI, AIEmailsFn, AIKnownTicketVariablesFn, AiTicketVariablesFn, EmailResult, TicketVariables } from "@itsmworkbench/ai";
 
 export type ApiClientTicketVariablesConfig = {
   url: string
@@ -20,4 +20,11 @@ export const apiClientForEmail = ( { url }: ApiClientTicketVariablesConfig ): AI
   const response = await fetch ( url + "email", { method: 'POST', body: JSON.stringify ( mailData ), headers: { 'Content-Type': 'application/json' } } )
   if ( response.status < 400 ) return response.json ()
   return { error: { msg: 'Error fetching ticket variables from server', status: response.status.toString (), statusText: response.statusText, text: await response.text () } }
+}
+export const apiClientForAi = ( { url }: ApiClientTicketVariablesConfig ): AI => {
+  return {
+    emails: apiClientForEmail ( { url } ),
+    knownVariables: apiClientForKnownTicketVariables ( { url } ),
+    variables: apiClientForTicketVariables ( { url } )
+  }
 }

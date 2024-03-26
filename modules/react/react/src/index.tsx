@@ -18,9 +18,9 @@ import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor, displa
 import { addSaveKnowledgeArticleSideEffect, displayCreateKnowledgeArticlePlugin, displaySelectKnowledgeArticlePlugin, displayTicketTypeEventPlugin } from '@itsmworkbench/reacttickettype';
 
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
-import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/browserai";
+import { apiClientForAi, apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/browserai";
 import { displayLdapEventPlugin, displayLdapPlugin } from '@itsmworkbench/react_capabilities';
-import { AiEmailProvider, AiVariablesProvider, FetchEmailerProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
+import {  AIProvider,  FetchEmailerProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
 import { displaySqlEventPlugin, displaySqlPlugin } from '@itsmworkbench/reactsql';
@@ -40,8 +40,7 @@ const aiDetails: ApiLoading = apiLoading ( rootUrl + "ai/" )
 const nameSpaceDetails = defaultNameSpaceDetails ( yaml, {} );
 const urlStoreconfig: UrlStoreApiClientConfig = { apiUrlPrefix: rootUrl + "url", details: nameSpaceDetails }
 const urlStore = urlStoreFromApi ( urlStoreconfig )
-const aiVariables = apiClientForTicketVariables ( aiDetails )
-const aiEmails = apiClientForEmail ( aiDetails )
+const ai = apiClientForAi ( aiDetails )
 
 const container = eventStore<ItsmState> ()
 const setJson = setEventStoreValue ( container );
@@ -102,19 +101,17 @@ addEventStoreListener ( container, (( _, s, setJson ) => {
     <FetchEmailerProvider fetchEmailer={fetcher}>
       <MailerProvider mailer={mailer}>
         <SqlerProvider sqler={sqler}>
-          <AiEmailProvider aiEmail={aiEmails}>
-            <AiVariablesProvider aiVariables={aiVariables}>
-              <YamlProvider yamlCapability={yaml}>
-                <App
-                  actionPlugins={displayPlugins}
-                  byO={tabO}
-                  state={lensState ( s, setJson, 'Container', {} )}
-                  plugins={[]}
-                  eventPlugins={eventPlugins}
-                />
-              </YamlProvider>
-            </AiVariablesProvider>
-          </AiEmailProvider>
+          <AIProvider ai={ai}>
+            <YamlProvider yamlCapability={yaml}>
+              <App
+                actionPlugins={displayPlugins}
+                byO={tabO}
+                state={lensState ( s, setJson, 'Container', {} )}
+                plugins={[]}
+                eventPlugins={eventPlugins}
+              />
+            </YamlProvider>
+          </AIProvider>
         </SqlerProvider>
       </MailerProvider>
     </FetchEmailerProvider>
@@ -155,8 +152,8 @@ addEventStoreModifier ( container,
   processSideEffectsInState<ItsmState> (
     processSideEffect ( [
       eventSideeffectProcessor ( urlStore.save, 'me', ticketIdL ),
-      addAiTicketSideeffectProcessor ( aiVariables, ticketVariablesL ),
-      addAiMailerSideEffectProcessor ( aiEmails, emailDataL ),
+      addAiTicketSideeffectProcessor ( ai.variables, ticketVariablesL ),
+      addAiMailerSideEffectProcessor ( ai.emails, emailDataL ),
       addSaveKnowledgeArticleSideEffect ( urlStore.save, 'me' ),
       // addLoadKaSideEffect ( urlStore.loadNamed, newTicketL.focusOn ( 'ticketDetails' ) ),
       addNewTicketSideeffectProcessor ( urlStore.save, tabsL, forTicketO, ticketIdL, newTicketL, ticketListO, 'forTicket.ticket', 'forTicket.tempData.ticketType' )

@@ -2,29 +2,42 @@ import React from "react";
 import { LensProps, LensProps2, LensState } from "@focuson/state";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
-import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, SuccessFailureButton, useAiEmail, useCurrentSelection, useMailer, useVariables } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, SuccessFailureButton, useAI, useAiEmail, useAllVariables, useCurrentSelection, useMailer, useTicketType, useTicketTypeVariables, useVariables } from "@itsmworkbench/components";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { EmailTempData, EmailWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { Ticket } from "@itsmworkbench/tickets";
+import { AI, EmailDataWithMissingData } from "@itsmworkbench/ai";
+import { Email } from "@mui/icons-material";
 
 
 export interface SuggestEmailForTicketButtonProps<S> extends LensProps2<S, Ticket, Action, any> {
 }
 export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicketButtonProps<S> ) {
-  const ai = useAiEmail ()
+  const ai: AI = useAI ()
   const purpose = useCurrentSelection ()?.action as any
   const ticket: Ticket | undefined = state.optJson1 ()
+  const variables = useAllVariables ( ticket )
+  const ticketTypeVariables = useTicketTypeVariables ()
+  const missing = ticketTypeVariables.filter ( v => !variables[ v ] )
   const actionState: LensState<S, any, any> = state.state2 ();
   const action = state.optJson2 ()
   console.log ( 'SuggestEmailForTicketButton - action', action )
   function onClick () {
     if ( ticket === undefined ) return
-    ai ( {
-      purpose,
-      ticketId: ticket.id,
-      ticket: ticket.description
-    } ).then ( res => {
+
+    function callAi () {
+      let emailParam = {
+        purpose,
+        ticketId: ticket.id,
+        ticket: ticket.description
+      };
+      const withMissingData = (action as any)?.withMissingData
+      if ( !withMissingData ) return ai.emails ( emailParam );
+      let paramsWithMissing: EmailDataWithMissingData = { ...emailParam, missingData: missing };
+      return ai.emails ( paramsWithMissing )
+    }
+    callAi ().then ( res => {
       console.log ( 'SuggestEmailForTicketButton - stat', state.state2 () )
       console.log ( 'SuggestEmailForTicketButton - result', res )
       actionState.doubleUp ().focus1On ( 'subject' ).focus2On ( 'email' ).setJson (

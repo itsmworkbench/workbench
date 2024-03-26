@@ -70,6 +70,7 @@ export const simpleTicketType: TicketType = ({
         to: 'issuer.email',
         optional: true,
         highlyVariant: true,
+        withMissingData: true,
       }
     },
     Approval: {},
