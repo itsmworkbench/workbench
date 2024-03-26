@@ -14,7 +14,12 @@ export function ReadEmailButton<S> ( { state, email }: ReadEmailButtonProps<S> )
   const fetchEmailer = useFetchEmailer ()
   function onClick () {
     fetchEmailer.fetchEmail ( { uid: email.uid, bodyParts: email.bodyParts } ).//
-      then ( result => state.setJson ( result, '' ) ).catch ( ( e: any ) => {
+      then ( result => {
+        if ( result )
+          state.setJson ( result, '' );
+        else
+          state.setJson ( [ 'Failed to fetch email' ], '' );
+      } ).catch ( ( e: any ) => {
       console.error ( e )
       state.setJson ( [ JSON.stringify ( e, null, 2 ) ], '' )
     } )

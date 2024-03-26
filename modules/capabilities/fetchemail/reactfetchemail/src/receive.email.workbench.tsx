@@ -83,7 +83,7 @@ export function DisplayReceiveEmailWorkbench<S> ( { state }: DisplayReceiveEmail
 }
 
 
-export const displayReceiveEmailPlugin = <S, State> (): ActionPlugIn<S, State, LensProps<S, Action, any>> =>
+export const displayReceiveEmailPlugin   = <S, State> (): ActionPlugIn<S, State, LensProps<S, Action, any>> =>
   ( props: ( s: LensState<S, State, any> ) => LensProps<S, Action, any> ): ActionPluginDetails<S, State, LensProps<S, Action, any>> =>
     ({
       by: "ReceiveEmailWorkbench",
