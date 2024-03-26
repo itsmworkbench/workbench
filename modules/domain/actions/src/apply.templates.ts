@@ -23,7 +23,8 @@ export function dereferenceLdapAction ( a: Action, variables: Record<string, str
 }
 
 export function dereferenceReceiveEmailAction ( a: Action, variables: Record<string, string> ): Action {
-  return a
+  if (a.by !== 'ReceiveEmail') return a
+  return { by: 'ReceiveEmail', from: deref(a, a.from, variables) }
 }
 export function dereferenceAction ( a: Action, variables: any ): Action {
   if ( a === undefined ) return undefined

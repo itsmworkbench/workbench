@@ -30,7 +30,7 @@ export function DisplayReceiveEmailEventFull<S> ( { state, icons }: DisplayRecei
         From: {context.data?.from}
       </Typography>
       <Typography variant="body1" component="pre">
-        Email: {context.data?.email}
+        {JSON.stringify(context?.data?.email, null, 2)}
       </Typography>
     </CardContent>
   </Card>
