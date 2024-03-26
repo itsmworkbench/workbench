@@ -1,5 +1,5 @@
 import { KoaPartialFunction } from "@itsmworkbench/koa";
-import { AIEmailsFn, AIKnownTicketVariablesFn, AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
+import { AIEmailsFn, AIKnownTicketVariablesFn, AiTicketVariablesFn } from "@itsmworkbench/ai";
 
 export const executeAIForVariables = ( ai: AiTicketVariablesFn ): KoaPartialFunction => ({
   isDefinedAt: ( ctx ) => {

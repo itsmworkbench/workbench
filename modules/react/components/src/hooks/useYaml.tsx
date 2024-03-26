@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
+import { AIEmailsFn } from "@itsmworkbench/ai";
 import { YamlCapability } from "@itsmworkbench/yaml";
 
 

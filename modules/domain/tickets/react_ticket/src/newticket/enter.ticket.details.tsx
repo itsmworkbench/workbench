@@ -3,7 +3,7 @@ import { LensProps } from "@focuson/state";
 import { NewTicketWizardData, TicketSourceAnd } from "./new.ticket.wizard.domain";
 import { Box, Grid, Typography } from "@mui/material";
 import { FocusedTextArea, FocusedTextInput, mustBeIdentifier, useAiVariables } from "@itsmworkbench/components";
-import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
+import { TicketVariables } from "@itsmworkbench/ai";
 import { MultiParagraphText } from "@itsmworkbench/i18n";
 import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
 

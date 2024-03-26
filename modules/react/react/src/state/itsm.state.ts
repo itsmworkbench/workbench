@@ -8,7 +8,7 @@ import { Variables } from "@itsmworkbench/variables";
 import { Operator } from "@itsmworkbench/operator";
 import { EnrichedEvent, Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
-import { EmailResult, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
+import { EmailResult, TicketVariables } from "@itsmworkbench/ai";
 import { DisplayTicketListSelectionState, NewTicketData, NewTicketState, NewTicketWizardData } from "@itsmworkbench/reactticket";
 import { defaultTicketTypeDetails, TicketType } from "@itsmworkbench/tickettype";
 import { Action } from "@itsmworkbench/actions";

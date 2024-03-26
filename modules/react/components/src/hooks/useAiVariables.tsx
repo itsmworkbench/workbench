@@ -1,6 +1,6 @@
 
 import React, { useContext } from "react";
-import { AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
+import { AiTicketVariablesFn } from "@itsmworkbench/ai";
 
 
 export interface AiVariablesServiceProps {

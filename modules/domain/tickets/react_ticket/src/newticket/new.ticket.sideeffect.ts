@@ -4,7 +4,7 @@ import { ErrorsAnd, hasErrors, mapErrorsK } from "@laoban/utils";
 import { ListNamesResult, NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "@itsmworkbench/urlstore";
 import { Optional, Transform } from "@focuson/lens";
 import { Event, SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
-import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
+import { TicketVariables } from "@itsmworkbench/ai";
 import { defaultTicketTypeDetails, detailsToTicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
 import { NewTicketWizardData } from "./new.ticket.wizard.domain";
 

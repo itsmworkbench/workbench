@@ -4,7 +4,7 @@
 
 import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
 import { NewTicketData } from "./new.ticket.sideeffect";
-import { AiTicketVariablesFn, TicketVariables } from "@itsmworkbench/ai_ticketvariables";
+import { AiTicketVariablesFn, TicketVariables } from "@itsmworkbench/ai";
 import { Optional, Transform } from "@focuson/lens";
 import { ErrorsAnd } from "@laoban/utils";
 

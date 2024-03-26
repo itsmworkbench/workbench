@@ -1,21 +1,19 @@
 import { CommandFn, HasCurrentDirectory, HasEnv } from "@itsmworkbench/cli";
 import { startKoa } from "@itsmworkbench/koa";
 import { wizardOfOzApiHandlers } from "./api";
-import { loadFromIdStore } from "@itsmworkbench/idstore";
 import { defaultOrganisationUrlStoreConfig } from "@itsmworkbench/defaultdomains";
-import { findListIds } from "@itsmworkbench/listids";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { nodeUrlstore } from "@itsmworkbench/nodeurlstore";
 import { shellGitsops } from "@itsmworkbench/shellgit";
-import { chatgptKnownTicketVariables, chatgptTicketVariables, generalEmail } from "@itsmworkbench/ai_chatgptticketvariables";
-import { AIEmailsFn } from "@itsmworkbench/ai_ticketvariables";
+import { chatgptAi } from "@itsmworkbench/chatgptai";
 import { mailerFromUrlStore } from "@itsmworkbench/nodemailer";
-import { MailerFn, Mailer } from "@itsmworkbench/mailer";
+import { Mailer } from "@itsmworkbench/mailer";
 import { Sqler } from "@itsmworkbench/sql";
 import { makeSqlerForDbPathShell } from "@itsmworkbench/dbpathsql";
 import { executeScriptInShell } from "@itsmworkbench/nodeshell";
 import { FetchEmailer } from "@itsmworkbench/fetchemail";
 import { fetchEmailerFromUrlStore } from "@itsmworkbench/imapflowfetchemail";
+import { AI } from "@itsmworkbench/ai";
 
 
 export function apiCommand<Commander, Context extends HasCurrentDirectory & HasEnv, Config> ( yaml: YamlCapability ): CommandFn<Commander, Context, Config> {
@@ -30,9 +28,7 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory & HasE
     },
     action: async ( commander, opts ) => {
       const { port, debug, directory } = opts
-      const aiVariables = chatgptTicketVariables
-      const aiKnownVariables = chatgptKnownTicketVariables
-      const aiEmails: AIEmailsFn = generalEmail
+      const ai: AI = chatgptAi ()
 
       const orgs = defaultOrganisationUrlStoreConfig ( yaml, context.env )
       const gitOps = shellGitsops ( false )
@@ -41,7 +37,7 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory & HasE
       const fetchEmailer: FetchEmailer = await fetchEmailerFromUrlStore ( urlStore, "me", "me" )
       const sqlerL: Sqler = makeSqlerForDbPathShell ( executeScriptInShell, context.currentDirectory, opts.debug === true )
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,
-        wizardOfOzApiHandlers ( aiVariables, aiKnownVariables, aiEmails, opts.debug === true, orgs.nameSpaceDetails, urlStore, mailer, fetchEmailer, sqlerL ) )
+        wizardOfOzApiHandlers ( ai, opts.debug === true, orgs.nameSpaceDetails, urlStore, mailer, fetchEmailer, sqlerL ) )
     }
   })
 

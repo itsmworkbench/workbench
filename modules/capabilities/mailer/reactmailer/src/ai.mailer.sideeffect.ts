@@ -1,5 +1,5 @@
 import { ISideEffectProcessor, SideEffect } from "@itsmworkbench/react_core";
-import { AIEmailsFn, EmailData, EmailResult } from "@itsmworkbench/ai_ticketvariables";
+import { AIEmailsFn, EmailData, EmailResult } from "@itsmworkbench/ai";
 import { Optional, Transform } from "@focuson/lens";
 import { Action } from "@itsmworkbench/actions";
 

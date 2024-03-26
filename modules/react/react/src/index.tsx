@@ -18,7 +18,7 @@ import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor, displa
 import { addSaveKnowledgeArticleSideEffect, displayCreateKnowledgeArticlePlugin, displaySelectKnowledgeArticlePlugin, displayTicketTypeEventPlugin } from '@itsmworkbench/reacttickettype';
 
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
-import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/apiclient_ai";
+import { apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/browserai";
 import { displayLdapEventPlugin, displayLdapPlugin } from '@itsmworkbench/react_capabilities';
 import { AiEmailProvider, AiVariablesProvider, FetchEmailerProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";

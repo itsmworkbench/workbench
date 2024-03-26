@@ -1,6 +1,6 @@
 import { TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
 import { LensState } from "@focuson/state";
-import { TicketVariables } from "@itsmworkbench/ai_ticketvariables";
+import { TicketVariables } from "@itsmworkbench/ai";
 
 export type NewTicketWizardData = {
   organisation: string

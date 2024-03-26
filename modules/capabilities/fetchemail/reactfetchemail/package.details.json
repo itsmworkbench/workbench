@@ -9,7 +9,7 @@
     "scripts":      {"start": "react-scripts start"}
   },
   "links":       [
-    "@itsmworkbench/ai_ticketvariables",
+    "@itsmworkbench/ai",
     "@itsmworkbench/actions",
     "@itsmworkbench/components",
     "@itsmworkbench/reactevents",
