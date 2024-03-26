@@ -43,7 +43,7 @@ function transformEmailForRead ( message: any ) {
   // Check if bodyStructure has childNodes and iterate
 
   const bodyParts: string[] = toArray ( bodyStructure.childNodes ).filter ( node => node.type === 'text/plain' ).map ( node => node.part )
-
+console.log('transformEmailForRead', message.envelope)
   return {
     uid: message.uid.toString (),
     internalDate: message.internalDate.toISOString (),
@@ -64,11 +64,13 @@ const listEmails = ( clientFn: () => ImapFlow ): ListEmailsFn =>
     await client.mailboxOpen ( 'INBOX' );
     console.log ( 'options', options )
     console.log ( 'from', options.from )
-    let uids: Number[] = await client.search ( { from: options.from }, { uid: true, } );
+    let uids: Number[] = await client.search ( { from: options.from, }, {});
     console.log ( 'uids', uids )
     const emailsData = [];
     for ( const uid of toArray ( uids ) ) {
-      const fetchResult = await client.fetchOne ( uid, { envelope: true, flags: true, uid: true, internalDate: true, bodyStructure: true } );
+      console.log('checking uid', uid)
+      const fetchResult = await client.fetchOne ( uid, { envelope: true, internalDate: true, uid: true, flags: true, bodyStructure: true } );
+      console.log('fetchResult', fetchResult)
       if ( fetchResult ) {
         emailsData.push ( transformEmailForRead ( fetchResult ) );
       }
@@ -86,7 +88,8 @@ export function fetchEmail ( client: () => ImapFlow ): FetchEmailFn {
       bodyParts: options.bodyParts, // '1' for HTML part, '1.TEXT' for plain text as per your email structure
     };
     console.log ( 'query', query )
-    const fetchResult = await client.fetchOne ( options.uid, query )
+    const fetchResult = await client.fetchOne ( options.uid, query, {uid: true} )
+    console.log('fetchResult', fetchResult)
     let subject = fetchResult.envelope.subject;
     let from = fetchResult.envelope.from.map ( addr => `${addr.name} <${addr.address}>` ).join ( ', ' );
     let date = fetchResult.envelope.date;

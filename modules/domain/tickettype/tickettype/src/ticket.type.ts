@@ -74,9 +74,9 @@ export const simpleTicketType: TicketType = ({
     },
     Approval: {},
     Resolve: {
-      resolveTheIssue: {
-        by: 'Manual'
-      }
+      // resolveTheIssue: {
+      //   by: 'Manual'
+      // }
     },
     Close: {
       requestClosure: {
@@ -152,7 +152,10 @@ export const updateSqlTT: TicketType = ({
       resolveTheIssue: {
         by: 'SQL',
         waitingFor: [ 'checkIssueStillExists' ]
-      }
+      },
+      checkProblemResolved: {
+        by: 'SQL',
+      },
     },
     Close: {},
     Review: {}
