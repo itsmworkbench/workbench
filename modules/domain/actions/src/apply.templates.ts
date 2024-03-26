@@ -15,7 +15,11 @@ export function dereferenceSqlAction ( a: Action, variables: Record<string, stri
 export function dereferenceEmailAction ( a: Action, variables: Record<string, string> ): Action {
   if ( a.by !== 'Email' ) return a
 
-  return { by: 'Email', to: deref ( a, a.to, variables ), subject: deref ( a, a.subject, variables ), email: deref ( a, a.email, variables ) }
+  return { by: 'Email',
+    to: deref ( a, a.to, variables ),
+    subject: deref ( a, a.subject, variables ),
+    withMissingData: a.withMissingData,
+    email: deref ( a, a.email, variables ) }
 }
 export function dereferenceLdapAction ( a: Action, variables: Record<string, string> ): Action {
   if ( a.by !== 'LDAP' ) return a

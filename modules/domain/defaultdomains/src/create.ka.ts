@@ -75,6 +75,7 @@ export function reverseEmailAction ( variables: Record<string, string>, a: Actio
     ...basics ( a ),
     by: 'Email',
     to: reverseTemplate ( c.data.to, variables ),
+    withMissingData: a.withMissingData,
     subject: reverseTemplate ( a.highlyVariant ? undefined : c.data.subject, variables ),
     email: reverseTemplate ( a.highlyVariant ? undefined : c.data.email, variables )
   }

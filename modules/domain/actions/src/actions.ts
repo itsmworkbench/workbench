@@ -28,6 +28,7 @@ export interface LdapAction extends BaseAction {
 export interface EmailAction extends BaseAction {
   by: 'Email'
   to: string
+  withMissingData?: boolean
   subject?: string
   email?: string
   highlyVariant?: boolean
