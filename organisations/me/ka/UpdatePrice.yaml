@@ -1,16 +1,22 @@
-variables: []
+variables:
+  - correctedPrice
+  - currentPrice
+  - issuer
+  - itemId
+  - itemName
+  - ticketName
 capabilities:
   - Email
-  - LDAP
   - ReceiveEmail
+  - ReviewTicket
   - SQL
 actions:
   CheckTicket:
-    ReviewTicket:
-      by: ReviewTicket
     SelectKnowledgeArticle:
       by: SelectKnowledgeArticle
       recordInCapability: false
+    ReviewTicket:
+      by: ReviewTicket
     RequestMoreData:
       by: Email
       to: issuer.email
@@ -18,96 +24,246 @@ actions:
       highlyVariant: true
     checkProblemExists:
       by: SQL
-      sql: select * from products where item_code = '1234-44'
-    checkUser:
-      safe: true
-      by: LDAP
-      who: a.customer@example.com
-    checkApprover:
-      safe: true
-      by: LDAP
-      who: the.boss@example.com
+      sql: select * from products where product_id = '${itemId}'
+      env: oracle
   Approval:
     requestApproval:
       waitingFor: []
       by: Email
-      to: the.boss@example.com
-      subject: Please approve price change of discombobulator from 44.44=>55.55
-      email: |-
-        Ah, in the bonnie realm of EPX's ground,
-        A wee mistake in pricing has been found.
-        The discombobulator, item so rare,
-        Is marked at fifty-five, fair and square.
+      to: philip.rice@hcl.com
+      subject: >-
+        Request for Approval: Price Correction for ${itemName} in EPX
+        [${ticketName}]
+      email: >-
+        I am writing to request approval for a price correction task in the EPX
+        system. 
 
-        But hark, this price doth not ring true,
-        For forty-four and forty-four cents is due.
-        This noble item, code one-two-three-four-four,
-        Demands correction, lest our customers deplore.
 
-        In the production's vast and digital glen,
-        We seek thy nod to make it right again.
-        With haste, approve, so we may swiftly mend,
-        The price to its rightful figure we intend.
+        In the EPX, the ${itemName} with item code ${itemId} currently has an
+        incorrect price listed as ${currentPrice}. Upon review, it has been
+        identified that the correct price for this item should be
+        ${correctedPrice}. 
 
-        So lend us, please, thy keen and guiding light,
-        Reply with yes, and set this matter right.
-        Any questions, or if debate ye may,
-        Do not tarry, but contact me straight away.
 
-        For customer's trust and satisfaction's sake,
-        Let's amend this error, no time to forsake.
-        With gratitude, for thy swift action we'll yearn,
-        Till corrected, for this approval we burn.+
+        I recommend correcting the price to ensure accuracy and consistency in
+        our system. Your approval for this task would allow us to proceed with
+        updating the price to the correct amount. 
+
+
+        Thank you for considering this request. Please let me know if you
+        require any further information or clarification regarding this task.
     receiveApproval:
       by: ReceiveEmail
-      from: the.boss@example.com
+      from: philip.rice@hcl.com
       waitingFor:
         - requestApproval
-      email: Sure
+      email:
+        subject: >-
+          Re: Request for Approval: Price Correction for Discombobulator in EPX
+          [ITSM-PRICE-1111]
+        from: Philip Rice <philip.rice@hcl.com>
+        date: '2024-03-26T06:57:31.000Z'
+        textBody:
+          - "Go do\r\n________________________________\r\nFrom: liubaoyu2014@gmail.com <liubaoyu2014@gmail.com>\r\nSent: Tuesday, March 26, 2024 7:57 AM\r\nTo: Philip Rice <philip.rice@hcl.com>\r\nSubject: Request for Approval: Price Correction for Discombobulator in EPX =\r\n[ITSM-PRICE-1111]\r\n\r\n[CAUTION: This Email is from outside the Organization. Unless you trust the=\r\n sender, Don=92t click links or open attachments as it may be a Phishing em=\r\nail, which can steal your Information and compromise your Computer.]\r\n\r\nI am writing to request approval for a price correction task in the EPX sys=\r\ntem.\r\n\r\nIn the EPX, the Discombobulator with item code 1777-55 currently has an inc=\r\norrect price listed as 210.00. Upon review, it has been identified that the=\r\n correct price for this item should be 230.11.\r\n\r\nI recommend correcting the price to ensure accuracy and consistency in our =\r\nsystem. Your approval for this task would allow us to proceed with updating=\r\n the price to the correct amount.\r\n\r\nThank you for considering this request. Please let me know if you require a=\r\nny further information or clarification regarding this task.\r\n::DISCLAIMER::\r\n________________________________\r\nThe contents of this e-mail and any attachment(s) are confidential and inte=\r\nnded for the named recipient(s) only. E-mail transmission is not guaranteed=\r\n to be secure or error-free as information could be intercepted, corrupted,=\r\n lost, destroyed, arrive late or incomplete, or may contain viruses in tran=\r\nsmission. The e mail and its contents (with or without referred errors) sha=\r\nll therefore not attach any liability on the originator or HCL or its affil=\r\niates. Views or opinions, if any, presented in this email are solely those =\r\nof the author and may not necessarily reflect the views or opinions of HCL =\r\nor its affiliates. Any form of reproduction, dissemination, copying, disclo=\r\nsure, modification, distribution and / or publication of this message witho=\r\nut the prior written consent of authorized representative of HCL is strictl=\r\ny prohibited. If you have received this email in error please delete it and=\r\n notify the sender immediately. Before opening any email and/or attachments=\r\n, please check them for viruses and other defects.\r\n________________________________\r\n"
+      emailSummary:
+        emails:
+          - uid: '27'
+            internalDate: '2024-03-26T06:57:47.000Z'
+            envelope:
+              date: '2024-03-26T06:57:31.000Z'
+              subject: >-
+                Re: Request for Approval: Price Correction for Discombobulator
+                in EPX [ITSM-PRICE-1111]
+              from:
+                - name: Philip Rice
+                  address: philip.rice@hcl.com
+              to:
+                - name: liubaoyu2014@gmail.com
+                  address: liubaoyu2014@gmail.com
+              cc: []
+            flags: {}
+            bodyParts:
+              - '1'
+            bodyStructure:
+              childNodes:
+                - part: '1'
+                  type: text/plain
+                  parameters:
+                    charset: Windows-1252
+                  encoding: quoted-printable
+                  size: 2276
+                  lineCount: 46
+                - part: '2'
+                  type: text/html
+                  parameters:
+                    charset: Windows-1252
+                  encoding: quoted-printable
+                  size: 3167
+                  lineCount: 64
+              type: multipart/alternative
+              parameters:
+                boundary: _000_SG2PR04MB59130EBE9D04A6222CA1D790E5352SG2PR04MB5913apcp_
+          - uid: '28'
+            internalDate: '2024-03-26T07:20:10.000Z'
+            envelope:
+              date: '2024-03-26T07:20:01.000Z'
+              subject: >-
+                Re: Request for Approval: Price Correction for Discombobulator
+                in EPX [ITSM-PRICE-1111]
+              from:
+                - name: Philip Rice
+                  address: philip.rice@hcl.com
+              to:
+                - name: liubaoyu2014@gmail.com
+                  address: liubaoyu2014@gmail.com
+              cc: []
+            flags: {}
+            bodyParts:
+              - '1'
+            bodyStructure:
+              childNodes:
+                - part: '1'
+                  type: text/plain
+                  parameters:
+                    charset: Windows-1252
+                  encoding: quoted-printable
+                  size: 2285
+                  lineCount: 46
+                - part: '2'
+                  type: text/html
+                  parameters:
+                    charset: Windows-1252
+                  encoding: quoted-printable
+                  size: 3170
+                  lineCount: 64
+              type: multipart/alternative
+              parameters:
+                boundary: _000_SG2PR04MB591377793765DA7A00014455E5352SG2PR04MB5913apcp_
   Resolve:
+    checkIssueStillExists:
+      by: SQL
+      sql: select * from products where product_id = '${itemId}'
+      env: oracle
     resolveTheIssue:
       waitingFor:
         - checkIssueStillExists
       by: SQL
-      sql: update products set price= 55.55 where item_code = '1234-44'
-    checkIssueStillExists:
+      sql: >-
+        update products set price = ${correctedPrice} where product_id =
+        '${itemId}'
+      env: oracle
+    checkProblemResolved:
       by: SQL
+      sql: select * from products where product_id = '${itemId}'
+      env: oracle
   Close:
     requestClosure:
       waitingFor: []
       by: Email
-      to: a.customer@example.com
-      subject: Can we close the ticket?
-      email: |-
-        Ah, my dear friend, in the realms of service and digital care,
-        A ticket, like a leaf in the wind, has fluttered here and there.
-        Now, as the bonnie sun sets on this issue's day,
-        I seek thy counsel, in the kindest, most heartfelt way.
+      to: ${issuer}
+      subject: >-
+        Task Completion: Incorrect Price Correction for ${itemName}
+        ${ticketName}
+      email: >-
+        I am writing to inform you that the task regarding the correction of the
+        price for the ${itemName} (item code ${itemId}) in the EPX has been
+        successfully completed. The price has been updated from ${currentPrice}
+        to the correct amount of ${correctedPrice} as requested.
 
-        This task, a journey through code and query we've endured,
-        Together, through trials and tests, a resolution assured.
-        Now stands the moment, in the calm after the storm,
-        To ask, with respect and hope, for a form so warm.
 
-        Can we close this ticket, its journey at an end?
-        Seal it with your approval, on this, can we depend?
-        For in your hands lies the power, so grand,
-        To conclude this tale, with a gentle, guiding hand.
+        Kindly review the changes and confirm if everything is in order. If
+        there are any further adjustments needed or if you require any
+        additional information, please let me know so that I can address it
+        promptly.
 
-        In the spirit of camaraderie and mutual respect so true,
-        I await your word, to close this chapter anew.
-        Let us, with a nod, bring this to a close,
-        And in doing so, our partnership further grows.
 
-        With anticipation for your reply, and a heart so light,
-        I bid thee consider, and bring this to a right.
-        For together, we've journeyed, through thick and thin,
-        And now, at the threshold, let conclusion begin.
+        Thank you for your attention to this matter, and I kindly request the
+        closure of the ticket related to this task.
     agreeClosure:
       by: ReceiveEmail
-      from: issuer.email
+      from: phil.rice@validoc.org
       waitingFor:
         - requestClosure
+      email:
+        subject: >-
+          Re: Completion of Price Update Task for Discombobulator in EPX System
+          [ITSM-PRICE-1111]
+        from: Phil Rice <phil.rice@validoc.org>
+        date: '2024-03-26T07:23:32.000Z'
+        textBody:
+          - "checked again\r\n\r\nOn Tue, 26 Mar 2024 at 07:31, Phil Rice <phil.rice@validoc.org> wrote:\r\n\r\n> I've check and the price has changed\r\n>\r\n> You can close the ticket\r\n>\r\n> On Tue, 26 Mar 2024 at 07:30, <liubaoyu2014@gmail.com> wrote:\r\n>\r\n>> I am writing to inform you that the task of updating the price for the\r\n>> discombobulator (item code 1777-55) in the EPX system has been successfully\r\n>> completed. The incorrect price of 210 has been rectified and the new price\r\n>> of 240 has been updated in the EPX production.\r\n>>\r\n>> I kindly request the closure of this ticket as the necessary changes have\r\n>> been made. Thank you for your attention to this matter.\r\n>>\r\n>\r\n>\r\n> --\r\n> Stuff our lawyer makes us say:\r\n> * This isn't a contract, it's just a chat\r\n> * This is confidential:  If you get this, and you shouldn't, please tell me\r\n>\r\n\r\n\r\n-- \r\nStuff our lawyer makes us say:\r\n* This isn't a contract, it's just a chat\r\n* This is confidential:  If you get this, and you shouldn't, please tell me\r\n"
+      emailSummary:
+        emails:
+          - uid: '29'
+            internalDate: '2024-03-26T07:24:09.000Z'
+            envelope:
+              date: '2024-03-26T07:23:32.000Z'
+              subject: >-
+                Re: Completion of Price Update Task for Discombobulator in EPX
+                System [ITSM-PRICE-1111]
+              from:
+                - name: Phil Rice
+                  address: phil.rice@validoc.org
+              to:
+                - name: ''
+                  address: liubaoyu2014@gmail.com
+              cc: []
+            flags: {}
+            bodyParts:
+              - '1'
+            bodyStructure:
+              childNodes:
+                - part: '1'
+                  type: text/plain
+                  parameters:
+                    charset: UTF-8
+                  encoding: 7bit
+                  size: 998
+                  lineCount: 20
+                - part: '2'
+                  type: text/html
+                  parameters:
+                    charset: UTF-8
+                  encoding: quoted-printable
+                  size: 2217
+                  lineCount: 45
+              type: multipart/alternative
+              parameters:
+                boundary: 00000000000006729606148b2d3d
+          - uid: '30'
+            internalDate: '2024-03-26T07:25:01.000Z'
+            envelope:
+              date: '2024-03-26T07:24:25.000Z'
+              subject: testing
+              from:
+                - name: Phil Rice
+                  address: phil.rice@validoc.org
+              to:
+                - name: ''
+                  address: liubaoyu2014@gmail.com
+              cc: []
+            flags: {}
+            bodyParts:
+              - '1'
+            bodyStructure:
+              childNodes:
+                - part: '1'
+                  type: text/plain
+                  parameters:
+                    charset: UTF-8
+                  encoding: 7bit
+                  size: 166
+                  lineCount: 4
+                - part: '2'
+                  type: text/html
+                  parameters:
+                    charset: UTF-8
+                  encoding: quoted-printable
+                  size: 528
+                  lineCount: 11
+              type: multipart/alternative
+              parameters:
+                boundary: 000000000000283cb506148b3023
     closed:
       by: Ticket
       waitingFor:

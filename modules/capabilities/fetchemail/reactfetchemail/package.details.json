@@ -1,0 +1,24 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/reactfetchemail",
+  "description": "How to receive emails in react",
+  "packageJson": {
+    "files":        ["build/"],
+    "dependencies": {
+    },
+    "scripts":      {"start": "react-scripts start"}
+  },
+  "links":       [
+    "@itsmworkbench/ai_ticketvariables",
+    "@itsmworkbench/actions",
+    "@itsmworkbench/components",
+    "@itsmworkbench/reactevents",
+    "@itsmworkbench/tickets"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false,
+    "react":   false
+  }
+}

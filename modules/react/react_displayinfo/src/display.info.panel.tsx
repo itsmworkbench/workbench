@@ -60,8 +60,7 @@ export function DisplayInfoVariables<S> ( { variables, ticket }: DisplayInfoVari
                 '&:nth-of-type(odd)': { backgroundColor: '#f5f5f5' },
                 '&:nth-of-type(even)': { backgroundColor: '#e0e0e0' },
               }}
-            >
-              <TableCell>
+            ><TableCell>
                 <DisplayName name={name} ttVariables={ttVariables} value={attributes}/>
               </TableCell>
               <TableCell sx={{ wordBreak: 'break-all' }}>

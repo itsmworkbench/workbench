@@ -1,10 +1,10 @@
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-import { emailConfigFromUrlStore, EmailFn, Mailer } from "@itsmworkbench/mailer";
+import { emailConfigFromUrlStore, MailerFn, Mailer } from "@itsmworkbench/mailer";
 import Mail from "nodemailer/lib/mailer";
 
 export function sendEmailRaw ( transporter: Mail<SMTPTransport.SentMessageInfo>,
-                               from: string ): EmailFn {
+                               from: string ): MailerFn {
   return async email => {
     try {
       return await transporter.sendMail ( { ...email, from } )
@@ -25,7 +25,9 @@ function testEmail ( transporter: Mail<SMTPTransport.SentMessageInfo> ) {
   };
 }
 export async function mailerFromConfig ( config: any ): Promise<Mailer> {
-  let transporter: Mail<SMTPTransport.SentMessageInfo> = nodemailer.createTransport ( config.smtp )
+  let transport = config.smtp;
+  console.log('transport', transport)
+  let transporter: Mail<SMTPTransport.SentMessageInfo> = nodemailer.createTransport ( transport )
   return {
     sendEmail: sendEmailRaw ( transporter, config.email ),
     test: testEmail ( transporter )

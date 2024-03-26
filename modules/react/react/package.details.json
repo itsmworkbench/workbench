@@ -28,6 +28,7 @@
     "@itsmworkbench/react_ldap",
     "@itsmworkbench/react_capabilities",
     "@itsmworkbench/reactmailer",
+    "@itsmworkbench/reactfetchemail",
     "@itsmworkbench/react_softwarecatalog",
     "@itsmworkbench/reactsql",
     "@itsmworkbench/reactticket",

@@ -1,4 +1,3 @@
-import { AiTicketVariablesFn } from "@itsmworkbench/ai_ticketvariables";
 import { KoaPartialFunction } from "@itsmworkbench/koa";
 import { Mailer } from "@itsmworkbench/mailer";
 
