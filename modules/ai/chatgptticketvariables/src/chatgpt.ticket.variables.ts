@@ -10,10 +10,11 @@ const openai = new OpenAI ( {
 export const chatgptKnownTicketVariables: AIKnownTicketVariablesFn = async (ticket: string, attributes: string[]): Promise<TicketVariables> => {
   // Craft a detailed prompt with attributes included for comparison
   let attributesList = attributes.map(attr => `- ${attr}`).join('\n');
+  // return undefined?
   const systemPrompt = `You are provided with a text of an ITSM work ticket. 
   Below is a list of specific attributes. For each attribute, compare it against the ticket text. 
   If the attribute is present, return its value. 
-  If it is not found, indicate "Attribute not found".
+  If it is not found, indicate TypeScript type "undefined". 
   \n\nAttributes:\n${attributesList}\n\nTicket Text:\n${ticket}\n\n
   For each attribute listed above, indicate its status based on the ticket text.`;
 
