@@ -20,7 +20,6 @@
     "@laoban/utils": "1.4.45",
     "@laoban/variables": "1.4.45",
     "openai": "^4.28.4",
-    "@itsmworkbench/ai_ticketvariables": "0.0.3",
     "@itsmworkbench/utils": "0.0.3",
     "debug": "^4.3.4"
   },
