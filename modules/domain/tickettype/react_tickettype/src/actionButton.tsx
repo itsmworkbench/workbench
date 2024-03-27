@@ -13,7 +13,7 @@ export interface ActionButtonProps<S> extends LensProps2<S, any, TabPhaseAndActi
   name: string
   phase: PhaseName
   action: BaseAction
-  ticket: Ticket
+  ticket: Ticket|undefined
   status: boolean | undefined
 }
 export function ActionButton<S> ( { name, action, phase,ticket, status, state }: ActionButtonProps<S> ) {

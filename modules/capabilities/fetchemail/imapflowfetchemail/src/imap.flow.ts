@@ -3,15 +3,6 @@ import { FetchEmailer, FetchEmailFn, FetchEmailOptions, ListEmailsFn, ListEmails
 import { hasErrors, toArray } from "@laoban/utils";
 import { NamedUrl, UrlStore } from "@itsmworkbench/urlstore";
 
-const client = new ImapFlow ( {
-  host: 'imap.example.com', // Replace with your IMAP server's host
-  port: 993,
-  secure: true,
-  auth: {
-    user: 'user@example.com', // Replace with the IMAP account username
-    pass: 'password', // Replace with the IMAP account password
-  },
-} );
 export type Fn<From, To> = ( from: From ) => Promise<To>
 export type IMapFn<From, To> = ( client: ImapFlow, from: From ) => Promise<To>;
 
@@ -43,7 +34,7 @@ function transformEmailForRead ( message: any ) {
   // Check if bodyStructure has childNodes and iterate
 
   const bodyParts: string[] = toArray ( bodyStructure.childNodes ).filter ( node => node.type === 'text/plain' ).map ( node => node.part )
-console.log('transformEmailForRead', message.envelope)
+  console.log ( 'transformEmailForRead', message.envelope )
   return {
     uid: message.uid.toString (),
     internalDate: message.internalDate.toISOString (),
@@ -64,17 +55,18 @@ const listEmails = ( clientFn: () => ImapFlow ): ListEmailsFn =>
     await client.mailboxOpen ( 'INBOX' );
     console.log ( 'options', options )
     console.log ( 'from', options.from )
-    let uids: Number[] = await client.search ( { from: options.from, }, {});
+    let uids: Number[] = await client.search ( { from: options.from, }, {} );
     console.log ( 'uids', uids )
     const emailsData = [];
     for ( const uid of toArray ( uids ) ) {
-      console.log('checking uid', uid)
+      console.log ( 'checking uid', uid )
       const fetchResult = await client.fetchOne ( uid, { envelope: true, internalDate: true, uid: true, flags: true, bodyStructure: true } );
-      console.log('fetchResult', fetchResult)
+      console.log ( 'fetchResult', fetchResult )
       if ( fetchResult ) {
         emailsData.push ( transformEmailForRead ( fetchResult ) );
       }
     }
+    emailsData.sort ( ( a, b ) => new Date ( b.internalDate ).getTime () - new Date ( a.internalDate ).getTime () )
     return { emails: emailsData };
   } )
 
@@ -88,15 +80,16 @@ export function fetchEmail ( client: () => ImapFlow ): FetchEmailFn {
       bodyParts: options.bodyParts, // '1' for HTML part, '1.TEXT' for plain text as per your email structure
     };
     console.log ( 'query', query )
-    const fetchResult = await client.fetchOne ( options.uid, query, {uid: true} )
-    console.log('fetchResult', fetchResult)
+    const fetchResult = await client.fetchOne ( options.uid, query, { uid: true } )
+    console.log ( 'fetchResult', fetchResult )
     let subject = fetchResult.envelope.subject;
     let from = fetchResult.envelope.from.map ( addr => `${addr.name} <${addr.address}>` ).join ( ', ' );
     let date = fetchResult.envelope.date;
     console.log ( 'fetchResult-bodyParts', fetchResult.bodyParts )
     const textBody: string[] = toArray ( options.bodyParts ).map ( part => {
-      console.log('part', typeof part, part, fetchResult?.bodyParts?.get ( part ))
-      return fetchResult?.bodyParts?.get ( part )?.toString ( 'utf8' ); } )
+      console.log ( 'part', typeof part, part, fetchResult?.bodyParts?.get ( part ) )
+      return fetchResult?.bodyParts?.get ( part )?.toString ( 'utf8' );
+    } )
     return { subject, from, date, textBody }
   } )
 }
@@ -106,7 +99,7 @@ export function fetchEmailFromClient ( client: () => ImapFlow ): FetchEmailer {
     listEmails: listEmails ( client ),
     fetchEmail: fetchEmail ( client ),
     testConnection: async () =>
-      useClient ( client , async ( _: any ): Promise<'Test connection OK'> => 'Test connection OK' ) ( 'ignore' )
+      useClient ( client, async ( _: any ): Promise<'Test connection OK'> => 'Test connection OK' ) ( 'ignore' )
   }
 }
 
