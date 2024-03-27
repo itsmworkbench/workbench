@@ -1,7 +1,7 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/experimental_ai",
-  "description": "Code that extras variables from the ticket using AI ... uses experimental AI",
+  "name":        "@itsmworkbench/experimentalai",
+  "description": "Extracts variables from the ticket & Email recommendations --> using open-source AI",
   "packageJson": {
     "dependencies":     {
       "@laoban/utils":     "1.4.45",
@@ -12,6 +12,7 @@
     "peerDependencies": {}
   },
   "links":       [
+    "@itsmworkbench/ai",
     "@itsmworkbench/utils"
   ],
   "guards":      {
