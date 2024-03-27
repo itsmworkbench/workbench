@@ -12,7 +12,6 @@
     "peerDependencies": {}
   },
   "links":       [
-    "@itsmworkbench/ai_ticketvariables",
     "@itsmworkbench/utils"
   ],
   "guards":      {
