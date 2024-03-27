@@ -30,6 +30,7 @@ export function App<S> ( { state, plugins, actionPlugins, eventPlugins, byO }: A
   let showWelcome = wholeState?.selectionState?.tabs?.workspaceTab === undefined;
 
   const currentTicketId = wholeState?.selectionState?.ticketId
+  const ticket = wholeState?.forTicket?.ticket
   const currentUrl = currentTicketId ? parseNamedUrlOrThrow ( currentTicketId ) : undefined
   const currentTicketText = currentTicketId ? ` - ${currentUrl?.name}` : ``
 
@@ -52,7 +53,7 @@ export function App<S> ( { state, plugins, actionPlugins, eventPlugins, byO }: A
                 <ActionButton state={state.doubleUp ().//
                   focus1On ( 'forTicket' ).focus1On ( 'tempData' ).focus1On ( 'action' ).//
                   focus2On ( 'selectionState' ).focus2On ( 'tabs' )}
-                              name={name} phase={phase} action={action} status={status}/>}/>}
+                              name={name} phase={phase} action={action} status={status} ticket={ticket}/>}/>}
 
               {displayActionPlugin ( actionPlugins, () => undefined, byO ) ( state )}
 

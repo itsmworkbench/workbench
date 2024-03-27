@@ -2,21 +2,23 @@ import { LensProps2 } from "@focuson/state";
 import { TabPhaseAndActionSelectionState, workbenchName } from "@itsmworkbench/react_core";
 import { PhaseName } from "@itsmworkbench/domain";
 import { BaseAction, dereferenceAction } from "@itsmworkbench/actions";
-import { StatusIndicator, useActionInEventsFor, useVariables } from "@itsmworkbench/components";
+import { StatusIndicator, useActionInEventsFor, useAllVariables, useVariables } from "@itsmworkbench/components";
 import { Button } from "@mui/material";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import React from "react";
+import { Ticket } from "@itsmworkbench/tickets";
 
 //the first any is actually an Action
 export interface ActionButtonProps<S> extends LensProps2<S, any, TabPhaseAndActionSelectionState, any> {
   name: string
   phase: PhaseName
   action: BaseAction
+  ticket: Ticket
   status: boolean | undefined
 }
-export function ActionButton<S> ( { name, action, phase, status, state }: ActionButtonProps<S> ) {
+export function ActionButton<S> ( { name, action, phase,ticket, status, state }: ActionButtonProps<S> ) {
   const foundAction = useActionInEventsFor ( phase, name );
-  const variables = useVariables ()
+  const variables = useAllVariables (ticket)
   let buttonOnClick = () => {
     console.log ( 'ActionButton - action', foundAction, variables )
     let derefed = dereferenceAction ( foundAction, variables )
