@@ -2,8 +2,6 @@ import { ContextAndStats, defaultShowsError, handleFile, KoaPartialFunction, not
 import { chainOfResponsibility } from "@runbook/utils";
 import { fileLoading, fileLocking, loadStringIncrementally, withFileLock } from "@itsmworkbench/fileloading";
 import { promises as fs } from 'fs';
-import { IdStore, IdStoreResult, isBadIdStoreResult } from "@itsmworkbench/idstore";
-import { ListIds } from "@itsmworkbench/listids";
 import { getUrls, listUrls, putUrls } from "./api.for.url.store";
 import { NameSpaceDetails, UrlStore } from "@itsmworkbench/urlstore";
 import { NameAnd } from "@laoban/utils";
@@ -17,23 +15,6 @@ import { apiForFetchEmailer } from "./api.for.fetchemailer";
 import { FetchEmailer } from "@itsmworkbench/fetchemail";
 
 
-export const ids = ( idstore: IdStore, debug: boolean ): KoaPartialFunction => ({
-  isDefinedAt: ( ctx ) => ctx.context.request.path.startsWith ( '/id/' ) && ctx.context.request.method === 'GET',
-  apply: async ( ctx ) => {
-    const id = ctx.context.path.slice ( 4 )
-    if ( debug ) console.log ( 'found ids', ctx.context.path, id )
-    const result: IdStoreResult = await idstore ( id, 'string' )
-    if ( isBadIdStoreResult ( result ) ) {
-      ctx.context.status = 500
-      ctx.context.body = result.error
-    } else {
-      ctx.context.status = 200
-      ctx.context.body = result.result
-      ctx.context.type = result.mimeType
-    }
-  }
-})
-
 export const eventsPF: KoaPartialFunction = {
   isDefinedAt: ( ctx ) => ctx.stats?.isFile () && ctx.context.request.method === 'GET',
   apply: async ( ctx ) => {
@@ -43,31 +24,6 @@ export const eventsPF: KoaPartialFunction = {
     ctx.context.body = `${result.newStart}\n${result.result}`
   }
 }
-export function getIdsPF ( getIds: ListIds ): KoaPartialFunction {
-  return {
-    isDefinedAt: ( ctx ) => {
-      // Match the path against the regex pattern and check for 'GET' method
-      const match = /\/ids\/([^\/]+)/.exec ( ctx.context.request.path );
-      const isGetMethod = ctx.context.request.method === 'GET';
-      return match && isGetMethod
-    },
-    apply: async ( ctx ) => {
-      const match = /\/ids\/([^\/]+)/.exec ( ctx.context.request.path );
-      const type = match[ 1 ];
-      // Use the 'type' captured and attached to the context in 'isDefinedAt'
-      try {
-        console.log ( 'getIdsPF', type )
-        const ids = await getIds ( type );
-        ctx.context.body = JSON.stringify ( ids ); // Set the response body to the result
-        ctx.context.set ( 'Content-Type', 'application/json' );
-      } catch ( e ) {
-        ctx.context.status = 404;
-        ctx.context.body = e.toString ();
-      }
-
-    }
-  }
-};
 
 export const appendPostPF: KoaPartialFunction = {
   isDefinedAt: ( ctx ) => ctx.stats?.isFile () && ctx.context.request.method === 'POST',

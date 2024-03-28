@@ -1,4 +1,3 @@
-import { DomainPlugin } from "@itsmworkbench/domain";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { addVariables, extractVariablesFromMarkdown, Variables } from "@itsmworkbench/variables";
 import { nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
@@ -19,16 +18,7 @@ export const ticketParser = ( id, s ) => {
   if ( index === -1 ) return { attributes: {}, description: s }
   return { attributes: JSON.parse ( s.substring ( 0, index ).trim () ), description: s.substring ( index + 5 ) }
 }
-export const ticketWriter = ( ticket: Ticket ) => `${JSON.stringify(ticket.attributes, null, 2)}\n---\n${ticket.description}`
-export function ticketsPlugin ( rootPath: string ): DomainPlugin<Ticket> {
-  return {
-    prefix: 'ticket',
-    parser: ticketParser,
-    writer: ticketWriter,
-    variablesExtractor: variablesFromTicket,
-    idStoreDetails: { extension: 'md', rootPath, mimeType: 'text/markdown; charset=UTF-8' }
-  }
-}
+export const ticketWriter = ( ticket: Ticket ) => `${JSON.stringify ( ticket.attributes, null, 2 )}\n---\n${ticket.description}`
 
 export function ticketNamespaceDetails () {
   return nameSpaceDetailsForGit ( 'ticket', {

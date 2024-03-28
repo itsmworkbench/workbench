@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import { lensState } from "@focuson/state";
 
 import { addEventStoreListener, addEventStoreModifier, eventStore, polling, setEventStoreValue, startPolling } from "@itsmworkbench/eventstore";
-import { apiLoading, ApiLoading, } from "@itsmworkbench/apiclienteventstore";
 import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent, Event, processEvents } from "@itsmworkbench/events";
 
 import { ActionPluginDetails, eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
@@ -18,9 +17,9 @@ import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor, displa
 import { addSaveKnowledgeArticleSideEffect, displayCreateKnowledgeArticlePlugin, displaySelectKnowledgeArticlePlugin, displayTicketTypeEventPlugin } from '@itsmworkbench/reacttickettype';
 
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
-import { apiClientForAi, apiClientForEmail, apiClientForTicketVariables } from "@itsmworkbench/browserai";
+import { AiClientConfig, apiClientForAi } from "@itsmworkbench/browserai";
 import { displayLdapEventPlugin, displayLdapPlugin } from '@itsmworkbench/react_capabilities';
-import {  AIProvider,  FetchEmailerProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
+import { AIProvider, FetchEmailerProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
 import { displaySqlEventPlugin, displaySqlPlugin } from '@itsmworkbench/reactsql';
@@ -36,7 +35,7 @@ const root = ReactDOM.createRoot ( rootElement );
 
 const yaml: YamlCapability = jsYaml ()
 let rootUrl = "http://localhost:1235/";
-const aiDetails: ApiLoading = apiLoading ( rootUrl + "ai/" )
+const aiDetails: AiClientConfig = { url: rootUrl + "ai/" }
 const nameSpaceDetails = defaultNameSpaceDetails ( yaml, {} );
 const urlStoreconfig: UrlStoreApiClientConfig = { apiUrlPrefix: rootUrl + "url", details: nameSpaceDetails }
 const urlStore = urlStoreFromApi ( urlStoreconfig )

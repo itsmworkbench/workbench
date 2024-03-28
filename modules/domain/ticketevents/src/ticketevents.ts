@@ -1,12 +1,11 @@
-import { ParserStoreParser } from "@itsmworkbench/parser";
 import { Event, stringToEvents } from "@itsmworkbench/events";
-import { nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
+import { nameSpaceDetailsForGit, UrlStoreParser, UrlStoreWriter } from "@itsmworkbench/urlstore";
 
 export type TicketEvents = Event[]
 
 
-export const ticketEventsParser: ParserStoreParser = ( id, s ) => stringToEvents ( {}, s )
-export const ticketEventWriter = ( tes: TicketEvents ) => tes.map ( e => `${JSON.stringify ( e )}\n` ).join ( '' )
+export const ticketEventsParser: UrlStoreParser = ( _: string, s: string ) => stringToEvents ( {}, s )
+export const ticketEventWriter: UrlStoreWriter = ( tes: TicketEvents ) => tes.map ( e => `${JSON.stringify ( e )}\n` ).join ( '' )
 
 
 export function ticketEventsNameSpaceDetails () {

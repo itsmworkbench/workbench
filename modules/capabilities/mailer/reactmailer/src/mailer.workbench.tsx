@@ -29,8 +29,8 @@ export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicke
     function callAi () {
       let emailParam = {
         purpose,
-        ticketId: ticket?.id,
-        ticket: ticket?.description
+        ticketId: ticket?.id || '',
+        ticket: ticket?.description || ''
       };
       const withMissingData = (action as any)?.withMissingData
       if ( !withMissingData ) return ai.emails ( emailParam );
