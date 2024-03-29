@@ -9,7 +9,6 @@
     }
   },
   "links":       [
-    "@itsmworkbench/apiclienteventstore",
     "@itsmworkbench/events",
     "@itsmworkbench/eventstore"
   ],

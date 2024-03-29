@@ -12,7 +12,6 @@
     "scripts":      {"start": "react-scripts start"}
   },
   "links":       [
-    "@itsmworkbench/apiclienteventstore",
     "@itsmworkbench/events",
     "@itsmworkbench/eventstore",
     "@itsmworkbench/react_core",

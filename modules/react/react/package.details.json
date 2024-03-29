@@ -9,13 +9,11 @@
     "scripts":      {"start": "react-scripts start"}
   },
   "links":       [
-    "@itsmworkbench/apiclienteventstore",
     "@itsmworkbench/browserai",
     "@itsmworkbench/browsermailer",
     "@itsmworkbench/components",
     "@itsmworkbench/domain",
     "@itsmworkbench/events",
-    "@itsmworkbench/questions",
     "@itsmworkbench/eventstore",
     "@itsmworkbench/jsyaml",
     "@itsmworkbench/react_core",
@@ -24,17 +22,13 @@
     "@itsmworkbench/react_displayinfo",
     "@itsmworkbench/reactevents",
     "@itsmworkbench/events",
-    "@itsmworkbench/react_knowledge_articles",
-    "@itsmworkbench/react_ldap",
     "@itsmworkbench/react_capabilities",
     "@itsmworkbench/reactmailer",
     "@itsmworkbench/reactfetchemail",
-    "@itsmworkbench/react_softwarecatalog",
     "@itsmworkbench/reactsql",
     "@itsmworkbench/reactticket",
     "@itsmworkbench/react_variables",
     "@itsmworkbench/browsersql",
-    "@itsmworkbench/update_value_in_database_ticket_type",
     "@itsmworkbench/variables"
   ],
   "guards":      {

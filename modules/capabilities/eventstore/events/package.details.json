@@ -15,9 +15,7 @@
   },
   "links":       [
     "@itsmworkbench/utils",
-    "@itsmworkbench/idstore",
     "@itsmworkbench/optics",
-
     "@itsmworkbench/urlstore"
   ],
   "guards":      {

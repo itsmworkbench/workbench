@@ -11,7 +11,6 @@
   },
   "links":       [
     "@itsmworkbench/components",
-    "@itsmworkbench/questions",
     "@itsmworkbench/react_core"
   ],
   "guards":      {

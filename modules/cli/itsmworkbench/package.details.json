@@ -25,9 +25,9 @@
     "@itsmworkbench/defaultdomains",
     "@itsmworkbench/events",
     "@itsmworkbench/eventstore",
+    "@itsmworkbench/imapflowfetchemail",
     "@itsmworkbench/fileloading",
-    "@itsmworkbench/idstore",
-    "@itsmworkbench/listids",
+    "@itsmworkbench/nodemailer",
     "@itsmworkbench/jsyaml",
     "@itsmworkbench/shellgit",
     "@itsmworkbench/utils"

@@ -14,7 +14,7 @@
       "child_process": false
     }
   },
-  "links":       ["@itsmworkbench/utils", "@itsmworkbench/idstore"],
+  "links":       ["@itsmworkbench/utils"],
   "guards":      {
     "compile": true,
     "publish": true,

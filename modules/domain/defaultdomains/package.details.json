@@ -16,10 +16,7 @@
   "links":       [
     "@itsmworkbench/domain",
     "@itsmworkbench/git",
-    "@itsmworkbench/knowledge_articles",
     "@itsmworkbench/operator",
-    "@itsmworkbench/softwarecatalog",
-    "@itsmworkbench/templates",
     "@itsmworkbench/tickets",
     "@itsmworkbench/tickettype",
     "@itsmworkbench/ticketevents",
