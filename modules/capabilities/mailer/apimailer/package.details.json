@@ -1,0 +1,22 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/apimailer",
+  "description": "code to support the api/mailer integration",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":     "1.4.45",
+      "@laoban/variables": "1.4.45"
+    },
+    "devDependencies": {}
+  },
+  "links":       [
+    "@itsmworkbench/utils",
+    "@itsmworkbench/koa",
+    "@itsmworkbench/mailer"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

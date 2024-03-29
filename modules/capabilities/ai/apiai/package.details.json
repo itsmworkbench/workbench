@@ -1,0 +1,22 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/apiai",
+  "description": "code to support the api/ai integration",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":     "1.4.45",
+      "@laoban/variables": "1.4.45"
+    },
+    "devDependencies": {}
+  },
+  "links":       [
+    "@itsmworkbench/utils",
+    "@itsmworkbench/koa",
+    "@itsmworkbench/ai"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

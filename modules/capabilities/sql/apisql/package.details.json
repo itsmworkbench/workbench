@@ -1,0 +1,22 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/apisql",
+  "description": "code to support the api/sql integration",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":     "1.4.45",
+      "@laoban/variables": "1.4.45"
+    },
+    "devDependencies": {}
+  },
+  "links":       [
+    "@itsmworkbench/utils",
+    "@itsmworkbench/koa",
+    "@itsmworkbench/sql"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

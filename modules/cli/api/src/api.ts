@@ -2,17 +2,17 @@ import { ContextAndStats, defaultShowsError, handleFile, KoaPartialFunction, not
 import { chainOfResponsibility } from "@runbook/utils";
 import { fileLoading, fileLocking, loadStringIncrementally, withFileLock } from "@itsmworkbench/fileloading";
 import { promises as fs } from 'fs';
-import { getUrls, listUrls, putUrls } from "./api.for.url.store";
 import { NameSpaceDetails, UrlStore } from "@itsmworkbench/urlstore";
 import { NameAnd } from "@laoban/utils";
-import { executeAIForEmail, executeAIForKnownVariables, executeAIForVariables } from "./api.for.ai";
+import { executeAIForEmail, executeAIForKnownVariables, executeAIForVariables } from "@itsmworkbench/apiai";
 import { AI } from "@itsmworkbench/ai";
 import { Mailer } from "@itsmworkbench/mailer";
 import { Sqler } from "@itsmworkbench/sql";
-import { apiForSqlerPosts } from "./api.for.sqler";
-import { apiForMailer } from "./api.for.mailer";
-import { apiForFetchEmailer } from "./api.for.fetchemailer";
+import { apiForFetchEmailer } from "@itsmworkbench/apifetchemail";
 import { FetchEmailer } from "@itsmworkbench/fetchemail";
+import { getUrls, listUrls, putUrls } from "@itsmworkbench/apiurlstore";
+import { apiForSqlerPosts } from "@itsmworkbench/apisql";
+import { apiForMailer } from "@itsmworkbench/apimailer";
 
 
 export const eventsPF: KoaPartialFunction = {

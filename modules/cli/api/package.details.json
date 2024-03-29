@@ -13,6 +13,11 @@
     }
   },
   "links":       [
+    "@itsmworkbench/apiai",
+    "@itsmworkbench/apifetchemail",
+    "@itsmworkbench/apimailer",
+    "@itsmworkbench/apisql",
+    "@itsmworkbench/apiurlstore",
     "@itsmworkbench/cli",
     "@itsmworkbench/chatgptai",
     "@itsmworkbench/dbpathsql",
