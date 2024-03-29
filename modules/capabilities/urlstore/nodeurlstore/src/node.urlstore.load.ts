@@ -11,7 +11,7 @@ export const loadFromNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreCo
     console.log ( 'loadFromNamedUrl path', p )
     const fl = fileLoading ( p )
     const { result: raw, newStart: fileSize }: ResultAndNewStart = await loadStringIncrementally ( fl ) ( offset, details.encoding )
-    const result = details.parser ( named.url, raw )
+    const result = await details.parser ( named.url, raw )
     const repo = repoFrom ( config, named )
     const hash = await gitOps.hashFor ( repo, path.relative ( repo, p ) )
     const id = `itsmid/${named.organisation}/${named.namespace}/${hash}`
@@ -25,7 +25,7 @@ export const loadFromIdentityUrl = ( gitOps: GitOps, config: OrganisationUrlStor
   return mapErrorsK ( urlToDetails ( config.nameSpaceDetails, identity ), async ( details ) => {
     const repo = repoFrom ( config, identity )
     const string = await gitOps.fileFor ( repo, identity.id, details.encoding )
-    const result = details.parser ( identity.url, string )
+    const result = await details.parser ( identity.url, string )
     return { url: identity.url, mimeType: details.mimeType, result, id: identity.url }
   } )
 }

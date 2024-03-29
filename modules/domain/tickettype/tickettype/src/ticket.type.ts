@@ -1,7 +1,7 @@
 import { Capability, PhaseAnd } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { NameAnd } from "@laoban/utils";
-import { IdentityUrl, nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
+import { IdentityUrl, nameSpaceDetailsForGit, UrlStoreParser } from "@itsmworkbench/urlstore";
 import { Ticket } from "@itsmworkbench/tickets";
 import { YamlCapability } from "@itsmworkbench/yaml";
 
@@ -177,11 +177,12 @@ export const installSoftwareTT: TicketType = ({
     Review: {}
   }
 })
-export function ticketTypeNamespaceDetails ( yaml: YamlCapability, ) {
+function ticketTypeParser ( yaml: YamlCapability ): UrlStoreParser {return async ( id, s ) => yaml.parser ( s );}
+export function ticketTypeNamespaceDetails ( yaml: YamlCapability ) {
   return nameSpaceDetailsForGit ( 'ka', {
     extension: 'yaml',
     mimeType: 'text/markdown; charset=UTF-8',
-    parser: ( id, s ) => yaml.parser ( s ),
+    parser: ticketTypeParser ( yaml ),
     writer: yaml.writer,
   } );
 }

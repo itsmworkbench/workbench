@@ -1,6 +1,6 @@
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 import { addVariables, extractVariablesFromMarkdown, Variables } from "@itsmworkbench/variables";
-import { nameSpaceDetailsForGit } from "@itsmworkbench/urlstore";
+import { nameSpaceDetailsForGit, UrlStoreParser, UrlStoreWriter } from "@itsmworkbench/urlstore";
 
 export interface Ticket {
   id: string
@@ -13,12 +13,12 @@ export function variablesFromTicket ( sofar: NameAnd<any>, t: Ticket ): ErrorsAn
   return addVariables ( extractVariablesFromMarkdown ( t.description ), { id: t.id } )
 }
 
-export const ticketParser = ( id, s ) => {
+export const ticketParser: UrlStoreParser = async( id, s ) => {
   const index = s.indexOf ( '\n---\n' )
   if ( index === -1 ) return { attributes: {}, description: s }
   return { attributes: JSON.parse ( s.substring ( 0, index ).trim () ), description: s.substring ( index + 5 ) }
 }
-export const ticketWriter = ( ticket: Ticket ) => `${JSON.stringify ( ticket.attributes, null, 2 )}\n---\n${ticket.description}`
+export const ticketWriter: UrlStoreWriter = ( ticket: Ticket ) => `${JSON.stringify ( ticket.attributes, null, 2 )}\n---\n${ticket.description}`
 
 export function ticketNamespaceDetails () {
   return nameSpaceDetailsForGit ( 'ticket', {

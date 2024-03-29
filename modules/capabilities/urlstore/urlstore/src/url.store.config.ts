@@ -3,13 +3,15 @@ import { HasNamespace, HasOrganisation, isNamedUrl, NamedOrIdentityUrl, NamedUrl
 import { PathAndDetails, urlStorePathAndDetailsFn } from "./url.pathops";
 
 
-export type UrlStoreParser = ( id: string, s: string ) => any
+//Why a promise? Because some things reference other things that need fetching
+export type UrlStoreParser = ( id: string, s: string ) => Promise<any>
 export type UrlStoreWriter = ( content: any ) => ErrorsAnd<string>
 export interface NameSpaceDetails {
   mimeType: string
   parser: UrlStoreParser
   writer: UrlStoreWriter
   encoding: BufferEncoding
+  supportsWrite?: boolean
 }
 export interface NameSpaceDetailsForGit extends NameSpaceDetails {
   pathInGitRepo: string

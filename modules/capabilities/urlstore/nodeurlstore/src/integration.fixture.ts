@@ -1,6 +1,6 @@
 import { findFileUp } from "@laoban/fileops";
 import fs from "fs";
-import { NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit } from "@itsmworkbench/urlstore";
+import { NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit, UrlStoreParser, UrlStoreWriter } from "@itsmworkbench/urlstore";
 import { NameAnd } from "@laoban/utils";
 
 const laobanDir = findFileUp ( process.cwd (), async f => {
@@ -10,8 +10,8 @@ const laobanDir = findFileUp ( process.cwd (), async f => {
 } )
 export const testDir = laobanDir.then ( d => d + '/tests/git' )
 
-const parser = ( id: string, s: string ) => s + "_parsed";
-const writer = ( s: any ) => s + "_written";
+const parser: UrlStoreParser = async ( id: string, s: string ) => s + "_parsed";
+const writer: UrlStoreWriter = ( s: any ) => s + "_written";
 export const ns1: NameSpaceDetailsForGit = {
   pathInGitRepo: "namespace/path",
   extension: "txt",

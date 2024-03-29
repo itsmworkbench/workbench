@@ -62,7 +62,7 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
       const named = parseNamedUrlOrThrow ( url )
       const details = urlToDetails ( nsToDetails, named )
       const result: ErrorsAnd<UrlStoreResult> = await mapErrorsK ( details, async d => {
-        const parsed = d.parser ( url, requestBody )
+        const parsed = await d.parser ( url, requestBody )
         console.log ( 'parsed', 'sizein', requestBody.length, details )
         console.log ( 'parsed', parsed )
         return await save ( named, parsed, { append, commit } );

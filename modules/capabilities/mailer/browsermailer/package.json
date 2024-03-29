@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/browsermailer",
   "description": "interacting with email: apiclient",
-  "version": "0.0.7",
+  "version": "0.0.10",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,8 +22,8 @@
   "dependencies": {
     "@laoban/utils": "1.4.45",
     "@laoban/variables": "1.4.45",
-    "@itsmworkbench/utils": "0.0.7",
-    "@itsmworkbench/mailer": "0.0.7",
+    "@itsmworkbench/utils": "0.0.10",
+    "@itsmworkbench/mailer": "0.0.10",
     "debug": "^4.3.4"
   },
   "devDependencies": {

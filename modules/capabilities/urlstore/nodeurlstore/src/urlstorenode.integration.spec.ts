@@ -76,13 +76,14 @@ describe ( "saveNamedUrl", () => {
 
     const store = nodeUrlstore ( gitOps, orgToDetails ( await testDir ) )
 
-    const result1 = await store.save ( parseNamedUrlOrThrow ( "itsm/org1/ns1/file1" ), "hello" )
+    let named = parseNamedUrlOrThrow ( "itsm/org1/ns1/file1" );
+    const result1 = await store.save ( named, "hello" )
     expect ( result1 ).toEqual ( {
       "fileSize": 13,
       "id": "itsmid/org1/ns1/875376a87df56c0d460b4039e470c3f269f32257",
       "url": "itsm/org1/ns1/file1"
     } )
-    const result2 = await store.save ( parseNamedUrlOrThrow ( "itsm/org1/ns1/file1" ), "goodbye" )
+    const result2 = await store.save ( named, "goodbye" )
     expect ( result2 ).toEqual ( {
       "fileSize": 15,
       "id": "itsmid/org1/ns1/919a09a06a17d2471fbe31a3a0c1f16f88f13a15",

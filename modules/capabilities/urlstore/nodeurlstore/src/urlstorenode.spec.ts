@@ -1,10 +1,10 @@
-import { NamedUrl, namedUrlToPathAndDetails, nameSpaceDetails, nameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit, parseNamedUrlOrThrow } from "@itsmworkbench/urlstore";
+import { NamedUrl, namedUrlToPathAndDetails, nameSpaceDetails, nameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit, parseNamedUrlOrThrow, UrlStoreParser, UrlStoreWriter } from "@itsmworkbench/urlstore";
 import { ns1, orgToDetails } from "./integration.fixture";
 
 
 describe ( "nameSpaceDetails", () => {
-  const parser = ( id: string, s: string ) => {};
-  const writer = ( s: string ) => s + "_written";
+  const parser : UrlStoreParser= async ( id: string, s: string ) => {};
+  const writer : UrlStoreWriter= ( s: string ) => s + "_written";
 
   // Test that required fields must be provided and default values are used
   it ( 'fills in default values for optional properties if they are not provided', () => {
@@ -42,8 +42,8 @@ describe ( "nameSpaceDetails", () => {
   } );
 } )
 describe ( "nameSpaceDetailsForGit", () => {
-  const parser = ( id: string, s: string ) => {};
-  const writer = ( s: string ) => s + "_written";
+  const parser: UrlStoreParser = async ( id: string, s: string ) => {};
+  const writer: UrlStoreWriter = ( s: string ) => s + "_written";
 
   // Test that required fields must be provided and default values are used
   it ( 'fills in default values for optional properties if they are not provided', () => {
@@ -88,7 +88,7 @@ describe ( 'namedUrlToPath', () => {
 
 
   it ( 'returns the correct path for a valid NamedUrl', () => {
-    const namedUrl: NamedUrl = parseNamedUrlOrThrow ( 'itsm:org1:ns1:file1' )
+    const namedUrl: NamedUrl = parseNamedUrlOrThrow ( 'itsm/org1/ns1/file1' )
     const result = namedUrlToPathAndDetails ( mockOrgToDetails ) ( namedUrl );
     expect ( result ).toEqual ( {
       "details": ns1,
@@ -97,7 +97,7 @@ describe ( 'namedUrlToPath', () => {
   } );
 
   it ( 'returns an error for an unknown namespace', () => {
-    const namedUrl: NamedUrl = parseNamedUrlOrThrow ( 'itsm:org1:unknownSpace:file1' );
+    const namedUrl: NamedUrl = parseNamedUrlOrThrow ( 'itsm/org1/unknownSpace/file1' );
     const result = namedUrlToPathAndDetails ( mockOrgToDetails ) ( namedUrl );
     expect ( result ).toEqual ( [ "Don't know how to handle namespace unknownSpace. Legal namespaces are ns1" ] );
   } );

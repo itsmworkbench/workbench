@@ -31,7 +31,7 @@ export const saveNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfig
             if ( options?.commit != false ) await gitOps.commit ( repo, `Saving ${namedOrUrl.name} as ${idAsString}` )
             return { id, idAsString }
           } )
-          const fileSize = options.append ? undefined : await gitOps.sizeForHash ( repo, id.id )
+          const fileSize = options?.append ? undefined : await gitOps.sizeForHash ( repo, id.id )
           const result: UrlStoreResult = { url: namedOrUrl.url, fileSize, id: idAsString };
           return result
         } catch ( e ) {

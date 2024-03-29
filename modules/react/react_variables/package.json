@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/react_variables",
   "description": "The react plugin for displaying the variables",
-  "version": "0.0.7",
+  "version": "0.0.10",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,7 +15,7 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/components": "0.0.7",
+    "@itsmworkbench/components": "0.0.10",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

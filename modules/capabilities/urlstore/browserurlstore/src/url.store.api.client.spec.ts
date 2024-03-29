@@ -16,7 +16,7 @@ afterAll ( () => {
 const details: NameAnd<NameSpaceDetails> = {
   namespace: nameSpaceDetails ( 'namespace',
     {
-      parser: ( id, s ) => [ s ],
+      parser: async ( id, s ) => [ s ],
       writer: ( content ) => content[ 0 ]
     } )
 }

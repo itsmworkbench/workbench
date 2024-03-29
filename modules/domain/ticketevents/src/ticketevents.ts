@@ -4,7 +4,7 @@ import { nameSpaceDetailsForGit, UrlStoreParser, UrlStoreWriter } from "@itsmwor
 export type TicketEvents = Event[]
 
 
-export const ticketEventsParser: UrlStoreParser = ( _: string, s: string ) => stringToEvents ( {}, s )
+export const ticketEventsParser: UrlStoreParser = async ( _: string, s: string ) => stringToEvents ( {}, s )
 export const ticketEventWriter: UrlStoreWriter = ( tes: TicketEvents ) => tes.map ( e => `${JSON.stringify ( e )}\n` ).join ( '' )
 
 

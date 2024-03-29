@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/apisql",
   "description": "code to support the api/sql integration",
-  "version": "0.0.7",
+  "version": "0.0.10",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -19,9 +19,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.45",
     "@laoban/variables": "1.4.45",
-    "@itsmworkbench/utils": "0.0.7",
-    "@itsmworkbench/koa": "0.0.7",
-    "@itsmworkbench/sql": "0.0.7",
+    "@itsmworkbench/utils": "0.0.10",
+    "@itsmworkbench/koa": "0.0.10",
+    "@itsmworkbench/sql": "0.0.10",
     "debug": "^4.3.4"
   },
   "devDependencies": {

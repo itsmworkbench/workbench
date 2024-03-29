@@ -10,7 +10,7 @@ const data = {
   }
 }
 type Data = typeof data
-let idLoadFn: UrlLoadIdentityFn = async ( url ) => ({ url: writeUrl ( url ), result: `from ${url}` as any, mimeType: 'something', id: 'someId' });
+let idLoadFn: UrlLoadIdentityFn = async ( url ) => ({ url: writeUrl ( url ), result: `from ${writeUrl(url)}` as any, mimeType: 'something', id: 'someId' });
 
 const eventProcessor: EventProcessor<Data> = defaultEventProcessor<Data> ( '', {} as Data, idLoadFn )
 let context: any = { some: "metadata" };
@@ -23,8 +23,8 @@ describe ( "eventProcessors", () => {
   } )
   describe ( "setIdEventProcessor", () => {
     it ( "should set value", async () => {
-      let setId = await setIdEventProcessor<Data> () ( eventProcessor, { event: "setId", context, path: "a.b.c", id: "id" }, data )
-      expect ( setId ).toEqual ( { "a": { "b": { "c": "from id" } } } )
+      let setId = await setIdEventProcessor<Data> () ( eventProcessor, { event: "setId", context, path: "a.b.c", id: "itsmid/org/ns/id" }, data )
+      expect ( setId ).toEqual ( { "a": { "b": { "c": "from itsmid/org/ns/id" } } } )
     } )
   } )
   describe ( "setValueEventProcessor", () => {
