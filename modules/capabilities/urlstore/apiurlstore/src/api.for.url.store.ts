@@ -4,23 +4,24 @@ import { ErrorsAnd, hasErrors, mapErrorsK, NameAnd } from "@laoban/utils";
 import { KoaPartialFunction } from "@itsmworkbench/koa";
 
 
+let matchGetUrls = /\/url\/(.+)$/;
 export const getUrls = ( loader: UrlLoaders ): KoaPartialFunction => ({
   isDefinedAt: ( ctx ) => {
-    const match = /\/url\/([^\/]+)/.exec ( ctx.context.request.path );
+    const match = matchGetUrls.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'GET';
     return match && isMethodMatch;
   },
   apply: async ( ctx ) => {
-    const match = /\/url\/(itsm.*)/.exec ( ctx.context.request.path );
+    const match = matchGetUrls.exec ( ctx.context.request.path );
     const url = match[ 1 ];
     const identityOrNamedUrl = parseUrl ( url )
     if ( hasErrors ( identityOrNamedUrl ) ) {
-      ctx.context.status = 40;
+      ctx.context.status = 400;
       ctx.context.body = identityOrNamedUrl.join ( '\n' );
       return;
     }
     try {
-      console.log ( `${'GET'}Urls`, url );
+      console.log ( `${'GET'}Urls`, url, identityOrNamedUrl );
       // The actionFn is either 'loader' for GET or 'save' for PUT
       let requestBody = ctx.context.request.rawBody;
       const query = ctx.context.request.query
@@ -82,7 +83,7 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
   }
 });
 
-const listUrlRegex = /^\/url\/list\/([^\/]+)\/([^\/]+)$/;
+const listUrlRegex = /^\/url\/list\/([^\/]+)\/(.+)$/;
 
 
 const getOrder = ( order: string | undefined ): ListNamesOrder => {
@@ -113,7 +114,11 @@ export const listUrls = ( list: UrlListFn ): KoaPartialFunction => ({
     const match = listUrlRegex.exec ( ctx.context.request.path );
     if ( match ) {
       const org = match[ 1 ];
-      const namespace = match[ 2 ];
+      const namespaceAndPath = match[ 2 ];
+      const parts = namespaceAndPath.split ( '/' );
+      const namespace = parts[ 0 ]
+      const path = parts.length === 1 ? undefined : parts.slice ( 1 ).join ( '/' )
+      console.log ( 'listUrls', org, namespace, path )
       try {
         const pageSize = getIntegerWithDefault ( ctx.context.query.pageSize, 10 );
         const page = getIntegerWithDefault ( ctx.context.query.page, 1 );
@@ -121,7 +126,8 @@ export const listUrls = ( list: UrlListFn ): KoaPartialFunction => ({
         const filter = ctx.context.query.filter;
 
         console.log ( 'filter', filter )
-        const result = await list ( { org, namespace, pageQuery: { page, pageSize }, order, filter } )
+
+        const result = await list ( { org, namespace, path, pageQuery: { page, pageSize }, order, filter } )
         if ( hasErrors ( result ) ) {
           console.log ( 'listUrls - errors', result )
           ctx.context.status = 500;

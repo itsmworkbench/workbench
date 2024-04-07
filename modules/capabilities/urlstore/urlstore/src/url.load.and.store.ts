@@ -14,7 +14,7 @@ export function isIdentityUrlLoadResult<T> ( x: any ): x is IdentityUrlLoadResul
 export function isNamedLoadResult<T> ( x: any ): x is NamedLoadResult<T> {
   return isIdentityUrlLoadResult<T> ( x ) && 'fileSize' in x
 }
-export type UrlLoadNamedFn = <T>( url: NamedUrl, offset?: number ) => Promise<ErrorsAnd<NamedLoadResult<T>>>
+export type UrlLoadNamedFn = <T>( url: NamedUrl, offset?: number ) => Promise<ErrorsAnd<Required<NamedLoadResult<T>>>>
 export type UrlLoadIdentityFn = <T>( url: IdentityUrl ) => Promise<ErrorsAnd<IdentityUrlLoadResult<T>>>
 
 export type UrlStoreResult = {
@@ -45,6 +45,7 @@ export function applyPaging<T> ( raw: T[], query: PageQuery ): T[] {
 export type ListNamesResult = PageQuery & {
   org: string
   namespace: string
+  path?:string
   names: string[]
   page: number
   total: number
@@ -55,14 +56,15 @@ export function isListNamesResult ( x: any ): x is ListNamesResult {
 }
 export type ListNamesOrder = 'name' | 'date'
 
-export type UrlQuery={
+export type UrlQuery = {
   org: string
   namespace: string
   pageQuery: PageQuery
   order: ListNamesOrder
   filter?: string
+  path?: string
 }
-export type UrlListFn = ( q: UrlQuery) => Promise<ErrorsAnd<ListNamesResult>>
+export type UrlListFn = ( q: UrlQuery ) => Promise<ErrorsAnd<ListNamesResult>>
 
 export type UrlLoaders = {
   loadNamed: UrlLoadNamedFn

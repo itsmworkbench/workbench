@@ -13,7 +13,14 @@ export type FileInfo = {
 
 // Load file information from a directory
 async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => string, filter?: string ): Promise<FileInfo[]> {
-  const files = await fs.readdir ( directoryPath, { withFileTypes: true } );
+  async function readIt () {
+    try {
+      return await fs.readdir ( directoryPath, { withFileTypes: true } );
+    } catch ( e ) {
+      return []
+    }
+  }
+  const files = await readIt ();
   const lcFilter = filter?.toLowerCase ()
   const filterFn = filter ? ( file: Dirent ) => file.name.toLowerCase ().includes ( lcFilter ) : () => true;
   const fileInfoPromises = files.filter ( file => file.isFile () && filterFn ( file ) ).map ( async file => {
@@ -48,14 +55,27 @@ export const listNamesInPath = ( nameFn: ( name: string ) => string ) =>
     return mapErrors ( await applySortOrder ( files, order ), ( { sortedFiles } ) =>
       ({ names: applyPaging ( sortedFiles, query ).map ( f => f.name ) }) )
   }
-function extractFirstPart ( input: string ): string {
-  return input.includes ( '.' ) ? (input.split ( '.' ))[ 0 ] : input;
+
+export function removeLastExtension ( path: string ): string {
+  // Split the path by dots to separate extensions
+  const parts = path.split ( '.' );
+
+  // If there's only one part, it means there's no extension to remove
+  if ( parts.length === 1 ) {
+    return path;
+  }
+
+  // Remove the last part (extension)
+  parts.pop ();
+
+  // Rejoin the remaining parts
+  return parts.join ( '.' );
 }
-export const listJustNamesInPath = listNamesInPath ( s => extractFirstPart ( path.parse ( s ).name ) );
+export const listJustNamesInPath = listNamesInPath ( s => removeLastExtension ( path.parse ( s ).name ) );
 export const listInStoreFn = ( config: OrganisationUrlStoreConfigForGit ): UrlListFn => {
   const orgAndNsToPath = urlStorePathFn ( config )
-  return async ( { org, namespace, pageQuery, order, filter } ) =>
-    mapErrorsK ( orgAndNsToPath ( org, namespace ), async ( path: string ) =>
-      mapErrors ( await listJustNamesInPath ( path, pageQuery, order, filter ),
-        ( { names } ) => ({ org, namespace, names, page: pageQuery.page, total: names.length }) ) )
+  return async ( { org, namespace, pageQuery, order, filter, path } ) =>
+    mapErrorsK ( orgAndNsToPath ( org, namespace ), async ( p: string ) =>
+      mapErrors ( await listJustNamesInPath ( path ? p + '/' + path : p, pageQuery, order, filter ),
+        ( { names } ) => ({ org, namespace, path, names, page: pageQuery.page, total: names.length }) ) )
 }

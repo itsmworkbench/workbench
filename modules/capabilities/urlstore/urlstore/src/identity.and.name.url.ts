@@ -1,4 +1,5 @@
 import { ErrorsAnd, mapErrors } from "@laoban/utils";
+
 export type HasNamespace = {
   namespace: string,
 }
@@ -7,7 +8,7 @@ export type  HasOrganisation = {
 
 }
 
-export type OrgAndNamespace = HasNamespace &HasOrganisation;
+export type OrgAndNamespace = HasNamespace & HasOrganisation;
 
 export type IdentityUrl = OrgAndNamespace & {
   url?: string // This is the original url that was parsed. Useful for debugging
@@ -20,7 +21,6 @@ export function isIdentityUrl ( x: NamedOrIdentityUrl ): x is IdentityUrl {
 export type NamedUrl = OrgAndNamespace & {
   url?: string // This is the original url that was parsed. Might not be here. Useful for debugging
   scheme: 'itsm',
-
   name: string,
 };
 
@@ -45,18 +45,19 @@ export function parseUrl ( url: string ): ErrorsAnd<NamedOrIdentityUrl> {
     for ( let i = 0; i < parts.length; i++ )
       if ( !validPartRegex.test ( parts[ i ] ) )
         return [ `Part [${i} (${parts[ i ]}) of ${url} contains invalid characters. Only a-z, A-Z, 0-9, and _-. are allowed.` ];
-    const [ scheme, organisation, namespace, fourthPart ] = parts;
+    const [ scheme, organisation, namespace, ...nameParts ] = parts;
 
     // Adjust scheme check for both 'itsm' and 'itsmid'
     if ( scheme !== 'itsm' && scheme !== 'itsmid' ) return [ `${url} is not a valid itsm url. It has the wrong scheme ${scheme}. Legal values are 'itsm' and 'itsmid'` ];
 
     if ( scheme === 'itsmid' ) {
+      if ( nameParts.length !== 1 ) return [ `${url} is not a valid itsmid url. It has a / in the id which should be a sha ` ];
       const identityUrl: IdentityUrl = {
         url,
         scheme,
         organisation,
         namespace,
-        id: fourthPart,
+        id: nameParts[ 0 ],
       };
       return identityUrl;
     } else if ( scheme === 'itsm' ) {
@@ -65,7 +66,7 @@ export function parseUrl ( url: string ): ErrorsAnd<NamedOrIdentityUrl> {
         scheme,
         organisation,
         namespace,
-        name: fourthPart,
+        name: nameParts.join ( '/' ),
       };
       return namedUrl;
     }
