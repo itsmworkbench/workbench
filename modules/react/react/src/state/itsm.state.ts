@@ -105,5 +105,6 @@ export const enrichedEventsO: Optional<ItsmState, Event[]> = forTicketL.focusOn 
 export const enrichedEventsL: Lens<ItsmState, Event[]> = forTicketL.focusOn ( 'enrichedEvents' )
 export const statusL: Lens<ItsmState, PhaseAnd<NameAnd<boolean>>> = forTicketL.focusOn ( 'status' )
 export const ticketListO: Optional<ItsmState, ListNamesResult> = itsmIdL.focusOn ( 'ticketList' )
+export const kaListO: Optional<ItsmState, ListNamesResult> = itsmIdL.focusOn ( 'kaList' )
 export const actionO = forTicketL.focusOn ( 'tempData' ).focusOn ( 'action' )
 export const kaO = forTicketL.focusOn ( 'tempData' ).focusOn ( 'ka' )

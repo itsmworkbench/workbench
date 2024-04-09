@@ -8,7 +8,7 @@ import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent
 import { ActionPluginDetails, eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { actionO, conversationL, emailDataL, enrichedEventsO, eventsL, eventsO, forTicketO, ItsmState, kaO, logsL, newTicketL, operatorL, sideEffectsL, startAppState, tabO, tabsL, tagsL, ticketIdL, ticketL, ticketListO, ticketTypeO, ticketVariablesL } from "./state/itsm.state";
+import { actionO, conversationL, emailDataL, enrichedEventsO, eventsL, eventsO, forTicketO, ItsmState, kaListO, kaO, logsL, newTicketL, operatorL, sideEffectsL, startAppState, tabO, tabsL, tagsL, ticketIdL, ticketL, ticketListO, ticketTypeO, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
@@ -60,7 +60,26 @@ const operatorDi = depData ( 'operator', operatorL, {
   }
 } )
 
-const deps: DependentItem<ItsmState, any>[] = [ operatorDi ]
+const ticketListDi = depData ( 'ticketList', ticketListO, {
+  clean: 'nuke',
+  tag: ( o: any ) => o?.names,
+  load: async () => {
+    const ticketList = await urlStore.list ( { org: "me", namespace: "ticketevents", pageQuery: { page: 1, pageSize: 10 }, order: "date" } )
+    if ( hasErrors ( ticketList ) ) throw new Error ( 'Failed to load ticketList\n' + ticketList.join ( '\n' ) )
+    return ticketList
+  }
+} )
+
+const kaListDi = depData ( 'kaList', kaListO, {
+  clean: 'nuke',
+  tag: ( o: any ) => o?.names,
+  load: async () => {
+    const kaList = await urlStore.list ( { org: "me", namespace: "ka", pageQuery: { page: 1, pageSize: 1000 }, order: "date" } )
+    if ( hasErrors ( kaList ) ) throw new Error ( 'Failed to load kaList\n' + kaList.join ( '\n' ) )
+    return kaList
+  }
+} )
+const deps: DependentItem<ItsmState, any>[] = [ operatorDi, ticketListDi ]
 const tagStore = optionalTagStore ( tagsL );
 
 const depEngine = dependentEngine<ItsmState> ( { listeners: [], cache: {} }, tagStore.currentValue )
@@ -85,7 +104,9 @@ const setJson: ( s: ItsmState ) => void = s => {
       console.log ( 'setJson - tag', tag )
       console.log ( 'setJson - setting Json', s )
       s.tags[ name ] = tag
-      setJson ( s ) // which is scary because this might trigger an infinite loop
+      setTimeout ( () => {
+        setJson ( s ) // which is scary because this might trigger an infinite loop hence the delay
+      }, 500 )
     }
   } )
 };
@@ -209,18 +230,11 @@ addEventStoreModifier ( container,
     sideEffectsL, logsL, true ) )
 
 
-loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataResult ) => {
-  // const operatorResult = hasErrors ( initialDataResult.operator ) ? undefined : value ( initialDataResult.operator )
-  //OK this is a mess. Need to think about how to do operator...
-  let ticketList = value ( initialDataResult.ticketList ) as any;
-  let kaList = value ( initialDataResult.kaList ) as any;
-  let operator = undefined as any as Operator//operatorResult?.result || { name: 'Phil', email: 'phil@example.com' };
-  const withInitialData: ItsmState = {
-    ...startAppState,
-    basicData: { operator, organisation: 'me' },
-    ticketList,
-    kaList
-  }
-  setJson ( withInitialData )
-  await startPolling ( pollingDetails )
-} )
+const withInitialData: ItsmState = {
+  ...startAppState,
+  basicData: { operator: undefined as any, organisation: 'me' },
+  ticketList: undefined as any,
+  kaList: undefined as any
+}
+setJson ( withInitialData )
+-startPolling ( pollingDetails )

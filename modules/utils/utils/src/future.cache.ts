@@ -1,6 +1,7 @@
 
 import { callListeners } from "./listeners";
 import { NameAnd } from "@laoban/utils";
+import { Optional } from "@focuson/lens";
 
 export interface PromiseCacheListener<Context, Result> {
   duplicateCall?: ( context: Context ) => void
@@ -46,3 +47,4 @@ export function getOrUpdateFromPromiseCache<Context, T> ( engine: TwoKeyPromiseC
   cache[ name1 ] = thisCache
   return result
 }
+
