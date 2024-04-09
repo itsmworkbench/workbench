@@ -3,7 +3,7 @@ import { DiTagFn } from "./tag";
 
 export interface DependentItem<S, T> {
   name: string
-  hashFn: DiTagFn<T>
+  tagFn: DiTagFn<T>
   optional: Optional<S, T>
   dependsOn: DependsOn<S, T>
 }

@@ -1,7 +1,7 @@
 import { DiAction, FetchDiAction, isFetchDiAction, } from "./di.actions";
 
 import { callListeners, getOrUpdateFromPromiseCache, PromiseCacheListener, TwoKeyPromiseCache } from "@itsmworkbench/utils";
-import { diTagChanged } from "./tag";
+import { DiTag, diTagChanged } from "./tag";
 import { TagStoreGetter } from "./tag.store";
 import { dependents } from "./dependent.data";
 import { collect, flatMap } from "@laoban/utils";
@@ -32,13 +32,21 @@ export function executeAllCleans<S> ( s: S, actions: DiAction<S, any>[] ): S {
   return actions.reduce ( executeClean, s )
 }
 
-export type StateAndWhy<S> = {
+export type StateAndWhyWontChange<S> = {
+  name: string
+  t: any
+  changed: false
+  why: string
+}
+export type StateAndWhyWillChange<S> = {
   s: S
   name: string
   t: any
-  changed: boolean
+  changed: true
+  tag: DiTag
   why: string
 }
+export type StateAndWhy<S> = StateAndWhyWontChange<S> | StateAndWhyWillChange<S>
 
 export const uncachedSendRequestForFetchAction = <S, T> ( listeners: PromiseCacheListener<DiAction<S, T>, T>[], tagGetter: TagStoreGetter<S> ) =>
   ( a: FetchDiAction<S, T> ) => async (): Promise<DiRequest<S>> => {
@@ -48,11 +56,12 @@ export const uncachedSendRequestForFetchAction = <S, T> ( listeners: PromiseCach
       const changed = flatMap ( deps, ( d, i ) => diTagChanged ( a.tags[ i ].tag, tagGetter ( s, d.name ) ) ? [ d.name ] : [] )
       if ( changed.length > 0 ) {//don't do anything if upstreams have changed as our data is probably wrong, and we want a new load to get it...
         callListeners ( listeners, 'loadAbandoned', l => l.loadAbandoned ( a, changed.join ( ',' ) ) )
-        return { s, why: `Changed ${changed.join ( ',' )}`, changed: false, t, name: a.di.name }
+        return { why: `Changed ${changed.join ( ',' )}`, changed: false, t, name: a.di.name }
       }
       const rawNewS = a.di.optional.set ( s, t )
       const newS = rawNewS === undefined ? s : rawNewS
-      return { s: newS, why: `Loaded ${a.di.name}`, changed: true, t, name: a.di.name }
+      const tag = a.di.tagFn ( t )
+      return { s: newS, why: `Loaded ${a.di.name}`, changed: true, t, name: a.di.name, tag }
     }
   }
 

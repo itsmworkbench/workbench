@@ -8,7 +8,7 @@ import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent
 import { ActionPluginDetails, eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
-import { actionO, conversationL, emailDataL, enrichedEventsO, eventsL, eventsO, forTicketO, ItsmState, kaO, logsL, newTicketL, sideEffectsL, startAppState, tabO, tabsL, ticketIdL, ticketL, ticketListO, ticketTypeO, ticketVariablesL } from "./state/itsm.state";
+import { actionO, conversationL, emailDataL, enrichedEventsO, eventsL, eventsO, forTicketO, ItsmState, kaO, logsL, newTicketL, operatorL, sideEffectsL, startAppState, tabO, tabsL, tagsL, ticketIdL, ticketL, ticketListO, ticketTypeO, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
@@ -27,6 +27,13 @@ import { addAiMailerSideEffectProcessor, displayEmailEventPlugin, displayMailerP
 import { debugEnrichedEventsPlugin, debugEventsPlugin, displayEnrichedEventsWithPlugins, displayMessageEventPlugin, enrichedDisplayAndChatPlugin } from "@itsmworkbench/reactevents";
 import { apiClientFetchEmailer } from "@itsmworkbench/browserfetchemail";
 import { displayReceiveEmailEventPlugin, displayReceiveEmailPlugin } from "@itsmworkbench/reactfetchemail";
+import { depData } from "@itsmworkbench/dependentdata/dist/src/dep.data.dsl";
+import { Operator } from "@itsmworkbench/operator";
+import { parseNamedUrlOrThrow } from "@itsmworkbench/urlstore";
+import { dependentEngine } from "@itsmworkbench/dependentdata/dist/src/dependant.data.engine";
+import { globalTagStoreCurrentValue, optionalTagStore } from "@itsmworkbench/dependentdata/dist/src/tag.store";
+import { DependentItem } from "@itsmworkbench/dependentdata";
+import { DiRequest } from "@itsmworkbench/dependentdata/dist/src/dependant.execute";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -42,7 +49,47 @@ const urlStore = urlStoreFromApi ( urlStoreconfig )
 const ai = apiClientForAi ( aiDetails )
 
 const container = eventStore<ItsmState> ()
-const setJson = setEventStoreValue ( container );
+
+const operatorDi = depData ( 'operator', operatorL, {
+  clean: 'leave',
+  tag: ( o: Operator ) => o?.id,
+  load: async () => {
+    const res = await urlStore.loadNamed<Operator> ( parseNamedUrlOrThrow ( 'itsm/me/operator/me' ) )
+    if ( hasErrors ( res ) ) throw new Error ( 'Failed to load operator\n' + res.join ( '\n' ) )
+    return res.result
+  }
+} )
+
+const deps: DependentItem<ItsmState, any>[] = [ operatorDi ]
+const tagStore = optionalTagStore ( tagsL );
+
+const depEngine = dependentEngine<ItsmState> ( { listeners: [], cache: {} }, tagStore.currentValue )
+const setJson: ( s: ItsmState ) => void = s => {
+  const { status, vAndT, actions } = depEngine.evaluate ( deps ) ( s )
+  console.log ( 'setJson', s, status, vAndT, )
+  console.log ( 'setJson - actions', actions )
+  const { updates, newS } = depEngine.doActions ( actions )
+  const cleanedS = newS ( s );
+  console.log ( 'setJson - cleanedS', cleanedS )
+  setEventStoreValue ( container ) ( cleanedS )
+  console.log ( 'setJson - updates', updates.length )
+  updates.forEach ( async u => {
+    const r: DiRequest<ItsmState> = await u
+    const stateAndWhy = r ( container.state )
+    const { name, changed, why } = stateAndWhy
+    console.log ( 'setJson - update', name, changed, why )
+
+    if ( changed ) {
+      const { s, t, tag } = stateAndWhy
+      console.log ( 'setJson - t ', t )
+      console.log ( 'setJson - tag', tag )
+      console.log ( 'setJson - setting Json', s )
+      s.tags[ name ] = tag
+      setJson ( s ) // which is scary because this might trigger an infinite loop
+    }
+  } )
+};
+
 const sep1 = defaultEventProcessor<ItsmState> ( '', startAppState, urlStore.loadIdentity )
 
 const eventPlugins = [
@@ -95,6 +142,8 @@ const mailer = apiClientMailer ( rootUrl + "api/email" )
 const sqler = apiClientSqler ( rootUrl + "api/sql" )
 const fetcher = apiClientFetchEmailer ( rootUrl + "api/fetchemail"
 )
+
+
 addEventStoreListener ( container, (( _, s, setJson ) => {
   return root.render ( <UrlStoreProvider urlStore={urlStore}>
     <FetchEmailerProvider fetchEmailer={fetcher}>
@@ -161,11 +210,11 @@ addEventStoreModifier ( container,
 
 
 loadInitialData ( urlStore ).then ( async ( initialDataResult: InitialLoadDataResult ) => {
-  const operatorResult = hasErrors ( initialDataResult.operator ) ? undefined : value ( initialDataResult.operator )
+  // const operatorResult = hasErrors ( initialDataResult.operator ) ? undefined : value ( initialDataResult.operator )
   //OK this is a mess. Need to think about how to do operator...
   let ticketList = value ( initialDataResult.ticketList ) as any;
   let kaList = value ( initialDataResult.kaList ) as any;
-  let operator = operatorResult?.result || { name: 'Phil', email: 'phil@example.com' };
+  let operator = undefined as any as Operator//operatorResult?.result || { name: 'Phil', email: 'phil@example.com' };
   const withInitialData: ItsmState = {
     ...startAppState,
     basicData: { operator, organisation: 'me' },

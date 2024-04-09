@@ -1,7 +1,5 @@
 import { DiTag, ValueAndTag, ValueAndTagAndLastTag } from "./tag";
 import { DependentItem } from "./dependent.data";
-import { EvaluateDiFn, EvaluateDiRes } from "./dependant.evaluation";
-import { DoActionsFn } from "./dependant.execute";
 
 export interface CleanDiAction<S, T> {
   di: DependentItem<S, T>

@@ -49,7 +49,7 @@ export function depData<S, T, T1, T2, T3> ( name: string, optional: Optional<S, 
 export function depData0Impl<S, T> ( name: string, optional: Optional<S, T>, config: DepDataConfigOptions0<T> ): DependentItem<S, T> {
   return {
     name,
-    hashFn: config.tag || defaultTag,
+    tagFn: config.tag || defaultTag,
     optional,
     dependsOn: { root: true, clean: config.clean, load: config.load }
   }
@@ -63,7 +63,7 @@ function depData1Impl<S, T, T1> (
 ): DependentItem<S, T> {
   return {
     name,
-    hashFn: config.tag || defaultTag,
+    tagFn: config.tag || defaultTag,
     optional,
     dependsOn: {
       dependentOn: depends1,
@@ -83,7 +83,7 @@ function depData2Impl<S, T, T1, T2> (
 ): DependentItem<S, T> {
   return {
     name,
-    hashFn: config.tag || defaultTag,
+    tagFn: config.tag || defaultTag,
     optional,
     dependsOn: {
       dependentOn1: depends1,
@@ -105,7 +105,7 @@ function depData3Impl<S, T, T1, T2, T3> (
 ): DependentItem<S, T> {
   return {
     name,
-    hashFn: config.tag || defaultTag,
+    tagFn: config.tag || defaultTag,
     optional,
     dependsOn: {
       dependentOn1: depends1,

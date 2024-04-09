@@ -12,6 +12,7 @@
     "@itsmworkbench/browserai",
     "@itsmworkbench/browsermailer",
     "@itsmworkbench/components",
+    "@itsmworkbench/dependentdata",
     "@itsmworkbench/domain",
     "@itsmworkbench/events",
     "@itsmworkbench/eventstore",

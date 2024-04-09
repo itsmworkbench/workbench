@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/config",
   "description": "The configuration for the Intellimaintain project",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.50",
-    "@itsmworkbench/utils": "0.0.16",
-    "@itsmworkbench/cli": "0.0.16",
+    "@itsmworkbench/utils": "0.0.17",
+    "@itsmworkbench/cli": "0.0.17",
     "debug": "^4.3.4"
   },
   "devDependencies": {

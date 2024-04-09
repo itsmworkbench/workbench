@@ -18,7 +18,7 @@ export type DiValuesAndTags = NameAnd<ValueAndTagAndLastTag>
 function makeDiAction<S, T> ( deps: DependentItem<S, any>[], vAndT: NameAnd<ValueAndTagAndLastTag>, di: DependentItem<S, T>, s: S, wantLoad: boolean, currentTags: ValueAndTagAndLastTag[], reasonPrefix ): DiAction<S, T>[] {
   const params = deps.map ( d => vAndT[ d.name ].value );
   const value = cleanValue ( di, s, params )
-  const tag = di.hashFn ( value )
+  const tag = di.tagFn ( value )
   const clean = { value, tag }
   const alreadyClean = clean.value === vAndT[ di.name ].value || clean.tag === vAndT[ di.name ].tag//Note the || We're OK if we have already cleaned. We can use the value (often a string or something) or the tag
   const load = wantLoad && di.dependsOn.load ? loadFn ( di.dependsOn, params ) : undefined
@@ -33,7 +33,7 @@ export const evaluateDependentItem = <S> ( getTag: TagStoreGetter<S>, status: Up
   const upstreamChanged = lastTags.some ( ( ch, i ) => diTagChanged ( ch, currentTags[ i ].tag ) )
 
   const thisValue = di.optional.getOption ( s )
-  const thisTag = di.hashFn ( thisValue )
+  const thisTag = di.tagFn ( thisValue )
   vAndT[ di.name ] = { value: thisValue, tag: thisTag, lastTag: getTag ( s, di.name ) }
 
   const willClean = thisTag === undefined || upstreamChanged || someUpstreamIsUndefined;

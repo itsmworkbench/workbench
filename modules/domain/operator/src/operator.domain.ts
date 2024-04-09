@@ -8,6 +8,7 @@ import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
 
 
 export interface Operator {
+  id: string
   name: string
   email: string
 }

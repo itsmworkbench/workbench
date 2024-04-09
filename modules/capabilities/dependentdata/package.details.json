@@ -5,7 +5,7 @@
   "packageJson": {
     "dependencies":    {
       "node":          "^v14.4.0",
-      "@laoban/utils":  "1.4.50",
+      "@laoban/utils": "1.4.50",
       "@focuson/lens": "1.44.3"
     },
     "devDependencies": {},
@@ -13,7 +13,7 @@
       "child_process": false
     }
   },
-  "links":       ["@itsmworkbench/utils", "@itsmworkbench/eventstore"],
+  "links":       ["@itsmworkbench/utils"],
   "guards":      {
     "compile": true,
     "publish": true,
