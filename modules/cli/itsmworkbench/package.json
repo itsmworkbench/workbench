@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "node": "^v16.0.0",
-    "@laoban/utils": "1.4.45",
-    "@laoban/filesops-node": "1.4.45",
+    "@laoban/utils": "1.4.50",
+    "@laoban/filesops-node": "1.4.50",
     "@itsmworkbench/api": "0.0.16",
     "@itsmworkbench/cli": "0.0.16",
     "@itsmworkbench/commander12": "0.0.16",

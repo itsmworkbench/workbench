@@ -5,8 +5,8 @@
   "packageJson": {
     "dependencies":    {
       "nodemailer":        "^6.9.13",
-      "@laoban/utils":     "1.4.45",
-      "@laoban/variables": "1.4.45"
+      "@laoban/utils":      "1.4.50",
+      "@laoban/variables":  "1.4.50"
     },
     "devDependencies": {"@types/nodemailer": "^6.4.14", "js-yaml": "^4.1.0"},
     "browser":         {

@@ -1,25 +1,28 @@
 // Overload for root dependency (no dependencies)
-import { DependentItem, WhenChangeAction } from "./dependent.data";
+import { CleanFn0, CleanFn1, CleanFn2, CleanFn3, DependentItem, PrimitiveCleanOperation } from "./dependent.data";
 import { Optional } from "@focuson/lens";
-import { DiHash } from "./hash";
+import { DiTag } from "./tag";
 
 export interface CommondConfigOptions<T> {
-  type?: WhenChangeAction<T>
-  hash?: ( t: T ) => DiHash
+  tag?: ( t: T ) => DiTag
 }
 export interface DepDataConfigOptions0<T> extends CommondConfigOptions<T> {
+  clean: PrimitiveCleanOperation | CleanFn0<T>
   load?: () => Promise<T>
 }
 export interface DepDataConfigOptions1<T, T1> extends CommondConfigOptions<T> {
+  clean: PrimitiveCleanOperation | CleanFn1<T, T1>
   load?: ( t: T1 ) => Promise<T>
 }
 export interface DepDataConfigOptions2<T, T1, T2> extends CommondConfigOptions<T> {
+  clean: PrimitiveCleanOperation | CleanFn2<T, T1, T2>
   load?: ( t1: T1, t2: T2 ) => Promise<T>
 }
 export interface DepDataConfigOptions3<T, T1, T2, T3> extends CommondConfigOptions<T> {
+  clean: PrimitiveCleanOperation | CleanFn3<T, T1, T2, T3>
   load?: ( t1: T1, t2: T2, t3: T3 ) => Promise<T>
 }
-export function defaultHash<T> ( t: T ): DiHash {
+export function defaultTag<T> ( t: T ): DiTag {
   if ( t === undefined ) return undefined
   if ( typeof t === 'string' ) return t
   if ( Array.isArray ( t ) ) return t as string[]
@@ -46,9 +49,9 @@ export function depData<S, T, T1, T2, T3> ( name: string, optional: Optional<S, 
 export function depData0Impl<S, T> ( name: string, optional: Optional<S, T>, config: DepDataConfigOptions0<T> ): DependentItem<S, T> {
   return {
     name,
-    hashFn: config.hash || defaultHash,
+    hashFn: config.tag || defaultTag,
     optional,
-    dependsOn: { root: true, load: config.load }
+    dependsOn: { root: true, clean: config.clean, load: config.load }
   }
 }
 // Handling 1 dependency
@@ -60,10 +63,11 @@ function depData1Impl<S, T, T1> (
 ): DependentItem<S, T> {
   return {
     name,
-    hashFn: config.hash || defaultHash,
+    hashFn: config.tag || defaultTag,
     optional,
     dependsOn: {
       dependentOn: depends1,
+      clean: config.clean,
       load: config.load
     },
   };
@@ -79,11 +83,12 @@ function depData2Impl<S, T, T1, T2> (
 ): DependentItem<S, T> {
   return {
     name,
-    hashFn: config.hash || defaultHash,
+    hashFn: config.tag || defaultTag,
     optional,
     dependsOn: {
       dependentOn1: depends1,
       dependentOn2: depends2,
+      clean: config.clean,
       load: config.load
     },
   };
@@ -100,12 +105,13 @@ function depData3Impl<S, T, T1, T2, T3> (
 ): DependentItem<S, T> {
   return {
     name,
-    hashFn: config.hash || defaultHash,
+    hashFn: config.tag || defaultTag,
     optional,
     dependsOn: {
       dependentOn1: depends1,
       dependentOn2: depends2,
       dependentOn3: depends3,
+      clean: config.clean,
       load: config.load
     },
   };

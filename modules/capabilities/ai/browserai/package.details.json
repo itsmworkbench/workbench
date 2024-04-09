@@ -4,8 +4,8 @@
   "description": "The API client for Code accesses the AI API",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":     "1.4.45",
-      "@laoban/variables": "1.4.45"
+      "@laoban/utils":      "1.4.50",
+      "@laoban/variables":  "1.4.50"
     },
     "devDependencies": {"jest-fetch-mock": "^3.0.3"}
   },

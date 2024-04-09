@@ -4,8 +4,8 @@
   "description": "executing commands in a shell using node",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":     "1.4.45",
-      "@laoban/variables": "1.4.45"
+      "@laoban/utils":      "1.4.50",
+      "@laoban/variables":  "1.4.50"
     },
     "devDependencies": {},
     "browser":         {

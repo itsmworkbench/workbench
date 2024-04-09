@@ -17,8 +17,8 @@
     ]
   },
   "dependencies": {
-    "@laoban/utils": "1.4.45",
-    "@laoban/variables": "1.4.45",
+    "@laoban/utils": "1.4.50",
+    "@laoban/variables": "1.4.50",
     "@itsmworkbench/utils": "0.0.16",
     "@itsmworkbench/koa": "0.0.16",
     "@itsmworkbench/ai": "0.0.16",

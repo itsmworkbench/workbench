@@ -20,8 +20,8 @@
     ]
   },
   "dependencies": {
-    "@laoban/utils": "1.4.45",
-    "@laoban/fileops": "1.4.45",
+    "@laoban/utils": "1.4.50",
+    "@laoban/fileops": "1.4.50",
     "node": "^v14.4.0",
     "@itsmworkbench/domain": "0.0.16",
     "@itsmworkbench/fileloading": "0.0.16",

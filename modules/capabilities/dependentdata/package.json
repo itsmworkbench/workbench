@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "node": "^v14.4.0",
-    "@laoban/utils": "1.4.45",
+    "@laoban/utils": "1.4.50",
     "@focuson/lens": "1.44.3",
     "@itsmworkbench/utils": "0.0.16",
     "@itsmworkbench/eventstore": "0.0.16",

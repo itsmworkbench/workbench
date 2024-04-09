@@ -5,8 +5,8 @@
   "packageJson": {
     "dependencies":    {
       "node":                  "^v16.0.0",
-      "@laoban/utils":         "1.4.45",
-      "@laoban/filesops-node": "1.4.45"
+      "@laoban/utils":          "1.4.50",
+      "@laoban/filesops-node":  "1.4.50"
     },
     "devDependencies": {},
     "bin":             {

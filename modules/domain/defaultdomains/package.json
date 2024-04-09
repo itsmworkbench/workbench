@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "node": "^v14.4.0",
-    "@laoban/utils": "1.4.45",
-    "@laoban/variables": "1.4.45",
+    "@laoban/utils": "1.4.50",
+    "@laoban/variables": "1.4.50",
     "@itsmworkbench/domain": "0.0.16",
     "@itsmworkbench/git": "0.0.16",
     "@itsmworkbench/operator": "0.0.16",

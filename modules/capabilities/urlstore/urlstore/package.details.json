@@ -3,7 +3,7 @@
   "name":        "@itsmworkbench/urlstore",
   "description": "urls used with intellimaintain. 'itsm:organisation:namespace/name:nameOrHash'",
   "packageJson": {
-    "dependencies":    {"@laoban/utils": "1.4.45"},
+    "dependencies":    {"@laoban/utils":  "1.4.50"},
     "devDependencies": {},
     "browser":         {
       "child_process": false

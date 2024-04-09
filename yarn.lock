@@ -777,24 +777,29 @@
   resolved "https://registry.yarnpkg.com/@laoban/debug/-/debug-1.4.45.tgz#59531e331150475748c550c9f717354e229d4375"
   integrity sha512-lK+ScVtaghEIT1H2cHPMe5eB3iD2QtsH5cVwXtrTnBNFFAX7BZPC5yW9qcBrTmtqBjgwg3ytfEdm96AbknnnVw==
 
-"@laoban/fileops@1.4.45":
-  version "1.4.45"
-  resolved "https://registry.yarnpkg.com/@laoban/fileops/-/fileops-1.4.45.tgz#bcb069afa6c3495b2b85cb440f8da26140dbd77b"
-  integrity sha512-3HdE2mSUWm34TgznqkSVWPDmp/fTRADWDjbVDJle+wYicU/mPEHXm07pbT2Th2jL9OZuKnm4zwrm4ZOoPv0ghQ==
-  dependencies:
-    "@laoban/utils" "1.4.45"
-    "@laoban/validation" "1.4.45"
-    "@laoban/xml" "1.4.45"
+"@laoban/debug@1.4.50":
+  version "1.4.50"
+  resolved "https://registry.yarnpkg.com/@laoban/debug/-/debug-1.4.50.tgz#7bcca3d7c5fd777878af6d16b048c09ab5fcb50c"
+  integrity sha512-y6ivQaxQOqwi40qnC4eTMtdf4oH7WHWrme8HMLXjxhcaSMMi2ywoPSPc+ixBt3Sjq3xmYNipyW8qBx/oi8ajLw==
 
-"@laoban/filesops-node@1.4.45":
-  version "1.4.45"
-  resolved "https://registry.yarnpkg.com/@laoban/filesops-node/-/filesops-node-1.4.45.tgz#91a6c4699c90f7d41376e63f84b9dbba76fcf9b9"
-  integrity sha512-g3jKIh8nx9pz3ZbDfd4NZZyhY0ab3cyk8jBZeM2gy19edPK5b8B8bOOT/Qhm29YI3DFFL+FbeFNLSikHD6z3VQ==
+"@laoban/fileops@1.4.50":
+  version "1.4.50"
+  resolved "https://registry.yarnpkg.com/@laoban/fileops/-/fileops-1.4.50.tgz#e078625d8592c5883cd7dbf4d38022ebea29bba6"
+  integrity sha512-pJrqlD3ft61699Yd2ccqkPwPWCRnmZ0rBcscWEPXIiufALEZ2xrc2XD4V5EwiAIkONc4lxJi1ye4sVV3WT4Mfw==
   dependencies:
-    "@laoban/fileops" "1.4.45"
-    "@laoban/utils" "1.4.45"
+    "@laoban/utils" "1.4.50"
+    "@laoban/validation" "1.4.50"
+    "@laoban/xml" "1.4.50"
+
+"@laoban/filesops-node@1.4.50":
+  version "1.4.50"
+  resolved "https://registry.yarnpkg.com/@laoban/filesops-node/-/filesops-node-1.4.50.tgz#7fa76ac071a664b6f666d779d8132d2e0b259270"
+  integrity sha512-WtRRrvCdOe6CMXgJkjWst1QxGVCIp5L4Smrirr6hfevxo0PEUiXxtOWjAas195qMGBxsjCTvHBDZDhwwHAalwQ==
+  dependencies:
+    "@laoban/fileops" "1.4.50"
+    "@laoban/utils" "1.4.50"
     "@runbook/node-fetch" "0.2.5"
-    node-fetch "2.6.9"
+    node-fetch "2.6.7"
 
 "@laoban/utils@1.4.45":
   version "1.4.45"
@@ -803,22 +808,29 @@
   dependencies:
     "@laoban/debug" "1.4.45"
 
-"@laoban/validation@1.4.45":
-  version "1.4.45"
-  resolved "https://registry.yarnpkg.com/@laoban/validation/-/validation-1.4.45.tgz#97940f3c28d04a19a7af1333ef368be2e3dcd0c3"
-  integrity sha512-h5dxi2NeaAmcR4NRZizjVdsr2U67Dtn3vL7XUj+98ggciZkjjIUXXaJ1xcoS52+negIR30PgdrsCb1IiQX260Q==
-
-"@laoban/variables@1.4.45":
-  version "1.4.45"
-  resolved "https://registry.yarnpkg.com/@laoban/variables/-/variables-1.4.45.tgz#4a9650363ee4067461c48bf2a2cc9d039fa020c6"
-  integrity sha512-zYcrHEMP6HKtXmBuylrMncUA9Pp/jWMx8hvufet4HNT7WXeNPS/xOioRXkl4m860/gzMI19NT4KUtTMZ+/DEtA==
+"@laoban/utils@1.4.50":
+  version "1.4.50"
+  resolved "https://registry.yarnpkg.com/@laoban/utils/-/utils-1.4.50.tgz#b798e7a92ed6ad826cbf872647e9c5fc7720c62c"
+  integrity sha512-StcouA/gaAHpZFpBC74IJIvaxIQ/ElXnIPzOIIknhuv3bhwzg4XpM+i2uY5eB4FvaTYzFNTm12SSHf1GeiHCMA==
   dependencies:
-    "@laoban/utils" "1.4.45"
+    "@laoban/debug" "1.4.50"
 
-"@laoban/xml@1.4.45":
-  version "1.4.45"
-  resolved "https://registry.yarnpkg.com/@laoban/xml/-/xml-1.4.45.tgz#10c66c2a8c57616de789fd37cb419814d810450a"
-  integrity sha512-OF5qHhKwwgZUy6049R/eXKYLOsR0x90i/2R2l4dNyuT1HJfe9RcWV4SNnSVcXxMcCwCT/SsfWfrVJ/fGIXGTLQ==
+"@laoban/validation@1.4.50":
+  version "1.4.50"
+  resolved "https://registry.yarnpkg.com/@laoban/validation/-/validation-1.4.50.tgz#2405ed5b8b23a15036385523264b3b85b859b736"
+  integrity sha512-4g7DmMQ9IP+vWPvB3kKkJQebsPojrmip3HL8TrqwJu8Z7FsspkBoLmki4jjaz6EMwkfF8Cyf29geeVafiZH5jg==
+
+"@laoban/variables@1.4.50":
+  version "1.4.50"
+  resolved "https://registry.yarnpkg.com/@laoban/variables/-/variables-1.4.50.tgz#e18ea330f945b61d47f23eb76abcd2044636083a"
+  integrity sha512-1dHlrd8dR4Wyr7S6mustn6Rpi1gLzDRZbWm7aQbuMaB6y45EOmz7aaPQsMOcVdhwdTUrnt9EwPMoCXR7ab3T8Q==
+  dependencies:
+    "@laoban/utils" "1.4.50"
+
+"@laoban/xml@1.4.50":
+  version "1.4.50"
+  resolved "https://registry.yarnpkg.com/@laoban/xml/-/xml-1.4.50.tgz#7bb008f287e84d86d82a60f58d4efb1e5669f6f6"
+  integrity sha512-ezrM/aUiIYwrjcN5pJnT82xPGtto7bIaNk9K11gUa6nv3wV6gqXMeBtx7YG8qibWUBjbo/3S272ZLHxjT8GzSA==
 
 "@lezer/common@^1.0.0":
   version "1.2.1"
@@ -5210,10 +5222,10 @@ node-fetch@2.6.1:
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
-node-fetch@2.6.9:
-  version "2.6.9"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.9.tgz#7c7f744b5cc6eb5fd404e0c7a9fec630a55657e6"
-  integrity sha512-DJm/CJkZkRjKKj4Zi4BsKVZh3ValV5IR5s7LVZnW+6YMh0W1BfNA8XSs6DLMGYlId5F3KnA70uu2qepcR08Qqg==
+node-fetch@2.6.7:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
 

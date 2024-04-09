@@ -20,9 +20,9 @@
     ]
   },
   "dependencies": {
-    "@laoban/utils": "1.4.45",
-    "@laoban/fileops": "1.4.45",
-    "@laoban/filesops-node": "1.4.45",
+    "@laoban/utils": "1.4.50",
+    "@laoban/fileops": "1.4.50",
+    "@laoban/filesops-node": "1.4.50",
     "@itsmworkbench/domain": "0.0.16",
     "@itsmworkbench/git": "0.0.16",
     "@itsmworkbench/nodeshell": "0.0.16",

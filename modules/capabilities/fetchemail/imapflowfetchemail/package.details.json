@@ -4,8 +4,8 @@
   "description": "interacting with email: an implementation using imapflow",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":     "1.4.45",
-      "@laoban/variables": "1.4.45",
+      "@laoban/utils":      "1.4.50",
+      "@laoban/variables":  "1.4.50",
       "imapflow":          "1.0.158"
     },
     "devDependencies": {},
