@@ -1,15 +1,9 @@
 {
-  "name": "itsmworkbench",
-  "description": "",
+  "name": "@itsmworkbench/mistralai",
+  "description": "Code that extras variables from the ticket using AI ... uses mistral",
   "version": "0.0.21",
   "main": "dist/index",
   "types": "dist/index",
-  "bin": {
-    "itsm": "dist/index.js"
-  },
-  "browser": {
-    "child_process": false
-  },
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -23,24 +17,9 @@
     ]
   },
   "dependencies": {
-    "node": "^v16.0.0",
     "@laoban/utils": "1.4.50",
-    "@laoban/filesops-node": "1.4.50",
-    "@itsmworkbench/api": "0.0.21",
-    "@itsmworkbench/cli": "0.0.21",
-    "@itsmworkbench/commander12": "0.0.21",
-    "@itsmworkbench/config": "0.0.21",
-    "@itsmworkbench/domain": "0.0.21",
-    "@itsmworkbench/chatgptai": "0.0.21",
-    "@itsmworkbench/mistralai": "0.0.21",
-    "@itsmworkbench/defaultdomains": "0.0.21",
-    "@itsmworkbench/events": "0.0.21",
-    "@itsmworkbench/eventstore": "0.0.21",
-    "@itsmworkbench/imapflowfetchemail": "0.0.21",
-    "@itsmworkbench/fileloading": "0.0.21",
-    "@itsmworkbench/nodemailer": "0.0.21",
-    "@itsmworkbench/jsyaml": "0.0.21",
-    "@itsmworkbench/shellgit": "0.0.21",
+    "@laoban/variables": "1.4.50",
+    "@itsmworkbench/ai": "0.0.21",
     "@itsmworkbench/utils": "0.0.21",
     "debug": "^4.3.4"
   },
@@ -77,6 +56,7 @@
     "runbook"
   ],
   "license": "MIT",
+  "peerDependencies": {},
   "repository": "git@github.com:intellimaintain/intellimaintain.git",
   "scripts": {
     "test": "jest --config jest.config.json --env node",

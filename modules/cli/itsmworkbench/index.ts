@@ -10,6 +10,9 @@ import { hasErrors, reportErrors } from "@laoban/utils";
 import { apiCommand } from "@itsmworkbench/api";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { jsYaml } from "@itsmworkbench/jsyaml";
+import { AiCapablities, HasAiCapabilities } from "@itsmworkbench/ai";
+import { chatgptAi } from "@itsmworkbench/chatgptai";
+import { mistralAi } from "@itsmworkbench/mistralai";
 
 
 export function findVersion () {
@@ -21,14 +24,24 @@ export function findVersion () {
   }
 }
 
-const context: CliContext = cliContext ( 'intellimaintain', findVersion (), fileOpsNode () )
-const cliTc: CliTc<Commander12, CliContext, Config, CleanConfig> = commander12Tc<CliContext, Config, CleanConfig> ()
-const configFinder: CliTcFinder<Config, CleanConfig> = fileConfig<CliContext, Config, CleanConfig> ( '.intellimaintain',
+type ItsmContext = CliContext & HasAiCapabilities
+
+const context: ItsmContext = {
+  ...cliContext ( 'intellimaintain', findVersion (), fileOpsNode () ),
+  ais: {
+    gpt: chatgptAi (),
+    mistral: mistralAi ()
+  }
+}
+
+
+const cliTc: CliTc<Commander12, ItsmContext, Config, CleanConfig> = commander12Tc<ItsmContext, Config, CleanConfig> ()
+const configFinder: CliTcFinder<Config, CleanConfig> = fileConfig<ItsmContext, Config, CleanConfig> ( '.intellimaintain',
   ( c: any ) => c,
   defaultTo ( {}, 'NotFound' ) )
 
 const yaml: YamlCapability = jsYaml ()
-makeCli<Commander12, CliContext, Config, CleanConfig> ( context, configFinder, cliTc ).then ( async ( commander ) => {
+makeCli<Commander12, ItsmContext, Config, CleanConfig> ( context, configFinder, cliTc ).then ( async ( commander ) => {
   if ( hasErrors ( commander ) ) {
     reportErrors ( commander )
     process.exit ( 1 )

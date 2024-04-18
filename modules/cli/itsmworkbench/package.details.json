@@ -5,8 +5,8 @@
   "packageJson": {
     "dependencies":    {
       "node":                  "^v16.0.0",
-      "@laoban/utils":          "1.4.50",
-      "@laoban/filesops-node":  "1.4.50"
+      "@laoban/utils":         "1.4.50",
+      "@laoban/filesops-node": "1.4.50"
     },
     "devDependencies": {},
     "bin":             {
@@ -22,6 +22,8 @@
     "@itsmworkbench/commander12",
     "@itsmworkbench/config",
     "@itsmworkbench/domain",
+    "@itsmworkbench/chatgptai",
+    "@itsmworkbench/mistralai",
     "@itsmworkbench/defaultdomains",
     "@itsmworkbench/events",
     "@itsmworkbench/eventstore",
