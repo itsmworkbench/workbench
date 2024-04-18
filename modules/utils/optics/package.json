@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/optics",
   "description": "The usual utility functions",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {

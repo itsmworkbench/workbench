@@ -55,6 +55,8 @@ export interface ItsmDebugState extends DebugState {
 
 export interface ItsmState {
   tags: NameAnd<DiTag>,
+  depDataLog: FCLogRecord<any, any>[],
+
   forTicket: ItsmStateDataForTicket
   basicData: BasicData
   ticketList: ListNamesResult
@@ -63,7 +65,6 @@ export interface ItsmState {
   selectionState: ItsmSelectionState
   sideeffects: SideEffect[]
   log: SideeffectResult<any>[],
-  depDataLog: FCLogRecord<any, any>[],
   variables: NameAnd<Variables>
   debug?: ItsmDebugState
 }
