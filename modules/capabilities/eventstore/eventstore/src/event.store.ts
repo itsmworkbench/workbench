@@ -18,7 +18,7 @@ export function addEventStoreModifier<S> ( container: EventStore<S>, modifier: E
 }
 
 
-export function setEventStoreValue<S> ( container: EventStore<S> ) {
+export function setEventStoreValue<S> ( container: EventStore<S> ): (s: S) => void {
   let setJson = ( s: S ): void => {
     const original = container.state
     if ( container.debug ) console.log ( 'setJsonForContainer - old state', container.state )

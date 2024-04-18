@@ -25,7 +25,7 @@ export function microCard<E extends BaseEvent> ( summaryFn: ( event: EnrichedEve
   };
 }
 export function MicroCard ( { summary, icons, successOrFailure }: MicroCardProps ) {
-  console.log ( 'MicroCard', successOrFailure, summary, icons, );
+  // console.log ( 'MicroCard', successOrFailure, summary, icons, );
   return (
     <Card sx={{ width: '100%', maxWidth: '75vw' }}>
       <CardHeader

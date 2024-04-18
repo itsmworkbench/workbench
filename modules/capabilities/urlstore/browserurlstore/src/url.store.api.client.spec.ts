@@ -68,6 +68,4 @@ describe ( 'loadFromApi', () => {
     expect ( Array.isArray ( result ) ).toBeTruthy ();
     expect ( result[ 0 ] ).toContain ( "Failed to fetch http://api.example.com/itsmid/org/namespace/id. Init is {}" );
   } );
-
-
 } );

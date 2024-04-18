@@ -40,6 +40,7 @@ export const evaluateDependentItem = <S> ( getTag: TagStoreGetter<S>, status: Up
   const reasonPrefix = thisTag === undefined ? 'thisTagUndefined' : upstreamChanged ? 'upStreamChanged' : someUpstreamIsUndefined ? 'someUpstreamIsUndefined' : 'noChange'
   status[ di.name ] = thisValue === undefined ? undefined : willClean
 
+
   return willClean ? makeDiAction ( deps, vAndT, di, s, !someUpstreamIsUndefined, currentTags, reasonPrefix ) : [];
 };
 

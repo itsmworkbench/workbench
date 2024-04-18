@@ -1,4 +1,4 @@
-import { ListNamesOrder, loadFromString, NameSpaceDetails, parseNamedUrlOrThrow, parseUrl, UrlListFn, UrlLoaders, UrlSaveFn, UrlStoreResult, urlToDetails } from "@itsmworkbench/urlstore";
+import { ListNamesOrder, loadFromString, NameSpaceDetails, parseNamedUrlOrThrow, parseUrl, UrlFolderLoader, UrlListFn, UrlLoaders, UrlSaveFn, UrlStoreResult, urlToDetails } from "@itsmworkbench/urlstore";
 
 import { ErrorsAnd, hasErrors, mapErrorsK, NameAnd } from "@laoban/utils";
 import { KoaPartialFunction } from "@itsmworkbench/koa";
@@ -78,6 +78,39 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
       ctx.context.set ( 'Content-Type', 'application/json' );
     } catch ( e ) {
       ctx.context.status = 404;
+      ctx.context.body = e.toString ();
+    }
+  }
+});
+
+const folderUrlRegex = /^\/url\/folders\/([^\/]+)\/([^\/]+)(\/.*)?$/;
+
+
+export const getFolders = ( folders: UrlFolderLoader ): KoaPartialFunction => ({
+  isDefinedAt: ( ctx ) => {
+    const match = folderUrlRegex.exec ( ctx.context.request.path );
+    const isMethodMatch = ctx.context.request.method === 'GET';
+    console.log('get folders isDefinedAt', match, isMethodMatch)
+    return match && isMethodMatch;
+  },
+  apply: async ( ctx ) => {
+    const match = folderUrlRegex.exec ( ctx.context.request.path );
+    const org = match[ 1 ];
+    const ns = match[ 2 ];
+    const path = match[ 3 ];
+    console.log ( 'getFolders', path );
+    try {
+      const result = await folders ( org, ns, path );
+      if ( hasErrors ( result ) ) {
+        console.log ( 'getFolders - errors', result )
+        ctx.context.status = 500;
+        ctx.context.body = result.join ( '\n' );
+        return;
+      }
+      ctx.context.body = JSON.stringify ( result );
+      ctx.context.set ( 'Content-Type', 'application/json' );
+    } catch ( e ) {
+      ctx.context.status = 500;
       ctx.context.body = e.toString ();
     }
   }

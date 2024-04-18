@@ -45,7 +45,7 @@ export function applyPaging<T> ( raw: T[], query: PageQuery ): T[] {
 export type ListNamesResult = PageQuery & {
   org: string
   namespace: string
-  path?:string
+  path?: string
   names: string[]
   page: number
   total: number
@@ -66,6 +66,17 @@ export type UrlQuery = {
 }
 export type UrlListFn = ( q: UrlQuery ) => Promise<ErrorsAnd<ListNamesResult>>
 
+
+export type UrlFolder = {
+  name: string; // The name of the folder
+  children: UrlFolder[]; // Array of child folders
+};
+export function isUrlFolder ( x: any ): x is UrlFolder {
+  return typeof x === 'object' || typeof x?.name === 'string' && Array.isArray ( x?.children )
+}
+export type UrlFolderLoader = ( org: string, namespace: string, path?: string ) => Promise<ErrorsAnd<UrlFolder>>;
+
+
 export type UrlLoaders = {
   loadNamed: UrlLoadNamedFn
   loadIdentity: UrlLoadIdentityFn
@@ -73,6 +84,7 @@ export type UrlLoaders = {
 export type UrlStore = UrlLoaders & {
   save: UrlSaveFn
   list: UrlListFn
+  folders: UrlFolderLoader
 }
 
 export function loadFromString<T> ( urlLoaders: UrlLoaders, url: string, offset?: number ): Promise<ErrorsAnd<IdentityUrlLoadResult<T>>> {

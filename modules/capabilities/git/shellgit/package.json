@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/shellgit",
   "description": "git operations. This implements git by calling out to the shell",
-  "version": "0.0.17",
+  "version": "0.0.20",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,10 +23,10 @@
     "@laoban/utils": "1.4.50",
     "@laoban/fileops": "1.4.50",
     "@laoban/filesops-node": "1.4.50",
-    "@itsmworkbench/domain": "0.0.17",
-    "@itsmworkbench/git": "0.0.17",
-    "@itsmworkbench/nodeshell": "0.0.17",
-    "@itsmworkbench/shell": "0.0.17",
+    "@itsmworkbench/domain": "0.0.20",
+    "@itsmworkbench/git": "0.0.20",
+    "@itsmworkbench/nodeshell": "0.0.20",
+    "@itsmworkbench/shell": "0.0.20",
     "debug": "^4.3.4"
   },
   "devDependencies": {

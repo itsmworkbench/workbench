@@ -54,6 +54,6 @@ export function SelectableSize<PROPS> ( {
   }
 
   let result = renderedComponent ();
-  console.log ( 'size', size, 'result', result )
+  // console.log ( 'size', size, 'result', result )
   return result
 }

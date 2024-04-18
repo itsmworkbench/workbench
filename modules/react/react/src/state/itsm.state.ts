@@ -12,7 +12,7 @@ import { EmailResult, TicketVariables } from "@itsmworkbench/ai";
 import { DisplayTicketListSelectionState, NewTicketData, NewTicketState, NewTicketWizardData } from "@itsmworkbench/reactticket";
 import { defaultTicketTypeDetails, TicketType } from "@itsmworkbench/tickettype";
 import { Action } from "@itsmworkbench/actions";
-import { IdAnd } from "@itsmworkbench/utils";
+import { FCLogRecord, IdAnd } from "@itsmworkbench/utils";
 import { KnowledgeArticleTempData } from "@itsmworkbench/reacttickettype";
 import { DiTag } from "@itsmworkbench/dependentdata/dist/src/tag";
 
@@ -48,6 +48,11 @@ export type ItsmStateDataForTicket = {
 
 }
 
+export interface ItsmDebugState extends DebugState {
+  depData?: boolean
+  polling?: boolean
+}
+
 export interface ItsmState {
   tags: NameAnd<DiTag>,
   forTicket: ItsmStateDataForTicket
@@ -58,8 +63,9 @@ export interface ItsmState {
   selectionState: ItsmSelectionState
   sideeffects: SideEffect[]
   log: SideeffectResult<any>[],
+  depDataLog: FCLogRecord<any, any>[],
   variables: NameAnd<Variables>
-  debug?: DebugState
+  debug?: ItsmDebugState
 }
 
 const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '', ticketType: defaultTicketTypeDetails };
@@ -72,6 +78,7 @@ export const startAppState: ItsmState = {
   kaList: undefined as any,
   sideeffects: [],
   log: [],
+  depDataLog: [],
   conversation: { messages: [], chat: { type: '' } },
   variables: {},
   selectionState: {},

@@ -1,5 +1,5 @@
 import { ErrorsAnd, hasErrors, mapErrorsK, NameAnd } from "@laoban/utils";
-import { HasNamespace, IdentityUrl, IdentityUrlLoadResult, isIdentityUrlLoadResult, isListNamesResult, isNamedLoadResult, isUrlStoreResult, ListNamesOrder, ListNamesResult, NamedLoadResult, NamedOrIdentityUrl, NamedUrl, NameSpaceDetails, PageQuery, UrlListFn, UrlLoadIdentityFn, UrlLoadNamedFn, UrlSaveFn, UrlSaveOptions, UrlStore, UrlStoreResult, urlToDetails, writeUrl } from "@itsmworkbench/urlstore";
+import { HasNamespace, IdentityUrl, IdentityUrlLoadResult, isIdentityUrlLoadResult, isListNamesResult, isNamedLoadResult, isUrlFolder, isUrlStoreResult, ListNamesResult, NamedLoadResult, NamedOrIdentityUrl, NamedUrl, NameSpaceDetails, UrlFolder, UrlFolderLoader, UrlListFn, UrlLoadIdentityFn, UrlLoadNamedFn, UrlSaveFn, UrlSaveOptions, UrlStore, UrlStoreResult, urlToDetails, writeUrl } from "@itsmworkbench/urlstore";
 
 export type UrlStoreApiClientConfig = {
   apiUrlPrefix: string // we place our url at the end of this
@@ -64,9 +64,19 @@ export const listFromApi = ( config: UrlStoreApiClientConfig ): UrlListFn =>
     return [ `Failed to list ${org} ${namespace}. Expected ListNamesResult. ${JSON.stringify ( rawResponse )}` ]
   }
 
+export const foldersFromApi = ( config: UrlStoreApiClientConfig ): UrlFolderLoader =>
+  async ( org, namespace, path: string ): Promise<ErrorsAnd<UrlFolder>> => {
+    const pathString = path ? `/${path}` : ''
+    const fullUrl = `${config.apiUrlPrefix}/folders/${org}/${namespace}${pathString}`
+    const rawResponse = await baseFetch ( config, fullUrl, { namespace } ); //namespace is for validation
+    if ( isUrlFolder ( rawResponse ) || hasErrors ( rawResponse ) ) return rawResponse
+    return [ `Failed to list folders ${path}.${JSON.stringify ( rawResponse )}` ]
+  }
+
 export function urlStoreFromApi ( config: UrlStoreApiClientConfig ): UrlStore {
   return {
     loadNamed: loadNamedFromApi ( config ),
+    folders: foldersFromApi ( config ),
     loadIdentity: loadIdentityFromApi ( config ),
     save: saveToApi ( config ),
     list: listFromApi ( config )

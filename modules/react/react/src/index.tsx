@@ -7,12 +7,12 @@ import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent
 
 import { ActionPluginDetails, eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
-import { defaultNameSpaceDetails, InitialLoadDataResult, loadInitialData } from "@itsmworkbench/defaultdomains";
+import { defaultNameSpaceDetails } from "@itsmworkbench/defaultdomains";
 import { actionO, conversationL, emailDataL, enrichedEventsO, eventsL, eventsO, forTicketO, ItsmState, kaListO, kaO, logsL, newTicketL, operatorL, sideEffectsL, startAppState, tabO, tabsL, tagsL, ticketIdL, ticketL, ticketListO, ticketTypeO, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
-import { hasErrors, mapK, value } from "@laoban/utils";
+import { hasErrors, mapK, toArray } from "@laoban/utils";
 import { addAiTicketSideeffectProcessor, addNewTicketSideeffectProcessor, displayNewTicketWizard, displayReviewTicketWorkbench, displayTicketEventPlugin } from '@itsmworkbench/reactticket';
 import { addSaveKnowledgeArticleSideEffect, displayCreateKnowledgeArticlePlugin, displaySelectKnowledgeArticlePlugin, displayTicketTypeEventPlugin } from '@itsmworkbench/reacttickettype';
 
@@ -27,13 +27,10 @@ import { addAiMailerSideEffectProcessor, displayEmailEventPlugin, displayMailerP
 import { debugEnrichedEventsPlugin, debugEventsPlugin, displayEnrichedEventsWithPlugins, displayMessageEventPlugin, enrichedDisplayAndChatPlugin } from "@itsmworkbench/reactevents";
 import { apiClientFetchEmailer } from "@itsmworkbench/browserfetchemail";
 import { displayReceiveEmailEventPlugin, displayReceiveEmailPlugin } from "@itsmworkbench/reactfetchemail";
-import { depData } from "@itsmworkbench/dependentdata/dist/src/dep.data.dsl";
+import { depData, dependentEngine, DependentItem, optionalTagStore, setJsonForDepData } from "@itsmworkbench/dependentdata";
 import { Operator } from "@itsmworkbench/operator";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/urlstore";
-import { dependentEngine } from "@itsmworkbench/dependentdata/dist/src/dependant.data.engine";
-import { globalTagStoreCurrentValue, optionalTagStore } from "@itsmworkbench/dependentdata/dist/src/tag.store";
-import { DependentItem } from "@itsmworkbench/dependentdata";
-import { DiRequest } from "@itsmworkbench/dependentdata/dist/src/dependant.execute";
+import { FCLogRecord, futureCacheConsoleLog, futureCacheLog } from "@itsmworkbench/utils";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -82,34 +79,56 @@ const kaListDi = depData ( 'kaList', kaListO, {
 const deps: DependentItem<ItsmState, any>[] = [ operatorDi, ticketListDi ]
 const tagStore = optionalTagStore ( tagsL );
 
-const depEngine = dependentEngine<ItsmState> ( { listeners: [], cache: {} }, tagStore.currentValue )
-const setJson: ( s: ItsmState ) => void = s => {
-  const { status, vAndT, actions } = depEngine.evaluate ( deps ) ( s )
-  console.log ( 'setJson', s, status, vAndT, )
-  console.log ( 'setJson - actions', actions )
-  const { updates, newS } = depEngine.doActions ( actions )
-  const cleanedS = newS ( s );
-  console.log ( 'setJson - cleanedS', cleanedS )
-  setEventStoreValue ( container ) ( cleanedS )
-  console.log ( 'setJson - updates', updates.length )
-  updates.forEach ( async u => {
-    const r: DiRequest<ItsmState> = await u
-    const stateAndWhy = r ( container.state )
-    const { name, changed, why } = stateAndWhy
-    console.log ( 'setJson - update', name, changed, why )
+const logForDeps: FCLogRecord<any, any>[] = []
+const depEngine = dependentEngine<ItsmState> (
+  { listeners: [ futureCacheLog ( logForDeps ), futureCacheConsoleLog ( 'fc -' ) ], cache: {} },
+  tagStore.currentValue )
 
-    if ( changed ) {
-      const { s, t, tag } = stateAndWhy
-      console.log ( 'setJson - t ', t )
-      console.log ( 'setJson - tag', tag )
-      console.log ( 'setJson - setting Json', s )
-      s.tags[ name ] = tag
-      setTimeout ( () => {
-        setJson ( s ) // which is scary because this might trigger an infinite loop hence the delay
-      }, 500 )
-    }
-  } )
-};
+
+const setJson = setJsonForDepData ( depEngine, () => container.state, setEventStoreValue ( container ) ) ( deps, {
+  setTag: ( s, name, tag ) => { // could do it with optional, but don't need to
+    s.tags[ name ] = tag
+    return s
+  },
+  updateLogs: s => {
+    s.depDataLog = [ ...toArray ( s.depDataLog ), ...logForDeps ]
+    logForDeps.length = 0
+    return s
+  },
+  debug: () => container.state?.debug?.depData,
+  delay: 100
+} )
+//
+// const setJson : ( s: ItsmState ) => void = s => {
+//   count++
+//   const { status, vAndT, actions } = depEngine.evaluate ( deps ) ( s )
+//   console.log ( 'fc - setJson', count, s, status, vAndT, )
+//   console.log ( 'fc - setJson - actions', actions )
+//   const { updates, newS } = depEngine.doActions ( actions )
+//   const cleanedS = newS ( s );
+//   console.log ( 'fc - setJson - cleanedS', cleanedS )
+//   cleanedS.depDataLog = [ ...toArray ( cleanedS.depDataLog ), ...logForDeps ]
+//   logForDeps.length = 0
+//   setEventStoreValue ( container ) ( cleanedS )
+//   console.log ( 'fc - setJson - updates', updates.length )
+//   updates.forEach ( async u => {
+//     // setTimeout ( async () => {
+//     const r: DiRequest<ItsmState> = await u
+//     const stateAndWhy = r ( container.state )
+//     const { name, changed, why } = stateAndWhy
+//     console.log ( 'fc - setJson - update', name, changed, why )
+//
+//     if ( changed ) {
+//       const { s, t, tag } = stateAndWhy
+//       console.log ( 'fc - setJson - t ', t )
+//       console.log ( 'fc - setJson - tag', tag )
+//       console.log ( 'fc - setJson - setting Json', s )
+//       s.tags[ name ] = tag
+//       setJson ( s ) // which is scary because this might trigger an infinite loop hence the delay
+//     }
+//     // }, 0 )
+//   } )
+// };
 
 const sep1 = defaultEventProcessor<ItsmState> ( '', startAppState, urlStore.loadIdentity )
 
@@ -237,4 +256,4 @@ const withInitialData: ItsmState = {
   kaList: undefined as any
 }
 setJson ( withInitialData )
--startPolling ( pollingDetails )
+startPolling ( pollingDetails )

@@ -8,6 +8,7 @@ import { Dirent } from "node:fs";
 export type FileInfo = {
   name: string;
   path: string;
+  isFile: boolean
   date: string; // ISO date string
 };
 
@@ -23,11 +24,12 @@ async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => st
   const files = await readIt ();
   const lcFilter = filter?.toLowerCase ()
   const filterFn = filter ? ( file: Dirent ) => file.name.toLowerCase ().includes ( lcFilter ) : () => true;
-  const fileInfoPromises = files.filter ( file => file.isFile () && filterFn ( file ) ).map ( async file => {
+  const fileInfoPromises = files.filter ( file => filterFn ( file ) ).map ( async file => {
     const filePath = path.join ( directoryPath, file.name );
     const stat = await fs.stat ( filePath );
     return {
       name: nameFn ( file.name ),
+      isFile: file.isFile (),
       path: filePath,
       date: stat.mtime.toISOString (),
     };
@@ -48,12 +50,25 @@ function getSortFunction ( order: ListNamesOrder ): ErrorsAnd<SortFn> {
 const applySortOrder = ( files: FileInfo[], order: ListNamesOrder ): ErrorsAnd<{ sortedFiles: FileInfo[] }> =>
   mapErrors ( getSortFunction ( order ), sortFn => ({ sortedFiles: files.sort ( sortFn ) }) )
 
+type Files = {
+  names: string[]
+  dirs: string[]
+}
 
 export const listNamesInPath = ( nameFn: ( name: string ) => string ) =>
-  async ( directoryPath: string, query: PageQuery, order: ListNamesOrder, filter?: string ): Promise<ErrorsAnd<{ names: string[] }>> => {
+  async ( directoryPath: string, query: PageQuery, order: ListNamesOrder, filter?: string ): Promise<ErrorsAnd<Files>> => {
     const files = await loadFileInfo ( directoryPath, nameFn, filter );
-    return mapErrors ( await applySortOrder ( files, order ), ( { sortedFiles } ) =>
-      ({ names: applyPaging ( sortedFiles, query ).map ( f => f.name ) }) )
+    const result = mapErrors ( await applySortOrder ( files, order ),
+      ( { sortedFiles } ) => {
+        const files = sortedFiles.filter ( f => f.isFile );
+        const paged = applyPaging ( files, query );
+        const names = paged.map ( f => f.name );
+        return ({
+          names: names,
+          dirs: sortedFiles.filter ( f => !f.isFile ).map ( f => f.name )
+        });
+      } );
+    return result
   }
 
 export function removeLastExtension ( path: string ): string {
@@ -77,5 +92,5 @@ export const listInStoreFn = ( config: OrganisationUrlStoreConfigForGit ): UrlLi
   return async ( { org, namespace, pageQuery, order, filter, path } ) =>
     mapErrorsK ( orgAndNsToPath ( org, namespace ), async ( p: string ) =>
       mapErrors ( await listJustNamesInPath ( path ? p + '/' + path : p, pageQuery, order, filter ),
-        ( { names } ) => ({ org, namespace, path, names, page: pageQuery.page, total: names.length }) ) )
+        (  { names, dirs }  ) => ({ org, namespace, path, names, dirs, page: pageQuery.page, total: names.length }) ) )
 }

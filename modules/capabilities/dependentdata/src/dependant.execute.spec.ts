@@ -1,5 +1,5 @@
-import { DepDataFortest, fetchParamsAction, fetchParamsDefAction, fetchTaskListAction, someParams, someParamsDef, someTasks } from "./dependent.data.fixture";
-import { DiRequest, doActions, uncachedSendRequestForFetchAction } from "./dependant.execute";
+import { DepDataFortest, fetchParamsAction, fetchParamsDefAction, fetchTaskListAction, someParamsDef, someTasks } from "./dependent.data.fixture";
+import { DiRequest, doActions, StateAndWhyWillChange, StateAndWhyWontChange, uncachedSendRequestForFetchAction } from "./dependant.execute";
 import { globalTagStoreCurrentValue } from "./tag.store";
 import { NameAnd } from "@laoban/utils";
 import { DiTag } from "./tag";
@@ -12,7 +12,8 @@ describe ( "uncachedSendRequestForFetchAction", () => {
     test ( "when the underlying data hasn't changed", async () => {
       const resP: Promise<DiRequest<DepDataFortest>> = uncachedSendRequestForFetchAction ( [], () => paramsDefDa_clean_is_nuke.tag ) ( paramsDefDa_clean_is_nuke ) ()
       const res = await resP
-      const { s, changed, why } = res ( {} )
+      const stateAndWhy = res ( {} )
+      const { s, changed, why } = stateAndWhy as StateAndWhyWillChange<DepDataFortest>
       expect ( s ).toEqual ( { paramLists: someParamsDef } )
       expect ( changed ).toBe ( true )
       expect ( why ).toBe ( "Loaded paramsList" )
@@ -21,7 +22,9 @@ describe ( "uncachedSendRequestForFetchAction", () => {
       const resP: Promise<DiRequest<DepDataFortest>> = uncachedSendRequestForFetchAction ( [],
         () => 'changed' ) ( paramsDefDa_clean_is_nuke ) ()
       const res = await resP
-      const { s, changed, why } = res ( { paramLists: { geo: [ 'manual' ], product: [ 'ly' ], ch: [ 'set' ] } } )
+
+      const stateAndWhy = res ( { paramLists: { geo: [ 'manual' ], product: [ 'ly' ], ch: [ 'set' ] } } )
+      const { s, changed, why } = stateAndWhy as StateAndWhyWillChange<DepDataFortest>
       expect ( s ).toEqual ( { paramLists: someParamsDef } )
       expect ( changed ).toBe ( true )
       expect ( why ).toBe ( "Loaded paramsList" )
@@ -34,7 +37,8 @@ describe ( "uncachedSendRequestForFetchAction", () => {
       };
       const resP: Promise<DiRequest<DepDataFortest>> = uncachedSendRequestForFetchAction ( [], globalTagStoreCurrentValue ( upstreamTags ) ) ( taskListDa_clean_is_nuke ) ()
       const res = await resP
-      const { s, changed, why } = res ( { service: 'something', taskList: [ 'old', 'list' ] } )
+      const stateAndWhy = res ( { service: 'something', taskList: [ 'old', 'list' ] } )
+      const { s, changed, why } = stateAndWhy as StateAndWhyWillChange<DepDataFortest>
       expect ( s ).toEqual ( { service: 'something', taskList: someTasks } )
       expect ( changed ).toBe ( true )
       expect ( why ).toBe ( "Loaded taskList" )
@@ -47,8 +51,8 @@ describe ( "uncachedSendRequestForFetchAction", () => {
       const tagGetter = globalTagStoreCurrentValue ( upstreamTags );
       const resP: Promise<DiRequest<DepDataFortest>> = uncachedSendRequestForFetchAction ( [], tagGetter ) ( taskListDa_clean_is_nuke ) ()
       const res = await resP
-      const { s, changed, why } = res ( { service: 'something', taskList: [ 'old', 'list' ] } )
-      expect ( s ).toEqual ( { service: 'something', taskList: [ 'old', 'list' ] } )
+      const stateAndWhy = res ( { service: 'something', taskList: [ 'old', 'list' ] } )
+      const { changed, why } = stateAndWhy as StateAndWhyWontChange<DepDataFortest>
       expect ( changed ).toBe ( false )
       expect ( why ).toBe ( "Changed params" )
     } )
@@ -87,6 +91,7 @@ describe ( "doActions", () => {
         "paramLists": someParamsDef
       },
       "t": someParamsDef,
+      "tag": "3/2/2",
       "why": "Loaded paramsList"
     } )
     expect ( (await update2) ( startState ) ).toEqual ( {
@@ -99,6 +104,7 @@ describe ( "doActions", () => {
         "taskList": [ "t1", "t2", "t3" ]
       },
       "t": [ "t1", "t2", "t3" ],
+      "tag": [ "t1", "t2", "t3" ],
       "why": "Loaded taskList"
     } )
   } )
@@ -118,18 +124,17 @@ describe ( "doActions", () => {
         "paramLists": someParamsDef
       },
       "t": someParamsDef,
+      "tag": "3/2/2",
       "why": "Loaded paramsList"
     } )
     expect ( (await update2) ( startState ) ).toEqual ( {
       "changed": false,
       "name": "taskList",
-      "s": {
-        "paramLists": { "a": [ "a" ] },
-        "params": { "a": "a" },
-        "task": "t1",
-        "taskList": [ "t1" ]
-      },
-      "t": [ "t1", "t2", "t3" ],
+      "t": [
+        "t1",
+        "t2",
+        "t3"
+      ],
       "why": "Changed params"
     } )
   } )

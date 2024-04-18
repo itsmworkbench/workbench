@@ -24,12 +24,13 @@ export type DiRequest<S> = ( s: S ) => StateAndWhy<S>
 export type RequestEngine<S> = TwoKeyPromiseCache<DiAction<S, any>, DiRequest<S>>
 
 
-export function executeClean<S> ( s: S, a: DiAction<S, any> ): S {
+export const executeClean = <S> ( engine: RequestEngine<S> ) => ( s: S, a: DiAction<S, any> ): S => {
   const clean = a.clean
+  callListeners ( engine.listeners, 'info', l => l.info ( a, 'clean', JSON.stringify ( clean ) ) )
   return clean === undefined ? s : a.di.optional.set ( s, clean.value )
-}
-export function executeAllCleans<S> ( s: S, actions: DiAction<S, any>[] ): S {
-  return actions.reduce ( executeClean, s )
+};
+export function executeAllCleans<S> ( engine: RequestEngine<S>, s: S, actions: DiAction<S, any>[] ): S {
+  return actions.reduce ( executeClean ( engine ), s )
 }
 
 export type StateAndWhyWontChange<S> = {
@@ -78,7 +79,7 @@ export function doActions<S> ( engine: RequestEngine<S>, tagGetter: TagStoreGett
   const sendRequest = sendRequestForFetchAction ( engine, tagGetter )
   return ( dis: DiAction<S, any>[] ): DoActionRes<S> => {
     const fetchActions = collect ( dis, isFetchDiAction, a => a as FetchDiAction<S, any> )
-    const newS = ( s: S ) => executeAllCleans ( s, dis )
+    const newS = ( s: S ) => executeAllCleans ( engine, s, dis )
     const updates = fetchActions.map ( sendRequest )
     return { newS, updates }
   }

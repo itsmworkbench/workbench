@@ -60,7 +60,7 @@ export function App<S> ( { state, plugins, actionPlugins, eventPlugins, byO }: A
               {showWelcome && <Welcome count={wholeState?.ticketList?.names?.length}/>}
 
               {showDevMode && <DevMode maxWidth='95vw' state={state.focusOn ( 'debug' )}
-                                       titles={[ 'selectionState', 'tags','log' , 'basicData']}
+                                       titles={[ 'selectionState', 'depDataLog', 'tags', 'log', 'basicData' ]}
                                        forTicket={[ 'events', 'enrichedEvents', 'ticket', 'variables', 'status', 'tempData' ]}
                                        tempData={[ 'newTicket', 'action' ]}/>}
             </MainAppLayout></EnrichedEventsProvider></StatusProvider>

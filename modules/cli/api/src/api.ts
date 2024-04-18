@@ -10,7 +10,7 @@ import { Mailer } from "@itsmworkbench/mailer";
 import { Sqler } from "@itsmworkbench/sql";
 import { apiForFetchEmailer } from "@itsmworkbench/apifetchemail";
 import { FetchEmailer } from "@itsmworkbench/fetchemail";
-import { getUrls, listUrls, putUrls } from "@itsmworkbench/apiurlstore";
+import { getFolders, getUrls, listUrls, putUrls } from "@itsmworkbench/apiurlstore";
 import { apiForSqlerPosts } from "@itsmworkbench/apisql";
 import { apiForMailer } from "@itsmworkbench/apimailer";
 
@@ -59,6 +59,7 @@ export const wizardOfOzApiHandlers = ( ai: AI,
     executeAIForVariables ( ai.variables ),
     executeAIForEmail ( ai.emails ),
     executeAIForKnownVariables ( ai.knownVariables ),
+    getFolders ( urlStore.folders ),
     listUrls ( urlStore.list ),
     getUrls ( urlStore ),
     putUrls ( urlStore.save, details ),

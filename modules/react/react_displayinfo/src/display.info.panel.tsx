@@ -91,7 +91,7 @@ export function DisplayKnowledgeArticleDetails () {
 
 export function DisplayInfoPanel<S> ( { state }: LensProps2<S, Ticket, NewTicketWizardData, any> ) {
   const ticket = state.optJson1 ();
-  console.log ( 'DisplayInfoPanel - ticket', ticket )
+  // console.log ( 'DisplayInfoPanel - ticket', ticket )
   const description = ticket?.description || state.optJson2 ()?.ticketDetails
   const variables: any = useVariables ();
   return <div>

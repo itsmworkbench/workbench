@@ -1,4 +1,3 @@
-
 import { callListeners } from "./listeners";
 import { NameAnd } from "@laoban/utils";
 import { Optional } from "@focuson/lens";
@@ -10,6 +9,7 @@ export interface PromiseCacheListener<Context, Result> {
   loadArrived?: ( context: Context, result: Result ) => void
   loadAbandoned?: ( context: Context, reason: string ) => void
   loadError?: ( context: Context, e: any ) => void
+  info?: ( context: Context, title: string, msg: string ) => void
 }
 
 
@@ -48,3 +48,45 @@ export function getOrUpdateFromPromiseCache<Context, T> ( engine: TwoKeyPromiseC
   return result
 }
 
+export type FCLogRecord<Context, T> = {
+  context: Context
+  title: string
+  msg?: string
+  t?: T
+}
+export function futureCacheConsoleLog<Context, T> ( title: string ): PromiseCacheListener<Context, T> {
+  return {
+    duplicateCall: ( context ) => console.log ( title, `duplicateCall`, context ),
+    callingLoad: ( context ) => console.log ( title, `callingLoad`, context ),
+    loadAborted: ( context ) => console.log ( title, `loadAborted`, context ),
+    loadArrived: ( context, result ) => console.log ( title, `loadArrived`, context, result ),
+    loadAbandoned: ( context, reason ) => console.log ( title, `loadAbandoned`, context, reason ),
+    loadError: ( context, e ) => console.log ( title, `loadError`, context, e ),
+    info: ( context, t, msg ) => console.log ( title, `${t}: ${JSON.stringify ( context )} ${msg}` )
+  }
+
+}
+export function futureCacheLog<Context, T> ( array: FCLogRecord<Context, T>[] ): PromiseCacheListener<Context, T> {
+  return {
+    duplicateCall: ( context ) => array.push ( { context, title: 'duplicateCall' } ),
+    callingLoad: ( context ) => array.push ( { context, title: 'callingLoad' } ),
+    loadAborted: ( context ) => array.push ( { context, title: 'loadAborted' } ),
+    loadArrived: ( context, t ) => array.push ( { context, title: 'loadArrived', t } ),
+    loadAbandoned: ( context, reason ) => array.push ( { context, title: 'loadAbandoned', msg: reason } ),
+    loadError: ( context, e ) => array.push ( { context, title: 'loadError', msg: e } ),
+    info: ( context, title, msg ) => array.push ( { context, title, msg } )
+  }
+
+}
+export function futureCacheLogString<Context, T> ( array: string[] ): PromiseCacheListener<Context, T> {
+  return {
+    duplicateCall: ( context ) => array.push ( `duplicateCall: ${JSON.stringify ( context )}` ),
+    callingLoad: ( context ) => array.push ( `callingLoad: ${JSON.stringify ( context )}` ),
+    loadAborted: ( context ) => array.push ( `loadAborted: ${JSON.stringify ( context )}` ),
+    loadArrived: ( context, result ) => array.push ( `loadArrived: ${JSON.stringify ( context )} ${JSON.stringify ( result )}` ),
+    loadAbandoned: ( context, reason ) => array.push ( `loadAbandoned: ${JSON.stringify ( context )} ${reason}` ),
+    loadError: ( context, e ) => array.push ( `loadError: ${JSON.stringify ( context )} ${e}` ),
+    info: ( context, title, msg ) => array.push ( `${title}: ${JSON.stringify ( context )} ${msg}` )
+  }
+
+}

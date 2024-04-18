@@ -17,6 +17,7 @@ export function workbenchName(capability: Capability){
 export interface DebugState {
   showDevMode?: boolean
   selectedDebugTab?: string | undefined
+
 }
 
 export interface BasicData{
