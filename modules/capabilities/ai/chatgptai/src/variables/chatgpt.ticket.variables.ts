@@ -110,8 +110,3 @@ Please update the price of the discombobulator`
 
   return JSON.parse ( variablesString );
 };
-
-
-export const generalChat: AiTicketVariablesFn = async ( ticket: string ): Promise<TicketVariables> => {
-  return {} as TicketVariables;
-}
