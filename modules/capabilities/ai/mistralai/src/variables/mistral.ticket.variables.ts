@@ -6,8 +6,7 @@ import {
     realTicket3, realTicket4,
     response1,
     response2,
-    response3,
-    response4
+    response3
 } from "./mistral.ticket.prompts";
 
 // Set up environment for transformer model
