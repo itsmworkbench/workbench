@@ -4,6 +4,7 @@ import { applyPaging, ListNamesOrder, OrganisationUrlStoreConfigForGit, PageQuer
 import { ErrorsAnd, mapErrors, mapErrorsK } from "@laoban/utils";
 import { urlStorePathFn } from "@itsmworkbench/urlstore";
 import { Dirent } from "node:fs";
+import { fullExtension } from "@itsmworkbench/utils";
 
 export type FileInfo = {
   name: string;
@@ -13,7 +14,7 @@ export type FileInfo = {
 };
 
 // Load file information from a directory
-async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => string, filter?: string ): Promise<FileInfo[]> {
+async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => string, extension: string, filter?: string ): Promise<FileInfo[]> {
   async function readIt () {
     try {
       return await fs.readdir ( directoryPath, { withFileTypes: true } );
@@ -24,7 +25,8 @@ async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => st
   const files = await readIt ();
   const lcFilter = filter?.toLowerCase ()
   const filterFn = filter ? ( file: Dirent ) => file.name.toLowerCase ().includes ( lcFilter ) : () => true;
-  const fileInfoPromises = files.filter ( file => filterFn ( file ) ).map ( async file => {
+  const filesWithExtensionOrDir = files.filter ( file => fullExtension ( file.name ) === extension || file.isDirectory ()  );
+  const fileInfoPromises = filesWithExtensionOrDir.filter ( file => filterFn ( file ) ).map ( async file => {
     const filePath = path.join ( directoryPath, file.name );
     const stat = await fs.stat ( filePath );
     return {
@@ -55,12 +57,12 @@ type Files = {
   dirs: string[]
 }
 
-export const listNamesInPath = ( nameFn: ( name: string ) => string ) =>
-  async ( directoryPath: string, query: PageQuery, order: ListNamesOrder, filter?: string ): Promise<ErrorsAnd<Files>> => {
-    const files = await loadFileInfo ( directoryPath, nameFn, filter );
+export const listNamesInPath = ( nameFn: ( name: string ) => string, extension: string ) =>
+  async ( directoryPath: string, query: PageQuery, order: ListNamesOrder, filter?: string, ): Promise<ErrorsAnd<Files>> => {
+    const files = await loadFileInfo ( directoryPath, nameFn,extension, filter  );
     const result = mapErrors ( await applySortOrder ( files, order ),
       ( { sortedFiles } ) => {
-        const files = sortedFiles.filter ( f => f.isFile );
+        const files = sortedFiles.filter ( f => f.isFile )
         const paged = applyPaging ( files, query );
         const names = paged.map ( f => f.name );
         return ({
@@ -86,11 +88,14 @@ export function removeLastExtension ( path: string ): string {
   // Rejoin the remaining parts
   return parts.join ( '.' );
 }
-export const listJustNamesInPath = listNamesInPath ( s => removeLastExtension ( path.parse ( s ).name ) );
 export const listInStoreFn = ( config: OrganisationUrlStoreConfigForGit ): UrlListFn => {
   const orgAndNsToPath = urlStorePathFn ( config )
-  return async ( { org, namespace, pageQuery, order, filter, path } ) =>
-    mapErrorsK ( orgAndNsToPath ( org, namespace ), async ( p: string ) =>
-      mapErrors ( await listJustNamesInPath ( path ? p + '/' + path : p, pageQuery, order, filter ),
-        (  { names, dirs }  ) => ({ org, namespace, path, names, dirs, page: pageQuery.page, total: names.length }) ) )
+  return async ( { org, namespace, pageQuery, order, filter, path: thePath } ) => {
+    const extension = config.nameSpaceDetails[ namespace ]?.extension
+    const listJustNamesInPath = listNamesInPath ( s => removeLastExtension ( path.parse ( s ).name ), extension );
+    if ( extension === undefined ) return [ `namespace ${namespace} not found` ]
+    return mapErrorsK ( orgAndNsToPath ( org, namespace ), async ( p: string ) =>
+      mapErrors ( await listJustNamesInPath ( thePath ? p + '/' + thePath : p, pageQuery, order, filter ),
+        ( { names, dirs } ) => ({ org, namespace, path: thePath, names, dirs, page: pageQuery.page, total: names.length }) ) );
+  }
 }

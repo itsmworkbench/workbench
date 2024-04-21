@@ -64,3 +64,8 @@ export function splitAndCapitalize(input: string|undefined): string {
   const result = withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
   return result;
 }
+export function fullExtension ( path: string ): string {
+  const index = path.indexOf ( '.' );
+  return index === -1 ? '' : path.slice ( index+1 );
+
+}

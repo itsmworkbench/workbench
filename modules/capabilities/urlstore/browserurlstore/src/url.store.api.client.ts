@@ -56,9 +56,10 @@ export const saveToApi = ( config: UrlStoreApiClientConfig ): UrlSaveFn =>
   }
 
 export const listFromApi = ( config: UrlStoreApiClientConfig ): UrlListFn =>
-  async ( { org, namespace, pageQuery, order, filter } ): Promise<ErrorsAnd<ListNamesResult>> => {
+  async ( { org, namespace,path, pageQuery, order, filter } ): Promise<ErrorsAnd<ListNamesResult>> => {
     const filterStr = filter ? `&filter=${filter}` : ''
-    const fullUrl = `${config.apiUrlPrefix}/list/${org}/${namespace}?page=${pageQuery.page}&pageSize=${pageQuery.pageSize}&order=${order}${filterStr}`
+    const pathStr = path ? `/${path}` : ''
+    const fullUrl = `${config.apiUrlPrefix}/list/${org}/${namespace}${pathStr}?page=${pageQuery.page}&pageSize=${pageQuery.pageSize}&order=${order}${filterStr}`
     const rawResponse = await baseFetch ( config, fullUrl, { namespace }, );
     if ( isListNamesResult ( rawResponse ) ) return rawResponse;
     return [ `Failed to list ${org} ${namespace}. Expected ListNamesResult. ${JSON.stringify ( rawResponse )}` ]

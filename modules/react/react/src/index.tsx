@@ -81,8 +81,7 @@ const tagStore = optionalTagStore ( tagsL );
 
 const logForDeps: FCLogRecord<any, any>[] = []
 const depEngine = dependentEngine<ItsmState> (
-  { listeners: [ futureCacheLog ( logForDeps ), futureCacheConsoleLog ( 'fc -' ) ], cache: {} },
-  tagStore.currentValue )
+  { listeners: [ futureCacheLog ( logForDeps ), futureCacheConsoleLog ( 'fc -' ) ], cache: {} }, tagStore )
 
 
 const setJson = setJsonForDepData ( depEngine, () => container.state, setEventStoreValue ( container ) ) ( deps, {

@@ -1,6 +1,6 @@
 import { evaluateAllDependentItems, EvaluateDiFn } from "./dependant.evaluation";
 import { DiRequest, doActions, DoActionsFn, RequestEngine } from "./dependant.execute";
-import { TagStoreGetter } from "./tag.store";
+import { TagStore, TagStoreGetter } from "./tag.store";
 import { DependentItem } from "./dependent.data";
 import { DiTag } from "./tag";
 
@@ -10,10 +10,10 @@ export interface DependentEngine<S> {
   doActions: DoActionsFn<S>
 }
 
-export function dependentEngine<S> ( engine: RequestEngine<S>, tagGetter: TagStoreGetter<S> ): DependentEngine<S> {
+export function dependentEngine<S> ( engine: RequestEngine<S>, tagStore: TagStore<S> ): DependentEngine<S> {
   return {
-    evaluate: evaluateAllDependentItems ( tagGetter ),
-    doActions: doActions ( engine, tagGetter )
+    evaluate: evaluateAllDependentItems ( tagStore.currentValue ),
+    doActions: doActions ( engine, tagStore )
   }
 }
 

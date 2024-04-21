@@ -68,7 +68,7 @@ export type UrlListFn = ( q: UrlQuery ) => Promise<ErrorsAnd<ListNamesResult>>
 
 
 export type UrlFolder = {
-  name: string; // The name of the folder
+  name: string; // The name of the folder or file
   children: UrlFolder[]; // Array of child folders
 };
 export function isUrlFolder ( x: any ): x is UrlFolder {

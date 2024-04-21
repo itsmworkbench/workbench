@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/actions",
   "description": "Actions ",
-  "version": "0.0.21",
+  "version": "0.0.29",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.50",
-    "@itsmworkbench/domain": "0.0.21",
+    "@itsmworkbench/domain": "0.0.29",
     "debug": "^4.3.4"
   },
   "devDependencies": {

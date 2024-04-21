@@ -2,9 +2,10 @@ import { DiAction, FetchDiAction, isFetchDiAction, } from "./di.actions";
 
 import { callListeners, getOrUpdateFromPromiseCache, PromiseCacheListener, TwoKeyPromiseCache } from "@itsmworkbench/utils";
 import { DiTag, diTagChanged } from "./tag";
-import { TagStoreGetter } from "./tag.store";
+import { TagStore, TagStoreGetter, TagStoreUpdater } from "./tag.store";
 import { dependents } from "./dependent.data";
 import { collect, flatMap } from "@laoban/utils";
+import { massTransform, Transform } from "@focuson/lens";
 
 //Why this shape?
 //Because things change across time. So I want to mutate the current state
@@ -24,13 +25,16 @@ export type DiRequest<S> = ( s: S ) => StateAndWhy<S>
 export type RequestEngine<S> = TwoKeyPromiseCache<DiAction<S, any>, DiRequest<S>>
 
 
-export const executeClean = <S> ( engine: RequestEngine<S> ) => ( s: S, a: DiAction<S, any> ): S => {
+export const executeClean = <S> ( engine: RequestEngine<S>, tagSetter: TagStoreUpdater<S> ) => ( s: S, a: DiAction<S, any> ): S => {
   const clean = a.clean
   callListeners ( engine.listeners, 'info', l => l.info ( a, 'clean', JSON.stringify ( clean ) ) )
-  return clean === undefined ? s : a.di.optional.set ( s, clean.value )
+  const txs: Transform<S, DiTag>[] = tagSetter ( s, a.di.name, clean.tag );
+  const withTags = massTransform ( s, ...txs )
+  const safeWithTags = withTags === undefined ? s : withTags
+  return clean === undefined ? safeWithTags : a.di.optional.set ( safeWithTags, clean.value )
 };
-export function executeAllCleans<S> ( engine: RequestEngine<S>, s: S, actions: DiAction<S, any>[] ): S {
-  return actions.reduce ( executeClean ( engine ), s )
+export function executeAllCleans<S> ( engine: RequestEngine<S>, tagSetter: TagStoreUpdater<S>, s: S, actions: DiAction<S, any>[] ): S {
+  return actions.reduce ( executeClean ( engine, tagSetter ), s )
 }
 
 export type StateAndWhyWontChange<S> = {
@@ -54,8 +58,14 @@ export const uncachedSendRequestForFetchAction = <S, T> ( listeners: PromiseCach
     const t = await a.load ()
     return ( s: S ) => {
       const deps = dependents ( a.di.dependsOn );
-      const changed = flatMap ( deps, ( d, i ) => diTagChanged ( a.tags[ i ].tag, tagGetter ( s, d.name ) ) ? [ d.name ] : [] )
+      const changed = flatMap ( deps, ( d, i ) => {
+        const from = a.tags[ i ].tag;
+        const newValue = tagGetter ( s, d.name );
+        return diTagChanged ( from, newValue ) ? [ `${d.name}:${from}=>${newValue}` ] : [];
+      } )
       if ( changed.length > 0 ) {//don't do anything if upstreams have changed as our data is probably wrong, and we want a new load to get it...
+        console.log ( 'loadAbandoned', a )
+        console.log ( 'loadAbandoned - changed', a.di.name, changed.join ( ',' ) )
         callListeners ( listeners, 'loadAbandoned', l => l.loadAbandoned ( a, changed.join ( ',' ) ) )
         return { why: `Changed ${changed.join ( ',' )}`, changed: false, t, name: a.di.name }
       }
@@ -75,11 +85,11 @@ export const sendRequestForFetchAction = <S, T> ( engine: RequestEngine<S>, tagG
   };
 }
 
-export function doActions<S> ( engine: RequestEngine<S>, tagGetter: TagStoreGetter<S> ): DoActionsFn<S> {
-  const sendRequest = sendRequestForFetchAction ( engine, tagGetter )
+export function doActions<S> ( engine: RequestEngine<S>, tagstore: TagStore<S> ): DoActionsFn<S> {
+  const sendRequest = sendRequestForFetchAction ( engine, tagstore.currentValue )
   return ( dis: DiAction<S, any>[] ): DoActionRes<S> => {
     const fetchActions = collect ( dis, isFetchDiAction, a => a as FetchDiAction<S, any> )
-    const newS = ( s: S ) => executeAllCleans ( engine, s, dis )
+    const newS = ( s: S ) => executeAllCleans ( engine, tagstore.updateValue, s, dis )
     const updates = fetchActions.map ( sendRequest )
     return { newS, updates }
   }
