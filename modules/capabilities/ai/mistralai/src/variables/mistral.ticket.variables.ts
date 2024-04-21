@@ -6,7 +6,7 @@ import {
     realTicket3, realTicket4,
     response1,
     response2,
-    response3
+    response3, response4
 } from "./mistral.ticket.prompts";
 
 // Set up environment for transformer model
@@ -24,7 +24,9 @@ export const mistralTicketVariables: AiTicketVariablesFn = async ( ticket: strin
         { role: "assistant", content: JSON.stringify(response2) },
         { role: "user", content: realTicket3 },
         { role: "assistant", content: JSON.stringify(response3) },
-        { role: "user", content: realTicket4 }
+        { role: "user", content: realTicket4 },
+        { role: "assistant", content: JSON.stringify(response4) },
+        { role: "user", content: ticket },
     ];
 
     const encodeds = tokenizer.apply_chat_template(messages, {return_tensor: true});
