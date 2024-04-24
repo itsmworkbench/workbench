@@ -14,7 +14,6 @@ import { defaultTicketTypeDetails, TicketType } from "@itsmworkbench/tickettype"
 import { Action } from "@itsmworkbench/actions";
 import { FCLogRecord, IdAnd } from "@itsmworkbench/utils";
 import { KnowledgeArticleTempData } from "@itsmworkbench/reacttickettype";
-import { DiTag } from "@itsmworkbench/dependentdata/dist/src/tag";
 
 export interface ItsmSelectionState extends DisplayTicketListSelectionState<TabPhaseAndActionSelectionState>, NewTicketState {
   mainScreen?: MainAppMainState
@@ -54,7 +53,6 @@ export interface ItsmDebugState extends DebugState {
 }
 
 export interface ItsmState {
-  tags: NameAnd<DiTag>,
   depDataLog: FCLogRecord<any, any>[],
 
   forTicket: ItsmStateDataForTicket
@@ -72,7 +70,6 @@ export interface ItsmState {
 const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '', ticketType: defaultTicketTypeDetails };
 
 export const startAppState: ItsmState = {
-  tags: {},
   forTicket: {} as any,
   basicData: undefined as any,
   ticketList: undefined as any,
@@ -86,7 +83,6 @@ export const startAppState: ItsmState = {
 }
 
 export const itsmIdL: Lens<ItsmState, ItsmState> = Lenses.identity ()
-export const tagsL: Lens<ItsmState, NameAnd<DiTag>> = itsmIdL.focusOn ( 'tags' )
 export const basicDataL: Lens<ItsmState, BasicData> = itsmIdL.focusOn ( 'basicData' )
 export const selectionStateL: Lens<ItsmState, ItsmSelectionState> = itsmIdL.focusOn ( 'selectionState' )
 export const tabO: Optional<ItsmState, string> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'tabs' ).focusQuery ( 'workspaceTab' )

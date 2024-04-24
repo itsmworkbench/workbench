@@ -47,6 +47,7 @@ export type ListNamesResult = PageQuery & {
   namespace: string
   path?: string
   names: string[]
+  dirs: string[]
   page: number
   total: number
 }

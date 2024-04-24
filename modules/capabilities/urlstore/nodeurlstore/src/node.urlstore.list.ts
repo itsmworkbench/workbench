@@ -25,7 +25,7 @@ async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => st
   const files = await readIt ();
   const lcFilter = filter?.toLowerCase ()
   const filterFn = filter ? ( file: Dirent ) => file.name.toLowerCase ().includes ( lcFilter ) : () => true;
-  const filesWithExtensionOrDir = files.filter ( file => fullExtension ( file.name ) === extension || file.isDirectory ()  );
+  const filesWithExtensionOrDir = files.filter ( file => fullExtension ( file.name ) === extension || file.isDirectory () );
   const fileInfoPromises = filesWithExtensionOrDir.filter ( file => filterFn ( file ) ).map ( async file => {
     const filePath = path.join ( directoryPath, file.name );
     const stat = await fs.stat ( filePath );
@@ -59,7 +59,7 @@ type Files = {
 
 export const listNamesInPath = ( nameFn: ( name: string ) => string, extension: string ) =>
   async ( directoryPath: string, query: PageQuery, order: ListNamesOrder, filter?: string, ): Promise<ErrorsAnd<Files>> => {
-    const files = await loadFileInfo ( directoryPath, nameFn,extension, filter  );
+    const files = await loadFileInfo ( directoryPath, nameFn, extension, filter );
     const result = mapErrors ( await applySortOrder ( files, order ),
       ( { sortedFiles } ) => {
         const files = sortedFiles.filter ( f => f.isFile )
@@ -93,7 +93,7 @@ export const listInStoreFn = ( config: OrganisationUrlStoreConfigForGit ): UrlLi
   return async ( { org, namespace, pageQuery, order, filter, path: thePath } ) => {
     const extension = config.nameSpaceDetails[ namespace ]?.extension
     const listJustNamesInPath = listNamesInPath ( s => removeLastExtension ( path.parse ( s ).name ), extension );
-    if ( extension === undefined ) return [ `namespace ${namespace} not found` ]
+    if ( extension === undefined ) return [ `namespace ${namespace} not found. Legal values are ${Object.keys ( config.nameSpaceDetails )}` ]
     return mapErrorsK ( orgAndNsToPath ( org, namespace ), async ( p: string ) =>
       mapErrors ( await listJustNamesInPath ( thePath ? p + '/' + thePath : p, pageQuery, order, filter ),
         ( { names, dirs } ) => ({ org, namespace, path: thePath, names, dirs, page: pageQuery.page, total: names.length }) ) );

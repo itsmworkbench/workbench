@@ -15,7 +15,6 @@ export function baseFetch ( config: UrlStoreApiClientConfig, fullUrl: string, na
       return [ `Failed to fetch ${fullUrl}. Init is ${JSON.stringify ( init || {} )}. Status ${response.status}\n${await response.text ()}` ]
     } catch ( e ) {return [ `Failed to fetch ${fullUrl}. Init is ${JSON.stringify ( init || {} )}\n${JSON.stringify ( e )}` ] }
   } )
-
 }
 export function loadNamedFromApi ( config: UrlStoreApiClientConfig ): UrlLoadNamedFn {
   return async <T> ( named: NamedUrl, offset?: number ): Promise<ErrorsAnd<NamedLoadResult<T>>> => {

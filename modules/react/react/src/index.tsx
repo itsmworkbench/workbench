@@ -8,7 +8,7 @@ import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent
 import { ActionPluginDetails, eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails } from "@itsmworkbench/defaultdomains";
-import { actionO, conversationL, emailDataL, enrichedEventsO, eventsL, eventsO, forTicketO, ItsmState, kaListO, kaO, logsL, newTicketL, operatorL, sideEffectsL, startAppState, tabO, tabsL, tagsL, ticketIdL, ticketL, ticketListO, ticketTypeO, ticketVariablesL } from "./state/itsm.state";
+import { actionO, conversationL, emailDataL, enrichedEventsO, eventsL, eventsO, forTicketO, ItsmState, kaListO, kaO, logsL, newTicketL, operatorL, sideEffectsL, startAppState, tabO, tabsL, ticketIdL, ticketL, ticketListO, ticketTypeO, ticketVariablesL } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
@@ -27,7 +27,7 @@ import { addAiMailerSideEffectProcessor, displayEmailEventPlugin, displayMailerP
 import { debugEnrichedEventsPlugin, debugEventsPlugin, displayEnrichedEventsWithPlugins, displayMessageEventPlugin, enrichedDisplayAndChatPlugin } from "@itsmworkbench/reactevents";
 import { apiClientFetchEmailer } from "@itsmworkbench/browserfetchemail";
 import { displayReceiveEmailEventPlugin, displayReceiveEmailPlugin } from "@itsmworkbench/reactfetchemail";
-import { depData, dependentEngine, DependentItem, optionalTagStore, setJsonForDepData } from "@itsmworkbench/dependentdata";
+import { DD, depDataK, dependentDataEngine, setJsonForDepData } from "@itsmworkbench/dependentdata";
 import { Operator } from "@itsmworkbench/operator";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/urlstore";
 import { FCLogRecord, futureCacheConsoleLog, futureCacheLog } from "@itsmworkbench/utils";
@@ -47,48 +47,34 @@ const ai = apiClientForAi ( aiDetails )
 
 const container = eventStore<ItsmState> ()
 
-const operatorDi = depData ( 'operator', operatorL, {
-  clean: 'leave',
-  tag: ( o: Operator ) => o?.id,
-  load: async () => {
-    const res = await urlStore.loadNamed<Operator> ( parseNamedUrlOrThrow ( 'itsm/me/operator/me' ) )
-    if ( hasErrors ( res ) ) throw new Error ( 'Failed to load operator\n' + res.join ( '\n' ) )
-    return res.result
-  }
-} )
+const operatorDi = depDataK ( 'operator', operatorL, async () => {
+  const res = await urlStore.loadNamed<Operator> ( parseNamedUrlOrThrow ( 'itsm/me/operator/me' ) )
+  if ( hasErrors ( res ) ) throw new Error ( 'Failed to load operator\n' + res.join ( '\n' ) )
+  return res.result
+}, {} )
 
-const ticketListDi = depData ( 'ticketList', ticketListO, {
-  clean: 'nuke',
-  tag: ( o: any ) => o?.names,
-  load: async () => {
-    const ticketList = await urlStore.list ( { org: "me", namespace: "ticketevents", pageQuery: { page: 1, pageSize: 10 }, order: "date" } )
-    if ( hasErrors ( ticketList ) ) throw new Error ( 'Failed to load ticketList\n' + ticketList.join ( '\n' ) )
-    return ticketList
-  }
-} )
+const ticketListDi = depDataK ( 'ticketList', ticketListO, async () => {
+  const ticketList = await urlStore.list ( { org: "me", namespace: "ticketevents", pageQuery: { page: 1, pageSize: 10 }, order: "date" } )
+  if ( hasErrors ( ticketList ) ) throw new Error ( 'Failed to load ticketList\n' + ticketList.join ( '\n' ) )
+  return ticketList
+}, {} )
 
-const kaListDi = depData ( 'kaList', kaListO, {
-  clean: 'nuke',
-  tag: ( o: any ) => o?.names,
-  load: async () => {
-    const kaList = await urlStore.list ( { org: "me", namespace: "ka", pageQuery: { page: 1, pageSize: 1000 }, order: "date" } )
-    if ( hasErrors ( kaList ) ) throw new Error ( 'Failed to load kaList\n' + kaList.join ( '\n' ) )
-    return kaList
-  }
-} )
-const deps: DependentItem<ItsmState, any>[] = [ operatorDi, ticketListDi ]
-const tagStore = optionalTagStore ( tagsL );
+const kaListDi = depDataK ( 'kaList', kaListO, async () => {
+  const kaList = await urlStore.list ( { org: "me", namespace: "ka", pageQuery: { page: 1, pageSize: 1000 }, order: "date" } )
+  if ( hasErrors ( kaList ) ) throw new Error ( 'Failed to load kaList\n' + kaList.join ( '\n' ) )
+  return kaList
+}, { clear: true } )
+
+const deps: DD<ItsmState, any>[] = [ operatorDi, ticketListDi ]
 
 const logForDeps: FCLogRecord<any, any>[] = []
-const depEngine = dependentEngine<ItsmState> (
-  { listeners: [ futureCacheLog ( logForDeps ), futureCacheConsoleLog ( 'fc -' ) ], cache: {} }, tagStore )
+const depEngine = {
+  ...dependentDataEngine<ItsmState> (() => container.state, setEventStoreValue ( container )),
+  listeners: [ futureCacheLog ( logForDeps ), futureCacheConsoleLog ( 'fc -' ) ]
+}
 
 
-const setJson = setJsonForDepData ( depEngine, () => container.state, setEventStoreValue ( container ) ) ( deps, {
-  setTag: ( s, name, tag ) => { // could do it with optional, but don't need to
-    s.tags[ name ] = tag
-    return s
-  },
+const setJson = setJsonForDepData ( depEngine ) ( deps, {
   updateLogs: s => {
     s.depDataLog = [ ...toArray ( s.depDataLog ), ...logForDeps ]
     logForDeps.length = 0
