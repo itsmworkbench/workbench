@@ -48,7 +48,7 @@ export const isComplete = ({ end, length }: { end: number; length: number }): bo
 };
 
 // Function to download a file in chunks
-export const downloadInChunks = async ({ bucket, key }: { bucket: string; key: string }): Promise<void> => {
+export const downloadS3FileInChunks = async ({ bucket, key }: { bucket: string; key: string }): Promise<void> => {
     const writeStream: WriteStream = createWriteStream(key) // Simplified file path
         .on("error", (err) => console.error("Write stream error:", err));
 
@@ -80,7 +80,7 @@ export const downloadInChunks = async ({ bucket, key }: { bucket: string; key: s
 };
 
 //! Usage
-// await downloadInChunks({
+// await downloadS3FileInChunks ({
 //     bucket: AWS_AI_BUCKET,
 //     key: OBJECT_KEY,
 // });
