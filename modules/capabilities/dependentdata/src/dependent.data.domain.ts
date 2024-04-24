@@ -1,4 +1,5 @@
 import { Optional } from "@focuson/lens";
+import { RetryPolicy } from "./retry";
 
 export type DDF<S, T> = DDF0<S, T> | DDF1<S, any, T> | DDF2<S, any, any, T> | DDF3<S, any, any, any, T> | DDF4<S, any, any, any, any, T> | DDF5<S, any, any, any, any, any, T>
 export function isDDF<S, T> ( dd: DD<S, T> ): dd is DDF<S, T> {
@@ -20,6 +21,7 @@ export interface DDPrim<S, T> extends DDDecisions {
   target: Optional<S, T>
   //if the fn blows up this will be called. Note that this can throw errors as well (for example a more descriptive one) but it should be very simple in nature or debugging issues will be hard
   recover?: ( e: any, old: T, params: any[] ) => T
+  retry?: RetryPolicy
 }
 
 export type DDF0<S, T> = DDPrim<S, T> & {

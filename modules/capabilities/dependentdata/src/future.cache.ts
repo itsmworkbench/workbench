@@ -1,13 +1,19 @@
 import { callListeners, PromiseCacheListener } from "@itsmworkbench/utils";
+import { calculateNextRetryTime, defaultRetryPolicy, IRetryTimingCalculator, RetryPolicy } from "./retry";
+import { HasDDMetrics, incrementMetric, MetricName } from "./metrics";
 
 
 /** This cache is written assuming that there won't be that many calls at once. It's for the dependant data. Thus a linear search for the params */
 
-export interface CallStatus<Context> {
+export type PromiseStatus = undefined | 'fulfilled' | 'rejected'
+
+
+export interface CallStatus<Context> extends HasDDMetrics {
   context: Context
   params: any[]
-  value: Promise<any>
+  value: Promise<any> | undefined //during the lifecycle when this begins it is undefined
   time: number
+  valueStatus?: PromiseStatus
 }
 export interface CacheSearch<Context> {
   ( cache: CallStatus<any>[], context: Context, params: any[] ): CallStatus<Context> | undefined;
@@ -19,20 +25,29 @@ export const defaultCacheSearch = <Context> (): CacheSearch<Context> =>
 export type  CacheCleanup<Context> = ( cache: FutureCache<Context> ) => CallStatus<Context>[];
 
 export const defaultCacheCleanup = <Context> (): CacheCleanup<Context> => ( cache ) => {
+  if ( !cache.ttl ) return cache.cache;
   const deadBefore = cache.timeService () - cache.ttl
   return cache.cache.filter ( c => c.time >= deadBefore );
 }
 
+export type UpdateValueStatus = ( status: PromiseStatus ) => void
 export type CacheExecuteAsync<Context> =
-  ( cache: FutureCache<Context>, context: Context, params: any[], raw: ( params: any[] ) => Promise<any> ) => Promise<any>
+  ( cache: FutureCache<Context>, callStatus: CallStatus<Context>, raw: ( params: any[] ) => Promise<any> ) => Promise<any>
 
 export const defaultCacheExecuteAsync = <Context> (): CacheExecuteAsync<Context> =>
-  async ( cache, context, params, raw ) => {
+  async ( cache, callStatus, raw ) => {
+    const { params, context } = callStatus
+    callStatus.valueStatus = undefined
+    incrementMetric ( callStatus, 'attempts' )
     callListeners ( cache.listeners, 'callingLoad', l => l.callingLoad ( context ) )
     const result = raw ( params ).then ( res => {
+      incrementMetric ( callStatus, 'successes' )
       callListeners ( cache.listeners, 'loadArrived', l => l.loadArrived ( context, res ) )
+      callStatus.valueStatus = 'fulfilled'
       return res
     } ).catch ( e => {
+      callStatus.valueStatus = 'rejected'
+      incrementMetric ( callStatus, 'failures' )
       callListeners ( cache.listeners, 'loadError', l => l.loadError ( context, e ) )
       throw e
     } )
@@ -46,7 +61,8 @@ export const defaultCacheFound = <Context> (): CacheFound<Context> => ( cache: F
   return found.value
 };
 export interface FutureCache<Context> {
-  ttl: number
+  ttl?: number
+  policy: RetryPolicy
   timeService: () => number
   listeners: PromiseCacheListener<Context, any>[]
   cache: CallStatus<any>[]
@@ -54,17 +70,20 @@ export interface FutureCache<Context> {
   search: CacheSearch<Context>
   cleanup: CacheCleanup<Context>
   execute: CacheExecuteAsync<Context>
+  retryTime: IRetryTimingCalculator
 }
 export function futureCache<Context> (): FutureCache<Context> {
   return {
-    ttl: 20000, // 20 seconds
+    ttl: 20000, //  seconds
+    policy: defaultRetryPolicy,
     timeService: () => Date.now (),
     listeners: [],
     cache: [],
     found: defaultCacheFound (),
     search: defaultCacheSearch (),
     cleanup: defaultCacheCleanup (),
-    execute: defaultCacheExecuteAsync ()
+    execute: defaultCacheExecuteAsync (),
+    retryTime: calculateNextRetryTime
   }
 }
 
@@ -92,14 +111,26 @@ function shallowCompareArrays ( arr1: any[], arr2: any[] ) {
 export async function getOrUpdateFromFutureCache<Context> ( cache: FutureCache<Context>,
                                                             context: Context,
                                                             params: any[],
-                                                            raw: ( params: any[] ) => Promise<any> ): Promise<any> {
+                                                            raw: ( params: any[] ) => Promise<any>,
+                                                            retryPolicy?: RetryPolicy ): Promise<any> {
   const { cleanup, search, found } = cache
-  const existing = search ( cache.cache, context, params )
-  if ( existing ) return found ( cache, context, existing )
   cache.cache = cleanup ( cache )
-  const result = cache.execute ( cache, context, params, raw )
+  let callStatus: CallStatus<Context> | undefined = search ( cache.cache, context, params )
+  if ( callStatus && callStatus.valueStatus !== 'rejected' ) {
+    incrementMetric ( callStatus, 'cacheHits' )
+    return found ( cache, context, callStatus )
+  }
+  const now = cache.timeService ()
+  const retryTime = cache.retryTime ( 1, retryPolicy || cache.policy || defaultRetryPolicy )
+  if ( callStatus && now <= callStatus.time + retryTime ) {
+    incrementMetric ( callStatus, 'retryAttempts' )
+    return found ( cache, context, callStatus )
+  }
 
-  cache.cache.push ( { context, params, value: result, time: cache.timeService () } )
+  const resultCallStatus = callStatus ? callStatus : { context, params, value: undefined, time: now }
+  resultCallStatus.time = now
+  if ( !callStatus ) cache.cache.push ( resultCallStatus )
+  const result = cache.execute ( cache, resultCallStatus, raw )
   return result
 }
 

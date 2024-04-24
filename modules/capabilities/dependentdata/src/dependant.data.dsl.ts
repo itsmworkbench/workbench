@@ -1,9 +1,11 @@
 import { Optional } from "@focuson/lens";
 import { DD, DDF, DDF0, DDF1, DDF2, DDF3, DDF4, DDF5, DDK, DDK0, DDK1, DDK2, DDK3, DDK4, DDK5 } from "./dependent.data.domain";
+import { RetryPolicy } from "./retry";
 
 export type DDConfig<T> = {
   clear?: true
   recover?: ( e: any, old: T, params: any[] ) => T
+  retry?: RetryPolicy
 }
 
 export function depData<S, T> ( name: string,

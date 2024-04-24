@@ -64,7 +64,7 @@ export function dependentDataEngine<S> ( current: () => S, setS: ( s: S ) => voi
 export async function callAndWorkOutChanged<S> ( engine: DependentDataEngine<S>,
                                                  st: DDStatus<S>,
                                                  d: DDK<S, any> ): Promise<any> {
-  const res: any = await getOrUpdateFromFutureCache ( engine, d, st.params, () => callDDK ( d, st.rawValue, st.params ) )
+  const res: any = await getOrUpdateFromFutureCache ( engine, d, st.params, () => callDDK ( d, st.rawValue, st.params ), d.retry )
   const { current, setS } = engine
   const originalParamValues = st.params
   if ( originalParamValues === undefined ) throw new Error ( `Params are undefined for ${d.name}` )
