@@ -10,9 +10,8 @@ import { hasErrors, reportErrors } from "@laoban/utils";
 import { apiCommand } from "@itsmworkbench/api";
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { jsYaml } from "@itsmworkbench/jsyaml";
-import { AiCapablities, HasAiCapabilities } from "@itsmworkbench/ai";
+import { HasAiCapabilities } from "@itsmworkbench/ai";
 import { chatgptAi } from "@itsmworkbench/chatgptai";
-import { mistralAi } from "@itsmworkbench/mistralai";
 
 
 export function findVersion () {
@@ -30,7 +29,7 @@ const context: ItsmContext = {
   ...cliContext ( 'intellimaintain', findVersion (), fileOpsNode () ),
   ais: {
     gpt: chatgptAi (),
-    mistral: mistralAi ()
+    // mistral: mistralAi ()
   }
 }
 

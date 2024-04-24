@@ -8,7 +8,6 @@ export interface FetchEmailerProviderProps {
 }
 export const FetchEmailerContext = React.createContext<FetchEmailer | undefined> ( undefined );
 export function FetchEmailerProvider ( { children, fetchEmailer }: FetchEmailerProviderProps ) {
-  console.log ( 'FetchEmailerProvider', fetchEmailer )
   return <FetchEmailerContext.Provider value={fetchEmailer}> {children} </FetchEmailerContext.Provider>;
 }
 
@@ -18,6 +17,5 @@ export function useFetchEmailer (): FetchEmailer {
   if ( context === undefined ) {
     throw new Error ( "useFetchEmailer must be used within a FetchEmailerProvider" );
   }
-  console.log ( 'useFetchEmailer', context )
   return context;
 }

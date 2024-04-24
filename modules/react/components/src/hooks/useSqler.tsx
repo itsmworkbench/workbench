@@ -8,7 +8,6 @@ export interface SqlerProviderProps {
 }
 export const SqlerContext = React.createContext<Sqler | undefined> ( undefined );
 export function SqlerProvider ( { children, sqler }: SqlerProviderProps ) {
-  console.log('SqlerProvider', sqler)
   return <SqlerContext.Provider value={sqler}> {children} </SqlerContext.Provider>;
 }
 

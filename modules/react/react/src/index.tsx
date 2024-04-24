@@ -51,19 +51,19 @@ const operatorDi = depDataK ( 'operator', operatorL, async () => {
   const res = await urlStore.loadNamed<Operator> ( parseNamedUrlOrThrow ( 'itsm/me/operator/me' ) )
   if ( hasErrors ( res ) ) throw new Error ( 'Failed to load operator\n' + res.join ( '\n' ) )
   return res.result
-}, {} )
+}, {recover: () => undefined as any} )
 
 const ticketListDi = depDataK ( 'ticketList', ticketListO, async () => {
   const ticketList = await urlStore.list ( { org: "me", namespace: "ticketevents", pageQuery: { page: 1, pageSize: 10 }, order: "date" } )
   if ( hasErrors ( ticketList ) ) throw new Error ( 'Failed to load ticketList\n' + ticketList.join ( '\n' ) )
   return ticketList
-}, {} )
+}, {recover: () => undefined as any} )
 
 const kaListDi = depDataK ( 'kaList', kaListO, async () => {
   const kaList = await urlStore.list ( { org: "me", namespace: "ka", pageQuery: { page: 1, pageSize: 1000 }, order: "date" } )
   if ( hasErrors ( kaList ) ) throw new Error ( 'Failed to load kaList\n' + kaList.join ( '\n' ) )
   return kaList
-}, { clear: true } )
+}, { clear: true ,recover: () => undefined as any} )
 
 const deps: DD<ItsmState, any>[] = [ operatorDi, ticketListDi ]
 
@@ -81,7 +81,7 @@ const setJson = setJsonForDepData ( depEngine ) ( deps, {
     return s
   },
   debug: () => container.state?.debug?.depData,
-  delay: 100
+  delay: 3000
 } )
 //
 // const setJson : ( s: ItsmState ) => void = s => {

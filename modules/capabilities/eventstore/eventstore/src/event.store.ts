@@ -1,5 +1,5 @@
 export type EventStoreListener<S> = ( oldS: S, s: S, setJson: ( s: S ) => void ) => void
-export type EventStoreModifier<S> = ( oldS: S, s: S ) => Promise<S>
+export type EventStoreModifier<S> = ( oldS: S, s: S ) => Promise<( s: S ) => S>
 export interface EventStore<S> {
   state: S
   debug?: boolean
@@ -18,7 +18,7 @@ export function addEventStoreModifier<S> ( container: EventStore<S>, modifier: E
 }
 
 
-export function setEventStoreValue<S> ( container: EventStore<S> ): (s: S) => void {
+export function setEventStoreValue<S> ( container: EventStore<S> ): ( s: S ) => void {
   let setJson = ( s: S ): void => {
     const original = container.state
     if ( container.debug ) console.log ( 'setJsonForContainer - old state', container.state )
@@ -31,10 +31,11 @@ export function setEventStoreValue<S> ( container: EventStore<S> ): (s: S) => vo
     container.state = s
     if ( container.debug ) console.log ( 'starting modifiers' )
     for ( const modifier of container.modifiers )
-      modifier ( original, s ).then ( s => {
-        if ( container.debug ) console.log ( 'modifier finished', s )
+      modifier ( original, s ).then ( fn => {
+        const newState = fn ( container.state )
+        if ( container.debug ) console.log ( 'modifier finished', newState )
         if ( container.debug ) console.log ( 'setJson', setJson )
-        setJson ( s )
+        setJson ( newState )
       } )
     if ( container.debug ) console.log ( 'finished modifiers, starting listeners' )
     for ( const l of container.listeners )

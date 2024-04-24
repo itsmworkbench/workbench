@@ -116,13 +116,15 @@ export async function getOrUpdateFromFutureCache<Context> ( cache: FutureCache<C
   const { cleanup, search, found } = cache
   cache.cache = cleanup ( cache )
   let callStatus: CallStatus<Context> | undefined = search ( cache.cache, context, params )
+  // console.log ( 'callStatus', callStatus )
   if ( callStatus && callStatus.valueStatus !== 'rejected' ) {
     incrementMetric ( callStatus, 'cacheHits' )
     return found ( cache, context, callStatus )
   }
   const now = cache.timeService ()
   const retryTime = cache.retryTime ( 1, retryPolicy || cache.policy || defaultRetryPolicy )
-  if ( callStatus && now <= callStatus.time + retryTime ) {
+  // console.log ( 'retrying evaluated', callStatus && now - (callStatus.time + retryTime) )
+  if ( callStatus && now > callStatus.time + retryTime ) {
     incrementMetric ( callStatus, 'retryAttempts' )
     return found ( cache, context, callStatus )
   }

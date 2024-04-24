@@ -132,25 +132,25 @@ export function callDDF<S, T> ( dd: DDF<S, T>, old: T, ps: any[] ): T {
 }
 
 export async function callDDK<S, T> ( dd: DDK<S, T>, old: T, ps: any[] ): Promise<T> {
-  try {
-    switch ( dd.type ) {
-      case 'dd0':
-        return await (dd as DDK0<S, T>).fn ( old )
-      case 'dd1':
-        return await (dd as DDK1<S, any, T>).fn ( old, ps[ 0 ] )
-      case 'dd2':
-        return await (dd as DDK2<S, any, any, T>).fn ( old, ps[ 0 ], ps[ 1 ] )
-      case 'dd3':
-        return await (dd as DDK3<S, any, any, any, T>).fn ( old, ps[ 0 ], ps[ 1 ], ps[ 2 ] )
-      case 'dd4':
-        return await (dd as DDK4<S, any, any, any, any, T>).fn ( old, ps[ 0 ], ps[ 1 ], ps[ 2 ], ps[ 3 ] )
-      case 'dd5':
-        return await (dd as DDK5<S, any, any, any, any, any, T>).fn ( old, ps[ 0 ], ps[ 1 ], ps[ 2 ], ps[ 3 ], ps[ 4 ] )
-    }
-  } catch ( e ) {
-    if ( dd.recover ) return dd.recover ( e, old, ps )
-    throw e
+  // try {
+  switch ( dd.type ) {
+    case 'dd0':
+      return await (dd as DDK0<S, T>).fn ( old )
+    case 'dd1':
+      return await (dd as DDK1<S, any, T>).fn ( old, ps[ 0 ] )
+    case 'dd2':
+      return await (dd as DDK2<S, any, any, T>).fn ( old, ps[ 0 ], ps[ 1 ] )
+    case 'dd3':
+      return await (dd as DDK3<S, any, any, any, T>).fn ( old, ps[ 0 ], ps[ 1 ], ps[ 2 ] )
+    case 'dd4':
+      return await (dd as DDK4<S, any, any, any, any, T>).fn ( old, ps[ 0 ], ps[ 1 ], ps[ 2 ], ps[ 3 ] )
+    case 'dd5':
+      return await (dd as DDK5<S, any, any, any, any, any, T>).fn ( old, ps[ 0 ], ps[ 1 ], ps[ 2 ], ps[ 3 ], ps[ 4 ] )
   }
+  // } catch ( e ) { //moved from here for retry logic to work
+  //   if ( dd.recover ) return dd.recover ( e, old, ps )
+  //   throw e
+  // }
 }
 
 export function findParams<S, T> ( dd: DD<S, T> ): DD<S, T>[] {

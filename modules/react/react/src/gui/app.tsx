@@ -35,7 +35,7 @@ export function App<S> ( { state, plugins, actionPlugins, eventPlugins, byO }: A
   const currentTicketText = currentTicketId ? ` - ${currentUrl?.name}` : ``
 
   let enrichedEvents = enrichedEventsO.getOption ( wholeState || {} as ItsmState ) || [];
-  console.log ( 'app - enrichedEvents', enrichedEvents )
+  // console.log ( 'app - enrichedEvents', enrichedEvents )
   return <>
     return <ThemeProvider theme={theme}>
     <SelectionProvider state={state.focusOn ( 'selectionState' ).focusOn ( 'tabs' )}>

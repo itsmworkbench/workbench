@@ -6,9 +6,8 @@ export interface RetryPolicy {
 }
 export const defaultRetryPolicy: RetryPolicy = {
   baseDelay: 200,
-  maxDelay: 2000,
+  maxDelay: 8000,
   backoffFactor: 2,
-  maxAttempts: 5
 }
 export type IRetryTimingCalculator = ( attempts: number, policy: RetryPolicy ) => number
 

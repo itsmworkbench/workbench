@@ -3,6 +3,7 @@ import { Event } from "@itsmworkbench/events";
 import { Lens, Optional, Transform } from "@focuson/lens";
 import { massTransform } from "@focuson/lens";
 import { NamedUrl, parseNamedUrlOrThrow, UrlSaveFn } from "@itsmworkbench/urlstore";
+import { EventStoreModifier } from "@itsmworkbench/eventstore";
 
 export type SideEffectType = string
 export interface SideEffect {
@@ -46,13 +47,13 @@ export interface ISideEffectProcessor<S, SE extends SideEffect, R> {
   process: ( state: S, se: SE ) => Promise<ResultsAndTransforms<S, R>>
 }
 
-export function eventSideeffectProcessor<S> ( saveFn: UrlSaveFn, organisation: string,  ticketEventUrlL: Optional<S, string> ): ISideEffectProcessor<S, EventSideEffect, boolean> {
+export function eventSideeffectProcessor<S> ( saveFn: UrlSaveFn, organisation: string, ticketEventUrlL: Optional<S, string> ): ISideEffectProcessor<S, EventSideEffect, boolean> {
   return {
     accept: isEventSideEffect,
     process: async ( state, se ) => {
       const ticketId = ticketEventUrlL.getOption ( state )
       if ( !ticketId ) throw new Error ( 'No ticketId' )
-      const url: NamedUrl = parseNamedUrlOrThrow( ticketId)
+      const url: NamedUrl = parseNamedUrlOrThrow ( ticketId )
       console.log ( 'sending event', url, se.event )
       const result = await saveFn ( url, [ se.event ], { append: true, commit: false } )
       console.log ( 'eventSideeffectProcessor result', result )
@@ -74,12 +75,12 @@ export function processSideEffect<S> ( processors: ISideEffectProcessor<S, any, 
 }
 
 
-export function processSideEffectsInState<S> ( sep: ISideEffectProcessor<S, SideEffect, any>, seLens: Lens<S, SideEffect[]>, logL: Lens<S, SideeffectAndResult<any>[]>, debug?: boolean ) {
-  return async ( oldState: S, state: S, ) => {
+export function processSideEffectsInState<S> ( sep: ISideEffectProcessor<S, SideEffect, any>, seLens: Lens<S, SideEffect[]>, logL: Lens<S, SideeffectAndResult<any>[]>, debug?: boolean ): EventStoreModifier<S> {
+  return async ( oldState: S, state: S, ): Promise<(s: S) => S> => {
     const sideeffects = seLens.getOption ( state ) || []
     if ( sideeffects.length === 0 ) {
       if ( debug ) console.log ( 'processSideEffectsInState', 'no sideeffects' )
-      return state
+      return s=>s
     }
     if ( debug ) console.log ( 'processSideEffectsInState', 'sideeffects', sideeffects )
     const resultsAndTxs: SideEffectResultsAndTransforms<S, any>[] = await mapK ( sideeffects, async ( sideeffect ) => {
@@ -94,13 +95,16 @@ export function processSideEffectsInState<S> ( sep: ISideEffectProcessor<S, Side
     console.log ( 'just results1', results )
     const txs: Transform<S, any>[] = flatMap ( resultsAndTxs, r => toArray ( r.resultsAndTransforms.txs ) );
     console.log ( 'txs', txs )
-    const existingLog: SideeffectAndResult<any>[] = logL.getOption ( state ) || []
-    const newLog = [ ...existingLog, ...results ]
-    if ( debug ) console.log ( 'processSideEffectsInState', 'newLog', newLog )
-    let withLog = seLens.set ( logL.set ( state, newLog ), [] );
-    if ( debug )  console.log ( 'processSideEffectsInState', 'txs', txs )
-    const final = massTransform ( withLog, ...txs )
-    if ( debug ) console.log ( 'processSideEffectsInState', 'final', final )
-    return final
+    return ( state: S ) => {
+      if (txs.length===0)return state
+      const existingLog: SideeffectAndResult<any>[] = logL.getOption ( state ) || []
+      const newLog = [ ...existingLog, ...results ]
+      if ( debug ) console.log ( 'processSideEffectsInState', 'newLog', newLog )
+      let withLog = seLens.set ( logL.set ( state, newLog ), [] );
+      if ( debug ) console.log ( 'processSideEffectsInState', 'txs', txs )
+      const final = massTransform ( withLog, ...txs )
+      if ( debug ) console.log ( 'processSideEffectsInState', 'final', final )
+      return final
+    }
   };
 }
