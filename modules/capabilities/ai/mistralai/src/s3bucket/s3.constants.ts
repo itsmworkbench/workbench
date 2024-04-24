@@ -11,7 +11,7 @@ namespace s3GlobalConstants {
 /*
     Credentials for AWS S3
 */
-namespace s3Credentials {
+namespace s3Credentials { //todo:  move to .env file
     export const ACCESS_KEY_ID = 'your-access-key-id';
     export const SECRET_ACCESS_KEY = 'your-secret-access-key';
 }

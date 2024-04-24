@@ -10,7 +10,7 @@ import {
 } from "./mistral.ticket.prompts";
 
 // Set up environment for transformer model
-env.localModelPath = '/model/mistralai';
+// env.localModelPath = '/model/mistralai';
 
 export const mistralTicketVariables: AiTicketVariablesFn = async ( ticket: string ): Promise<TicketVariables> => {
     const systemPrompt = `You will be provided with a ITSM work ticket, and your task is to extract important variables from it. Return these variables only as in JSON format.`;
