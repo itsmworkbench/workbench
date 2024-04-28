@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/yaml",
   "description": "",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -17,7 +17,7 @@
     ]
   },
   "dependencies": {
-    "@laoban/utils": "1.4.50",
+    "@laoban/utils": "1.4.51",
     "debug": "^4.3.4"
   },
   "devDependencies": {

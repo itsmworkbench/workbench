@@ -1,3 +1,5 @@
+import { NameAnd } from "@laoban/utils";
+
 export function lowercaseFirstLetter ( str: string ): string {
   return str.charAt ( 0 ).toLowerCase () + str.slice ( 1 );
 }
@@ -68,4 +70,13 @@ export function fullExtension ( path: string ): string {
   const index = path.indexOf ( '.' );
   return index === -1 ? '' : path.slice ( index+1 );
 
+}
+
+export function simpleTemplate(template: string, data: NameAnd<any>): string {
+  return template.replace(/\{(\w+)\}/g, (match, key) => {
+    if (key in data) {
+      return String(data[key]);
+    }
+    return match; // Return the original match if no corresponding key is found
+  });
 }

@@ -143,37 +143,60 @@ describe ( "list", () => {
 
 describe ( 'folders', () => {
   it ( 'should list folders when no path specified', async () => {
+    await fs.promises.rm ( testDir + "/org/namespace/path", { recursive: true, force: true } )
     const dir1 = (await testDir) + '/org1/namespace/path/somedir1'
     const dir2 = (await testDir) + '/org1/namespace/path/somedir2'
     await fs.promises.mkdir ( dir1, { recursive: true } )
     await fs.promises.mkdir ( dir2, { recursive: true } )
+    await fs.promises.writeFile ( dir1 + '/hello.txt', 'hello' )
+    await fs.promises.writeFile ( dir2 + '/goodbye.txt', 'goodbye' )
+
     const gitOps: GitOps = await shellGitsops ()
     const store = nodeUrlstore ( gitOps, orgToDetails ( await testDir ) )
     const folders = await store.folders ( 'org1', 'ns1' )
     expect ( folders ).toEqual ( {
-      "name": "path",
-      "children": [
-        { "name": "somedir1", "children": [], },
-        { "name": "somedir2", "children": [], }
+      "children": [ { "name": "file1.txt" },
+        { "children": [ { "name": "hello.txt" } ], "name": "somedir1" },
+        { "children": [ { "name": "goodbye.txt" } ], "name": "somedir2" }
       ],
+      "name": "path"
     } )
   } )
   it ( 'should list folders when path specified', async () => {
+    await fs.promises.rm ( testDir + "/org/namespace/path", { recursive: true, force: true } )
     const dir1 = (await testDir) + '/org1/namespace/path/somedir1'
     const dir11 = (await testDir) + '/org1/namespace/path/somedir1/one'
     const dir12 = (await testDir) + '/org1/namespace/path/somedir1/two'
+
     await fs.promises.mkdir ( dir1, { recursive: true } )
     await fs.promises.mkdir ( dir11, { recursive: true } )
     await fs.promises.mkdir ( dir12, { recursive: true } )
+    await fs.promises.writeFile ( dir11 + '/hello.txt', 'hello' )
+    await fs.promises.writeFile ( dir12 + '/goodbye.txt', 'goodbye' )
+
     const gitOps: GitOps = await shellGitsops ()
     const store = nodeUrlstore ( gitOps, orgToDetails ( await testDir ) )
     const folders = await store.folders ( 'org1', 'ns1', 'somedir1' )
     expect ( folders ).toEqual ( {
-      "name": "somedir1",
       "children": [
-        { "name": "one", "children": [], },
-        { "name": "two", "children": [], }
+        {
+          "children": [
+            {
+              "name": "hello.txt"
+            }
+          ],
+          "name": "one"
+        },
+        {
+          "children": [
+            {
+              "name": "goodbye.txt"
+            }
+          ],
+          "name": "two"
+        }
       ],
+      "name": "somedir1"
     } )
   } )
 } )

@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/tickettype",
   "description": "",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -20,11 +20,11 @@
     ]
   },
   "dependencies": {
-    "@laoban/utils": "1.4.50",
-    "@itsmworkbench/actions": "0.0.29",
-    "@itsmworkbench/domain": "0.0.29",
-    "@itsmworkbench/tickets": "0.0.29",
-    "@itsmworkbench/yaml": "0.0.29",
+    "@laoban/utils": "1.4.51",
+    "@itsmworkbench/actions": "0.0.30",
+    "@itsmworkbench/domain": "0.0.30",
+    "@itsmworkbench/tickets": "0.0.30",
+    "@itsmworkbench/yaml": "0.0.30",
     "debug": "^4.3.4"
   },
   "devDependencies": {

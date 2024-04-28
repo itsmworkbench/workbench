@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/browserurlstore",
   "description": "loads and saves itsm schema urls used with intellimaintain using an api",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -20,11 +20,11 @@
     ]
   },
   "dependencies": {
-    "@laoban/utils": "1.4.50",
-    "@laoban/fileops": "1.4.50",
-    "@itsmworkbench/domain": "0.0.29",
-    "@itsmworkbench/urlstore": "0.0.29",
-    "@itsmworkbench/git": "0.0.29",
+    "@laoban/utils": "1.4.51",
+    "@laoban/fileops": "1.4.51",
+    "@itsmworkbench/domain": "0.0.30",
+    "@itsmworkbench/urlstore": "0.0.30",
+    "@itsmworkbench/git": "0.0.30",
     "debug": "^4.3.4"
   },
   "devDependencies": {

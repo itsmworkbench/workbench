@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/dbpathsql",
   "description": "interacting with sql: using dbpath",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -20,11 +20,11 @@
     ]
   },
   "dependencies": {
-    "@laoban/utils": "1.4.50",
-    "@laoban/variables": "1.4.50",
-    "@itsmworkbench/shell": "0.0.29",
-    "@itsmworkbench/sql": "0.0.29",
-    "@itsmworkbench/utils": "0.0.29",
+    "@laoban/utils": "1.4.51",
+    "@laoban/variables": "1.4.51",
+    "@itsmworkbench/shell": "0.0.30",
+    "@itsmworkbench/sql": "0.0.30",
+    "@itsmworkbench/utils": "0.0.30",
     "debug": "^4.3.4"
   },
   "devDependencies": {

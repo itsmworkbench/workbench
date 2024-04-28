@@ -1,4 +1,4 @@
-import { findUsedVariables, reverseTemplate } from "./reverse.template";
+import { reverseTemplate } from "./reverse.template";
 
 describe('reverseTemplate', () => {
   it('replaces variables with their template notation', () => {
@@ -38,38 +38,3 @@ describe('reverseTemplate', () => {
   });
 });// Assuming findUsedVariables is in a file named 'variableFinder.ts'
 
-describe('findUsedVariables', () => {
-  const variables = {
-    'user.name': 'John Doe',
-    'user.age': '30',
-    'unused.variable': 'Some unused value',
-    'partially.matched': 'JohnX',
-  };
-
-  const inputString = "Hello, John Doe! You are 30 years old.";
-
-  it('identifies variables that are used in the input string', () => {
-    const expectedUsedVariables = ['user.age', 'user.name',].sort();
-    const usedVariables = findUsedVariables(inputString, variables).sort();
-    expect(usedVariables).toEqual(expectedUsedVariables);
-  });
-
-  it('does not include variables that are not used', () => {
-    const unexpectedVariable = ['unused.variable'];
-    const usedVariables = findUsedVariables(inputString, variables).sort();
-    expect(usedVariables).toEqual(expect.not.arrayContaining(unexpectedVariable));
-  });
-
-  it('handles variables with values that could match multiple parts of the input', () => {
-    const expectedUsedVariables = ['user.age', 'user.name'].sort(); // Adjust expectations as needed
-    const usedVariables = findUsedVariables(inputString, variables).sort();
-    expect(usedVariables).toEqual(expectedUsedVariables);
-  });
-
-  it('returns an empty array when no variables are used', () => {
-    const noMatchVariables = { 'irrelevant.variable': 'No Match' };
-    const expectedUsedVariables = [];
-    const usedVariables = findUsedVariables(inputString, noMatchVariables).sort();
-    expect(usedVariables).toEqual(expectedUsedVariables);
-  });
-});

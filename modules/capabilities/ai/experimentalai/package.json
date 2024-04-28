@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/experimentalai",
   "description": "Extracts variables from the ticket & Email recommendations --> using open-source AI",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -17,11 +17,11 @@
     ]
   },
   "dependencies": {
-    "@laoban/utils": "1.4.50",
-    "@laoban/variables": "1.4.50",
+    "@laoban/utils": "1.4.51",
+    "@laoban/variables": "1.4.51",
     "openai": "^4.28.4",
-    "@itsmworkbench/ai": "0.0.29",
-    "@itsmworkbench/utils": "0.0.29",
+    "@itsmworkbench/ai": "0.0.30",
+    "@itsmworkbench/utils": "0.0.30",
     "debug": "^4.3.4"
   },
   "devDependencies": {

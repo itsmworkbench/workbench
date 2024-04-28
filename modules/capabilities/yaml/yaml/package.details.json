@@ -5,7 +5,7 @@
   "packageJson": {
     "files":        ["build/"],
     "dependencies": {
-      "@laoban/utils":    "1.4.50"
+      "@laoban/utils":    "1.4.51"
     }
   },
   "links":       [

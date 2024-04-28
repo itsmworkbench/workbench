@@ -4,8 +4,8 @@
   "description": "Extracts variables from the ticket & Email recommendations --> using open-source AI",
   "packageJson": {
     "dependencies":     {
-      "@laoban/utils":      "1.4.50",
-      "@laoban/variables":  "1.4.50",
+      "@laoban/utils":      "1.4.51",
+      "@laoban/variables":  "1.4.51",
       "openai": "^4.28.4"
     },
     "devDependencies":  {},

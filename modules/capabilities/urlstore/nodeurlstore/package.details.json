@@ -4,8 +4,8 @@
   "description": "loads and saves itsm schema urls used with intellimaintain using node",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":    "1.4.50",
-      "@laoban/fileops":  "1.4.50",
+      "@laoban/utils":    "1.4.51",
+      "@laoban/fileops":  "1.4.51",
       "node":            "^v14.4.0"
     },
     "devDependencies": {},

@@ -1,0 +1,20 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/nodetemporal",
+  "description": "Code that only runs on node for temporallite",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils": "1.4.51"
+    },
+    "devDependencies": {
+    }
+  },
+  "links":       [
+    "@itsmworkbench/activities"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

@@ -4,7 +4,7 @@
   "description": "The configuration for the Intellimaintain project",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":  "1.4.50"
+      "@laoban/utils":  "1.4.51"
     },
     "devDependencies": {},
     "browser":         {

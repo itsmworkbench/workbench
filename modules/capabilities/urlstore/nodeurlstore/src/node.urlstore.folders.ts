@@ -24,7 +24,7 @@ export const urlFolders = ( config: OrganisationUrlStoreConfigForGit ): UrlFolde
             if ( childFolder.children.length > 0 ) folder.children.push ( childFolder );
           }
         } else if ( entry.isFile () && fullExtension ( entry.name ) === ext ) {
-          folder.children.push ( { name: entry.name, children: [] } );
+          folder.children.push ( { name: entry.name } );
         }
       }
       return errors.length > 0 ? errors : folder;

@@ -4,8 +4,8 @@
   "description": "code to support the api/sql integration",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":      "1.4.50",
-      "@laoban/variables":  "1.4.50"
+      "@laoban/utils":      "1.4.51",
+      "@laoban/variables":  "1.4.51"
     },
     "devDependencies": {}
   },
