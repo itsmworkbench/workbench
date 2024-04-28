@@ -24,7 +24,7 @@ export function runWithMetricsHookState<T> ( state: MetricHookState, fn: () => T
 }
 
 export function useIncMetric (): IncMetric {
-  return useMetricHookState ().incMetric || nullIncMetric
+  return useMetricHookState ()?.incMetric || nullIncMetric
 }
 export function useMetricHookState (): MetricHookState {
   return metricsHookState.getStore ()
@@ -32,14 +32,18 @@ export function useMetricHookState (): MetricHookState {
 
 export const loggingHookState = new AsyncLocalStorage<SafeLoggingHookState> ()
 
+export function useLog (): LogFn {
+  const state = loggingHookState.getStore ()
+  return state === undefined ? consoleLog : state.log
+}
 export function runWithLoggingHookState<T> ( state: LoggingHookState, fn: () => T ): T {
   return loggingHookState.run ( cleanLoggingHookState ( state ), fn )
 }
 export function runWithSafeLoggingHookState<T> ( state: SafeLoggingHookState, fn: () => T ): T {
   return loggingHookState.run ( state, fn )
 }
-export type LogFn = ( level: LogLevel, key: string ) => void
-export const consoleLog: LogFn = ( level, message ) => console.log ( level, message )
+export type LogFn = ( level: LogLevel, key: string, e?: any ) => void
+export const consoleLog: LogFn = ( level, message, e ) => (e === undefined ? console.log ( level, message ) : console.error ( level, message, e ))
 
 export type LoggingHookState = {
   timeService?: () => number

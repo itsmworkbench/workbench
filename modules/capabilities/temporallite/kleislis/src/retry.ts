@@ -6,6 +6,7 @@ export type RetryPolicyConfig = {
   initialInterval: number; // In milliseconds
   maximumInterval: number; // In milliseconds
   maximumAttempts: number;
+  multiplier?: number//default 2. For exponential backoff
   nonRecoverableErrors?: string[];
 };
 export const defaultRetryPolicy: RetryPolicyConfig = {
@@ -24,6 +25,7 @@ export function withRetry<P1, P2, P3, P4, P5, T> ( retryPolicy: RetryPolicyConfi
 
 export function withRetry<T> ( retryPolicy: RetryPolicyConfig | undefined, fn: ( ...args: any[] ) => Promise<T> ): Kleisli<T> {
   if ( retryPolicy === undefined ) retryPolicy = defaultRetryPolicy
+  const multiplier = retryPolicy.multiplier || 2;
   const nonRecoverableErrors = retryPolicy.nonRecoverableErrors || [];
   return async ( ...args: any ): Promise<T> => {
     let attempts = 0;
@@ -42,7 +44,7 @@ export function withRetry<T> ( retryPolicy: RetryPolicyConfig | undefined, fn: (
         }  // Rethrow if non-recoverable
         if ( ++attempts < retryPolicy.maximumAttempts ) {
           // Calculate next delay
-          delay = Math.min ( delay * 2, retryPolicy.maximumInterval );
+          delay = Math.min ( delay * multiplier, retryPolicy.maximumInterval );
           await new Promise ( resolve => setTimeout ( resolve, delay ) );
           incMetric ( 'activity.retry[' + attempts + ']' )
           return attemptExecution (); // Retry recursively

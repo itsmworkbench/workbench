@@ -25,6 +25,7 @@
     "@focuson/lens": "1.44.3",
     "@itsmworkbench/utils": "0.0.30",
     "@itsmworkbench/events": "0.0.30",
+    "@itsmworkbench/kleislis": "0.0.30",
     "@itsmworkbench/eventstore": "0.0.30",
     "debug": "^4.3.4"
   },
