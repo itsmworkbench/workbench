@@ -1,7 +1,8 @@
-import { workflow, WorkflowEngine } from "./workflow";
 import { NameAnd } from "@laoban/utils";
-import { activity, ActivityEngine } from "@itsmworkbench/activities";
 import { defaultRetryPolicy, inMemoryIncMetric, rememberUpdateCache, ReplayEvents } from "@itsmworkbench/kleislis";
+import { nodeActivity } from "./node.activities";
+import { nodeWorkflow, runWithWorkflowEngine } from "./node.workflow";
+import { WorkflowEngine } from "@itsmworkbench/workflow";
 
 export function makeWorkflowEngine ( existing: ReplayEvents, store: ReplayEvents, metrics: NameAnd<number> ): WorkflowEngine {
   return {
@@ -11,17 +12,17 @@ export function makeWorkflowEngine ( existing: ReplayEvents, store: ReplayEvents
     nextInstanceId: async ( workflowId: string ) => '1'
   }
 }
-export const activityAddOne = activity ( { id: 'addone' , retry: defaultRetryPolicy},
+export const activityAddOne = nodeActivity ( { id: 'addone', retry: defaultRetryPolicy },
   async ( input: number ): Promise<number> => input + 1 )
-export const activityAddFour = activity ( { id: 'addfour' , retry: defaultRetryPolicy },
+export const activityAddFour = nodeActivity ( { id: 'addfour', retry: defaultRetryPolicy },
   async ( input: number ): Promise<number> => input + 4 )
-export const activityAddEight = activity ( { id: 'addeight' , retry: defaultRetryPolicy },
+export const activityAddEight = nodeActivity ( { id: 'addeight', retry: defaultRetryPolicy },
   async ( input: number ): Promise<number> => input + 8 )
-export const wfAdd13 = workflow ( { id: 'wfAdd13' },
-  async ( engine: ActivityEngine, i: number ) => { //wow this sucks. All this rubbish with (engine). Need to move to zoom/nodeactivities and hide it
-    const first = await activityAddEight ( engine ) ( i )
-    const second = await activityAddFour ( engine ) ( first )
-    const third = activityAddOne ( engine ) ( second )
+export const wfAdd13 = nodeWorkflow ( { id: 'wfAdd13' },
+  async ( i: number ) => {
+    const first = await activityAddEight ( i )
+    const second = await activityAddFour ( first )
+    const third = activityAddOne ( second )
     return third
   } )
 
@@ -30,7 +31,7 @@ describe ( "workflow", () => {
     const store: ReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [], store, metrics );
-    const result = await wfAdd13.start ( engine ) ( 2 )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.start ( 2 ) )
 
     expect ( result.workflowId ).toEqual ( 'wfAdd13' )
     expect ( result.instanceId ).toEqual ( "1" )
@@ -51,7 +52,7 @@ describe ( "workflow", () => {
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [
       { "id": "addeight", "success": 10 } ], store, metrics );
-    const result = await wfAdd13.start ( engine ) ( 2 )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1', 2 ) )
 
     expect ( await result.result ).toBe ( 15 )
     expect ( store ).toEqual ( [
@@ -70,7 +71,7 @@ describe ( "workflow", () => {
     const engine: WorkflowEngine = makeWorkflowEngine ( [
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 } ], store, metrics );
-    const result = await wfAdd13.start ( engine ) ( 2 )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1', 2 ) )
 
     expect ( await result.result ).toBe ( 15 )
     expect ( store ).toEqual ( [ { "id": "addone", "success": 15 } ] )
@@ -87,7 +88,7 @@ describe ( "workflow", () => {
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 } ], store, metrics );
-    const result = await wfAdd13.start ( engine ) ( 2 )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1', 2 ) )
 
     expect ( await result.result ).toBe ( 15 )
     expect ( store ).toEqual ( [] )

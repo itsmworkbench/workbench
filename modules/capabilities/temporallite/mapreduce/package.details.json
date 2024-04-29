@@ -1,18 +1,17 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/nodetemporal",
-  "description": "Code that only runs on node for temporallite",
+  "name":        "@itsmworkbench/mapreduce",
+  "description": "workflow protected mapreduce for temporallite",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils": "1.4.51",
-      "node":          "^v14.4.0"
+      "@laoban/utils": "1.4.51"
     },
     "devDependencies": {
     }
   },
   "links":       [
     "@itsmworkbench/activities",
-    "@itsmworkbench/nodekleislis"
+    "@itsmworkbench/workflow"
   ],
   "guards":      {
     "compile": true,

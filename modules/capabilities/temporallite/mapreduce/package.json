@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/nodetemporal",
-  "description": "Code that only runs on node for temporallite",
+  "name": "@itsmworkbench/mapreduce",
+  "description": "workflow protected mapreduce for temporallite",
   "version": "0.0.30",
   "main": "dist/index",
   "types": "dist/index",
@@ -18,9 +18,8 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.51",
-    "node": "^v14.4.0",
     "@itsmworkbench/activities": "0.0.30",
-    "@itsmworkbench/nodekleislis": "0.0.30",
+    "@itsmworkbench/workflow": "0.0.30",
     "debug": "^4.3.4"
   },
   "devDependencies": {

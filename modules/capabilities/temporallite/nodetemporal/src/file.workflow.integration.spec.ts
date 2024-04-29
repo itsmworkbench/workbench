@@ -1,25 +1,27 @@
-import { activity, ActivityEvents } from "@itsmworkbench/activities";
+import { activity, } from "@itsmworkbench/activities";
 import { NameAnd } from "@laoban/utils";
 import { fileWorkflowEngine } from "./file.workflow.engine";
 import { defaultFileNamesForTemporal } from "./filenames";
 import { Workflow, workflow, Workflow1, WorkflowEngine } from "@itsmworkbench/workflow";
 import { createTempDir, loadEvents, loadMetrics, setEvents } from "./filenames.fixtures";
+import { nodeActivity, NodeWorkflow, nodeWorkflow, NodeWorkflow1, runWithWorkflowEngine } from "@itsmworkbench/nodekleislis";
+import { defaultRetryPolicy } from "@itsmworkbench/kleislis";
 
 const timeService = (): number => Date.UTC ( 2024, 3, 27, 14, 30, 0 );
 
 function names ( workspace: string ) {
   return defaultFileNamesForTemporal ( { timeService, workspace, template: '{seq}.events' } )
 }
-export const activityAddOne = activity ( { id: 'addone' },
+export const activityAddOne = nodeActivity ( { id: 'addone', retry: defaultRetryPolicy },
   async ( input: number ): Promise<number> => {
     const result = input + 1;
     return result;
   } )
-export const activityAddFour = activity ( { id: 'addfour' },
+export const activityAddFour = nodeActivity ( { id: 'addfour', retry: defaultRetryPolicy },
   async ( input: number ): Promise<number> => input + 4 )
-export const activityAddEight = activity ( { id: 'addeight' },
+export const activityAddEight = nodeActivity ( { id: 'addeight', retry: defaultRetryPolicy },
   async ( input: number ): Promise<number> => input + 8 )
-export const wfAdd13: Workflow1<number, number> = workflow ( { id: 'wfAdd13' },
+export const wfAdd13: NodeWorkflow1<number, number> = nodeWorkflow ( { id: 'wfAdd13' },
   async ( i: number ) => activityAddOne ( await activityAddFour ( await activityAddEight ( i ) ) ) )
 
 describe ( "workflow", () => {
@@ -35,7 +37,7 @@ describe ( "workflow", () => {
 
   it ( 'should execute a workflow', async () => {
     const engine: WorkflowEngine = fileWorkflowEngine ( names ( workspace ) );
-    const result = await wfAdd13.start ( engine, 2 )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.start ( 2 ) )
 
     expect ( await result.workflowId ).toEqual ( 'wfAdd13' )
     expect ( await result.result ).toBe ( 15 )
@@ -51,7 +53,7 @@ describe ( "workflow", () => {
     const engine: WorkflowEngine = fileWorkflowEngine ( names ( workspace ), 'instanceId' );
 
     await setEvents ( names ( workspace ), 'instanceId', [ { "id": "addeight", "success": 10 } ] )
-    const result = await wfAdd13.complete ( engine, 'instanceId', 2 ) //this should be a continue command not a start command
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( 'instanceId', 2 ) )
 
     expect ( await result.result ).toBe ( 15 )
 
@@ -79,7 +81,7 @@ describe ( "workflow", () => {
     const actualEvents = await loadEvents ( names ( workspace ), 'instanceId' )
     console.log ( 'actualEvents', actualEvents )
 
-    const result = await wfAdd13.complete ( engine, 'instanceId', 2 )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( 'instanceId', 2 ) )
 
     expect ( await result.result ).toBe ( 15 )
     const events = await loadEvents ( names ( workspace ), result.instanceId )
@@ -101,7 +103,7 @@ describe ( "workflow", () => {
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 } ] )
-    const result = await wfAdd13.complete ( engine, 'instanceId', 2 )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( 'instanceId', 2 ) )
 
     expect ( await result.result ).toBe ( 15 )
     const events = await loadEvents ( names ( workspace ), result.instanceId )

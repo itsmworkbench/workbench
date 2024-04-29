@@ -96,7 +96,7 @@ describe ( 'File Lock Tests', () => {
         debug: true
       };
 
-      const result = await seeIfCanClaim ( details, console.log, new Error ( 'Lock is held' ) );
+      const result =  await seeIfCanClaim ( details, console.log, new Error ( 'Lock is held' ) );
       expect ( result ).toBe ( true );
       // Check if the file is gone indicating it was deleted and re-created
       await expect ( fs.access ( lockFilePath ) ).resolves.toBeUndefined ();

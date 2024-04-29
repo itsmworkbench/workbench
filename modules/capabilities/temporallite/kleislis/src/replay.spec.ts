@@ -1,14 +1,11 @@
-import { runWithWorkflowHookState, runWithWorkflowLogsAndMetrics } from "./async.hooks";
-import { withReplay } from "./replay";
 import { NameAnd } from "@laoban/utils";
-import { ActivityEvents } from "./activity.events";
-import { inMemoryIncMetric } from "@itsmworkbench/kleislis"
-
+import { inMemoryIncMetric } from "./metrics";
+import { ReplayEngine, ReplayEvents, withReplay } from "./replay";
 
 describe ( 'replay', () => {
   const activityId = 'testActivity';
   let replayState;
-  let updateState: ActivityEvents // Separate state for updates
+  let updateState: ReplayEvents // Separate state for updates
   let metrics: NameAnd<number> = {}
   const incMetric = inMemoryIncMetric ( metrics );
   const empty = { workflowId: 'someId', workflowInstanceId: 'anotherId', currentReplayIndex: 0 }
@@ -18,16 +15,16 @@ describe ( 'replay', () => {
     for ( const key in metrics ) delete metrics[ key ]
   } );
 
-  const updateCache = async ( e ) => {updateState.push ( e )}
+  const updateEventHistory = async ( e ) => {updateState.push ( e )}
 
 
   it ( 'should return a cached success result without executing the function', async () => {
     const fn = jest.fn ( () => Promise.resolve ( 'new data' ) );
     replayState.push ( { id: activityId, success: 'cached data' } ); // Add a successful replay item
 
+    const engine: ReplayEngine = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory }
     const replayFunction = withReplay<string> ( activityId, fn );
-    const result = await runWithWorkflowLogsAndMetrics ( { ...empty, replayState, updateEventHistory: updateCache }, { incMetric }, {},
-      async () => await replayFunction () );
+    const result = await replayFunction ( engine ) ();
 
     expect ( result ).toBe ( 'cached data' );
     expect ( fn ).not.toHaveBeenCalled ();
@@ -39,9 +36,10 @@ describe ( 'replay', () => {
     const fn = jest.fn ( () => Promise.resolve ( 'new data' ) );
     // No previous executions or cached results
 
+    const engine: ReplayEngine = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory }
     const replayFunction = withReplay ( activityId, fn );
-    const result = await runWithWorkflowLogsAndMetrics ( { ...empty, replayState, updateEventHistory: updateCache }, { incMetric }, {},
-      async () => await replayFunction () );
+
+    const result = await replayFunction ( engine ) ()
 
     expect ( result ).toBe ( 'new data' );
     expect ( fn ).toHaveBeenCalledTimes ( 1 );
@@ -53,10 +51,10 @@ describe ( 'replay', () => {
     const fn = jest.fn ( () => Promise.resolve ( 'new data' ) );
     replayState.push ( { id: activityId, failure: new Error ( 'Error during execution' ) } ); // Add a failed replay item
 
+    const engine: ReplayEngine = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory }
     const replayFunction = await withReplay ( activityId, fn );
 
-    const result = await runWithWorkflowLogsAndMetrics ( { ...empty, replayState, updateEventHistory: updateCache }, { incMetric }, {},
-      async () => await replayFunction () );
+    const result = replayFunction ( engine ) ();
     // Expect the function to throw the recorded error
     await expect ( result ).rejects.toThrow ( 'Error during execution' );
     expect ( fn ).not.toHaveBeenCalled ();

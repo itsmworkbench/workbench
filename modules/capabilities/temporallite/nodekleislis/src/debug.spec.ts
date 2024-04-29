@@ -1,5 +1,6 @@
-import { withDebug } from "./debug";
-import { LogConfig0, LogLevel } from "./log";
+import { LogConfig0, LogLevel } from "@itsmworkbench/kleislis";
+import { withUseLoggingDebug } from "./debug";
+import { runWithLoggingHookState } from "./node.log";
 
 const empty = {
   globalLogLevel: 'TRACE' as LogLevel,
@@ -12,7 +13,7 @@ const empty = {
 describe ( 'withDebug', () => {
   it ( 'should log entering and exiting messages and return the function result', async () => {
     const storedLog: { level: LogLevel, message: string }[] = [];
-    const log = ( lvl, message ) => storedLog.push ( { level: lvl, message } );
+    const testState = { ...empty, log: ( lvl, message ) => storedLog.push ( { level: lvl, message } ) };
 
     const mockFn = jest.fn ().mockResolvedValue ( 'mock result' );
     const config: LogConfig0<any> & { id: string } = {
@@ -20,61 +21,62 @@ describe ( 'withDebug', () => {
       loglevel: 'INFO'
     };
 
-    const result = await withDebug<number, number, number, number> ( config, log, mockFn ) ( 1, 2, 3 )
+    const wrappedFunction = withUseLoggingDebug<number, number, number, number> ( config, mockFn );
+
+    let result;
+    await runWithLoggingHookState ( testState, async () => {
+      result = await wrappedFunction ( 1, 2, 3 );
+    } );
 
     expect ( result ).toBe ( 'mock result' );
     expect ( mockFn ).toHaveBeenCalled ();
     expect ( storedLog ).toEqual ( [
-      {
-        "level": "INFO",
-        "message": "Entering testFunction with 1,2,3"
-      },
-      {
-        "level": "INFO",
-        "message": "Exiting testFunction with \"mock result\""
-      }
-    ] )
+      { "level": "INFO", "message": "1622547600000 INFO [CorrelationId: 12345] Entering  with 1,2,3" },
+      { "level": "INFO", "message": "1622547600000 INFO [CorrelationId: 12345] Exiting  with \"mock result\"" } ] )
   } );
 
   it ( 'should log entering and exiting messages with custom templates and return the function result', async () => {
     const storedLog: { level: LogLevel, message: string }[] = [];
-    const log = ( lvl, message ) => storedLog.push ( { level: lvl, message } );
+    const testState = { ...empty, log: ( lvl, message ) => storedLog.push ( { level: lvl, message } ) };
 
     const mockFn = jest.fn ().mockResolvedValue ( 'mock result' );
     const config: LogConfig0<any> & { id: string } = {
       id: 'testFunction',
       loglevel: 'INFO',
-      enterMessage: 'Custom {id} with {in} and {p1}',
-      exitMessage: 'Custom {id} with {out}'
+      enterMessage: 'Custom {id} with {in} using param {a} ',
+      exitMessage: 'Custom {id} with {out} and correlationid {correlationId}'
     };
 
-    const wrappedFunction = withDebug ( config, log, mockFn );
+    const wrappedFunction = withUseLoggingDebug<number, number, number, number> ( config, mockFn );
 
-    const result = await withDebug<number, number, number, number> ( config, log, mockFn ) ( 1, 2, 3 )
+    let result;
+    await runWithLoggingHookState ( testState, async () => {
+      result = await wrappedFunction ( 1, 2, 3 );
+    } );
 
     expect ( result ).toBe ( 'mock result' );
     expect ( mockFn ).toHaveBeenCalled ();
     expect ( storedLog ).toEqual ( [
-      {
-        "level": "INFO",
-        "message": "Custom testFunction with 1,2,3 and 1"
-      },
-      {
-        "level": "INFO",
-        "message": "Custom testFunction with \"mock result\""
-      }
+      { "level": "INFO", "message": "1622547600000 INFO [CorrelationId: 12345] Custom  with 1,2,3 using param 1 " },
+      { "level": "INFO", "message": "1622547600000 INFO [CorrelationId: 12345] Custom  with \"mock result\" and correlationid 12345" }
     ] )
 
   } )
 
   it ( 'should directly execute the function without logging if loglevel, enterMessage, and exitMessage are undefined', async () => {
     const storedLog: { level: LogLevel, message: string }[] = [];
-    const log = ( lvl, message ) => storedLog.push ( { level: lvl, message } );
+    const testState = { ...empty, log: ( lvl, message ) => storedLog.push ( { level: lvl, message } ) };
+
 
     const mockFn = jest.fn ().mockResolvedValue ( 'direct result' );
     const config: LogConfig0<any> & { id: string } = { id: 'directFunction' }; // No logging info
 
-    const result = await withDebug<number, number, number, string> ( config, log, mockFn ) ( 1, 2, 3 )
+    const wrappedFunction = withUseLoggingDebug ( config, mockFn );
+
+    let result;
+    await runWithLoggingHookState ( testState, async () => {
+      result = await wrappedFunction ();
+    } );
 
     expect ( result ).toBe ( 'direct result' );
     expect ( mockFn ).toHaveBeenCalled ();

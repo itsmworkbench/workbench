@@ -1,7 +1,7 @@
 import fs from "fs";
-import { ActivityEvents } from "@itsmworkbench/activities";
 import { FileNamesForTemporal } from "./filenames";
 import { NameAnd } from "@laoban/utils";
+import { ReplayEvents } from "@itsmworkbench/kleislis";
 
 export async function createTempDir () {
   // let prefix = os.tmpdir () + "/filenames";
@@ -14,12 +14,12 @@ export async function removeTempDir ( dir ) {
   await fs.promises.rm ( dir, { recursive: true } );
 }
 
-export function setEvents ( names: FileNamesForTemporal, workspaceInstanceId: string, events: ActivityEvents ) {
+export function setEvents ( names: FileNamesForTemporal, workspaceInstanceId: string, events: ReplayEvents ) {
   const file = names.eventHistory ( workspaceInstanceId );
-  return fs.promises.writeFile ( file, events.map ( e => JSON.stringify ( e ) + '\n' ).join ('') )
+  return fs.promises.writeFile ( file, events.map ( e => JSON.stringify ( e ) + '\n' ).join ( '' ) )
 }
 
-export async function loadEvents ( names: FileNamesForTemporal, workspaceInstanceId: string ): Promise<ActivityEvents> {
+export async function loadEvents ( names: FileNamesForTemporal, workspaceInstanceId: string ): Promise<ReplayEvents> {
   const file = names.eventHistory ( workspaceInstanceId );
   const lines = await fs.promises.readFile ( file, 'utf8' )
   try {
@@ -32,6 +32,6 @@ export async function loadEvents ( names: FileNamesForTemporal, workspaceInstanc
 }
 export async function loadMetrics ( names: FileNamesForTemporal, workspaceInstanceId: string ): Promise<NameAnd<number>> {
   const file = names.metrics ( workspaceInstanceId );
-  console.log('loading metrics from file', file)
+  console.log ( 'loading metrics from file', file )
   return fs.promises.readFile ( file, 'utf8' ).then ( data => JSON.parse ( data ) )
 }

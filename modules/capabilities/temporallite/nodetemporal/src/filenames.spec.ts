@@ -1,6 +1,7 @@
 import { fileNextInstanceId, getRootWorkspaceInstanceName } from "./filenames";
 import fs from "fs";
 import path from "node:path";
+import { createTempDir, removeTempDir } from "./filenames.fixtures";
 
 const mockTimeService = (): number => Date.UTC ( 2024, 3, 27, 14, 30, 0 );
 describe ( 'getRootWorkspaceInstanceName', () => {
@@ -28,7 +29,13 @@ describe ( 'getRootWorkspaceInstanceName', () => {
 
 describe ( 'File Operation Tests', () => {
   let tempDir;
+  beforeEach ( async () => {
+    tempDir = await createTempDir ();
+  } );
 
+  afterEach ( async () => {
+    await removeTempDir ( tempDir );
+  } );
 
   //could do with more goodness around this
   it ( 'should generate a unique file path based on the given config and workflow ID', async () => {
@@ -51,6 +58,6 @@ describe ( 'File Operation Tests', () => {
 
     // Check if the directory and file were created
     const fullPath = path.join ( tempDir, uniquePath );
-    expect ( fs.existsSync ( fullPath + ".events") ).toBeTruthy ();
+    expect ( fs.existsSync ( fullPath + ".events" ) ).toBeTruthy ();
   } );
 } );

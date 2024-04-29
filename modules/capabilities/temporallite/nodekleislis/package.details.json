@@ -1,0 +1,23 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/nodekleislis",
+  "description": "higher order functions for kleislis that only work on node (use async-hooks)",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":     "1.4.51",
+      "@laoban/variables": "1.4.51",
+      "node":              "^v14.4.0"
+    },
+    "devDependencies": {
+    }
+  },
+  "links":       [
+    "@itsmworkbench/kleislis",
+    "@itsmworkbench/workflow"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

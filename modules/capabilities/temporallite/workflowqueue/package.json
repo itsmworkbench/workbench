@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/nodetemporal",
-  "description": "Code that only runs on node for temporallite",
+  "name": "@itsmworkbench/workflowqueue",
+  "description": "a queue of workflow instances that need to be processed/are being processed",
   "version": "0.0.30",
   "main": "dist/index",
   "types": "dist/index",
@@ -18,8 +18,6 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.51",
-    "node": "^v14.4.0",
-    "@itsmworkbench/activities": "0.0.30",
     "@itsmworkbench/nodekleislis": "0.0.30",
     "debug": "^4.3.4"
   },

@@ -1,7 +1,8 @@
 import { Timeservice } from "@itsmworkbench/utils";
 import { constants, promises as fs } from "fs";
-import { K0, K1, K2, K3, K4, K5, LogFn, RetryPolicyConfig, useLog, withRetry } from "@itsmworkbench/kleislis";
+import { K0, K1, K2, K3, K4, K5, LogFn, RetryPolicyConfig, withRetry } from "@itsmworkbench/kleislis";
 import path from "path";
+import { useLogging } from "@itsmworkbench/nodekleislis";
 
 
 //we want a file lock
@@ -60,7 +61,7 @@ export async function seeIfCanClaim ( details: RecoverableFileLockDetails, log: 
   } ) ()
 }
 export async function createLockAndCheckIfCanRecover ( details: RecoverableFileLockDetails ): Promise<void> {
-  const log: LogFn = useLog ()
+  const log: LogFn = useLogging ()
   try {
     if ( details.debug ) log ( 'DEBUG', 'acquiring lock ' + details.lockFilePath )
     await createLock ( details );

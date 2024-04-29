@@ -1,5 +1,5 @@
 import { K0, K1, K2, K3, K4, K5, Kleisli } from "./kleisli";
-import { useIncMetric } from "./async.hooks";
+import { IncMetric, nullIncMetric } from "./metrics";
 
 
 export type RetryPolicyConfig = {
@@ -15,7 +15,6 @@ export const defaultRetryPolicy: RetryPolicyConfig = {
   maximumAttempts: 3,
 }
 
-// export type RetryResult<T> = { result: T, attempts: number };
 export function withRetry<T> ( retryPolicy: RetryPolicyConfig, fn: K0<T> ): K0<T>;
 export function withRetry<P1, T> ( retryPolicy: RetryPolicyConfig, fn: K1<P1, T> ): K1<P1, T>;
 export function withRetry<P1, P2, T> ( retryPolicy: RetryPolicyConfig, fn: K2<P1, P2, T> ): K2<P1, P2, T>;
@@ -24,13 +23,23 @@ export function withRetry<P1, P2, P3, P4, T> ( retryPolicy: RetryPolicyConfig, f
 export function withRetry<P1, P2, P3, P4, P5, T> ( retryPolicy: RetryPolicyConfig, fn: K5<P1, P2, P3, P4, P5, T> ): K5<P1, P2, P3, P4, P5, T>;
 
 export function withRetry<T> ( retryPolicy: RetryPolicyConfig | undefined, fn: ( ...args: any[] ) => Promise<T> ): Kleisli<T> {
+  return withMeteredRetry ( retryPolicy, nullIncMetric, fn );
+}
+
+export function withMeteredRetry<T> ( retryPolicy: RetryPolicyConfig, incMetric: IncMetric, fn: K0<T> ): K0<T>;
+export function withMeteredRetry<P1, T> ( retryPolicy: RetryPolicyConfig, incMetric: IncMetric, fn: K1<P1, T> ): K1<P1, T>;
+export function withMeteredRetry<P1, P2, T> ( retryPolicy: RetryPolicyConfig, incMetric: IncMetric, fn: K2<P1, P2, T> ): K2<P1, P2, T>;
+export function withMeteredRetry<P1, P2, P3, T> ( retryPolicy: RetryPolicyConfig, incMetric: IncMetric, fn: K3<P1, P2, P3, T> ): K3<P1, P2, P3, T>;
+export function withMeteredRetry<P1, P2, P3, P4, T> ( retryPolicy: RetryPolicyConfig, incMetric: IncMetric, fn: K4<P1, P2, P3, P4, T> ): K4<P1, P2, P3, P4, T>;
+export function withMeteredRetry<P1, P2, P3, P4, P5, T> ( retryPolicy: RetryPolicyConfig, incMetric: IncMetric, fn: K5<P1, P2, P3, P4, P5, T> ): K5<P1, P2, P3, P4, P5, T>;
+
+export function withMeteredRetry<T> ( retryPolicy: RetryPolicyConfig | undefined, incMetric: IncMetric, fn: ( ...args: any[] ) => Promise<T> ): Kleisli<T> {
   if ( retryPolicy === undefined ) retryPolicy = defaultRetryPolicy
   const multiplier = retryPolicy.multiplier || 2;
   const nonRecoverableErrors = retryPolicy.nonRecoverableErrors || [];
   return async ( ...args: any ): Promise<T> => {
     let attempts = 0;
     let delay = retryPolicy.initialInterval;
-    let incMetric = useIncMetric ();
     const attemptExecution = async (): Promise<T> => {
       try {
         incMetric ( 'activity.attempts' );

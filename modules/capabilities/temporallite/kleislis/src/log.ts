@@ -11,6 +11,8 @@ export const LogLevelValue = {
   ERROR: 4,
   NONE: 5
 }
+export type LogFn = ( level: LogLevel, key: string, e?: any ) => void
+export const consoleLog: LogFn = ( level, message, e ) => (e === undefined ? console.log ( level, message ) : console.error ( level, message, e ))
 
 export interface LogConfig0<T> {
   loglevel?: LogLevel; //overrides default when enterMessage and/or exitMessage are set. This allows us to do logging even when the log level is (say) NONE
@@ -81,29 +83,3 @@ export function makeObjectFromParamsAndOutput ( config: LogConfig<any>, template
   result[ 'out' ] = modify ( config, output, 'formatOutput' )
   return result;
 }
-//
-//
-// export function log<T> ( config: LogConfig<T>, fn: ( ...args: any[] ) => Promise<T> ): ( ...args: any[] ) => Promise<T> {
-//   const { loglevel, formatOutput = defaultFormatOutput } = config;
-//   const formatInput = getFormatInput ( config );
-//   return async ( ...args: any[] ): Promise<T> => {
-//     if ( loglevel === 'none' ) {
-//       return fn ( ...args );
-//     }
-//     const inputs = args.map ( ( arg, index ) => formatInput ( arg, index + 1 ) );
-//     console.log ( `Log: ${inputs.join ( ', ' )}` );
-//     try {
-//       const output = await fn ( ...args );
-//       console.log ( `Log: ${formatOutput ( output )}` );
-//       return output;
-//     } catch ( error ) {
-//       console.error ( `Log: ${error.message}` );
-//       throw error;
-//     }
-//   };
-//
-// }
-//
-// // Default log formatting functions
-// const defaultFormatInput = ( inputs: any[] ): string => JSON.stringify ( inputs );
-// const defaultFormatOutput = ( output: any ): string => JSON.stringify ( output );

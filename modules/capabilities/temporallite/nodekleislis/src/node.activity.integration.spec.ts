@@ -1,9 +1,10 @@
-import { activity, ActivityEngine } from "./activities";
 import { NameAnd } from "@laoban/utils";
-import { defaultRetryPolicy, inMemoryIncMetric, ReplayEvent, ReplayEvents } from "@itsmworkbench/kleislis";
+import { defaultRetryPolicy, inMemoryIncMetric, ReplayEvents } from "@itsmworkbench/kleislis";
+import { nodeActivity, runWithActivityEngine } from "./node.activities";
 
 
-export const addOneA = activity ( { id: 'addone', retry: defaultRetryPolicy }, async ( input: number ): Promise<number> => input + 1 )
+export const addOneA = nodeActivity ( { id: 'addone', retry: defaultRetryPolicy },
+  async ( input: number ): Promise<number> => input + 1 )
 
 describe ( "activity", () => {
   it ( "should have the config", () => {
@@ -12,38 +13,36 @@ describe ( "activity", () => {
   it ( "should have the raw function", () => {
     expect ( addOneA.raw ( 1 ) ).resolves.toBe ( 2 )
   } )
-
-  it ( 'should execute when passed an engine', async () => {
-    const remembered: ReplayEvents = []
+  it ( 'should execute if there is a workflowHookState', async () => {
+    const store: ReplayEvents = []
     let metrics: NameAnd<number> = {};
-    const engine: ActivityEngine = { incMetric: inMemoryIncMetric ( metrics ), updateEventHistory: e => remembered.push ( e ) }
-    const result = await addOneA ( engine ) ( 1 )
-
+    const incMetric = inMemoryIncMetric ( metrics )
+    const activityEngine = { incMetric, updateEventHistory: e => store.push ( e ) }
+    const result = await runWithActivityEngine ( activityEngine, () => addOneA ( 1 ) )
     expect ( result ).toBe ( 2 )
+    expect ( store ).toEqual ( [ { id: 'addone', success: 2 } ] )
     expect ( metrics ).toEqual ( {
       "activity.attempts": 1,
       "activity.success": 1
     } )
-    expect ( remembered ).toEqual ( [ { id: 'addone', success: 2 } ] )
   } )
   it ( "should keep retrying until it succeeds if there is a suitable retry policy", async () => {
     let addOneErrorCount = 0
-    const addOneAErrorFourTimes = activity ( {
+    const addOneAErrorFourTimes = nodeActivity ( {
       id: 'addOneError',
       retry: { initialInterval: 10, maximumInterval: 20, maximumAttempts: 5 }
     }, async ( input: number ): Promise<number> => {
       if ( addOneErrorCount++ < 4 ) throw new Error ( 'addOneError: ' + addOneErrorCount )
       return input + 1;
     } )
-    const replayState: ReplayEvents = []
+    const store: ReplayEvents = []
     const metrics: NameAnd<number> = {}
     const incMetric = inMemoryIncMetric ( metrics )
-    const engine: ActivityEngine = { incMetric: inMemoryIncMetric ( metrics ), updateEventHistory: e => replayState.push ( e )  }
+    const activityEngine = { incMetric, updateEventHistory: e => store.push ( e ) }
 
-    const result = await addOneAErrorFourTimes ( engine ) ( 1 )
-
+    const result = await runWithActivityEngine ( activityEngine, () => addOneAErrorFourTimes ( 1 ) )
     expect ( result ).toBe ( 2 )
-    expect ( replayState ).toEqual ( [
+    expect ( store ).toEqual ( [
       { id: 'addOneError', success: 2 }
     ] )
     expect ( metrics ).toEqual ( {

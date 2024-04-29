@@ -1,5 +1,5 @@
-import { withRetry } from "./retry";
-import { runWithMetricsHookState } from "./async.hooks";
+import { withMeteredRetry, withRetry } from "./retry";
+
 import { NameAnd } from "@laoban/utils";
 import { inMemoryIncMetric } from "./metrics";
 
@@ -18,8 +18,7 @@ describe ( 'withRetry', () => {
       maximumInterval: 20, // ms
       maximumAttempts: 3
     };
-    const fetchDataWithRetry = withRetry ( retryConfig, fetchData );
-    const result = await runWithMetricsHookState ( { incMetric } as any, fetchDataWithRetry );
+    const result =await  withMeteredRetry ( retryConfig, incMetric, fetchData ) ()
 
     expect ( fetchData ).toHaveBeenCalledTimes ( 1 );
     expect ( result ).toBe ( 'Data' );
@@ -37,8 +36,7 @@ describe ( 'withRetry', () => {
       maximumAttempts: 3
     };
 
-    const fetchDataWithRetry = withRetry ( retryConfig, fetchData );
-    const result = await runWithMetricsHookState ( { incMetric } as any, fetchDataWithRetry );
+    const result = await withMeteredRetry ( retryConfig, incMetric, fetchData ) ();
 
     expect ( fetchData ).toHaveBeenCalledTimes ( 2 ); // Should be called twice: fail then succeed
     expect ( result ).toBe ( 'Data' );
@@ -53,9 +51,7 @@ describe ( 'withRetry', () => {
       maximumAttempts: 3
     };
 
-    const fetchDataWithRetry = withRetry ( retryConfig, fetchData );
-
-    const result = runWithMetricsHookState ( { incMetric } as any, fetchDataWithRetry );
+    const result = withMeteredRetry ( retryConfig, incMetric, fetchData ) ();
 
 
     await expect ( result ).rejects.toThrow ( 'Network error' );
@@ -81,8 +77,7 @@ describe ( 'withRetry', () => {
     };
 
     // Create the retry wrapper
-    const retryFn = withRetry ( retryPolicy, fn );
-    const result = runWithMetricsHookState ( { incMetric } as any, retryFn );
+    const result = withMeteredRetry ( retryPolicy, incMetric, fn ) ()
 
     // Expect the function to throw the non-recoverable error
     await expect ( result ).rejects.toThrow ( "Fatal error" );
