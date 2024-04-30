@@ -51,6 +51,7 @@ describe ( "workflow", () => {
     const store: ReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 } ], store, metrics );
     const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1', 2 ) )
 
@@ -69,6 +70,7 @@ describe ( "workflow", () => {
     const store: ReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 } ], store, metrics );
     const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1', 2 ) )
@@ -85,6 +87,7 @@ describe ( "workflow", () => {
     const store: ReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 } ], store, metrics );

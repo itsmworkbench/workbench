@@ -29,32 +29,34 @@ type IndexingResult = {
   jira: string[]
 }
 
-const indexEmail = activity<string, string[], string> ( { id: 'indexEmail' }, async ( index: number, ids: string[] ) => {
-  const file: string = fileNameForEmail ( index )
-  for ( const id of ids ) {
-    const emailData = await getEmailData ( id )
-    const transformed = await transformEmailData ( emailData )
-    appendToFile ( file, transformed )
-    return file
-  }
-} )
+const indexEmail = activity<string, string[], string> ( { id: 'indexEmail' },
+  async ( index: number, ids: string[] ) => {
+    const file: string = fileNameForEmail ( index )
+    for ( const id of ids ) {
+      const emailData = await getEmailData ( id )
+      const transformed = await transformEmailData ( emailData )
+      appendToFile ( file, transformed )
+      return file
+    }
+  } )
 
-const email = nodeWorkflow ( { id: 'indexemail' }, async ( config: string ) => {
-  const listIdIds = configToEmailIds ( config )
-  const idGroups: string[][] = partition ( ids )
-  return mapK ( idGroups, ( idGroup, index ) => indexEmail.start ( engine, index, idGroup ) )
+const email = nodeWorkflow ( { id: 'indexemail' },
+  async ( config: string ) => {
+    const listIdIds = configToEmailIds ( config )
+    const idGroups: string[][] = partition ( ids )
+    return mapK ( idGroups, ( idGroup, index ) => indexEmail.start ( engine, index, idGroup ) )
 
-} );
+  } );
 const teams = nodeWorkflow ( { id: 'indexteams' }, async ( config: string ) => [] );
 const sap = nodeWorkflow ( { id: 'indexsap' }, async ( config: string ) => [] );
 const jira = nodeWorkflow ( { id: 'indexjira' }, async ( config: string ) => [] );
 
 
 const indexing = nodeWorkflow ( { id: 'indexing' }, async ( config: string ) => {
-  const emailResult = await email.start (  config );
-  const teamsResult = await teams.start (  config );
-  const sapResult = await sap.start (  config );
-  const jiraResult = await jira.start (  config );
+  const emailResult = await email.start ( config );
+  const teamsResult = await teams.start ( config );
+  const sapResult = await sap.start ( config );
+  const jiraResult = await jira.start ( config );
   return {
     emails: await emailResult.result,
     teams: await teamsResult.result,
@@ -64,4 +66,44 @@ const indexing = nodeWorkflow ( { id: 'indexing' }, async ( config: string ) => 
 } )
 
 //wow. that's actually quite pretty
+//note even without the node backing store... if we just use 'no backing store' we still get the benefits of the retry and throttle
 
+
+const indexToLocalStorage = nodeWorkflow ( { id: 'indexing' }, async ( config: string ) => {
+  //these only push to local storage in this example
+  const emailResult = await email.start ( config );
+  const teamsResult = await teams.start ( config );
+  const sapResult = await sap.start ( config );
+  const jiraResult = await jira.start ( config );
+  return {
+    emails: await emailResult.result,
+    teams: await teamsResult.result,
+    sap: await sapResult.result,
+    jira: await jiraResult.result
+  }
+} )
+
+const transform = nodeWorkflow ( { id: 'transform' }, async ( config: string ) => {
+  let item = config
+  while ( true ) {
+    item = getNextItemToTransformActivity ( item )
+    transformItemAndPutInLocalStorage ( item )
+  }
+})
+
+//probably only need one of these...it's pretty fast and it's a reduce
+const pushResults = nodeWorkflow ( { id: 'pushResults' }, async ( config: string ) => {
+  let item = config
+  while ( true ) {
+    item = getNextItemToTransformActivity ( item )
+  }
+} )
+
+const batchIndex = nodeWorkflow ( { id: 'batchIndex' }, async ( config: string ) => {
+  const partitionResults = partitionWork(config)
+  const indexToLocal =  await indexToLocalStorage.start ( partitionResults );
+  const transformResults =  await transform.start ( partitionResults);
+  const pushResultsResults =  await pushResults.start (partitionResults );
+
+
+}

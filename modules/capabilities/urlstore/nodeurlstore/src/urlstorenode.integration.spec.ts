@@ -143,7 +143,7 @@ describe ( "list", () => {
 
 describe ( 'folders', () => {
   it ( 'should list folders when no path specified', async () => {
-    await fs.promises.rm ( testDir + "/org/namespace/path", { recursive: true, force: true } )
+    await fs.promises.rm ( (await testDir) + "/org1/namespace/path", { recursive: true, force: true } )
     const dir1 = (await testDir) + '/org1/namespace/path/somedir1'
     const dir2 = (await testDir) + '/org1/namespace/path/somedir2'
     await fs.promises.mkdir ( dir1, { recursive: true } )
@@ -155,7 +155,7 @@ describe ( 'folders', () => {
     const store = nodeUrlstore ( gitOps, orgToDetails ( await testDir ) )
     const folders = await store.folders ( 'org1', 'ns1' )
     expect ( folders ).toEqual ( {
-      "children": [ { "name": "file1.txt" },
+      "children": [
         { "children": [ { "name": "hello.txt" } ], "name": "somedir1" },
         { "children": [ { "name": "goodbye.txt" } ], "name": "somedir2" }
       ],
@@ -163,7 +163,8 @@ describe ( 'folders', () => {
     } )
   } )
   it ( 'should list folders when path specified', async () => {
-    await fs.promises.rm ( testDir + "/org/namespace/path", { recursive: true, force: true } )
+    const dir = (await testDir) + "/org1/namespace/path";
+    await fs.promises.rm ( dir, { recursive: true, force: true } )
     const dir1 = (await testDir) + '/org1/namespace/path/somedir1'
     const dir11 = (await testDir) + '/org1/namespace/path/somedir1/one'
     const dir12 = (await testDir) + '/org1/namespace/path/somedir1/two'

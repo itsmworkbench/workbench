@@ -1,4 +1,4 @@
-import { IncMetric, InjectedK0, InjectedK1, InjectedK2, InjectedK3, InjectedK4, InjectedK5, isParamsEvent, ReplayEvent, ReplayEvents, Sideeffect } from "@itsmworkbench/kleislis";
+import { IncMetric, InjectedK0, InjectedK1, InjectedK2, InjectedK3, InjectedK4, InjectedK5, isParamsEvent, ReplayEvent, ReplayEvents, replyEventProcessor, Sideeffect } from "@itsmworkbench/kleislis";
 import { ActivityEngine, } from "@itsmworkbench/activities";
 import { LoggingHookState } from "@itsmworkbench/nodekleislis";
 
@@ -21,11 +21,13 @@ export interface WorkflowEngine {
 export async function workflowEngineToActivityEngine ( engine: WorkflowEngine, workflowInstanceId: string ): Promise<ActivityEngine> {
   const replayState = engine.existingState ? await engine.existingState ( workflowInstanceId ) : undefined
   const currentReplayIndex = 1; //the zeroth item is a params event. In complete we have already used this
+  const incMetric = engine.incMetric ? engine.incMetric ( workflowInstanceId ) : undefined;
   return {
     currentReplayIndex,
     replayState,
+    eventProcessor:replyEventProcessor(incMetric),
     updateEventHistory: engine.updateEventHistory ? engine.updateEventHistory ( workflowInstanceId ) : undefined,
-    incMetric: engine.incMetric ? engine.incMetric ( workflowInstanceId ) : undefined,
+    incMetric,
     writeMetrics: engine.writeMetrics ? await engine.writeMetrics ( workflowInstanceId ) : undefined,
     logFn: engine.logging?.log
   }

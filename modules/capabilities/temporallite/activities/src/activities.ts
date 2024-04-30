@@ -1,11 +1,11 @@
-import { consoleLog, defaultRetryPolicy, IncMetric, Injected, InjectedK0, InjectedK1, InjectedK2, InjectedK3, InjectedK4, InjectedK5, K0, K1, K2, K3, K4, K5, Kleisli, LogConfig, LogConfig0, LogConfig1, LogConfig2, LogConfig3, LogConfig4, LogConfig5, nullIncMetric, RetryPolicyConfig, Sideeffect, Throttling, withDebug, withMeteredRetry, withThrottle, withWriteMetrics } from "@itsmworkbench/kleislis";
+import { consoleLog, defaultRetryPolicy, IncMetric, Injected, InjectedK0, InjectedK1, InjectedK2, InjectedK3, InjectedK4, InjectedK5, K0, K1, K2, K3, K4, K5, Kleisli, LogConfig, LogConfig0, LogConfig1, LogConfig2, LogConfig3, LogConfig4, LogConfig5, nullIncMetric, ReplayEvent, RetryPolicyConfig, Sideeffect, Throttling, withDebug, withMeteredRetry, withThrottle, withWriteMetrics } from "@itsmworkbench/kleislis";
 
 import { ReplayEngine, withReplay } from "@itsmworkbench/kleislis";
 import { LogFn } from "@itsmworkbench/kleislis";
 
 export type ActivityCommon = { id: string, retry?: RetryPolicyConfig, throttle?: Throttling, debug?: boolean, logFn?: LogFn }
 
-export interface ActivityEngine extends ReplayEngine {
+export interface ActivityEngine extends ReplayEngine <any> { // it's really a E extends ReplyEvent. But this damages the type signatures of activity a lot
   writeMetrics?: Sideeffect
   logFn?: LogFn
 }

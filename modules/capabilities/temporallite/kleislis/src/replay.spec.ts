@@ -1,6 +1,6 @@
 import { NameAnd } from "@laoban/utils";
 import { inMemoryIncMetric } from "./metrics";
-import { ReplayEngine, ReplayEvents, withReplay } from "./replay";
+import { ReplayEngine, ReplayEvent, ReplayEvents, replyEventProcessor, withReplay } from "./replay";
 
 describe ( 'replay', () => {
   const activityId = 'testActivity';
@@ -22,8 +22,8 @@ describe ( 'replay', () => {
     const fn = jest.fn ( () => Promise.resolve ( 'new data' ) );
     replayState.push ( { id: activityId, success: 'cached data' } ); // Add a successful replay item
 
-    const engine: ReplayEngine = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory }
-    const replayFunction = withReplay<string> ( activityId, fn );
+    const engine: ReplayEngine <ReplayEvent>= { incMetric, currentReplayIndex: 0, replayState, updateEventHistory, eventProcessor: replyEventProcessor ( incMetric ) }
+    const replayFunction = withReplay<ReplayEvent,string> ( activityId, fn );
     const result = await replayFunction ( engine ) ();
 
     expect ( result ).toBe ( 'cached data' );
@@ -36,7 +36,7 @@ describe ( 'replay', () => {
     const fn = jest.fn ( () => Promise.resolve ( 'new data' ) );
     // No previous executions or cached results
 
-    const engine: ReplayEngine = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory }
+    const engine: ReplayEngine<ReplayEvent> = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory, eventProcessor: replyEventProcessor ( incMetric ) }
     const replayFunction = withReplay ( activityId, fn );
 
     const result = await replayFunction ( engine ) ()
@@ -53,8 +53,8 @@ describe ( 'replay', () => {
     const fn = jest.fn ( () => Promise.resolve ( 'new data' ) );
     replayState.push ( { id: activityId, failure: new Error ( 'Error during execution' ) } ); // Add a failed replay item
 
-    const engine: ReplayEngine = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory }
-    const replayFunction = await withReplay ( activityId, fn );
+    const engine: ReplayEngine<ReplayEvent> = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory, eventProcessor: replyEventProcessor ( incMetric ) }
+    const replayFunction =  withReplay ( activityId, fn );
 
     const result = replayFunction ( engine ) ();
     // Expect the function to throw the recorded error
@@ -67,11 +67,11 @@ describe ( 'replay', () => {
     const fn = async ( p: string ) => `using params ${p}`
     replayState.push ( { id: activityId, params: [ 'remembered' ] } ); // Add a params event
 
-    const engine: ReplayEngine = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory }
+    const engine: ReplayEngine<ReplayEvent> = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory, eventProcessor: replyEventProcessor ( incMetric ) }
     const replayFunction = withReplay ( activityId, fn );
-    const result =  replayFunction ( engine ) ( "ignoredBecauseWeRememberedTheParams" );
+    const result = replayFunction ( engine ) ( "ignoredBecauseWeRememberedTheParams" );
     // Expect the function to throw the recorded error
-    await expect ( result ).rejects.toThrow("Invalid params event at currentreplayIndex 0. These should only occur at 'zero' and already have been processed: {\"id\":\"testActivity\",\"params\":[\"remembered\"]}")
+    await expect ( result ).rejects.toThrow ( "Invalid params event. These should only occur at 'zero' and already have been processed: {\"id\":\"testActivity\",\"params\":[\"remembered\"]}" )
     expect ( updateState ).toEqual ( [] )
     expect ( metrics ).toEqual ( {
       "activity.replay.invalidParamsEvent": 1
@@ -83,11 +83,11 @@ describe ( 'replay', () => {
       { id: activityId, success: `cached data: won't be used in this test, but we need something in position zero` },
       { id: activityId, params: 'params' } ); // Add a params event
 
-    const engine: ReplayEngine = { incMetric, currentReplayIndex: 1, replayState, updateEventHistory }
+    const engine: ReplayEngine<ReplayEvent> = { incMetric, currentReplayIndex: 1, replayState, updateEventHistory, eventProcessor: replyEventProcessor ( incMetric ) }
     const replayFunction = withReplay ( activityId, fn );
     const result = replayFunction ( engine ) ();
     // Expect the function to throw the recorded error
-    await expect ( result ).rejects.toThrow ( "Invalid params event at currentreplayIndex 1. These should only occur at 'zero' and already have been processed: {\"id\":\"testActivity\",\"params\":\"params\"}" );
+    await expect ( result ).rejects.toThrow ( "Invalid params event. These should only occur at 'zero' and already have been processed: {\"id\":\"testActivity\",\"params\":\"params\"}" );
   } )
 
 } )

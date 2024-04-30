@@ -1,5 +1,5 @@
 import { NameAnd } from "@laoban/utils";
-import { defaultRetryPolicy, inMemoryIncMetric, ReplayEvents } from "@itsmworkbench/kleislis";
+import { defaultRetryPolicy, inMemoryIncMetric, ReplayEvents, replyEventProcessor } from "@itsmworkbench/kleislis";
 import { nodeActivity, runWithActivityEngine } from "./node.activities";
 import { ActivityEngine } from "@itsmworkbench/activities";
 
@@ -18,7 +18,7 @@ describe ( "activity", () => {
     const store: ReplayEvents = []
     let metrics: NameAnd<number> = {};
     const incMetric = inMemoryIncMetric ( metrics )
-    const activityEngine = { incMetric, updateEventHistory: e => store.push ( e ) }
+    const activityEngine: ActivityEngine = { incMetric, updateEventHistory: e => store.push ( e ), eventProcessor: replyEventProcessor ( incMetric ) }
     const result = await runWithActivityEngine ( activityEngine, () => addOneA ( 1 ) )
     expect ( result ).toBe ( 2 )
     expect ( store ).toEqual ( [
@@ -35,7 +35,10 @@ describe ( "activity", () => {
 
     let metrics: NameAnd<number> = {};
     const incMetric = inMemoryIncMetric ( metrics )
-    const activityEngine: ActivityEngine = { currentReplayIndex: 1, incMetric, updateEventHistory: e => store.push ( e ) }
+    const activityEngine: ActivityEngine = {
+      currentReplayIndex: 1, incMetric, updateEventHistory: e => store.push ( e ),
+      eventProcessor: replyEventProcessor ( incMetric )
+    }
     const result = await runWithActivityEngine ( activityEngine, () => addOneA ( 1 ) )
     expect ( result ).toBe ( 2 )
     expect ( store ).toEqual ( [
@@ -59,7 +62,7 @@ describe ( "activity", () => {
     const store: ReplayEvents = []
     const metrics: NameAnd<number> = {}
     const incMetric = inMemoryIncMetric ( metrics )
-    const activityEngine = { incMetric, updateEventHistory: e => store.push ( e ) }
+    const activityEngine: ActivityEngine = { incMetric, updateEventHistory: e => store.push ( e ), eventProcessor: replyEventProcessor ( incMetric ) }
 
     const result = await runWithActivityEngine ( activityEngine, () => addOneAErrorFourTimes ( 1 ) )
     expect ( result ).toBe ( 2 )
