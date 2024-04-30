@@ -1,6 +1,7 @@
 import { NameAnd } from "@laoban/utils";
 import { defaultRetryPolicy, inMemoryIncMetric, ReplayEvents } from "@itsmworkbench/kleislis";
 import { nodeActivity, runWithActivityEngine } from "./node.activities";
+import { ActivityEngine } from "@itsmworkbench/activities";
 
 
 export const addOneA = nodeActivity ( { id: 'addone', retry: defaultRetryPolicy },
@@ -13,14 +14,34 @@ describe ( "activity", () => {
   it ( "should have the raw function", () => {
     expect ( addOneA.raw ( 1 ) ).resolves.toBe ( 2 )
   } )
-  it ( 'should execute if there is a workflowHookState', async () => {
+  it ( 'should execute if there is a workflowHookState - first one doesnt create params', async () => {
     const store: ReplayEvents = []
     let metrics: NameAnd<number> = {};
     const incMetric = inMemoryIncMetric ( metrics )
     const activityEngine = { incMetric, updateEventHistory: e => store.push ( e ) }
     const result = await runWithActivityEngine ( activityEngine, () => addOneA ( 1 ) )
     expect ( result ).toBe ( 2 )
-    expect ( store ).toEqual ( [ { id: 'addone', success: 2 } ] )
+    expect ( store ).toEqual ( [
+      { id: 'addone', success: 2 } ] )
+    expect ( metrics ).toEqual ( {
+      "activity.attempts": 1,
+      "activity.success": 1
+    } )
+  } )
+  it ( 'should execute if there is a workflowHookState - second one doesnt create params', async () => {
+    const store: ReplayEvents = [
+      { "id": "addone", "params": [ 1 ] },
+      { id: 'other', success: 2 } ]
+
+    let metrics: NameAnd<number> = {};
+    const incMetric = inMemoryIncMetric ( metrics )
+    const activityEngine: ActivityEngine = { currentReplayIndex: 1, incMetric, updateEventHistory: e => store.push ( e ) }
+    const result = await runWithActivityEngine ( activityEngine, () => addOneA ( 1 ) )
+    expect ( result ).toBe ( 2 )
+    expect ( store ).toEqual ( [
+      { "id": "addone", "params": [ 1 ] },
+      { "id": "other", "success": 2 },
+      { "id": "addone", "success": 2 } ] )
     expect ( metrics ).toEqual ( {
       "activity.attempts": 1,
       "activity.success": 1

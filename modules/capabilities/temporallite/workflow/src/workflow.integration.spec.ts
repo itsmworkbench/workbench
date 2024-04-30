@@ -3,19 +3,21 @@ import { NameAnd } from "@laoban/utils";
 import { activity, ActivityEngine } from "@itsmworkbench/activities";
 import { defaultRetryPolicy, inMemoryIncMetric, rememberUpdateCache, ReplayEvents } from "@itsmworkbench/kleislis";
 
+const workflowInstanceId = "1";
+
 export function makeWorkflowEngine ( existing: ReplayEvents, store: ReplayEvents, metrics: NameAnd<number> ): WorkflowEngine {
   return {
     incMetric: () => inMemoryIncMetric ( metrics ),
     existingState: async ( id: string ) => existing,
     updateEventHistory: () => rememberUpdateCache ( store ),
-    nextInstanceId: async ( workflowId: string ) => '1'
+    nextInstanceId: async ( workflowId: string ) => workflowInstanceId
   }
 }
-export const activityAddOne = activity ( { id: 'addone' , retry: defaultRetryPolicy},
+export const activityAddOne = activity ( { id: 'addone', retry: defaultRetryPolicy },
   async ( input: number ): Promise<number> => input + 1 )
-export const activityAddFour = activity ( { id: 'addfour' , retry: defaultRetryPolicy },
+export const activityAddFour = activity ( { id: 'addfour', retry: defaultRetryPolicy },
   async ( input: number ): Promise<number> => input + 4 )
-export const activityAddEight = activity ( { id: 'addeight' , retry: defaultRetryPolicy },
+export const activityAddEight = activity ( { id: 'addeight', retry: defaultRetryPolicy },
   async ( input: number ): Promise<number> => input + 8 )
 export const wfAdd13 = workflow ( { id: 'wfAdd13' },
   async ( engine: ActivityEngine, i: number ) => { //wow this sucks. All this rubbish with (engine). Need to move to zoom/nodeactivities and hide it
@@ -33,7 +35,7 @@ describe ( "workflow", () => {
     const result = await wfAdd13.start ( engine ) ( 2 )
 
     expect ( result.workflowId ).toEqual ( 'wfAdd13' )
-    expect ( result.instanceId ).toEqual ( "1" )
+    expect ( result.instanceId ).toEqual ( workflowInstanceId )
     expect ( await result.result ).toBe ( 15 )
 
     expect ( metrics ).toEqual ( {
@@ -41,20 +43,24 @@ describe ( "workflow", () => {
       "activity.success": 3
     } )
     expect ( store ).toEqual ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 }
     ] )
   } )
   it ( "should continue a workflow from a previous state when more work to do 1 ", async () => {
-    const store: ReplayEvents = []
+    const store: ReplayEvents = [
+      { "id": "wfAdd13", "params": [ 2 ] },
+      { "id": "addeight", "success": 10 } ]
     let metrics: NameAnd<number> = {};
-    const engine: WorkflowEngine = makeWorkflowEngine ( [
-      { "id": "addeight", "success": 10 } ], store, metrics );
-    const result = await wfAdd13.start ( engine ) ( 2 )
+    const engine: WorkflowEngine = makeWorkflowEngine ( store, store, metrics );
+    const result = await wfAdd13.complete ( engine, workflowInstanceId )  //note that we don't need to pass the input here, as it is already in the store
 
     expect ( await result.result ).toBe ( 15 )
     expect ( store ).toEqual ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
+      { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 }
     ] )
@@ -68,9 +74,10 @@ describe ( "workflow", () => {
     const store: ReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 } ], store, metrics );
-    const result = await wfAdd13.start ( engine ) ( 2 )
+    const result = await wfAdd13.complete ( engine, workflowInstanceId )
 
     expect ( await result.result ).toBe ( 15 )
     expect ( store ).toEqual ( [ { "id": "addone", "success": 15 } ] )
@@ -84,15 +91,25 @@ describe ( "workflow", () => {
     const store: ReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 } ], store, metrics );
-    const result = await wfAdd13.start ( engine ) ( 2 )
+    const result = await wfAdd13.complete ( engine, workflowInstanceId )
 
     expect ( await result.result ).toBe ( 15 )
     expect ( store ).toEqual ( [] )
     expect ( metrics ).toEqual ( {
       "activity.replay.success": 3
     } )
+  } )
+  it ( "should not allow continue if it's not yet created", async () => {
+    const store: ReplayEvents = []
+    let metrics: NameAnd<number> = {};
+    const engine: WorkflowEngine = makeWorkflowEngine ( [], store, metrics );
+    const result = wfAdd13.complete ( engine, workflowInstanceId )
+    expect ( result ).rejects.toThrowError ( 'Parameters have not been recorded for this workflow instance. Nothing in state' )
+    expect ( store ).toEqual ( [] )
+    expect ( metrics ).toEqual ( {} )
   } )
 } )

@@ -27,7 +27,7 @@ export const wfAdd13 = nodeWorkflow ( { id: 'wfAdd13' },
   } )
 
 describe ( "workflow", () => {
-  it ( 'should execute a workflow', async () => {
+  it ( 'should execute a workflow, creating the initial params as well as the recorded activities', async () => {
     const store: ReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [], store, metrics );

@@ -13,10 +13,24 @@ describe ( "activity", () => {
     expect ( addOneA.raw ( 1 ) ).resolves.toBe ( 2 )
   } )
 
-  it ( 'should execute when passed an engine', async () => {
+  it ( 'should execute when passed an engine as the first activity', async () => {
     const remembered: ReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: ActivityEngine = { incMetric: inMemoryIncMetric ( metrics ), updateEventHistory: e => remembered.push ( e ) }
+    const result = await addOneA ( engine ) ( 1 )
+
+    expect ( result ).toBe ( 2 )
+    expect ( metrics ).toEqual ( {
+      "activity.attempts": 1,
+      "activity.success": 1
+    } )
+    expect ( remembered ).toEqual ( [
+      { "id": "addone", "success": 2 } ] )
+  } )
+  it ( 'should execute when passed an engine as a later action', async () => {
+    const remembered: ReplayEvents = []
+    let metrics: NameAnd<number> = {};
+    const engine: ActivityEngine = { incMetric: inMemoryIncMetric ( metrics ), updateEventHistory: e => remembered.push ( e ), currentReplayIndex: 1 }
     const result = await addOneA ( engine ) ( 1 )
 
     expect ( result ).toBe ( 2 )
@@ -38,14 +52,13 @@ describe ( "activity", () => {
     const replayState: ReplayEvents = []
     const metrics: NameAnd<number> = {}
     const incMetric = inMemoryIncMetric ( metrics )
-    const engine: ActivityEngine = { incMetric: inMemoryIncMetric ( metrics ), updateEventHistory: e => replayState.push ( e )  }
+    const engine: ActivityEngine = { incMetric: inMemoryIncMetric ( metrics ), updateEventHistory: e => replayState.push ( e ) }
 
     const result = await addOneAErrorFourTimes ( engine ) ( 1 )
 
     expect ( result ).toBe ( 2 )
     expect ( replayState ).toEqual ( [
-      { id: 'addOneError', success: 2 }
-    ] )
+      { "id": "addOneError", "success": 2 } ] )
     expect ( metrics ).toEqual ( {
       "activity.attempts": 5,
       "activity.retry[1]": 1,

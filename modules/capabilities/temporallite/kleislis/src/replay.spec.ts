@@ -32,7 +32,7 @@ describe ( 'replay', () => {
     expect ( metrics ).toEqual ( { 'activity.replay.success': 1 } )
   } );
 
-  it ( 'should execute the function and update the update cache if no cached result is available', async () => {
+  it ( 'should execute the function and update the update cache if no cached result is available, also creates params event', async () => {
     const fn = jest.fn ( () => Promise.resolve ( 'new data' ) );
     // No previous executions or cached results
 
@@ -43,7 +43,9 @@ describe ( 'replay', () => {
 
     expect ( result ).toBe ( 'new data' );
     expect ( fn ).toHaveBeenCalledTimes ( 1 );
-    expect ( updateState ).toEqual ( [ { "id": "testActivity", "success": "new data" } ] )
+    expect ( updateState ).toEqual ( [
+      { "id": "testActivity", "success": "new data" }
+    ] )
     expect ( metrics ).toEqual ( {} )
   } );
 
@@ -61,4 +63,32 @@ describe ( 'replay', () => {
     expect ( updateState ).toEqual ( [] )
     expect ( metrics ).toEqual ( { 'activity.replay.success': 1 } )
   } );
-} );
+  it ( 'should throw an error if we try and process a paramsevent at location 0', async () => {
+    const fn = async ( p: string ) => `using params ${p}`
+    replayState.push ( { id: activityId, params: [ 'remembered' ] } ); // Add a params event
+
+    const engine: ReplayEngine = { incMetric, currentReplayIndex: 0, replayState, updateEventHistory }
+    const replayFunction = withReplay ( activityId, fn );
+    const result =  replayFunction ( engine ) ( "ignoredBecauseWeRememberedTheParams" );
+    // Expect the function to throw the recorded error
+    await expect ( result ).rejects.toThrow("Invalid params event at currentreplayIndex 0. These should only occur at 'zero' and already have been processed: {\"id\":\"testActivity\",\"params\":[\"remembered\"]}")
+    expect ( updateState ).toEqual ( [] )
+    expect ( metrics ).toEqual ( {
+      "activity.replay.invalidParamsEvent": 1
+    } )
+  } )
+  it ( 'should throw an error if we try and process a paramsevent after location 0', async () => {
+    const fn = jest.fn ( () => Promise.resolve ( 'new data' ) );
+    replayState.push (
+      { id: activityId, success: `cached data: won't be used in this test, but we need something in position zero` },
+      { id: activityId, params: 'params' } ); // Add a params event
+
+    const engine: ReplayEngine = { incMetric, currentReplayIndex: 1, replayState, updateEventHistory }
+    const replayFunction = withReplay ( activityId, fn );
+    const result = replayFunction ( engine ) ();
+    // Expect the function to throw the recorded error
+    await expect ( result ).rejects.toThrow ( "Invalid params event at currentreplayIndex 1. These should only occur at 'zero' and already have been processed: {\"id\":\"testActivity\",\"params\":\"params\"}" );
+  } )
+
+} )
+
