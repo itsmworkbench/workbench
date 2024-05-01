@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "node:path";
-import {  simpleTemplate } from "@itsmworkbench/utils";
-import { NextInstanceIdFn } from "@itsmworkbench/workflow";
+import { simpleTemplate } from "@itsmworkbench/utils";
+import { NextInstanceIdFn, WorkflowAndInstanceId } from "@itsmworkbench/workflow";
 import { removeLastExtension } from "@itsmworkbench/nodeurlstore";
 
 
@@ -12,8 +12,8 @@ import { removeLastExtension } from "@itsmworkbench/nodeurlstore";
 // export type UpdateEventHistoryFn = ( workflowInstanceId: string ) => ( e: ActivityEvent ) => Promise<void>
 export type FileNamesForTemporal = {
   nextInstanceId: NextInstanceIdFn,
-  metrics: ( workflowInstanceId: string ) => string
-  eventHistory: ( workflowInstanceId: string ) => string
+  metrics: ( wf: WorkflowAndInstanceId ) => string
+  eventHistory: ( wf: WorkflowAndInstanceId ) => string
 }
 export type InstanceNameConfig = {
   timeService: TimeService
@@ -23,8 +23,8 @@ export type InstanceNameConfig = {
 export function defaultFileNamesForTemporal ( config: InstanceNameConfig ): FileNamesForTemporal {
   return {
     nextInstanceId: fileNextInstanceId ( config ),
-    metrics: ( workflowInstanceId: string ) => `${config.workspace}/metrics/${workflowInstanceId}.metrics`,
-    eventHistory: ( workflowInstanceId: string ) => `${config.workspace}/${workflowInstanceId}.events`
+    metrics: ( wf: WorkflowAndInstanceId ) => `${config.workspace}/metrics/${wf.workflowId}/${wf.instanceId}.metrics`,
+    eventHistory: ( wf: WorkflowAndInstanceId ) => `${config.workspace}/${wf.workflowId}/${wf.instanceId}.events`
   }
 }
 
@@ -55,7 +55,7 @@ async function generateUniqueSequence ( dirPath: string, template: string ): Pro
     try {
       // Attempt to create the file. If the file does not exist, it will be created.
       await fs.promises.writeFile ( filePath, '', { flag: 'wx' } );
-      return removeLastExtension( filename );
+      return removeLastExtension ( filename );
     } catch ( error ) {
       if ( error.code === 'EEXIST' ) {
         // If the file already exists, increment the sequence number and try again.

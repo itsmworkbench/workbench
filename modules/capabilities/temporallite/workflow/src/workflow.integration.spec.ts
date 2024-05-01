@@ -8,9 +8,9 @@ const workflowInstanceId = "1";
 export function makeWorkflowEngine ( existing: BasicReplayEvents, store: BasicReplayEvents, metrics: NameAnd<number> ): WorkflowEngine {
   return {
     incMetric: () => inMemoryIncMetric ( metrics ),
-    existingState: async ( id: string ) => existing,
+    existingState: async ( id ) => existing,
     updateEventHistory: () => rememberUpdateCache ( store ),
-    nextInstanceId: async ( workflowId: string ) => workflowInstanceId
+    nextInstanceId: async ( ) => workflowInstanceId
   }
 }
 export const activityAddOne = activity ( { id: 'addone', retry: defaultRetryPolicy },
@@ -108,7 +108,7 @@ describe ( "workflow", () => {
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [], store, metrics );
     const result = wfAdd13.complete ( engine, workflowInstanceId )
-    expect ( result ).rejects.toThrowError ( 'Parameters have not been recorded for this workflow instance. Nothing in state' )
+    expect ( result ).rejects.toThrowError ( "Parameters have not been recorded for this workflow instance {\"workflowId\":\"wfAdd13\",\"instanceId\":\"1\"}. Nothing in state" )
     expect ( store ).toEqual ( [] )
     expect ( metrics ).toEqual ( {} )
   } )

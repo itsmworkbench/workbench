@@ -5,20 +5,22 @@ import { BasicReplayEvent, BasicReplayEvents, inMemoryIncMetric, rememberUpdateC
 import { WorkflowEvent } from "./workflow.replay";
 
 const workflowInstanceId = "1";
-type Store = NameAnd<(BasicReplayEvent | WorkflowEvent)[]>
+type Store = NameAnd<NameAnd<(BasicReplayEvent | WorkflowEvent)[]>>
 
 export function makeWorkflowEngine ( existing: Store, store: Store, metrics: NameAnd<number> ): WorkflowEngine {
   return {
     incMetric: () => inMemoryIncMetric ( metrics ),
-    existingState: async ( id: string ) => {
-      const events = existing[ id ]
+    existingState: async ( wf ) => {
+      const events = existing[ wf.workflowId ]?.[ wf.instanceId ]
       return events ? events : [];
     },
-    updateEventHistory: ( id ) => {
-      if ( !store[ id ] ) store[ id ] = []
-      return rememberUpdateCache ( store[ id ] )
+    updateEventHistory: ( wf ) => {
+      const { workflowId, instanceId } = wf
+      if ( !store[ workflowId ] ) store[ workflowId ] = {}
+      if ( !store[ workflowId ][ instanceId ] ) store[ workflowId ][ instanceId ] = []
+      return rememberUpdateCache ( store[ workflowId ][ instanceId ] )
     },
-    nextInstanceId: async ( workflowId: string ) =>  workflowInstanceId,
+    nextInstanceId: async ( workflowId: string ) => workflowInstanceId,
   }
 }
 export const workflowAddOne = workflow ( { id: 'addone' },
@@ -46,34 +48,38 @@ describe ( "workflow that calls another workflow", () => {
     const result = await wfAdd13.start ( engine ) ( 2 )
 
     expect ( result.workflowId ).toEqual ( 'wfAdd13' )
-    expect ( result.instanceId ).toEqual ( 'wfAdd13_1' )
+    expect ( result.instanceId ).toEqual ( '1' )
     expect ( await result.result ).toBe ( 15 )
 
     expect ( metrics ).toEqual ( {} )
     expect ( store ).toEqual ( {
-      "addeight_1": [ { "id": "addeight", "params": [ 2 ] } ],
-      "addfour_1": [ { "id": "addfour", "params": [ 10 ] } ],
-      "addone_1": [ { "id": "addone", "params": [ 14 ] } ],
-      "wfAdd13_1": [
-        { "id": "wfAdd13", "params": [ 2 ] },
-        { "id": "addeight", "instanceId": "addeight_1" },
-        { "id": "addfour", "instanceId": "addfour_1" },
-        { "id": "addone", "instanceId": "addone_1" }
-      ]
+      "addeight": { "1": [ { "id": "addeight", "params": [ 2 ] } ] },
+      "addfour": { "1": [ { "id": "addfour", "params": [ 10 ] } ] },
+      "addone": { "1": [ { "id": "addone", "params": [ 14 ] } ] },
+      "wfAdd13": {
+        "1": [
+          { "id": "wfAdd13", "params": [ 2 ] },
+          { "id": "addeight", "instanceId": "1" },
+          { "id": "addfour", "instanceId": "1" },
+          { "id": "addone", "instanceId": "1" }
+        ]
+      }
     } )
   } )
 
   it ( "should continue a workflow from a previous state when more work to do 1 ", async () => {
-    const store: Store ={
-      "addeight_1": [ { "id": "addeight", "params": [ 2 ] } ],
-      "wfAdd13_1": [
-        { "id": "wfAdd13", "params": [ 2 ] },
-        { "id": "addeight", "instanceId": "addeight_1" },
-      ]
+    const store: Store = {
+      a: {
+        "addeight_1": [ { "id": "addeight", "params": [ 2 ] } ],
+        "wfAdd13_1": [
+          { "id": "wfAdd13", "params": [ 2 ] },
+          { "id": "addeight", "instanceId": "addeight_1" },
+        ]
+      }
     }
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( store, store, metrics );
-    const result = await wfAdd13.complete ( engine, wfAdd13.workflowId + '_'+ workflowInstanceId )  //note that we don't need to pass the input here, as it is already in the store
+    const result = await wfAdd13.complete ( engine, wfAdd13.workflowId + '_' + workflowInstanceId )  //note that we don't need to pass the input here, as it is already in the store
 
     expect ( await result.result ).toBe ( 15 )
     expect ( store ).toEqual ( [
@@ -91,11 +97,13 @@ describe ( "workflow that calls another workflow", () => {
   it ( "should continue a workflow from a previous state when more work to do 2 ", async () => {
     let metrics: NameAnd<number> = {};
     const store: Store = {
-      "wfAdd131": [
-        { "id": "wfAdd13", "params": [ 2 ] },
-        { "id": "addeight", "instanceId": "1" },
-        { "id": "addfour", "success": 14 }
-      ]
+      a: {
+        "wfAdd131": [
+          { "id": "wfAdd13", "params": [ 2 ] },
+          { "id": "addeight", "instanceId": "1" },
+          { "id": "addfour", "success": 14 }
+        ]
+      }
     }
     const engine: WorkflowEngine = makeWorkflowEngine ( store, store, metrics );
     const result = await wfAdd13.complete ( engine, workflowInstanceId )
@@ -112,12 +120,14 @@ describe ( "workflow that calls another workflow", () => {
 
     let metrics: NameAnd<number> = {};
     const store: Store = {
-      "wfAdd131": [
-        { "id": "wfAdd13", "params": [ 2 ] },
-        { "id": "addeight", "success": 10 },
-        { "id": "addfour", "success": 14 },
-        { "id": "addone", "success": 15 } ]
-    };
+      a: {
+        "wfAdd131": [
+          { "id": "wfAdd13", "params": [ 2 ] },
+          { "id": "addeight", "success": 10 },
+          { "id": "addfour", "success": 14 },
+          { "id": "addone", "success": 15 } ]
+      }
+    }
     const engine: WorkflowEngine = makeWorkflowEngine ( store, store, metrics );
     const result = await wfAdd13.complete ( engine, workflowInstanceId )
 

@@ -5,14 +5,20 @@ import { workflowReplyEventProcessor } from "./workflow.replay";
 import { NameAnd } from "@laoban/utils";
 
 
-export type IncMetricFn = ( workflowInstanceId: string ) => IncMetric
-export type SideeffectFn = ( workflowInstanceId: string ) => Promise<Sideeffect>
+export type IncMetricFn = ( wf: WorkflowAndInstanceId ) => IncMetric
+export type SideeffectFn = ( wf: WorkflowAndInstanceId ) => Promise<Sideeffect>
 export type NextInstanceIdFn = ( workflowId: string ) => Promise<string>
-export type ExistingStateFn = ( workflowInstanceId: string ) => Promise<ReplayEvent[]>
-export type UpdateEventHistoryFn = ( workflowInstanceId: string ) => UpdateReplayEventHistoryFn
+export type ExistingStateFn = ( wf: WorkflowAndInstanceId ) => Promise<ReplayEvent[]>
+export type UpdateEventHistoryFn = ( wf: WorkflowAndInstanceId ) => UpdateReplayEventHistoryFn
 
+export type WorkflowAndInstanceId = {
+  workflowId: string
+  instanceId: string
+
+}
 export interface WorkflowEngine {
-  thisInstanceId?: string
+  parent?: WorkflowAndInstanceId
+  thisInstance?: WorkflowAndInstanceId
   nextInstanceId: NextInstanceIdFn
   incMetric?: IncMetricFn
   writeMetrics?: SideeffectFn
@@ -22,20 +28,19 @@ export interface WorkflowEngine {
 }
 
 export type ActivityEngineWithWorkflow = ActivityEngine & { workflowEngine: WorkflowEngine }
-export async function workflowEngineToActivityEngine ( engine: WorkflowEngine, workflowInstanceId: string ): Promise<ActivityEngineWithWorkflow> {
-  const replayState = engine.existingState ? await engine.existingState ( workflowInstanceId ) : undefined
+export async function workflowEngineToActivityEngine ( engine: WorkflowEngine, wf: WorkflowAndInstanceId ): Promise<ActivityEngineWithWorkflow> {
+  const replayState = engine.existingState ? await engine.existingState ( wf ) : undefined
   const currentReplayIndex = 1; //the zeroth item is a params event. In complete we have already used this
-  const incMetric = engine.incMetric ? engine.incMetric ( workflowInstanceId ) : undefined;
+  const incMetric = engine.incMetric ? engine.incMetric ( wf ) : undefined;
   return {
     currentReplayIndex,
     replayState,
 
-    updateEventHistory: engine.updateEventHistory ? engine.updateEventHistory ( workflowInstanceId ) : undefined,
+    updateEventHistory: engine.updateEventHistory ? engine.updateEventHistory ( wf ) : undefined,
     incMetric,
-    writeMetrics: engine.writeMetrics ? await engine.writeMetrics ( workflowInstanceId ) : undefined,
+    writeMetrics: engine.writeMetrics ? await engine.writeMetrics ( wf ) : undefined,
     logFn: engine.logging?.log,
     workflowEngine: engine,
-
   }
 }
 
@@ -45,10 +50,8 @@ export interface WorkflowCommon {
 }
 
 
-export type WorkflowResult<T> = {
+export interface WorkflowResult<T> extends WorkflowAndInstanceId {
   result: Promise<T>
-  workflowId: string
-  instanceId: string
 }
 export type Workflow0<T> = {
   workflowId: string
@@ -90,46 +93,47 @@ export function workflow<P1, P2, P3, P4, T> ( common: WorkflowCommon, fn: ( engi
 export function workflow<P1, P2, P3, P4, P5, T> ( common: WorkflowCommon, fn: ( engine: ActivityEngineWithWorkflow, p1: P1, p2: P2, p3: P3, p4: P4, p5: P5 ) => Promise<T> ): Workflow5<P1, P2, P3, P4, P5, T>
 export function workflow<T> ( common: WorkflowCommon, fn: ( engine: ActivityEngineWithWorkflow, ...args: any[] ) => Promise<T> ): Workflow<T> {
   const result = { complete, start, workflowId: common.id };
-  const execute = async ( engine: WorkflowEngine, parentInstanceId: string | undefined, workflowInstanceId: string, ...args: any[] ): Promise<WorkflowResult<T>> => {
+  const execute = async ( engine: WorkflowEngine, parentWf: WorkflowAndInstanceId | undefined, wf: WorkflowAndInstanceId, ...args: any[] ): Promise<WorkflowResult<T>> => {
     const workflowId = common.id;
-    const activityEngine = await workflowEngineToActivityEngine ( engine, workflowInstanceId )
+    const activityEngine = await workflowEngineToActivityEngine ( engine, wf )
 
     const fn2 = ( ...args: any[] ) => {
-      if ( parentInstanceId === undefined )
+      if ( parentWf === undefined )
         return fn ( activityEngine, ...args )
       else {
         const registeredWorkflows = listToObj ( common?.workFlows );
-        const replayConfig: ReplayConfig = { eventProcessor: workflowReplyEventProcessor ( engine,{ [common.id]: result} ), shouldRecordResult: false }
+        const replayConfig: ReplayConfig = { eventProcessor: workflowReplyEventProcessor ( engine, registeredWorkflows ), shouldRecordResult: false }
         const fnWithReplay: Injected<ActivityEngine, T> = withReplay ( common.id, replayConfig, ( ...args: any[] ) => fn ( ...[ activityEngine, ...args ] ) )
         // @ts-ignore
         return fnWithReplay ( activityEngine ) ( ...args )
       }
     }
     return {
-      workflowId,
-      instanceId: workflowInstanceId,
+      ...wf,
       result: fn2 ( ...args ),
     }
   };
   function start ( thisEngine: WorkflowEngine ) {
     return async ( ...params: any[] ): Promise<WorkflowResult<T>> => {
       const instanceId = await thisEngine.nextInstanceId ( common.id );
-      const newEngine = { ...thisEngine, thisInstanceId: instanceId }
-      if ( thisEngine.thisInstanceId )
-        await thisEngine.updateEventHistory ( thisEngine.thisInstanceId ) ( { id: common.id, instanceId } )
+      const wf: WorkflowAndInstanceId = { workflowId: common.id, instanceId }
+      const newEngine: WorkflowEngine = { ...thisEngine, parent: thisEngine.thisInstance,thisInstance: wf }
+      if ( thisEngine.thisInstance ) //if I have a parent I want to be recording that I have stared, so when we compete I can call this
+        await thisEngine.updateEventHistory ( thisEngine.thisInstance ) ( { id: common.id, instanceId } )
       // else
-        await thisEngine.updateEventHistory ( instanceId ) ( { id: common.id, params } );
-      return await execute ( newEngine, thisEngine.thisInstanceId, instanceId, ...params );
+      await thisEngine.updateEventHistory ( wf ) ( { id: common.id, params } );
+      return await execute ( newEngine, thisEngine.thisInstance, wf, ...params );
     };
   }
-  async function complete ( engine: WorkflowEngine, workflowInstanceId: string ): Promise<WorkflowResult<T>> {
-    const state = await engine.existingState ( workflowInstanceId )
-    if ( state === undefined ) throw new Error ( `No state found for workflow instance  ${workflowInstanceId}` )
-    if ( state.length === 0 ) throw new Error ( `Parameters have not been recorded for this workflow instance ${workflowInstanceId}. Nothing in state` )
-    const newEngine = { ...engine, thisInstanceId: workflowInstanceId }
+  async function complete ( engine: WorkflowEngine, instanceId: string ): Promise<WorkflowResult<T>> {
+    const wf: WorkflowAndInstanceId = { workflowId: common.id, instanceId }
+    const state = await engine.existingState ( wf )
+    if ( state === undefined ) throw new Error ( `No state found for workflow instance  ${JSON.stringify ( wf )}` )
+    if ( state.length === 0 ) throw new Error ( `Parameters have not been recorded for this workflow instance ${JSON.stringify ( wf )}. Nothing in state` )
+    const newEngine = { ...engine, thisInstanceId: wf }
     if ( isParamsEvent ( state[ 0 ] ) ) {
-      return execute ( newEngine, engine.thisInstanceId, workflowInstanceId, ...state[ 0 ].params )
-    } else throw new Error ( `First event in state for  ${workflowInstanceId} is not a params event` )
+      return execute ( newEngine, engine.thisInstance, wf, ...state[ 0 ].params )
+    } else throw new Error ( `First event in state for  ${JSON.stringify ( wf )} is not a params event` )
   }
   return result
 }
