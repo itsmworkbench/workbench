@@ -1,7 +1,7 @@
 import fs from "fs";
 import {  } from "@itsmworkbench/activities";
 import { FileNamesForTemporal } from "./filenames";
-import { ReplayEvent, ReplayEvents } from "@itsmworkbench/kleislis";
+import { ReplayEvent, BasicReplayEvents } from "@itsmworkbench/kleislis";
 
 
 export const fileUpdateEventHistory = ( names: FileNamesForTemporal ) => ( workflowId: string ) => {
@@ -11,7 +11,7 @@ export const fileUpdateEventHistory = ( names: FileNamesForTemporal ) => ( workf
 
 
 //TODO lots more work here. Have to deal with corruption and recover from the corruption
-export const fileExistingState = ( names: FileNamesForTemporal ) => async ( workflowId: string ): Promise<ReplayEvents> => {
+export const fileExistingState = ( names: FileNamesForTemporal ) => async ( workflowId: string ): Promise<BasicReplayEvents> => {
   const file = names.eventHistory ( workflowId );
   try {
     const data = await fs.promises.readFile ( file, 'utf8' );

@@ -1,6 +1,6 @@
 import { activity, ActivityEngine } from "./activities";
 import { NameAnd } from "@laoban/utils";
-import { defaultRetryPolicy, inMemoryIncMetric, ReplayEvents, replyEventProcessor } from "@itsmworkbench/kleislis";
+import { defaultRetryPolicy, inMemoryIncMetric, BasicReplayEvents } from "@itsmworkbench/kleislis";
 
 
 export const addOneA = activity ( { id: 'addone', retry: defaultRetryPolicy }, async ( input: number ): Promise<number> => input + 1 )
@@ -14,10 +14,10 @@ describe ( "activity", () => {
   } )
 
   it ( 'should execute when passed an engine as the first activity', async () => {
-    const remembered: ReplayEvents = []
+    const remembered: BasicReplayEvents = []
     let metrics: NameAnd<number> = {};
     const incMetric = inMemoryIncMetric ( metrics );
-    const engine: ActivityEngine = { incMetric: incMetric, updateEventHistory: e => remembered.push ( e ), eventProcessor: replyEventProcessor ( incMetric ) }
+    const engine: ActivityEngine = { incMetric: incMetric, updateEventHistory: async e => {remembered.push ( e )} }
     const result = await addOneA ( engine ) ( 1 )
 
     expect ( result ).toBe ( 2 )
@@ -29,10 +29,10 @@ describe ( "activity", () => {
       { "id": "addone", "success": 2 } ] )
   } )
   it ( 'should execute when passed an engine as a later action', async () => {
-    const remembered: ReplayEvents = []
+    const remembered: BasicReplayEvents = []
     let metrics: NameAnd<number> = {};
     const incMetric = inMemoryIncMetric ( metrics );
-    const engine: ActivityEngine = { incMetric, updateEventHistory: e => remembered.push ( e ), currentReplayIndex: 1, eventProcessor: replyEventProcessor ( incMetric ) }
+    const engine: ActivityEngine = { incMetric, updateEventHistory: async e => {remembered.push ( e )}, currentReplayIndex: 1 }
     const result = await addOneA ( engine ) ( 1 )
 
     expect ( result ).toBe ( 2 )
@@ -51,10 +51,10 @@ describe ( "activity", () => {
       if ( addOneErrorCount++ < 4 ) throw new Error ( 'addOneError: ' + addOneErrorCount )
       return input + 1;
     } )
-    const replayState: ReplayEvents = []
+    const replayState: BasicReplayEvents = []
     const metrics: NameAnd<number> = {}
     const incMetric = inMemoryIncMetric ( metrics )
-    const engine: ActivityEngine = { incMetric, updateEventHistory: e => replayState.push ( e ), eventProcessor: replyEventProcessor ( incMetric ) }
+    const engine: ActivityEngine = { incMetric, updateEventHistory: async e => {replayState.push ( e )} }
 
     const result = await addOneAErrorFourTimes ( engine ) ( 1 )
 

@@ -1,5 +1,5 @@
 import { NameAnd } from "@laoban/utils";
-import { defaultRetryPolicy, inMemoryIncMetric, ReplayEvents, replyEventProcessor } from "@itsmworkbench/kleislis";
+import { BasicReplayEvents, defaultRetryPolicy, inMemoryIncMetric } from "@itsmworkbench/kleislis";
 import { nodeActivity, runWithActivityEngine } from "./node.activities";
 import { ActivityEngine } from "@itsmworkbench/activities";
 
@@ -15,10 +15,10 @@ describe ( "activity", () => {
     expect ( addOneA.raw ( 1 ) ).resolves.toBe ( 2 )
   } )
   it ( 'should execute if there is a workflowHookState - first one doesnt create params', async () => {
-    const store: ReplayEvents = []
+    const store: BasicReplayEvents = []
     let metrics: NameAnd<number> = {};
     const incMetric = inMemoryIncMetric ( metrics )
-    const activityEngine: ActivityEngine = { incMetric, updateEventHistory: e => store.push ( e ), eventProcessor: replyEventProcessor ( incMetric ) }
+    const activityEngine: ActivityEngine = { incMetric, updateEventHistory: async e => {store.push ( e )} }
     const result = await runWithActivityEngine ( activityEngine, () => addOneA ( 1 ) )
     expect ( result ).toBe ( 2 )
     expect ( store ).toEqual ( [
@@ -29,15 +29,14 @@ describe ( "activity", () => {
     } )
   } )
   it ( 'should execute if there is a workflowHookState - second one doesnt create params', async () => {
-    const store: ReplayEvents = [
+    const store = [
       { "id": "addone", "params": [ 1 ] },
       { id: 'other', success: 2 } ]
 
     let metrics: NameAnd<number> = {};
     const incMetric = inMemoryIncMetric ( metrics )
     const activityEngine: ActivityEngine = {
-      currentReplayIndex: 1, incMetric, updateEventHistory: e => store.push ( e ),
-      eventProcessor: replyEventProcessor ( incMetric )
+      currentReplayIndex: 1, incMetric, updateEventHistory: async e => {store.push ( e )}
     }
     const result = await runWithActivityEngine ( activityEngine, () => addOneA ( 1 ) )
     expect ( result ).toBe ( 2 )
@@ -59,10 +58,10 @@ describe ( "activity", () => {
       if ( addOneErrorCount++ < 4 ) throw new Error ( 'addOneError: ' + addOneErrorCount )
       return input + 1;
     } )
-    const store: ReplayEvents = []
+    const store: BasicReplayEvents = []
     const metrics: NameAnd<number> = {}
     const incMetric = inMemoryIncMetric ( metrics )
-    const activityEngine: ActivityEngine = { incMetric, updateEventHistory: e => store.push ( e ), eventProcessor: replyEventProcessor ( incMetric ) }
+    const activityEngine: ActivityEngine = { incMetric, updateEventHistory: async e => {store.push ( e ) } }
 
     const result = await runWithActivityEngine ( activityEngine, () => addOneAErrorFourTimes ( 1 ) )
     expect ( result ).toBe ( 2 )

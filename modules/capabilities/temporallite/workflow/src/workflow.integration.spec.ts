@@ -1,11 +1,11 @@
 import { workflow, WorkflowEngine } from "./workflow";
 import { NameAnd } from "@laoban/utils";
 import { activity, ActivityEngine } from "@itsmworkbench/activities";
-import { defaultRetryPolicy, inMemoryIncMetric, rememberUpdateCache, ReplayEvents } from "@itsmworkbench/kleislis";
+import { defaultRetryPolicy, inMemoryIncMetric, rememberUpdateCache, BasicReplayEvents } from "@itsmworkbench/kleislis";
 
 const workflowInstanceId = "1";
 
-export function makeWorkflowEngine ( existing: ReplayEvents, store: ReplayEvents, metrics: NameAnd<number> ): WorkflowEngine {
+export function makeWorkflowEngine ( existing: BasicReplayEvents, store: BasicReplayEvents, metrics: NameAnd<number> ): WorkflowEngine {
   return {
     incMetric: () => inMemoryIncMetric ( metrics ),
     existingState: async ( id: string ) => existing,
@@ -29,7 +29,7 @@ export const wfAdd13 = workflow ( { id: 'wfAdd13' },
 
 describe ( "workflow", () => {
   it ( 'should execute a workflow', async () => {
-    const store: ReplayEvents = []
+    const store: BasicReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [], store, metrics );
     const result = await wfAdd13.start ( engine ) ( 2 )
@@ -50,7 +50,7 @@ describe ( "workflow", () => {
     ] )
   } )
   it ( "should continue a workflow from a previous state when more work to do 1 ", async () => {
-    const store: ReplayEvents = [
+    const store: BasicReplayEvents = [
       { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 } ]
     let metrics: NameAnd<number> = {};
@@ -71,7 +71,7 @@ describe ( "workflow", () => {
     } )
   } )
   it ( "should continue a workflow from a previous state when more work to do 2 ", async () => {
-    const store: ReplayEvents = []
+    const store: BasicReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [
       { "id": "wfAdd13", "params": [ 2 ] },
@@ -88,7 +88,7 @@ describe ( "workflow", () => {
     } )
   } )
   it ( "should continue a workflow from a previous state when no more work", async () => {
-    const store: ReplayEvents = []
+    const store: BasicReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [
       { "id": "wfAdd13", "params": [ 2 ] },
@@ -104,7 +104,7 @@ describe ( "workflow", () => {
     } )
   } )
   it ( "should not allow continue if it's not yet created", async () => {
-    const store: ReplayEvents = []
+    const store: BasicReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [], store, metrics );
     const result = wfAdd13.complete ( engine, workflowInstanceId )

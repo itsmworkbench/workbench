@@ -2,6 +2,7 @@ import { AppendEvent, BaseEvent, ErrorEvent, Event, EventNameAnd, isErrorEvent, 
 import { pathToLens, PathToLensFn } from "@itsmworkbench/optics";
 import { parseIdentityUrlOrThrow, UrlLoadIdentityFn } from "@itsmworkbench/urlstore";
 import { hasErrors } from "@laoban/utils";
+import { IncMetric } from "@itsmworkbench/kleislis";
 
 /** Why a promise? Because the IdEvent goes to the id store to get the data. The id store is async. */
 export type EventProcessorFn<S, E extends BaseEvent> = ( p: EventProcessor<S>, event: E, s: S ) => Promise<S>
@@ -15,6 +16,7 @@ export interface EventProcessor<S> {
   pathToLens: PathToLensFn<S>
   urlLoadFn: UrlLoadIdentityFn
 }
+
 
 
 export function defaultEventProcessor<S> ( pathPrefix: string, zero: S, urlLoadFn: UrlLoadIdentityFn ): EventProcessor<S> {
