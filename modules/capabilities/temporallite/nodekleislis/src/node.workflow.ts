@@ -1,5 +1,5 @@
 import { K0, K1, K2, K3, K4, K5 } from "@itsmworkbench/kleislis";
-import { WorkflowCommon, WorkflowEngine, workflowEngineToActivityEngine, WorkflowResult } from "@itsmworkbench/workflow";
+import { WorkflowAndInstanceId, WorkflowCommon, WorkflowEngine, workflowEngineToActivityEngine, WorkflowResult } from "@itsmworkbench/workflow";
 import { runWithLoggedActivityEngine } from "./node.activities";
 import { AsyncLocalStorage } from "async_hooks";
 
@@ -58,7 +58,8 @@ export function nodeWorkflow<P1, P2, P3, P4, P5, T> ( common: WorkflowCommon, fn
 export function nodeWorkflow<T> ( common: WorkflowCommon, fn: ( ...args: any[] ) => Promise<T> ): NodeWorkflow<T> {
   const executeWorkflow = ( engine: WorkflowEngine ) => async ( workflowInstanceId: string, ...args: any[] ): Promise<WorkflowResult<T>> => {
     const workflowId = common.id;
-    const activityEngine = await workflowEngineToActivityEngine ( engine, workflowInstanceId )
+    const wf: WorkflowAndInstanceId = { workflowId, instanceId: workflowInstanceId }
+    const activityEngine = await workflowEngineToActivityEngine ( engine, wf )
     return {
       workflowId,
       instanceId: workflowInstanceId,

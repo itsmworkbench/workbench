@@ -69,39 +69,43 @@ describe ( "workflow that calls another workflow", () => {
 
   it ( "should continue a workflow from a previous state when more work to do 1 ", async () => {
     const store: Store = {
-      a: {
-        "addeight_1": [ { "id": "addeight", "params": [ 2 ] } ],
-        "wfAdd13_1": [
+      "addeight": { "1": [ { "id": "addeight", "params": [ 2 ] } ] },
+      "wfAdd13": {
+        "1": [
           { "id": "wfAdd13", "params": [ 2 ] },
-          { "id": "addeight", "instanceId": "addeight_1" },
+          { "id": "addeight", "instanceId": "1" },
         ]
       }
     }
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( store, store, metrics );
-    const result = await wfAdd13.complete ( engine, wfAdd13.workflowId + '_' + workflowInstanceId )  //note that we don't need to pass the input here, as it is already in the store
+    const result = await wfAdd13.complete ( engine, workflowInstanceId )  //note that we don't need to pass the input here, as it is already in the store
 
     expect ( await result.result ).toBe ( 15 )
-    expect ( store ).toEqual ( [
-      { "id": "wfAdd13", "params": [ 2 ] },
-      { "id": "addeight", "success": 10 },
-      { "id": "addfour", "success": 14 },
-      { "id": "addone", "success": 15 }
-    ] )
-    expect ( metrics ).toEqual ( {
-      "activity.attempts": 2,
-      "activity.replay.success": 1,
-      "activity.success": 2
+    expect ( store ).toEqual ( {
+      "addeight": { "1": [ { "id": "addeight", "params": [ 2 ] } ] },
+      "addfour": { "1": [ { "id": "addfour", "params": [ 10 ] } ] },
+      "addone": { "1": [ { "id": "addone", "params": [ 14 ] } ] },
+      "wfAdd13": {
+        "1": [
+          { "id": "wfAdd13", "params": [ 2 ] },
+          { "id": "addeight", "instanceId": "1" },
+          { "id": "addfour", "instanceId": "1" },
+          { "id": "addone", "instanceId": "1" }
+        ]
+      }
     } )
   } )
   it ( "should continue a workflow from a previous state when more work to do 2 ", async () => {
     let metrics: NameAnd<number> = {};
     const store: Store = {
-      a: {
-        "wfAdd131": [
+      "addeight": { "1": [ { "id": "addeight", "params": [ 2 ] } ] },
+      "addfour": { "1": [ { "id": "addfour", "params": [ 10 ] } ] },
+      "wfAdd13": {
+        "1": [
           { "id": "wfAdd13", "params": [ 2 ] },
           { "id": "addeight", "instanceId": "1" },
-          { "id": "addfour", "success": 14 }
+          { "id": "addfour", "instanceId": "1" },
         ]
       }
     }
@@ -109,41 +113,66 @@ describe ( "workflow that calls another workflow", () => {
     const result = await wfAdd13.complete ( engine, workflowInstanceId )
 
     expect ( await result.result ).toBe ( 15 )
-    expect ( store ).toEqual ( [ { "id": "addone", "success": 15 } ] )
-    expect ( metrics ).toEqual ( {
-      "activity.attempts": 1,
-      "activity.replay.success": 2,
-      "activity.success": 1
+    expect ( store ).toEqual ( {
+      "addeight": { "1": [ { "id": "addeight", "params": [ 2 ] } ] },
+      "addfour": { "1": [ { "id": "addfour", "params": [ 10 ] } ] },
+      "addone": { "1": [ { "id": "addone", "params": [ 14 ] } ] },
+      "wfAdd13": {
+        "1": [
+          { "id": "wfAdd13", "params": [ 2 ] },
+          { "id": "addeight", "instanceId": "1" },
+          { "id": "addfour", "instanceId": "1" },
+          { "id": "addone", "instanceId": "1" }
+        ]
+      }
     } )
+    expect ( metrics ).toEqual ( {} )
   } )
   it ( "should continue a workflow from a previous state when no more work", async () => {
 
     let metrics: NameAnd<number> = {};
     const store: Store = {
-      a: {
-        "wfAdd131": [
+      "addeight": { "1": [ { "id": "addeight", "params": [ 2 ] } ] },
+      "addfour": { "1": [ { "id": "addfour", "params": [ 10 ] } ] },
+      "addone": { "1": [ { "id": "addone", "params": [ 14 ] } ] },
+      "wfAdd13": {
+        "1": [
           { "id": "wfAdd13", "params": [ 2 ] },
-          { "id": "addeight", "success": 10 },
-          { "id": "addfour", "success": 14 },
-          { "id": "addone", "success": 15 } ]
+          { "id": "addeight", "instanceId": "1" },
+          { "id": "addfour", "instanceId": "1" },
+          { "id": "addone", "instanceId": "1" }
+        ]
       }
     }
     const engine: WorkflowEngine = makeWorkflowEngine ( store, store, metrics );
     const result = await wfAdd13.complete ( engine, workflowInstanceId )
 
     expect ( await result.result ).toBe ( 15 )
-    expect ( store ).toEqual ( [] )
-    expect ( metrics ).toEqual ( {
-      "activity.replay.success": 3
+    expect ( store ).toEqual ( {
+      "addeight": { "1": [ { "id": "addeight", "params": [ 2 ] } ] },
+      "addfour": { "1": [ { "id": "addfour", "params": [ 10 ] } ] },
+      "addone": { "1": [ { "id": "addone", "params": [ 14 ] } ] },
+      "wfAdd13": {
+        "1": [
+          { "id": "wfAdd13", "params": [ 2 ] },
+          { "id": "addeight", "instanceId": "1" },
+          { "id": "addfour", "instanceId": "1" },
+          { "id": "addone", "instanceId": "1" }
+        ]
+      }
     } )
+    expect ( metrics ).toEqual ( {} )
   } )
   it ( "should not allow continue if it's not yet created", async () => {
     const store: Store = {}
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( store, store, metrics );
-    const result = wfAdd13.complete ( engine, workflowInstanceId )
-    expect ( result ).rejects.toThrowError ( 'Parameters have not been recorded for this workflow instance. Nothing in state' )
-    expect ( store ).toEqual ( [] )
+    try {
+      const res = await wfAdd13.complete ( engine, workflowInstanceId )
+    } catch ( e ) {
+      expect ( e.message ).toEqual ( 'Parameters have not been recorded for this workflow instance {"workflowId":"wfAdd13","instanceId":"1"}. Nothing in state' )
+    }
+    expect ( store ).toEqual ( {} )
     expect ( metrics ).toEqual ( {} )
   } )
 } )

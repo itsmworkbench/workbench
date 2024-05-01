@@ -11,7 +11,8 @@ const writeMetricsForFile = ( names: FileNamesForTemporal, metrics: NameAnd<numb
     const file = names.metrics ( wf );
     await fs.promises.mkdir ( path.dirname ( file ), { recursive: true } )
     console.log ( 'finished mkdir for file', file )
-    const result: Sideeffect = async () => {await fs.promises.writeFile ( file, JSON.stringify ( metrics ) ) };
+    const result: Sideeffect = async () => {
+      await fs.promises.writeFile ( file, JSON.stringify ( metrics ) ) };
     return result;
   };
 

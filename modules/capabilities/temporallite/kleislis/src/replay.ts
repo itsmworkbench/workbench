@@ -34,14 +34,14 @@ export function withReplay<T, Args extends any[]> (
 // Execute the function and update the cache if no valid cache item was found
     try {
       const result = await fn ( ...args );
-      if ( config.shouldRecordResult !==false ) updateEventHistory ( { id: activityId, success: result } );
+      if ( config.shouldRecordResult !==false ) await updateEventHistory ( { id: activityId, success: result } );
       return result;
     } catch ( failure ) {
-      if ( config.shouldRecordResult !==false) updateEventHistory ( { id: activityId, failure } );
+      if ( config.shouldRecordResult !==false) await updateEventHistory ( { id: activityId, failure } );
       throw failure;
     }
   }
 }
 
 
-export const rememberUpdateCache = <E extends ReplayEvent> ( store: E[] ) => async e => {store.push ( e );}
+export const rememberUpdateCache = <E extends ReplayEvent> ( store: E[] ) => async e => { store.push ( e );}

@@ -117,7 +117,9 @@ export function workflow<T> ( common: WorkflowCommon, fn: ( engine: ActivityEngi
     return async ( ...params: any[] ): Promise<WorkflowResult<T>> => {
       const instanceId = await thisEngine.nextInstanceId ( common.id );
       const wf: WorkflowAndInstanceId = { workflowId: common.id, instanceId }
-      const newEngine: WorkflowEngine = { ...thisEngine, parent: thisEngine.thisInstance,thisInstance: wf }
+      const existingState = await thisEngine.existingState ( wf )
+      if ( existingState.length > 0 ) return complete ( thisEngine, instanceId )
+      const newEngine: WorkflowEngine = { ...thisEngine, parent: thisEngine.thisInstance, thisInstance: wf }
       if ( thisEngine.thisInstance ) //if I have a parent I want to be recording that I have stared, so when we compete I can call this
         await thisEngine.updateEventHistory ( thisEngine.thisInstance ) ( { id: common.id, instanceId } )
       // else
@@ -130,7 +132,7 @@ export function workflow<T> ( common: WorkflowCommon, fn: ( engine: ActivityEngi
     const state = await engine.existingState ( wf )
     if ( state === undefined ) throw new Error ( `No state found for workflow instance  ${JSON.stringify ( wf )}` )
     if ( state.length === 0 ) throw new Error ( `Parameters have not been recorded for this workflow instance ${JSON.stringify ( wf )}. Nothing in state` )
-    const newEngine = { ...engine, thisInstanceId: wf }
+    const newEngine :WorkflowEngine= { ...engine, parent: engine.thisInstance, thisInstance: wf }
     if ( isParamsEvent ( state[ 0 ] ) ) {
       return execute ( newEngine, engine.thisInstance, wf, ...state[ 0 ].params )
     } else throw new Error ( `First event in state for  ${JSON.stringify ( wf )} is not a params event` )

@@ -1,13 +1,21 @@
 import fs from "fs";
-import {  } from "@itsmworkbench/activities";
 import { FileNamesForTemporal } from "./filenames";
-import { ReplayEvent, BasicReplayEvents } from "@itsmworkbench/kleislis";
+import { BasicReplayEvents, ReplayEvent } from "@itsmworkbench/kleislis";
 import { WorkflowAndInstanceId } from "@itsmworkbench/workflow";
+import path from "node:path";
 
 
 export const fileUpdateEventHistory = ( names: FileNamesForTemporal ) => ( wf: WorkflowAndInstanceId ) => {
   const file = names.eventHistory ( wf );
-  return ( e: ReplayEvent ) => fs.promises.appendFile ( file, `${JSON.stringify ( e )}\n` );
+  return async ( e: ReplayEvent ) => {
+    const data = `${JSON.stringify ( e )}\n`;
+    try {
+      return await fs.promises.appendFile ( file, data );
+    } catch ( e ) {
+      await fs.promises.mkdir ( path.dirname ( file ), { recursive: true } );
+      return await  fs.promises.appendFile ( file, data);
+    }
+  }
 };
 
 

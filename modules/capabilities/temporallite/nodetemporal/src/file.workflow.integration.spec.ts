@@ -23,7 +23,11 @@ export const activityAddEight = nodeActivity ( { id: 'addeight', retry: defaultR
   async ( input: number ): Promise<number> => input + 8 )
 export const wfAdd13: NodeWorkflow1<number, number> = nodeWorkflow ( { id: 'wfAdd13' },
   async ( i: number ) => activityAddOne ( await activityAddFour ( await activityAddEight ( i ) ) ) )
+const wf = {workflowId: wfAdd13.workflowId,instanceId:'instanceId'};
 
+export function allButLastSegment( path: string ) {
+  return path.split ( '/' ).slice ( 0, -1 ).join ( '/' )
+}
 describe ( "workflow", () => {
   let workspace: string
   beforeEach ( async () => {
@@ -39,9 +43,11 @@ describe ( "workflow", () => {
     const engine: WorkflowEngine = fileWorkflowEngine ( names ( workspace ) );
     const result = await runWithWorkflowEngine ( engine, () => wfAdd13.start ( 2 ) )
 
-    expect ( await result.workflowId ).toEqual ( 'wfAdd13' )
+    expect (  result.workflowId ).toEqual ( 'wfAdd13' )
+    expect ( allButLastSegment( result.instanceId) ).toEqual ( "wfAdd13/2024-04/27-14/30" )
     expect ( await result.result ).toBe ( 15 )
-    const events = await loadEvents ( names ( workspace ), result.instanceId )
+
+    const events = await loadEvents ( names ( workspace ), result )
     expect ( events ).toEqual (
       [
         { "id": "addeight", "success": 10 },
@@ -50,47 +56,52 @@ describe ( "workflow", () => {
       ] )
   } )
   it ( "should continue a workflow from a previous state when more work to do 1 ", async () => {
-    const engine: WorkflowEngine = fileWorkflowEngine ( names ( workspace ), 'instanceId' );
+    const engine: WorkflowEngine = fileWorkflowEngine ( names ( workspace ), undefined );
 
-    await setEvents ( names ( workspace ), 'instanceId', [ { "id": "addeight", "success": 10 } ] )
-    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( 'instanceId', 2 ) )
+    await setEvents ( names ( workspace ), wf, [
+      { "id": "wfAdd13", "params": [ 2 ] },
+      { "id": "addeight", "success": 10 } ] )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( wf.instanceId, 2 ) )
 
     expect ( await result.result ).toBe ( 15 )
 
-    let metrics: NameAnd<number> = await loadMetrics ( names ( workspace ), result.instanceId );
+    let metrics: NameAnd<number> = await loadMetrics ( names ( workspace ), result );
+    const events = await loadEvents ( names ( workspace ), result)
+    expect ( events ).toEqual ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
+      { "id": "addeight", "success": 10 },
+      { "id": "addfour", "success": 14 },
+      { "id": "addone", "success": 15 }
+    ] )
     expect ( metrics ).toEqual ( {
       "activity.attempts": 2,
       "activity.replay.success": 1,
       "activity.success": 2
     } )
-    const events = await loadEvents ( names ( workspace ), result.instanceId )
-    expect ( events ).toEqual ( [
-      { "id": "addeight", "success": 10 },
-      { "id": "addfour", "success": 14 },
-      { "id": "addone", "success": 15 }
-    ] )
   } )
   it ( "should continue a workflow from a previous state when more work to do 2 ", async () => {
 
 
     const engine: WorkflowEngine = fileWorkflowEngine ( names ( workspace ) );
 
-    await setEvents ( names ( workspace ), 'instanceId', [
+    await setEvents ( names ( workspace ), wf, [
+      { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 } ] )
-    const actualEvents = await loadEvents ( names ( workspace ), 'instanceId' )
+    const actualEvents = await loadEvents ( names ( workspace ), wf )
     console.log ( 'actualEvents', actualEvents )
 
-    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( 'instanceId', 2 ) )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( wf.instanceId, 2 ) )
 
     expect ( await result.result ).toBe ( 15 )
-    const events = await loadEvents ( names ( workspace ), result.instanceId )
+    const events = await loadEvents ( names ( workspace ),result )
     expect ( events ).toEqual ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 }
     ] )
-    let metrics: NameAnd<number> = await loadMetrics ( names ( workspace ), result.instanceId );
+    let metrics: NameAnd<number> = await loadMetrics ( names ( workspace ),result );
     expect ( metrics ).toEqual ( {
       "activity.attempts": 1,
       "activity.replay.success": 2,
@@ -99,20 +110,22 @@ describe ( "workflow", () => {
   } )
   it ( "should continue a workflow from a previous state when no more work", async () => {
     const engine: WorkflowEngine = fileWorkflowEngine ( names ( workspace ) );
-    await setEvents ( names ( workspace ), 'instanceId', [
+    await setEvents ( names ( workspace ), wf, [
+      { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 } ] )
-    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( 'instanceId', 2 ) )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( wf.instanceId, 2 ) )
 
     expect ( await result.result ).toBe ( 15 )
-    const events = await loadEvents ( names ( workspace ), result.instanceId )
+    const events = await loadEvents ( names ( workspace ),result )
     expect ( events ).toEqual ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 }
     ] )
-    let metrics: NameAnd<number> = await loadMetrics ( names ( workspace ), result.instanceId );
+    let metrics: NameAnd<number> = await loadMetrics ( names ( workspace ), result );
     expect ( metrics ).toEqual ( {
       "activity.replay.success": 3
     } )

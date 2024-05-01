@@ -23,8 +23,13 @@ export type InstanceNameConfig = {
 export function defaultFileNamesForTemporal ( config: InstanceNameConfig ): FileNamesForTemporal {
   return {
     nextInstanceId: fileNextInstanceId ( config ),
-    metrics: ( wf: WorkflowAndInstanceId ) => `${config.workspace}/metrics/${wf.workflowId}/${wf.instanceId}.metrics`,
-    eventHistory: ( wf: WorkflowAndInstanceId ) => `${config.workspace}/${wf.workflowId}/${wf.instanceId}.events`
+    metrics: ( wf: WorkflowAndInstanceId ) => {
+      const result = `${config.workspace}/metrics/${wf.workflowId}/${wf.instanceId}.metrics`;
+      return result;
+    },
+    eventHistory: ( wf: WorkflowAndInstanceId ) => {
+      const result = `${config.workspace}/${wf.workflowId}/${wf.instanceId}.events`;
+      return result; }
   }
 }
 
@@ -42,8 +47,6 @@ export function getRootWorkspaceInstanceName ( timeService: TimeService, workflo
   const date = now.getUTCDate ().toString ().padStart ( 2, '0' ); // Gets the day (date) of the month according to universal time.
   const hour = now.getUTCHours ().toString ().padStart ( 2, '0' ); // Gets the hour according to universal time.
   const minute = now.getUTCMinutes ().toString ().padStart ( 2, '0' ); // Gets the minutes according to universal time.
-
-
   return `${workflowId}/${year}-${month}/${date}-${hour}/${minute}`;
 }
 async function generateUniqueSequence ( dirPath: string, template: string ): Promise<string> {
@@ -75,6 +78,6 @@ export const fileNextInstanceId = ( config: InstanceNameConfig ) => async ( work
   const dirPath = path.join ( workspace, root );
 
   await fs.promises.mkdir ( dirPath, { recursive: true } );
-  return path.join ( root, await generateUniqueSequence ( dirPath, template ) );
+  return path.join ( root, await generateUniqueSequence ( dirPath, template ) ).replace(/\\/g, '/');
 };
 
