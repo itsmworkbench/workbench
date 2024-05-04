@@ -1,6 +1,5 @@
 import { chainOfResponsibility, PartialFunction } from "@itsmworkbench/utils";
 import { IncMetric } from "./metrics";
-import { EventProcessor } from "@itsmworkbench/events";
 
 export interface ReplayEvent {
   id: string

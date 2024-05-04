@@ -1,9 +1,12 @@
 {
-  "name": "@itsmworkbench/flowregulator",
-  "description": "sets target numbers of active work based on load lag",
+  "name": "@itsmworkbench/indexing",
+  "description": "general code to help with indexing",
   "version": "0.0.30",
   "main": "dist/index",
   "types": "dist/index",
+  "browser": {
+    "child_process": false
+  },
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -19,6 +22,8 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
+    "@itsmworkbench/utils": "0.0.30",
+    "@itsmworkbench/kleislis": "0.0.30",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -2,12 +2,12 @@ import { NameAnd } from "@laoban/utils";
 import { defaultRetryPolicy, inMemoryIncMetric, rememberUpdateCache, BasicReplayEvents } from "@itsmworkbench/kleislis";
 import { nodeActivity } from "./node.activities";
 import { nodeWorkflow, runWithWorkflowEngine } from "./node.workflow";
-import { WorkflowEngine } from "@itsmworkbench/workflow";
+import { WorkflowAndInstanceId, WorkflowEngine } from "@itsmworkbench/workflow";
 
 export function makeWorkflowEngine ( existing: BasicReplayEvents, store: BasicReplayEvents, metrics: NameAnd<number> ): WorkflowEngine {
   return {
     incMetric: () => inMemoryIncMetric ( metrics ),
-    existingState: async ( id: string ) => existing,
+    existingState: async ( wf: WorkflowAndInstanceId ) => existing,
     updateEventHistory: () => rememberUpdateCache ( store ),
     nextInstanceId: async ( workflowId: string ) => '1'
   }
@@ -53,7 +53,7 @@ describe ( "workflow", () => {
     const engine: WorkflowEngine = makeWorkflowEngine ( [
       { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 } ], store, metrics );
-    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1', 2 ) )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1' ) )
 
     expect ( await result.result ).toBe ( 15 )
     expect ( store ).toEqual ( [
@@ -73,7 +73,7 @@ describe ( "workflow", () => {
       { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 } ], store, metrics );
-    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1', 2 ) )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1' ) )
 
     expect ( await result.result ).toBe ( 15 )
     expect ( store ).toEqual ( [ { "id": "addone", "success": 15 } ] )
@@ -91,7 +91,7 @@ describe ( "workflow", () => {
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 } ], store, metrics );
-    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1', 2 ) )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( '1' ) )
 
     expect ( await result.result ).toBe ( 15 )
     expect ( store ).toEqual ( [] )

@@ -1,5 +1,5 @@
 {
-  "name": "@itsmworkbench/indexing",
+  "name": "@itsmworkbench/authentication",
   "description": "indexing data",
   "version": "0.0.30",
   "main": "dist/index",
@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.51",
-    "@itsmworkbench/kleislis": "0.0.30",
     "debug": "^4.3.4"
   },
   "devDependencies": {

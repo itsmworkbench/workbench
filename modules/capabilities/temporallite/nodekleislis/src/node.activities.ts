@@ -1,7 +1,7 @@
-import { K0, K1, K2, K3, K4, K5, LogConfig, LogConfig0, LogConfig1, LogConfig2, LogConfig3, LogConfig4, LogConfig5 } from "@itsmworkbench/kleislis";
+import { K0, K1, K2, K3, K4, K5, LogConfig, LogConfig0, LogConfig1, LogConfig2, LogConfig3, LogConfig4, LogConfig5, LoggingHookState } from "@itsmworkbench/kleislis";
 import { ActivityCommon, ActivityEngine, createRawActivity } from "@itsmworkbench/activities";
 import { AsyncLocalStorage } from "async_hooks";
-import { LoggingHookState, runWithLoggingHookState } from "./node.log";
+import { runWithLoggingHookState } from "./node.log";
 
 const activityEngineState = new AsyncLocalStorage<ActivityEngine> ()
 

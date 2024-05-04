@@ -13,6 +13,7 @@ export const defaultRetryPolicy: RetryPolicyConfig = {
   initialInterval: 1000,
   maximumInterval: 30000,
   maximumAttempts: 3,
+  nonRecoverableErrors: ['Not Found']
 }
 
 export function withRetry<T> ( retryPolicy: RetryPolicyConfig, fn: K0<T> ): K0<T>;

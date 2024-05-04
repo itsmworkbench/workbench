@@ -20,7 +20,7 @@
 
 import { activity } from "@itsmworkbench/activities";
 import { mapK } from "@laoban/utils";
-import { nodeWorkflow } from "@itsmworkbench/nodekleislis";
+import { nodeActivity, nodeWorkflow } from "@itsmworkbench/nodekleislis";
 
 type IndexingResult = {
   emails: string[]
@@ -29,7 +29,7 @@ type IndexingResult = {
   jira: string[]
 }
 
-const indexEmail = activity<string, string[], string> ( { id: 'indexEmail' },
+const indexEmail = nodeActivity<number, string[], string> ( { id: 'indexEmail' },
   async ( index: number, ids: string[] ) => {
     const file: string = fileNameForEmail ( index )
     for ( const id of ids ) {
@@ -44,7 +44,7 @@ const email = nodeWorkflow ( { id: 'indexemail' },
   async ( config: string ) => {
     const listIdIds = configToEmailIds ( config )
     const idGroups: string[][] = partition ( ids )
-    return mapK ( idGroups, ( idGroup, index ) => indexEmail.start ( engine, index, idGroup ) )
+    return mapK ( idGroups, ( idGroup, index ) => indexEmail ( engine, index, idGroup ) )
 
   } );
 const teams = nodeWorkflow ( { id: 'indexteams' }, async ( config: string ) => [] );
@@ -53,15 +53,15 @@ const jira = nodeWorkflow ( { id: 'indexjira' }, async ( config: string ) => [] 
 
 
 const indexing = nodeWorkflow ( { id: 'indexing' }, async ( config: string ) => {
-  const emailResult = await email.start ( config );
-  const teamsResult = await teams.start ( config );
-  const sapResult = await sap.start ( config );
-  const jiraResult = await jira.start ( config );
+  const emailResult = email ( config );
+  const teamsResult = teams ( config );
+  const sapResult = sap ( config );
+  const jiraResult = jira ( config );
   return {
-    emails: await emailResult.result,
-    teams: await teamsResult.result,
-    sap: await sapResult.result,
-    jira: await jiraResult.result
+    emails: await emailResult,
+    teams: await teamsResult,
+    sap: await sapResult,
+    jira: await jiraResult
   }
 } )
 
@@ -89,7 +89,7 @@ const transform = nodeWorkflow ( { id: 'transform' }, async ( config: string ) =
     item = getNextItemToTransformActivity ( item )
     transformItemAndPutInLocalStorage ( item )
   }
-})
+} )
 
 //probably only need one of these...it's pretty fast and it's a reduce
 const pushResults = nodeWorkflow ( { id: 'pushResults' }, async ( config: string ) => {
@@ -100,10 +100,10 @@ const pushResults = nodeWorkflow ( { id: 'pushResults' }, async ( config: string
 } )
 
 const batchIndex = nodeWorkflow ( { id: 'batchIndex' }, async ( config: string ) => {
-  const partitionResults = partitionWork(config)
-  const indexToLocal =  await indexToLocalStorage.start ( partitionResults );
-  const transformResults =  await transform.start ( partitionResults);
-  const pushResultsResults =  await pushResults.start (partitionResults );
+  const partitionResults = partitionWork ( config )
+  const indexToLocal = await indexToLocalStorage.start ( partitionResults );
+  const transformResults = await transform.start ( partitionResults );
+  const pushResultsResults = await pushResults.start ( partitionResults );
 
 
-}
+} )

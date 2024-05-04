@@ -10,7 +10,7 @@ export function makeWorkflowEngine ( existing: BasicReplayEvents, store: BasicRe
     incMetric: () => inMemoryIncMetric ( metrics ),
     existingState: async ( id ) => existing,
     updateEventHistory: () => rememberUpdateCache ( store ),
-    nextInstanceId: async ( ) => workflowInstanceId
+    nextInstanceId: async () => workflowInstanceId
   }
 }
 export const activityAddOne = activity ( { id: 'addone', retry: defaultRetryPolicy },
@@ -29,6 +29,25 @@ export const wfAdd13 = workflow ( { id: 'wfAdd13' },
 
 describe ( "workflow", () => {
   it ( 'should execute a workflow', async () => {
+    const store: BasicReplayEvents = []
+    let metrics: NameAnd<number> = {};
+    const engine: WorkflowEngine = makeWorkflowEngine ( [], store, metrics );
+    const result = await wfAdd13 ( engine ) ( 2 )
+
+    expect ( await result ).toBe ( 15 )
+
+    expect ( metrics ).toEqual ( {
+      "activity.attempts": 3,
+      "activity.success": 3
+    } )
+    expect ( store ).toEqual ( [
+      { "id": "wfAdd13", "params": [ 2 ] },
+      { "id": "addeight", "success": 10 },
+      { "id": "addfour", "success": 14 },
+      { "id": "addone", "success": 15 }
+    ] )
+  } )
+  it ( 'should execute a workflow with start', async () => {
     const store: BasicReplayEvents = []
     let metrics: NameAnd<number> = {};
     const engine: WorkflowEngine = makeWorkflowEngine ( [], store, metrics );

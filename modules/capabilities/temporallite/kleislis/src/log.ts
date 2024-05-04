@@ -83,3 +83,13 @@ export function makeObjectFromParamsAndOutput ( config: LogConfig<any>, template
   result[ 'out' ] = modify ( config, output, 'formatOutput' )
   return result;
 }
+export interface LoggingHookState  {
+  timeService?: () => number
+  correlationId?: string
+  commonLogMessage?: NameAnd<string>
+  mainTemplate?: string  // defaults to {time} {level} [CorrelationId: {correlationId}] {message} or {time} {level} {message} if the correlation id isn't there
+  params?: NameAnd<any>
+  globalLogLevel?: LogLevel
+  log?: LogFn// defaults to console.log if not present
+
+}

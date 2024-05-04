@@ -1,17 +1,19 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/activities",
-  "description": "indexing data",
+  "name":        "@itsmworkbench/indexing",
+  "description": "general code to help with indexing",
   "packageJson": {
     "dependencies":    {
       "@laoban/utils":     "1.4.51",
       "@laoban/variables": "1.4.51"
     },
-    "devDependencies": {
+    "devDependencies": {},
+    "browser":         {
+      "child_process": false
     }
   },
   "links":       [
-
+    "@itsmworkbench/utils",
     "@itsmworkbench/kleislis"
   ],
   "guards":      {

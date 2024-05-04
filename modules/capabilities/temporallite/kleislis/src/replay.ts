@@ -1,5 +1,6 @@
-import { InjectedK0, InjectedK1, InjectedK2, InjectedK3, InjectedK4, InjectedK5, K0, K1, K2, K3, K4, K5, ReplayEvent, ReplayConfig, ReplayEventProcessorFn } from "@itsmworkbench/kleislis";
-import { ReplayEngine } from "./replay.events";
+
+import { ReplayConfig, ReplayEngine, ReplayEvent } from "./replay.events";
+import { InjectedK0, InjectedK1, InjectedK2, InjectedK3, InjectedK4, InjectedK5, K0, K1, K2, K3, K4, K5 } from "./kleisli";
 
 
 export function withReplay<T> ( activityId: string, config: ReplayConfig, fn: K0<T> ): InjectedK0<ReplayEngine, T>

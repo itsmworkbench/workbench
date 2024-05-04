@@ -23,9 +23,9 @@ export const activityAddEight = nodeActivity ( { id: 'addeight', retry: defaultR
   async ( input: number ): Promise<number> => input + 8 )
 export const wfAdd13: NodeWorkflow1<number, number> = nodeWorkflow ( { id: 'wfAdd13' },
   async ( i: number ) => activityAddOne ( await activityAddFour ( await activityAddEight ( i ) ) ) )
-const wf = {workflowId: wfAdd13.workflowId,instanceId:'instanceId'};
+const wf = { workflowId: wfAdd13.workflowId, instanceId: 'instanceId' };
 
-export function allButLastSegment( path: string ) {
+export function allButLastSegment ( path: string ) {
   return path.split ( '/' ).slice ( 0, -1 ).join ( '/' )
 }
 describe ( "workflow", () => {
@@ -41,10 +41,25 @@ describe ( "workflow", () => {
 
   it ( 'should execute a workflow', async () => {
     const engine: WorkflowEngine = fileWorkflowEngine ( names ( workspace ) );
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13 ( 2 ) )
+
+    expect ( result ).toEqual ( 'wfAdd13' )
+
+    //unfortunately by using 'the normal run' we have lost the instance id. We do have the start method which is tested next
+    // const events = await loadEvents ( names ( workspace ), result )
+    // expect ( events ).toEqual (
+    //   [
+    //     { "id": "addeight", "success": 10 },
+    //     { "id": "addfour", "success": 14 },
+    //     { "id": "addone", "success": 15 }
+    //   ] )
+  } )
+  it ( 'should execute a workflow using start', async () => {
+    const engine: WorkflowEngine = fileWorkflowEngine ( names ( workspace ) );
     const result = await runWithWorkflowEngine ( engine, () => wfAdd13.start ( 2 ) )
 
-    expect (  result.workflowId ).toEqual ( 'wfAdd13' )
-    expect ( allButLastSegment( result.instanceId) ).toEqual ( "wfAdd13/2024-04/27-14/30" )
+    expect ( result.workflowId ).toEqual ( 'wfAdd13' )
+    expect ( allButLastSegment ( result.instanceId ) ).toEqual ( "wfAdd13/2024-04/27-14/30" )
     expect ( await result.result ).toBe ( 15 )
 
     const events = await loadEvents ( names ( workspace ), result )
@@ -61,12 +76,12 @@ describe ( "workflow", () => {
     await setEvents ( names ( workspace ), wf, [
       { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 } ] )
-    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( wf.instanceId, 2 ) )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( wf.instanceId ) )
 
     expect ( await result.result ).toBe ( 15 )
 
     let metrics: NameAnd<number> = await loadMetrics ( names ( workspace ), result );
-    const events = await loadEvents ( names ( workspace ), result)
+    const events = await loadEvents ( names ( workspace ), result )
     expect ( events ).toEqual ( [
       { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
@@ -91,17 +106,17 @@ describe ( "workflow", () => {
     const actualEvents = await loadEvents ( names ( workspace ), wf )
     console.log ( 'actualEvents', actualEvents )
 
-    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( wf.instanceId, 2 ) )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( wf.instanceId ) )
 
     expect ( await result.result ).toBe ( 15 )
-    const events = await loadEvents ( names ( workspace ),result )
+    const events = await loadEvents ( names ( workspace ), result )
     expect ( events ).toEqual ( [
       { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 }
     ] )
-    let metrics: NameAnd<number> = await loadMetrics ( names ( workspace ),result );
+    let metrics: NameAnd<number> = await loadMetrics ( names ( workspace ), result );
     expect ( metrics ).toEqual ( {
       "activity.attempts": 1,
       "activity.replay.success": 2,
@@ -115,10 +130,10 @@ describe ( "workflow", () => {
       { "id": "addeight", "success": 10 },
       { "id": "addfour", "success": 14 },
       { "id": "addone", "success": 15 } ] )
-    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( wf.instanceId, 2 ) )
+    const result = await runWithWorkflowEngine ( engine, () => wfAdd13.complete ( wf.instanceId ) )
 
     expect ( await result.result ).toBe ( 15 )
-    const events = await loadEvents ( names ( workspace ),result )
+    const events = await loadEvents ( names ( workspace ), result )
     expect ( events ).toEqual ( [
       { "id": "wfAdd13", "params": [ 2 ] },
       { "id": "addeight", "success": 10 },

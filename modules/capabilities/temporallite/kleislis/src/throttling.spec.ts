@@ -1,4 +1,4 @@
-import { startIncrementLoop, withThrottle } from "./throttling";
+import { startThrottling, stopThrottling, Throttling, withThrottle } from "./throttling";
 
 let globalCount = 0;
 
@@ -25,6 +25,7 @@ describe ( 'throttle testing', () => {
       const p = withThrottle ( throttle, incrementCount );
       promises.push ( p () );
     }
+    stopThrottling(throttle);
 
     // Initial check: should execute only 5 initially due to throttle limit
     await new Promise ( r => setTimeout ( r, 200 ) ); // Wait to let initial promises resolve
@@ -55,15 +56,14 @@ describe('startIncrementLoop', () => {
 
 
   test('should increment throttle.current periodically', () => {
-    const throttle = {
+    const throttle: Throttling = {
       current: 0,
       max: 10,
       tokensPer100ms: 1,
       throttlingDelay: 50,
-      kill: false
     };
 
-    startIncrementLoop(throttle);
+    startThrottling(throttle);
 
     // Fast-forward time to 500ms
     jest.advanceTimersByTime(500);
@@ -72,7 +72,7 @@ describe('startIncrementLoop', () => {
     expect(throttle.current).toBe(5); // 5 increments over 500ms, assuming it starts from 0
 
     // Test kill switch
-    throttle.kill = true;
+    stopThrottling(throttle);
     jest.advanceTimersByTime(100); // move time forward to check if it stops incrementing
     expect(throttle.current).toBe(5); // Should remain the same if kill works
   });

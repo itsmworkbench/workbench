@@ -1,0 +1,10 @@
+# Approach
+
+## Repositories
+We have an indexed tree which is just parent child. The list of repositories are the child.
+
+The processLeaf of this is...
+
+## Repository
+We have an indexed tree which recurses. Probably only returns .md files...
+

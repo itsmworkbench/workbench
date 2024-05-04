@@ -1,6 +1,6 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/indexing",
+  "name":        "@itsmworkbench/authentication",
   "description": "indexing data",
   "packageJson": {
     "dependencies":    {
@@ -10,7 +10,6 @@
     }
   },
   "links":       [
-    "@itsmworkbench/kleislis"
   ],
   "guards":      {
     "compile": true,

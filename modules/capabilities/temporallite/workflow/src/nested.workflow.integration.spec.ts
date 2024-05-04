@@ -1,7 +1,7 @@
 import { ActivityEngineWithWorkflow, workflow, WorkflowEngine } from "./workflow";
 import { NameAnd } from "@laoban/utils";
 import { ActivityEngine } from "@itsmworkbench/activities";
-import { BasicReplayEvent, BasicReplayEvents, inMemoryIncMetric, rememberUpdateCache } from "@itsmworkbench/kleislis";
+import { BasicReplayEvent, inMemoryIncMetric, rememberUpdateCache } from "@itsmworkbench/kleislis";
 import { WorkflowEvent } from "./workflow.replay";
 
 const workflowInstanceId = "1";
@@ -33,11 +33,12 @@ export const workflowAddEight = workflow ( { id: 'addeight' },
   async ( engine: ActivityEngine, input: number ): Promise<number> =>
     input + 8 )
 export const wfAdd13 = workflow ( { id: 'wfAdd13', workFlows: [ workflowAddEight, workflowAddFour, workflowAddOne ] },
-  async ( engine: ActivityEngineWithWorkflow, i: number ) => { //wow this sucks. All this rubbish with (engine). Need to move to zoom/nodeactivities and hide it
-    const first = await workflowAddEight.start ( engine.workflowEngine ) ( i )
-    const second = await workflowAddFour.start ( engine.workflowEngine ) ( await first.result )
-    const third = await workflowAddOne.start ( engine.workflowEngine ) ( await second.result )
-    return await third.result
+  async ( engine: ActivityEngineWithWorkflow, i: number ) => {
+    const e = engine.workflowEngine; //we can get rid of this with nodeworkflow... but really hard in react
+    const first = await workflowAddEight ( e ) ( i )
+    const second = await workflowAddFour ( e ) ( first )
+    const third = await workflowAddOne ( e ) ( second )
+    return third
   } )
 
 describe ( "workflow that calls another workflow", () => {
