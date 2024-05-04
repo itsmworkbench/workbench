@@ -1,22 +1,23 @@
-import { gitRepoIndexer } from "@itsmworkbench/indexing_github";
+import { indexGitHubRepo } from "@itsmworkbench/indexing_github";
 import { consoleIndexTreeLogAndMetrics, defaultIndexTreeNfs, IndexingContext, insertIntoFileWithNonFunctionals, stopNonFunctionals } from "@itsmworkbench/indexing";
-
+import { consoleIndexForestLogAndMetrics } from "@itsmworkbench/indexing/src/forest.index";
 
 
 const token = process.env.GITHUB_TOKEN;
 if ( token === null || token == undefined ) {
   throw new Error ( 'GITHUB_TOKEN not set in environment' )
 }
-const indexingContext: IndexingContext = {
+const indexingContext: IndexingContext = ({
   authFn: async ( details ) =>
     ({ "Authorization": `Bearer ${token}` }), //could have used some other strategy but this is ok for now
-  logAndMetrics: consoleIndexTreeLogAndMetrics,
+  treeLogAndMetrics: consoleIndexTreeLogAndMetrics,
+  forestLogAndMetrics: consoleIndexForestLogAndMetrics,
   fetch: async ( url, options ) => {
     console.log ( `Fetching: ${url}` )
     const result = await fetch ( url, options );
     return result;
   }
-}
+});
 
 
 //Repo name will be either users/repo/reponame or orgs/repo/reponame. This allows us to handle either user or org repos
@@ -24,7 +25,7 @@ const indexingContext: IndexingContext = {
 export const githubNfs = defaultIndexTreeNfs ()
 export const githubOneRepoWF =
                async ( reponame: string ) =>
-                 gitRepoIndexer ( githubNfs, indexingContext,
+                 indexGitHubRepo ( githubNfs, indexingContext,
                    insertIntoFileWithNonFunctionals ( 'target/indexing/github', 'github', githubNfs ) ) ( reponame )
 
 console.log ( 'hello world' )

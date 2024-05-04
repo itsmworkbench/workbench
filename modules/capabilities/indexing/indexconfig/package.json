@@ -1,9 +1,12 @@
 {
-  "name": "@itsmworkbench/authentication",
-  "description": "indexing data",
+  "name": "@itsmworkbench/indexconfig",
+  "description": "The parsing of config files. Default logic",
   "version": "0.0.30",
   "main": "dist/index",
   "types": "dist/index",
+  "browser": {
+    "child_process": false
+  },
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -18,6 +21,10 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.51",
+    "@laoban/variables": "1.4.51",
+    "@itsmworkbench/utils": "0.0.30",
+    "@itsmworkbench/kleislis": "0.0.30",
+    "@itsmworkbench/yaml": "0.0.30",
     "debug": "^4.3.4"
   },
   "devDependencies": {

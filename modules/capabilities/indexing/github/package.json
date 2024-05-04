@@ -24,6 +24,7 @@
     "@laoban/variables": "1.4.51",
     "@itsmworkbench/utils": "0.0.30",
     "@itsmworkbench/indexing": "0.0.30",
+    "@itsmworkbench/indexconfig": "0.0.30",
     "debug": "^4.3.4"
   },
   "devDependencies": {

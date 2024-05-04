@@ -1,5 +1,5 @@
 export * from './src/access'
 export * from './src/tree.index'
-export * from './src/index.domain'
+export * from './src/indexer.domain'
 export * from './src/index.into.file'
 export * from './src/indexing.non.functionals'

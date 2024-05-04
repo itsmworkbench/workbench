@@ -1,9 +1,9 @@
 import fs from 'fs/promises';
-import { Indexer } from "./index.domain";
 import { firstSegment, NameAnd } from "@laoban/utils";
 import path from 'path';
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { addNonFunctionsToIndexer } from "./tree.index";
+import { Indexer } from "./indexer.domain";
 
 type IndexFormater<T> = ( rootId: string, id: string, data: T ) => string;
 export type InsertIntoFile<T> = {

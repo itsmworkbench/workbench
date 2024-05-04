@@ -1,8 +1,8 @@
 import { Task, withConcurrencyLimit } from "@itsmworkbench/kleislis/src/concurrency.limiter";
 import { stopThrottling, withRetry, withThrottle } from "@itsmworkbench/kleislis";
-import { Indexer } from "./index.domain";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { mapK } from "@laoban/utils";
+import { Indexer } from "./indexer.domain";
 
 export type IndexTreeTc<Folder, Leaf, IndexedLeaf> = {
   folderIds: ( rootId: string, parentId: string | undefined, f: Folder ) => string[];
@@ -15,25 +15,25 @@ export type IndexTreeTc<Folder, Leaf, IndexedLeaf> = {
 
 export function addNonFunctionalsToIndexTreeTC<Folder, Leaf, IndexedLeaf> ( nf: IndexTreeNonFunctionals, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf> ): IndexTreeTc<Folder, Leaf, IndexedLeaf> {
   const queue: Task<any>[] = []
-  const { concurrencyLimit, queryThrottle, queryRetryPolicy, indexThrottle, prepareLeafRetryPolicy, indexRetryPolicy } = nf;
+  const { queryConcurrencyLimit, queryThrottle, queryRetryPolicy, indexThrottle, prepareLeafRetryPolicy, indexRetryPolicy } = nf;
   return {
     folderIds: tc.folderIds,
     leafIds: tc.leafIds,
-    fetchFolder: withRetry ( queryRetryPolicy, withConcurrencyLimit ( concurrencyLimit, queue, withThrottle ( queryThrottle, tc.fetchFolder ) ) ),
-    fetchLeaf: withRetry ( queryRetryPolicy, withConcurrencyLimit ( concurrencyLimit, queue, withThrottle ( queryThrottle, tc.fetchLeaf ) ) ),
-    prepareLeaf: rootId => withRetry ( prepareLeafRetryPolicy, withConcurrencyLimit ( concurrencyLimit, queue, tc.prepareLeaf ( rootId ) ) )
+    fetchFolder: withRetry ( queryRetryPolicy, withConcurrencyLimit ( queryConcurrencyLimit, queue, withThrottle ( queryThrottle, tc.fetchFolder ) ) ),
+    fetchLeaf: withRetry ( queryRetryPolicy, withConcurrencyLimit ( queryConcurrencyLimit, queue, withThrottle ( queryThrottle, tc.fetchLeaf ) ) ),
+    prepareLeaf: rootId => withRetry ( prepareLeafRetryPolicy, withConcurrencyLimit ( queryConcurrencyLimit, queue, tc.prepareLeaf ( rootId ) ) )
   }
 }
 
 
 export function addNonFunctionsToIndexer<T> ( nf: IndexTreeNonFunctionals, indexer: Indexer<T> ): Indexer<T> {
   const queue: Task<any>[] = []
-  const { concurrencyLimit, queryThrottle, queryRetryPolicy, indexThrottle, prepareLeafRetryPolicy, indexRetryPolicy } = nf;
+  const { indexerConcurrencyLimit, queryThrottle, queryRetryPolicy, indexThrottle, prepareLeafRetryPolicy, indexRetryPolicy } = nf;
   return {
-    start: withRetry ( queryRetryPolicy, withConcurrencyLimit ( concurrencyLimit, queue, withThrottle ( queryThrottle, indexer.start ) ) ),
-    processLeaf: ( rootId, id: string ) => withRetry ( prepareLeafRetryPolicy, withConcurrencyLimit ( concurrencyLimit, queue, indexer.processLeaf ( rootId, id ) ) ),
-    finished: withRetry ( queryRetryPolicy, withConcurrencyLimit ( concurrencyLimit, queue, withThrottle ( queryThrottle, indexer.finished ) ) ),
-    failed: withRetry ( queryRetryPolicy, withConcurrencyLimit ( concurrencyLimit, queue, withThrottle ( queryThrottle, indexer.failed ) ) ),
+    start: withRetry ( queryRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, queue, withThrottle ( queryThrottle, indexer.start ) ) ),
+    processLeaf: ( rootId, id: string ) => withRetry ( prepareLeafRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, queue, indexer.processLeaf ( rootId, id ) ) ),
+    finished: withRetry ( queryRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, queue, withThrottle ( queryThrottle, indexer.finished ) ) ),
+    failed: withRetry ( queryRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, queue, withThrottle ( queryThrottle, indexer.failed ) ) ),
   }
 }
 export function stopNonFunctionals ( nft: IndexTreeNonFunctionals ) {
@@ -64,9 +64,23 @@ export const consoleIndexTreeLogAndMetrics: IndexTreeLogAndMetrics = {
   failedLeaf: ( id, e ) => console.log ( `Failed Leaf: ${id} ${e}` ),
   finishedFolder: ( id ) => console.log ( `Finished Folder: ${id}` )
 }
+export function rememberIndexTreeLogAndMetrics ( msgs: string[] ): IndexTreeLogAndMetrics {
+  return {
+    leafIds: ( ids ) => msgs.push ( `LeafIds: ${ids}` ),
+    folderIds: ( ids ) => msgs.push ( `FolderIds: ${ids}` ),
+    finishedLeaf: ( id ) => msgs.push ( `Finished Leaf: ${id}` ),
+    failedLeaf: ( id, e ) => msgs.push ( `Failed Leaf: ${id} ${e}` ),
+    finishedFolder: ( id ) => msgs.push ( `Finished Folder: ${id}` )
+  }
+}
 
-export type ProcessTreeRoot = <Folder, Leaf, IndexedLeaf> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf>, indexer: Indexer<IndexedLeaf> ) => ( rootId: string ) => Promise<void>;
-export function processTreeRoot<Folder, Leaf, IndexedLeaf> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf>, indexer: Indexer<IndexedLeaf> ) {
+export type ExecuteIndexOptions = {
+  dryRunJustShowRepo?: boolean;
+  dryRunDoEverythingButIndex?: boolean;
+}
+
+export type ProcessTreeRoot = <Folder, Leaf, IndexedLeaf> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf>, indexer: Indexer<IndexedLeaf>, options: ExecuteIndexOptions ) => ( rootId: string ) => Promise<void>;
+export function processTreeRoot<Folder, Leaf, IndexedLeaf> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf>, indexer: Indexer<IndexedLeaf>, options: ExecuteIndexOptions ) {
   async function processFolder ( rootId: string, folderId: string, parentId?: string ): Promise<void> {
     const folder = await tc.fetchFolder ( rootId, folderId );
     const leafIds = tc.leafIds ( rootId, parentId, folder );
@@ -81,7 +95,8 @@ export function processTreeRoot<Folder, Leaf, IndexedLeaf> ( logAndMetrics: Inde
     try {
       const leaf = await tc.fetchLeaf ( rootId, leafId );
       const preparedLeaf = await tc.prepareLeaf ( rootId ) ( leaf );
-      await indexer.processLeaf ( rootId, leafId ) ( preparedLeaf );
+      if ( options.dryRunDoEverythingButIndex !== true )
+        await indexer.processLeaf ( rootId, leafId ) ( preparedLeaf );
       logAndMetrics.finishedLeaf ( leafId );
     } catch ( error ) {
       logAndMetrics.failedLeaf ( leafId, `${error}` );
@@ -93,7 +108,8 @@ export function processTreeRoot<Folder, Leaf, IndexedLeaf> ( logAndMetrics: Inde
       throw new Error ( 'logAndMetrics is required' );
     await indexer.start ( rootId );
     try {
-      await processFolder ( rootId, '' );
+      if ( options.dryRunJustShowRepo !== true )
+        await processFolder ( rootId, '' );
       await indexer.finished ( rootId );
     } catch ( e ) {
       await indexer.failed ( rootId, e );

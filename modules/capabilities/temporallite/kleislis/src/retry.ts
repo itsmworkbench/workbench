@@ -50,7 +50,7 @@ export function withMeteredRetry<T> ( retryPolicy: RetryPolicyConfig | undefined
       } catch ( error ) {
         if ( nonRecoverableErrors.includes ( error.message ) ) {
           incMetric ( 'activity.non_recoverable_error' );
-          throw error;
+          return Promise.reject(error);
         }  // Rethrow if non-recoverable
         if ( ++attempts < retryPolicy.maximumAttempts ) {
           // Calculate next delay

@@ -14,7 +14,8 @@
   },
   "links":       [
     "@itsmworkbench/utils",
-    "@itsmworkbench/indexing"
+    "@itsmworkbench/indexing",
+    "@itsmworkbench/indexconfig"
   ],
   "guards":      {
     "compile": true,

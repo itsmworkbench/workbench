@@ -1,7 +1,7 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/indexing",
-  "description": "general code to help with indexing",
+  "name":        "@itsmworkbench/indexconfig",
+  "description": "The parsing of config files. Default logic",
   "packageJson": {
     "dependencies":    {
       "@laoban/utils":     "1.4.51",
@@ -13,9 +13,9 @@
     }
   },
   "links":       [
-    "@itsmworkbench/indexconfig",
     "@itsmworkbench/utils",
-    "@itsmworkbench/kleislis"
+    "@itsmworkbench/kleislis",
+    "@itsmworkbench/yaml"
   ],
   "guards":      {
     "compile": true,

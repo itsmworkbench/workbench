@@ -1,5 +1,5 @@
 import { IndexTreeLogAndMetrics, IndexTreeTc, processTreeRoot } from "./tree.index";
-import { rememberIndex } from "./index.domain";
+import { rememberIndex } from "./indexer.domain";
 
 
 describe ( 'TreeIndexer Integration Test', () => {
@@ -43,17 +43,17 @@ describe ( 'TreeIndexer Integration Test', () => {
       "Started: root",
       "LeafIDs-leaf1,leaf2",
       "FolderIDs-subfolder1",
-      "Processing: leaf1 - \"Prepared-root-leaf1\"",
-      "Processing: leaf2 - \"Prepared-root-leaf2\"",
+      "Processing: root - leaf1 - \"Prepared-root-leaf1\"",
+      "Processing: root - leaf2 - \"Prepared-root-leaf2\"",
       "FinishedLeaf-leaf1",
       "FinishedLeaf-leaf2",
       "LeafIDs-leaf3",
       "FolderIDs-",
-      "Processing: leaf3 - \"Prepared-root-leaf3\"",
+      "Processing: root - leaf3 - \"Prepared-root-leaf3\"",
       "FinishedLeaf-leaf3",
       "FinishedFolder-subfolder1",
       "FinishedFolder-",
       "Finished: root"
-    ] );
+    ]);
   } );
 } );

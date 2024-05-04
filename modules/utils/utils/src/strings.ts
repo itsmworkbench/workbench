@@ -73,6 +73,8 @@ export function fullExtension ( path: string ): string {
 }
 
 export function simpleTemplate(template: string, data: NameAnd<any>): string {
+  if (template === undefined) return undefined
+  if (data === undefined) return template
   return template.replace(/\{(\w+)\}/g, (match, key) => {
     if (key in data) {
       return String(data[key]);
