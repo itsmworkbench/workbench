@@ -1,5 +1,4 @@
 import { defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberIndex, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
-import { githubOneRepoWF } from "@itsmworkbench/indexall/src/index.all";
 import { indexGitHubFully, indexGitHubOrganisation, indexGitHubRepo, indexGitHubUser, indexOrganisationMembers } from "./github.index.tree";
 import { rememberForestLogsAndMetrics } from "@itsmworkbench/indexing/src/forest.index";
 import fetch from 'node-fetch'
@@ -44,7 +43,7 @@ describe ( 'githubOneRepoWF', () => {
   describe ( 'indexrepo', () => {
     it ( 'should index a repo - dryrun true', async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubRepo ( nfs, indexContext, rememberIndex ( 'test', remembered ), { dryRunJustShowRepo: true } )
+      const indexer = indexGitHubRepo ( nfs, indexContext, rememberIndex ( 'test', remembered ), { dryRunJustShowTrees: true } )
       const config = cleanAndEnrichConfig ( indexConfigExample, {} )
       await indexer ( 'phil-rice/typescriptDragons' )
       expect ( remembered.sort () ).toEqual ( [
@@ -90,7 +89,7 @@ describe ( 'githubOneRepoWF', () => {
 
     it ( 'should report not found if a repo not found', async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubRepo ( nfs, indexContext, rememberIndex ( 'test', remembered ), { dryRunJustShowRepo: false } ) //we actually go for it
+      const indexer = indexGitHubRepo ( nfs, indexContext, rememberIndex ( 'test', remembered ), { dryRunJustShowTrees: false } ) //we actually go for it
       const config = cleanAndEnrichConfig ( indexConfigExample, {} )
       await indexer ( 'phil-rice/repodoesntexist' )
       expect ( remembered.sort () ).toEqual ( [
@@ -103,7 +102,7 @@ describe ( 'githubOneRepoWF', () => {
   describe ( 'index org', () => {
     it ( 'should index an org - dryrun on', async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubOrganisation ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowRepo: true } )
+      const indexer = indexGitHubOrganisation ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowTrees: true } )
       const config = cleanAndEnrichConfig ( indexConfigExample, {} )
       await indexer ( 'itsmworkbench' )
       expect ( remembered.sort () ).toEqual ( [//we sort because this is very async... so here we just assert that at some time we got these messages
@@ -119,7 +118,7 @@ describe ( 'githubOneRepoWF', () => {
     } )
     it ( "should report not found if an org not found", async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubOrganisation ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowRepo: false } )
+      const indexer = indexGitHubOrganisation ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowTrees: false } )
       await indexer ( 'orgdoesntexist' )
       expect ( remembered.sort () ).toEqual ( [] )
       expect ( msgs.sort () ).toEqual ( [
@@ -130,7 +129,7 @@ describe ( 'githubOneRepoWF', () => {
   describe ( 'index user repos', () => {
     it ( 'should index people - dryrun on', async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubUser ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowRepo: true } )
+      const indexer = indexGitHubUser ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowTrees: true } )
       await indexer ( 'phil-rice-HCL' )
       expect ( remembered.sort () ).toEqual ( [
         "Finished: phil-rice-HCL phil-rice-HCL/HelloDataNucleusJBoss",
@@ -143,7 +142,7 @@ describe ( 'githubOneRepoWF', () => {
     } )
     it ( "should report not found if a user not found", async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubUser ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowRepo: false } )
+      const indexer = indexGitHubUser ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowTrees: false } )
       await indexer ( 'userdoesntexist999' )
       expect ( remembered.sort () ).toEqual ( [] )
       expect ( msgs.sort () ).toEqual ( [
@@ -154,7 +153,7 @@ describe ( 'githubOneRepoWF', () => {
   describe ( "indexOrganisationMembers", () => {
     it ( "should index members of an organisation - dryrun on", async () => {
       const remembered: string[] = []
-      const indexer = indexOrganisationMembers ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowRepo: true } )
+      const indexer = indexOrganisationMembers ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowTrees: true } )
       await indexer ( 'itsmworkbench' )
       expect ( remembered.sort () ).toEqual ( [
         "Finished: itsmworkbench eyupbarlas",
@@ -173,7 +172,7 @@ describe ( 'githubOneRepoWF', () => {
 
     it ( "should say what it is going to do when we dryRunJustShowRepo", async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubFully ( nfs, indexContext, ( forestId ) => rememberIndex ( forestId, remembered ), { dryRunJustShowRepo: true } )
+      const indexer = indexGitHubFully ( nfs, indexContext, ( forestId ) => rememberIndex ( forestId, remembered ), { dryRunJustShowTrees: true } )
       const config = cleanAndEnrichConfig ( indexConfigExample, {} )
       await indexer ( config.github.scan as any )
       expect ( remembered.sort () ).toEqual ( [

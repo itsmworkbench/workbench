@@ -5,12 +5,21 @@ export type Indexer<T> = {
   failed: ( id: string, e: any ) => Promise<void>
 }
 
+export function indexerWithTransformer<T, T1> ( indexer: Indexer<T1>, fn: ( t: T ) => T1 ): Indexer<T> {
+  return {
+    start: indexer.start,
+    processLeaf: ( rootId: string, id: string ) => async ( t: T ) => indexer.processLeaf ( rootId, id ) ( fn ( t ) ),
+    finished: indexer.finished,
+    failed: indexer.failed
+  }
+}
 export const consoleIndexer: Indexer<any> = {
   start: async ( rootId: string ) => { console.log ( `Started: ${rootId}` ) },
   processLeaf: ( rootId, id: string ) => async ( t: any ) => { console.log ( `Processing: ${rootId} - ${id} - ${JSON.stringify ( t )}` ) },
   finished: async ( rootId: string ) => { console.log ( `Finished: ${rootId}` ) },
   failed: async ( rootId: string, e: any ) => { console.log ( `Failed: ${rootId} ${e}` ) }
 }
+
 
 export function rememberIndex<T> ( prefix: string, store: string[] ): Indexer<T> {
   return {

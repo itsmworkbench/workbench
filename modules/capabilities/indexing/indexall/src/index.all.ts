@@ -1,36 +1,46 @@
-import { indexGitHubRepo } from "@itsmworkbench/indexing_github";
-import { consoleIndexTreeLogAndMetrics, defaultIndexTreeNfs, IndexingContext, insertIntoFileWithNonFunctionals, stopNonFunctionals } from "@itsmworkbench/indexing";
+import { indexGitHubFully, indexGitHubRepo } from "@itsmworkbench/indexing_github";
+import { consoleIndexTreeLogAndMetrics, defaultIndexTreeNfs, ExecuteIndexOptions, Indexer, IndexingContext, IndexTreeNonFunctionals, insertIntoFileWithNonFunctionals, queryThrottlePrototype, stopNonFunctionals } from "@itsmworkbench/indexing";
 import { consoleIndexForestLogAndMetrics } from "@itsmworkbench/indexing/src/forest.index";
+import { PopulatedIndexItem } from "@itsmworkbench/indexconfig";
+import { NameAnd } from "@laoban/utils";
 
-
-const token = process.env.GITHUB_TOKEN;
-if ( token === null || token == undefined ) {
-  throw new Error ( 'GITHUB_TOKEN not set in environment' )
+export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: (nfc: IndexTreeNonFunctionals) =>( forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
+  return {
+    github: indexGitHubFully ( nfc, ic, indexer(nfc), indexer(nfc), executeOptions )
+  };
 }
-const indexingContext: IndexingContext = ({
-  authFn: async ( details ) =>
-    ({ "Authorization": `Bearer ${token}` }), //could have used some other strategy but this is ok for now
-  treeLogAndMetrics: consoleIndexTreeLogAndMetrics,
-  forestLogAndMetrics: consoleIndexForestLogAndMetrics,
-  fetch: async ( url, options ) => {
-    console.log ( `Fetching: ${url}` )
-    const result = await fetch ( url, options );
-    return result;
+//export type IndexTreeNonFunctionals = {
+//   queryConcurrencyLimit: number;
+//   queryThrottle: Throttling;
+//   queryRetryPolicy: RetryPolicyConfig;
+//   indexThrottle: Throttling;
+//   prepareLeafRetryPolicy: RetryPolicyConfig;
+//   indexRetryPolicy: RetryPolicyConfig;
+//   indexerConcurrencyLimit: number;
+// }
+export type ResultAndNfc = {
+  result: Promise<any>;
+  nfc: IndexTreeNonFunctionals;
+
+}
+export const indexOneSource = ( context: IndexingContext, indexer: (nfc: IndexTreeNonFunctionals) =>( forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) => ( item: PopulatedIndexItem, ): ResultAndNfc => {
+  const { index, query, target, auth, scan, type } = item
+  const nfc: IndexTreeNonFunctionals = {
+    queryConcurrencyLimit: item.query.concurrencyLimit || 1000,
+    queryThrottle: item.query.throttle,
+    queryRetryPolicy: item.query.retry,
+    indexThrottle: item.target.throttle,
+    prepareLeafRetryPolicy: item.target.retry,
+    indexRetryPolicy: item.target.retry,
+    indexerConcurrencyLimit: item.target.concurrencyLimit
   }
-});
+  const all = allIndexers ( nfc, context, indexer, executeOptions );
+  const thisIndexer = all [ type ]
+  if ( thisIndexer === undefined ) throw new Error ( `No indexer for ${type}. Legal values are ${Object.keys ( all ).sort ()}` )
+  const result = thisIndexer ( item.scan )
+  return { result, nfc }
+};
 
-
-//Repo name will be either users/repo/reponame or orgs/repo/reponame. This allows us to handle either user or org repos
-
-export const githubNfs = defaultIndexTreeNfs ()
-export const githubOneRepoWF =
-               async ( reponame: string ) =>
-                 indexGitHubRepo ( githubNfs, indexingContext,
-                   insertIntoFileWithNonFunctionals ( 'target/indexing/github', 'github', githubNfs ) ) ( reponame )
-
-console.log ( 'hello world' )
-
-// githubOneRepoWF ( 'phil-rice/javaoptics' ).then ( () => {
-//   console.log ( 'done' )
-//   stopNonFunctionals ( githubNfs )
-// } )
+export const indexAll = ( context: IndexingContext, indexer:(nfc: IndexTreeNonFunctionals) => ( forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) =>
+  ( items: NameAnd<PopulatedIndexItem> ): ResultAndNfc[] =>
+    Object.values ( items ).map ( indexOneSource ( context, indexer, executeOptions ) )

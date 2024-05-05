@@ -1,7 +1,8 @@
 import { NameAnd } from "@laoban/utils";
-import { IndexTreeLogAndMetrics } from "./tree.index";
-import { IndexForestLogAndMetrics } from "./forest.index";
+import { consoleIndexTreeLogAndMetrics, IndexTreeLogAndMetrics } from "./tree.index";
+import { consoleIndexForestLogAndMetrics, IndexForestLogAndMetrics } from "./forest.index";
 import { ApiKeyAuthentication, Authentication, BasicAuthentication, isApiKeyAuthentication, isBasicAuthentication, isOAuthAuthentication } from "@itsmworkbench/indexconfig";
+import { consoleIndexParentChildLogAndMetrics, IndexParentChildLogAndMetrics } from "./index.parent.child";
 
 export type TokenAuthentication = {
   token: string
@@ -51,9 +52,19 @@ export type FetchFn = ( url: string, options?: FetchFnOptions ) => Promise<Fetch
 
 export type IndexingContext = {
   authFn: AuthFn;
+  parentChildLogAndMetrics: IndexParentChildLogAndMetrics
   treeLogAndMetrics: IndexTreeLogAndMetrics
   forestLogAndMetrics: IndexForestLogAndMetrics
   fetch: FetchFn
+}
+export function defaultIndexingContext ( env: NameAnd<string>, fetch: FetchFn ): IndexingContext {
+  return {
+    authFn: defaultAuthFn ( env ),
+    treeLogAndMetrics: consoleIndexTreeLogAndMetrics,
+    forestLogAndMetrics: consoleIndexForestLogAndMetrics,
+    parentChildLogAndMetrics: consoleIndexParentChildLogAndMetrics,
+    fetch
+  }
 }
 
 

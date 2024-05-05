@@ -1,4 +1,4 @@
-import { indexForest, IndexForestTc, rememberForestLogsAndMetrics } from "./forest.index";
+import { indexForestOfTrees, IndexForestTc, rememberForestLogsAndMetrics } from "./forest.index";
 
 describe ( 'indexForest', () => {
   let logs: string[];
@@ -19,7 +19,7 @@ describe ( 'indexForest', () => {
   } );
 
   test ( 'successful execution', async () => {
-    await indexForest ( logAndMetrics, tc, processTreeRoot ) ( 'forest123' );
+    await indexForestOfTrees ( logAndMetrics, tc, processTreeRoot ) ( 'forest123' );
 
     expect ( logs ).toEqual ( [
       "rootIds: tree1,tree2",
@@ -34,7 +34,7 @@ describe ( 'indexForest', () => {
       throw new Error ( 'Not Found' );
     };
 
-    await indexForest ( logAndMetrics, tc, errorProcessTreeRoot ) ( 'forest123' );
+    await indexForestOfTrees ( logAndMetrics, tc, errorProcessTreeRoot ) ( 'forest123' );
 
     expect ( logs ).toEqual ( [
       "rootIds: tree1,tree2",
@@ -48,7 +48,7 @@ describe ( 'indexForest', () => {
       throw new Error ( 'Some error' );
     };
 
-    await expect ( indexForest ( logAndMetrics, tc, errorProcessTreeRoot ) ( 'forest123' ) ).rejects.toThrow ( 'Some error' );
+    await expect ( indexForestOfTrees ( logAndMetrics, tc, errorProcessTreeRoot ) ( 'forest123' ) ).rejects.toThrow ( 'Some error' );
     expect ( logs ).toEqual ( [
       "rootIds: tree1,tree2",
       "failed Root: forest123 Error: Some error"

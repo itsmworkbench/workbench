@@ -1,0 +1,35 @@
+defaults:
+  query:
+    retry:
+      initialInterval: 5000
+      maximumInterval: 30000
+      maximumAttempts: 50 # We really want to finish! But there are huge intervals in the retry
+      nonRecoverableErrors:
+        - "Not Found"
+    throttle: # OK this isn't much of a throttle
+      max: 1000
+      tokensPer100ms: 10
+  auth:
+    method: ApiKey
+    credentials:
+      apiKey: "{source}_APIKEY"
+  target:
+    retry: defaultRetryPolicy
+    throttle:
+      max: 10000
+    file: "target/index/{index}/{name}_{num}.json"
+    max: 10000000
+  scan:
+    aclIndex: ".search-acl-filter-{index}"
+
+index:
+  github:
+    scan:
+      organisations:
+        - laoban
+        - itsmworkbench
+      owners:
+        - phil-rice
+      indexPeople: true
+
+

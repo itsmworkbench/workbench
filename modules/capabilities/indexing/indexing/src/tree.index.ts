@@ -75,7 +75,7 @@ export function rememberIndexTreeLogAndMetrics ( msgs: string[] ): IndexTreeLogA
 }
 
 export type ExecuteIndexOptions = {
-  dryRunJustShowRepo?: boolean;
+  dryRunJustShowTrees?: boolean;
   dryRunDoEverythingButIndex?: boolean;
 }
 
@@ -108,7 +108,7 @@ export function processTreeRoot<Folder, Leaf, IndexedLeaf> ( logAndMetrics: Inde
       throw new Error ( 'logAndMetrics is required' );
     await indexer.start ( rootId );
     try {
-      if ( options.dryRunJustShowRepo !== true )
+      if ( options.dryRunJustShowTrees !== true )
         await processFolder ( rootId, '' );
       await indexer.finished ( rootId );
     } catch ( e ) {

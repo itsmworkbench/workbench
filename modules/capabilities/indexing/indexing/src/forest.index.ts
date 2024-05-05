@@ -2,6 +2,8 @@ import { mapK } from "@laoban/utils";
 import { K1, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { Task, withConcurrencyLimit } from "@itsmworkbench/kleislis/src/concurrency.limiter";
+import { Indexer } from "./indexer.domain";
+import { ExecuteIndexOptions } from "./tree.index";
 
 
 export interface IndexForestTc<Forest> {
@@ -9,7 +11,7 @@ export interface IndexForestTc<Forest> {
   treeIds: ( forest: Forest ) => string[];
 }
 
-export function addNonFunctionalsToIndexForestTc<Forest> ( nf: IndexTreeNonFunctionals, tc: IndexForestTc<Forest> ): IndexForestTc<Forest> {
+export function addNonFunctionalsToIndexForestTc<Forest, Tree> ( nf: IndexTreeNonFunctionals, tc: IndexForestTc<Forest> ): IndexForestTc<Forest> {
   const { queryConcurrencyLimit, queryThrottle, queryRetryPolicy } = nf;
   const queue: Task<any>[] = []
   return {
@@ -45,9 +47,9 @@ export function rememberForestLogsAndMetrics ( msgs: string[] ): IndexForestLogA
   }
 }
 
-export function indexForest<Forest> ( logAndMetrics: IndexForestLogAndMetrics,
-                                      tc: IndexForestTc<Forest>,
-                                      processTreeRoot: ( forestId: string ) => K1<string, void> ) {
+export function indexForestOfTrees<Forest> ( logAndMetrics: IndexForestLogAndMetrics,
+                                             tc: IndexForestTc<Forest>, //the string is the treeId
+                                             processTreeRoot: ( forestId: string ) => K1<string, void> ) {
   return async ( forestId: string ) => {
     try {
       const forest = await tc.fetchForest ( forestId );
