@@ -9,6 +9,9 @@ export interface FileTarget {
   file: string
   max: number
 }
+export function isFileTarget ( target: Target ): target is FileTarget {
+  return (target as FileTarget).file !== undefined
+}
 export interface ElasticSearchTarget {
   max: number
   url: string
@@ -69,6 +72,10 @@ export function cleanAndEnrichConfig ( config: RawIndexConfig, defaults: NameAnd
     if ( thisItem.target?.throttle ) thisItem.target.throttle = { ...thisItem.target.throttle }
     if ( thisItem.target?.concurrencyLimit === undefined ) thisItem.target.concurrencyLimit = 20
     thisItem.scan.index = thisItem.scan?.index || key
+    if ( isFileTarget ( thisItem.target ) )
+      thisItem.scan.file =  thisItem.target.file
+    else throw new Error ( 'Only file targets are supported' )
+
     thisItem.scan.aclIndex = simpleTemplate ( thisItem.scan?.aclIndex, { source: key, index: thisItem.index } )
     const creds = (thisItem.auth as any)?.credentials
     if ( creds )

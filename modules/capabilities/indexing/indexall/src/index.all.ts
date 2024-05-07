@@ -1,10 +1,9 @@
-import { indexGitHubFully, indexGitHubRepo } from "@itsmworkbench/indexing_github";
-import { consoleIndexTreeLogAndMetrics, defaultIndexTreeNfs, ExecuteIndexOptions, Indexer, IndexingContext, IndexTreeNonFunctionals, insertIntoFileWithNonFunctionals, queryThrottlePrototype, stopNonFunctionals } from "@itsmworkbench/indexing";
-import { consoleIndexForestLogAndMetrics } from "@itsmworkbench/indexing/src/forest.index";
+import { indexGitHubFully } from "@itsmworkbench/indexing_github";
+import { ExecuteIndexOptions, Indexer, IndexingContext, IndexTreeNonFunctionals } from "@itsmworkbench/indexing";
 import { PopulatedIndexItem } from "@itsmworkbench/indexconfig";
 import { NameAnd } from "@laoban/utils";
 
-export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: (nfc: IndexTreeNonFunctionals) =>( forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
+export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: (nfc: IndexTreeNonFunctionals) =>(fileTemplate: string, forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
   return {
     github: indexGitHubFully ( nfc, ic, indexer(nfc), indexer(nfc), executeOptions )
   };
@@ -23,7 +22,7 @@ export type ResultAndNfc = {
   nfc: IndexTreeNonFunctionals;
 
 }
-export const indexOneSource = ( context: IndexingContext, indexer: (nfc: IndexTreeNonFunctionals) =>( indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) => ( item: PopulatedIndexItem, ): ResultAndNfc => {
+export const indexOneSource = ( context: IndexingContext, indexer: (nfc: IndexTreeNonFunctionals) =>( fileTemplate: string,indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) => ( item: PopulatedIndexItem, ): ResultAndNfc => {
   const { index, query, target, auth, scan, type } = item
   const nfc: IndexTreeNonFunctionals = {
     queryConcurrencyLimit: item.query.concurrencyLimit || 1000,
@@ -41,6 +40,6 @@ export const indexOneSource = ( context: IndexingContext, indexer: (nfc: IndexTr
   return { result, nfc }
 };
 
-export const indexAll = ( context: IndexingContext, indexer:(nfc: IndexTreeNonFunctionals) => ( indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) =>
+export const indexAll = ( context: IndexingContext, indexer:(nfc: IndexTreeNonFunctionals) => (fileTemplate: string, indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) =>
   ( items: NameAnd<PopulatedIndexItem> ): ResultAndNfc[] =>
     Object.values ( items ).map ( indexOneSource ( context, indexer, executeOptions ) )

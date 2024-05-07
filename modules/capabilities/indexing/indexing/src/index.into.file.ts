@@ -4,6 +4,7 @@ import path from 'path';
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { addNonFunctionsToIndexer } from "./tree.index";
 import { Indexer } from "./indexer.domain";
+import { simpleTemplate } from "@itsmworkbench/utils";
 
 type IndexFormater<T> = ( rootId: string, id: string, data: T ) => string;
 export type InsertIntoFile<T> = {
@@ -12,7 +13,7 @@ export type InsertIntoFile<T> = {
   formatter: IndexFormater<T>
 }
 
-export function insertIntoFile<T> ( ins: InsertIntoFile<T> ): Indexer<T> {
+export function insertIntoFile<T> (  ins: InsertIntoFile<T> ): Indexer<T> {
   const { max } = ins;
   const allData: NameAnd<string[]> = {}
   return {
@@ -22,12 +23,12 @@ export function insertIntoFile<T> ( ins: InsertIntoFile<T> ): Indexer<T> {
     processLeaf: ( rootId, id ) => async ( t: T ) => {
       allData[ rootId ] = allData[ rootId ] || [];
       const data = allData[ rootId ];
-      await addToFile ( ins.file ( rootId ), ins, data, ins.formatter ( rootId, id, t ) );
+      await addToFile ( ins.file (  rootId ), ins, data, ins.formatter ( rootId, id, t ) );
     },
     finished: async ( id: string ) => {
       allData[ id ] = allData[ id ] || [];
       const data = allData[ id ]
-      await appendFile ( ins.file ( id ), data );
+      await appendFile ( ins.file (  id ), data );
       allData[ id ] = [];
     },
     failed: async ( id: string, e: any ) => {
@@ -36,9 +37,12 @@ export function insertIntoFile<T> ( ins: InsertIntoFile<T> ): Indexer<T> {
   }
 }
 
-export const insertIntoFileWithNonFunctionals = ( rootDir: string, _index: string, nf: IndexTreeNonFunctionals ) =>
-  addNonFunctionsToIndexer ( nf, insertIntoFile ( {
-    file: ( id ) => { return `${rootDir}/${firstSegment ( id )}.json`; },
+export const insertIntoFileWithNonFunctionals = ( rootDir: string,fileTemplate: string, _index: string,nf: IndexTreeNonFunctionals ) =>
+  addNonFunctionsToIndexer ( nf, insertIntoFile (  {
+    file: (  id: string ) => {
+      const res = simpleTemplate ( fileTemplate, { rootDir, index: _index, name: firstSegment ( id ), id, num: 0 } )
+      return res;
+    },
     max: 1000,
     formatter: ( rootId, _id, data ) =>
       `${JSON.stringify ( { index: { _index, _id: `${rootId}/${_id}` } } )}\n${JSON.stringify ( data )}\n`

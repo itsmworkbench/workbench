@@ -60,6 +60,7 @@ export type GithubIndexedFile = {
 export type GitHubDetails = {
   index: string,
   aclIndex: string
+  file: string
   organisations: string[]
   users: string[]
   indexPeople?: boolean
@@ -147,13 +148,13 @@ export const indexOrganisationMembers = ( nf: IndexTreeNonFunctionals, ic: Index
 //This is a workflow that calls other workflows. I think we can use this as written as a workflow. We can do that later...
 export function indexGitHubFully ( nf: IndexTreeNonFunctionals,
                                    ic: IndexingContext,
-                                   fileIndexer: ( indexId: string ) => Indexer<GitHubFile>,
-                                   memberIndexer: ( indexId: string ) => Indexer<GithubIndexedMember>,
+                                   fileIndexer: (fileTemplate: string, indexId: string ) => Indexer<GitHubFile>,
+                                   memberIndexer: (ileTemplate: string, indexId: string ) => Indexer<GithubIndexedMember>,
                                    executeOptions: ExecuteIndexOptions ) {
   return async ( github: GitHubDetails ) => {
-    const indexGitHub = indexGitHubOrganisation ( nf, ic, fileIndexer ( github.index ), executeOptions );
-    const indexOwners = indexGitHubUser ( nf, ic, fileIndexer ( github.index ), executeOptions );
-    const indexOrgMembers = indexOrganisationMembers ( nf, ic, memberIndexer ( github.aclIndex ), executeOptions );
+    const indexGitHub = indexGitHubOrganisation ( nf, ic, fileIndexer ( github.file,github.index ), executeOptions );
+    const indexOwners = indexGitHubUser ( nf, ic, fileIndexer (github.file, github.index ), executeOptions );
+    const indexOrgMembers = indexOrganisationMembers ( nf, ic, memberIndexer ( github.file,github.aclIndex ), executeOptions );
     const requestOrgs = toArray ( github.organisations );
     const organisations = mapK ( requestOrgs, indexGitHub )
     const owners = mapK ( toArray ( github.users ), indexOwners )

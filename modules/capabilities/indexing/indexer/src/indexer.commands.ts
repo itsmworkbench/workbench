@@ -2,8 +2,8 @@ import { CommandDetails, ContextConfigAndCommander, SubCommandDetails } from "@i
 import { IndexerContext } from "./context";
 import { hasErrors, NameAnd } from "@laoban/utils";
 import { cleanAndEnrichConfig, PopulatedIndexItem } from "@itsmworkbench/indexconfig";
-import { consoleIndexer, defaultIndexingContext, ExecuteIndexOptions, IndexingContext, IndexTreeNonFunctionals, insertIntoFileWithNonFunctionals, stopNonFunctionals } from "@itsmworkbench/indexing";
-import { allIndexers, indexAll, indexOneSource } from "@itsmworkbench/indexall/src/index.all";
+import { defaultIndexingContext, ExecuteIndexOptions, IndexTreeNonFunctionals, insertIntoFileWithNonFunctionals, stopNonFunctionals } from "@itsmworkbench/indexing";
+import { indexAll } from "@itsmworkbench/indexall/src/index.all";
 
 async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>, file: string | boolean ) {
   const yamlFile = await tc.context.fileOps.loadFileOrUrl ( file.toString () )
@@ -37,7 +37,8 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
       const config = await getConfig ( tc, file );
       const ic = defaultIndexingContext ( tc.context.env, tc.context.fetch )
       const executeOptions = findExecuteOptions ( opts )
-      const indexIntoFile = ( nfc: IndexTreeNonFunctionals ) => ( index: string ) => insertIntoFileWithNonFunctionals ( target.toString (), index, nfc )
+      const indexIntoFile = ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string,index: string ) =>
+        insertIntoFileWithNonFunctionals ( target.toString (),fileTemplate, index, nfc )
       const resultsAndNfcs = indexAll ( ic, indexIntoFile, executeOptions ) ( config )
       for ( const { result, nfc } of resultsAndNfcs ) {
         await result
