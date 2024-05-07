@@ -31,6 +31,10 @@ const makeContext = (): IndexerContext => ({
     res.headers.forEach ( ( value, name ) => {
       headers[ name ] = value
     } )
+    if (res.status===403){
+      console.log('403')
+      console.log(await res.text())
+    }
     const result: FetchFnResponse = {
       status: res.status,
       ok: res.ok,

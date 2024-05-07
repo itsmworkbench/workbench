@@ -58,13 +58,15 @@ export type GithubIndexedFile = {
 }
 
 export type GitHubDetails = {
+  index: string,
+  aclIndex: string
   organisations: string[]
   users: string[]
-  aclIndex: string
   indexPeople?: boolean
 }
 
-export function githubRepoTreeTc ( nf: IndexTreeNonFunctionals, ic: IndexingContext, githubDetails: SourceSinkDetails ): IndexTreeTc<GitHubFolder, GitHubFile, GithubIndexedFile> {
+export function githubRepoTreeTc ( nf: IndexTreeNonFunctionals, ic: IndexingContext, githubDetails: SourceSinkDetails ):
+  IndexTreeTc<GitHubFolder, GitHubFile, GithubIndexedFile> {
   return addNonFunctionalsToIndexTreeTC ( nf, {
     folderIds: ( rootId, p, f ) =>
       f.filter ( x => x.type === 'dir' ).map ( x => x.path ),
@@ -121,17 +123,17 @@ export const indexGitHubRepo = ( nf: IndexTreeNonFunctionals, ic: IndexingContex
 
 //Probably right level of granularity for a workflow
 //which means we need to change it a little. But again we can do that later
-export const indexGitHubOrganisation = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( orgId: string ) => Indexer<GitHubFile>, executeOptions: ExecuteIndexOptions ) =>
+export const indexGitHubOrganisation = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: Indexer<GitHubFile>, executeOptions: ExecuteIndexOptions ) =>
   indexForestOfTrees<GitHubOrganisation> ( ic.forestLogAndMetrics, githubIndexAnOrganisationTc ( nf, ic, githubDetails ),
-    orgId => indexGitHubRepo ( nf, ic, indexer ( orgId ), executeOptions )
+    orgId => indexGitHubRepo ( nf, ic, indexer, executeOptions )
   )
 //Probably right level of granularity for a workflow
-export const indexGitHubUser = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( userId: string ) => Indexer<GitHubFile>, executeOptions: ExecuteIndexOptions ) =>
+export const indexGitHubUser = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: Indexer<GitHubFile>, executeOptions: ExecuteIndexOptions ) =>
   indexForestOfTrees<GitHubOrganisation> ( ic.forestLogAndMetrics, githubIndexAnUserTc ( nf, ic, githubDetails ),
-    userId => indexGitHubRepo ( nf, ic, indexer ( userId ), executeOptions ) )
+    userId => indexGitHubRepo ( nf, ic, indexer, executeOptions ) )
 
 
-export const indexOrganisationMembers = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( orgId: string ) => Indexer<GithubIndexedMember>, executeOptions: ExecuteIndexOptions ) =>
+export const indexOrganisationMembers = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: Indexer<GithubIndexedMember>, executeOptions: ExecuteIndexOptions ) =>
   indexParentChild<GitHubOrgMembers, GithubIndexedMember, GithubIndexedMember> (
     ic.parentChildLogAndMetrics,
     githubIndexAnOrganisationMembersTc ( nf, ic, githubDetails ),
@@ -145,13 +147,13 @@ export const indexOrganisationMembers = ( nf: IndexTreeNonFunctionals, ic: Index
 //This is a workflow that calls other workflows. I think we can use this as written as a workflow. We can do that later...
 export function indexGitHubFully ( nf: IndexTreeNonFunctionals,
                                    ic: IndexingContext,
-                                   fileIndexer: ( forestId: string ) => Indexer<GitHubFile>,
-                                   memberIndexer: ( forestId: string ) => Indexer<GithubIndexedMember>,
+                                   fileIndexer: ( indexId: string ) => Indexer<GitHubFile>,
+                                   memberIndexer: ( indexId: string ) => Indexer<GithubIndexedMember>,
                                    executeOptions: ExecuteIndexOptions ) {
-  const indexGitHub = indexGitHubOrganisation ( nf, ic, fileIndexer, executeOptions );
-  const indexOwners = indexGitHubUser ( nf, ic, fileIndexer, executeOptions );
-  const indexOrgMembers = indexOrganisationMembers ( nf, ic, memberIndexer, executeOptions );
   return async ( github: GitHubDetails ) => {
+    const indexGitHub = indexGitHubOrganisation ( nf, ic, fileIndexer ( github.index ), executeOptions );
+    const indexOwners = indexGitHubUser ( nf, ic, fileIndexer ( github.index ), executeOptions );
+    const indexOrgMembers = indexOrganisationMembers ( nf, ic, memberIndexer ( github.aclIndex ), executeOptions );
     const requestOrgs = toArray ( github.organisations );
     const organisations = mapK ( requestOrgs, indexGitHub )
     const owners = mapK ( toArray ( github.users ), indexOwners )

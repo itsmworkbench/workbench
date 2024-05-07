@@ -41,7 +41,7 @@ export const insertIntoFileWithNonFunctionals = ( rootDir: string, _index: strin
     file: ( id ) => { return `${rootDir}/${firstSegment ( id )}.json`; },
     max: 1000,
     formatter: ( rootId, _id, data ) =>
-      `${JSON.stringify ( { index: { _index, _id } } )}\n${JSON.stringify ( data )}\n`
+      `${JSON.stringify ( { index: { _index, _id: `${rootId}/${_id}` } } )}\n${JSON.stringify ( data )}\n`
   } ) )
 export const addToFile = async <T> ( file: string, ins: InsertIntoFile<T>, data: string[], s: string ) => {
   const { max } = ins;

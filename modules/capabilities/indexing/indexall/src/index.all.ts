@@ -23,7 +23,7 @@ export type ResultAndNfc = {
   nfc: IndexTreeNonFunctionals;
 
 }
-export const indexOneSource = ( context: IndexingContext, indexer: (nfc: IndexTreeNonFunctionals) =>( forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) => ( item: PopulatedIndexItem, ): ResultAndNfc => {
+export const indexOneSource = ( context: IndexingContext, indexer: (nfc: IndexTreeNonFunctionals) =>( indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) => ( item: PopulatedIndexItem, ): ResultAndNfc => {
   const { index, query, target, auth, scan, type } = item
   const nfc: IndexTreeNonFunctionals = {
     queryConcurrencyLimit: item.query.concurrencyLimit || 1000,
@@ -41,6 +41,6 @@ export const indexOneSource = ( context: IndexingContext, indexer: (nfc: IndexTr
   return { result, nfc }
 };
 
-export const indexAll = ( context: IndexingContext, indexer:(nfc: IndexTreeNonFunctionals) => ( forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) =>
+export const indexAll = ( context: IndexingContext, indexer:(nfc: IndexTreeNonFunctionals) => ( indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) =>
   ( items: NameAnd<PopulatedIndexItem> ): ResultAndNfc[] =>
     Object.values ( items ).map ( indexOneSource ( context, indexer, executeOptions ) )

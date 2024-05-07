@@ -68,6 +68,7 @@ export function cleanAndEnrichConfig ( config: RawIndexConfig, defaults: NameAnd
     if ( thisItem.query?.concurrencyLimit === undefined ) thisItem.query.concurrencyLimit = 1000
     if ( thisItem.target?.throttle ) thisItem.target.throttle = { ...thisItem.target.throttle }
     if ( thisItem.target?.concurrencyLimit === undefined ) thisItem.target.concurrencyLimit = 20
+    thisItem.scan.index = thisItem.scan?.index || key
     thisItem.scan.aclIndex = simpleTemplate ( thisItem.scan?.aclIndex, { source: key, index: thisItem.index } )
     const creds = (thisItem.auth as any)?.credentials
     if ( creds )

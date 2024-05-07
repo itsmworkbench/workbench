@@ -53,10 +53,9 @@ export function addNonFunctionalsToIndexParentChildTc<Parent, Child> ( nf: Index
 export function indexParentChild<Parent, Child, IndexedChild> ( logAndMetrics: IndexParentChildLogAndMetrics,
                                                                 tc: IndexParentChildTc<Parent, Child>,
                                                                 transformer: ( t: Child ) => IndexedChild,
-                                                                findIndexer: ( parentId: string ) => Indexer<IndexedChild>,
+                                                                indexer: Indexer<IndexedChild>,
                                                                 executeOptions: ExecuteIndexOptions ) {
   return async ( parentId: string ) => {
-    const indexer = findIndexer ( parentId );
     try {
       indexer.start ( parentId );
       logAndMetrics.parentId ( parentId );
