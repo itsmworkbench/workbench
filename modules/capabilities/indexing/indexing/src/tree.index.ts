@@ -2,18 +2,21 @@ import { Task, withConcurrencyLimit } from "@itsmworkbench/kleislis/src/concurre
 import { stopThrottling, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { mapK } from "@laoban/utils";
-import { Indexer } from "./indexer.domain";
+import { Indexer, WithPaging } from "./indexer.domain";
+import { PagingTc } from "./paging";
 
-export type IndexTreeTc<Folder, Leaf, IndexedLeaf> = {
+export type IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging> = {
   folderIds: ( rootId: string, parentId: string | undefined, f: Folder ) => string[];
   leafIds: ( rootId: string, parentId: string | undefined, f: Folder ) => string[];
-  fetchFolder: ( rootId: string, folderId: string ) => Promise<Folder>,
-  fetchLeaf: ( rootId: string, leafId: string ) => Promise<Leaf>;  // Function to fetch leaf data
+  fetchFolder: ( rootId: string, folderId: string , page: Paging) => Promise<WithPaging<Folder, Paging>>,
+  fetchLeaf: ( rootId: string, leafId: string ) => Promise<Leaf>;
   prepareLeaf: ( rootId: string ) => ( leaf: Leaf ) => Promise<IndexedLeaf>;    // Function to prepare leaf for indexing
 }
 
 
-export function addNonFunctionalsToIndexTreeTC<Folder, Leaf, IndexedLeaf> ( nf: IndexTreeNonFunctionals, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf> ): IndexTreeTc<Folder, Leaf, IndexedLeaf> {
+export function addNonFunctionalsToIndexTreeTC<Folder, Leaf, IndexedLeaf, Paging> (
+  nf: IndexTreeNonFunctionals,
+  tc: IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging> ): IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging> {
   const queue: Task<any>[] = []
   const { queryConcurrencyLimit, queryThrottle, queryRetryPolicy, indexThrottle, prepareLeafRetryPolicy, indexRetryPolicy } = nf;
   return {
@@ -43,8 +46,8 @@ export function stopNonFunctionals ( nft: IndexTreeNonFunctionals ) {
 
 
 export type IndexTreeLogAndMetrics = {
-  leafIds: ( ids: string[] ) => void;
-  folderIds: ( ids: string[] ) => void;
+  leafIds: ( page: string, ids: string[] ) => void;
+  folderIds: ( page: string, ids: string[] ) => void;
   finishedLeaf: ( id: string ) => void;
   failedLeaf: ( id: string, e: any ) => void;
   finishedFolder: ( id: string ) => void;
@@ -79,16 +82,22 @@ export type ExecuteIndexOptions = {
   dryRunDoEverythingButIndex?: boolean;
 }
 
-export type ProcessTreeRoot = <Folder, Leaf, IndexedLeaf> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf>, indexer: Indexer<IndexedLeaf>, options: ExecuteIndexOptions ) => ( rootId: string ) => Promise<void>;
-export function processTreeRoot<Folder, Leaf, IndexedLeaf> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf>, indexer: Indexer<IndexedLeaf>, options: ExecuteIndexOptions ) {
+export type ProcessTreeRoot = <Folder, Leaf, IndexedLeaf, Paging> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging>, indexer: Indexer<IndexedLeaf>, options: ExecuteIndexOptions ) => ( rootId: string ) => Promise<void>;
+export function processTreeRoot<Folder, Leaf, IndexedLeaf, Paging> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging>, pc: PagingTc<Paging>, indexer: Indexer<IndexedLeaf>, options: ExecuteIndexOptions ) {
   async function processFolder ( rootId: string, folderId: string, parentId?: string ): Promise<void> {
-    const folder = await tc.fetchFolder ( rootId, folderId );
-    const leafIds = tc.leafIds ( rootId, parentId, folder );
-    logAndMetrics.leafIds ( leafIds );
-    const folderIds = tc.folderIds ( rootId, parentId, folder );
-    logAndMetrics.folderIds ( folderIds );
-    await mapK ( leafIds, leafId => processLeaf ( rootId, leafId ) );
-    await mapK ( folderIds, child => processFolder ( rootId, child, folderId ) );
+    let page = pc.zero ();
+    do {
+      const folderAndPaging = await tc.fetchFolder ( rootId, folderId , page);
+      const folder = folderAndPaging.data;
+      page = folderAndPaging.page;
+      const leafIds = tc.leafIds ( rootId, parentId, folder );
+      const pageMsg = pc.logMsg ( page );
+      logAndMetrics.leafIds ( pageMsg, leafIds );
+      const folderIds = tc.folderIds ( rootId, parentId, folder );
+      logAndMetrics.folderIds ( pageMsg, folderIds );
+      await mapK ( leafIds, leafId => processLeaf ( rootId, leafId ) );
+      await mapK ( folderIds, child => processFolder ( rootId, child, folderId ) );
+    } while ( pc.hasMore ( page ) )
     logAndMetrics.finishedFolder ( folderId );
   }
   async function processLeaf ( rootId: string, leafId: string ): Promise<void> {

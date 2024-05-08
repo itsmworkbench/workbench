@@ -27,6 +27,6 @@ index:
     scan:
       organisations:
         - itsmworkbench
-      users: []
-#        - phil-rice
+      users:
+        - phil-rice
       indexPeople: true

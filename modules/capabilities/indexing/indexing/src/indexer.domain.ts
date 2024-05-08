@@ -1,3 +1,5 @@
+export type WithPaging<T, P> = { data: T, page?: P }
+
 export type Indexer<T> = {
   start: ( rootId: string ) => Promise<void>
   processLeaf: ( rootId: string, id: string ) => ( t: T ) => Promise<void>

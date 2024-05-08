@@ -4,7 +4,7 @@ import { rememberIndex } from "./indexer.domain";
 
 describe ( 'TreeIndexer Integration Test', () => {
   let logs: string[] = [];
-  let fetchTC: IndexTreeTc<any, any, any>;
+  let fetchTC: IndexTreeTc<any, any, any,any>;
   const logAndMetrics: IndexTreeLogAndMetrics = {
     leafIds: ( ids ) => logs.push ( `LeafIDs-${ids.join ( ',' )}` ),
     folderIds: ( ids ) => logs.push ( `FolderIDs-${ids.join ( ',' )}` ),
@@ -12,7 +12,7 @@ describe ( 'TreeIndexer Integration Test', () => {
     failedLeaf: ( id ) => logs.push ( `FailedLeaf-${id}` ),
     finishedFolder: ( id ) => logs.push ( `FinishedFolder-${id}` )
   };
-  const rememberIndexer = rememberIndex ( logs );
+  const rememberIndexer = rememberIndex ( 'test', logs );
 
   beforeEach ( () => {
     logs.length = 0
@@ -36,7 +36,7 @@ describe ( 'TreeIndexer Integration Test', () => {
   } );
 
   it ( 'should process a simple folder structure correctly', async () => {
-    await processTreeRoot ( logAndMetrics, fetchTC, rememberIndexer ) ( 'root' );
+    await processTreeRoot ( logAndMetrics, fetchTC, rememberIndexer, {} ) ( 'root' );
 
     // Expect logs to reflect the correct processing order and content
     expect ( logs ).toEqual ( [
@@ -54,6 +54,6 @@ describe ( 'TreeIndexer Integration Test', () => {
       "FinishedFolder-subfolder1",
       "FinishedFolder-",
       "Finished: root"
-    ]);
+    ] );
   } );
 } );

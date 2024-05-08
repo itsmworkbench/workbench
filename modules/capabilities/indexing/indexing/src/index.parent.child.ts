@@ -54,6 +54,7 @@ export function indexParentChild<Parent, Child, IndexedChild> ( logAndMetrics: I
                                                                 tc: IndexParentChildTc<Parent, Child>,
                                                                 transformer: ( t: Child ) => IndexedChild,
                                                                 indexer: Indexer<IndexedChild>,
+                                                                childId: ( parentId: string, c: Child ) => string,
                                                                 executeOptions: ExecuteIndexOptions ) {
   return async ( parentId: string ) => {
     try {
@@ -62,7 +63,7 @@ export function indexParentChild<Parent, Child, IndexedChild> ( logAndMetrics: I
       const parent = await tc.fetchParent ( parentId );
       const children = tc.children ( parentId, parent );
       if ( executeOptions.dryRunJustShowTrees !== true && executeOptions.dryRunDoEverythingButIndex !== true ) {
-        await mapK ( children, child => indexer.processLeaf ( parentId, parentId ) ( transformer ( child ) ) );
+        await mapK ( children, child => indexer.processLeaf ( parentId, childId ( parentId, child ) ) ( transformer ( child ) ) );
       }
       indexer.finished ( parentId );
       logAndMetrics.finishedParent ( parentId );

@@ -1,7 +1,8 @@
-import { access, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexTreeTC, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, IndexTreeTc, processTreeRoot, SourceSinkDetails } from "@itsmworkbench/indexing";
+import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexTreeTC, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, IndexTreeTc, processTreeRoot, SourceSinkDetails } from "@itsmworkbench/indexing";
 import { IndexTreeNonFunctionals } from "@itsmworkbench/indexing/src/indexing.non.functionals";
 import { mapK, toArray } from "@laoban/utils";
 import { addNonFunctionalsToIndexParentChildTc, indexParentChild, IndexParentChildTc } from "@itsmworkbench/indexing/";
+import { PagingTc } from "@itsmworkbench/indexing/src/paging";
 
 export type GitHubFile = {
   name: string;
@@ -66,38 +67,70 @@ export type GitHubDetails = {
   indexPeople?: boolean
 }
 
+export type GitHubPaging = {
+  next?: string
+}
+/**
+ * Parses the Link header to find the next page URL.
+ * @param linkHeader The content of the Link response header.
+ * @return {GitHubPaging} The GitHubPaging object with the next URL if available.
+ */
+export function parseGitHubLinkHeader(json: any,linkHeader: string | null): GitHubPaging {
+  if (!linkHeader) return {};
+
+  const links = linkHeader.split(',').reduce((acc, link) => {
+    const parts = link.match(/<([^>]+)>;\s*rel="([^"]+)"/);
+    if (parts) {
+      acc[parts[2]] = parts[1];
+    }
+    return acc;
+  }, {} as { [key: string]: string });
+
+  return { next: links.next };
+}
+export const githubAccessOptions: AccessConfig<GitHubPaging> = {
+  pagingFn: parseGitHubLinkHeader
+}
 export function githubRepoTreeTc ( nf: IndexTreeNonFunctionals, ic: IndexingContext, githubDetails: SourceSinkDetails ):
-  IndexTreeTc<GitHubFolder, GitHubFile, GithubIndexedFile> {
+  IndexTreeTc<GitHubFolder, GitHubFile, GithubIndexedFile, GitHubPaging> {
   return addNonFunctionalsToIndexTreeTC ( nf, {
     folderIds: ( rootId, p, f ) =>
       f.filter ( x => x.type === 'dir' ).map ( x => x.path ),
     leafIds: ( rootId, p, f ) =>
       f.filter ( x => x.type === 'file' && x.path.endsWith ( '.md' ) ).map ( x => x.path ),
-    fetchFolder: ( rootId, folderId ) =>
-      access ( ic, githubDetails, `/repos/${rootId}/contents/${folderId}` ),
+    fetchFolder: ( rootId, folderId, page ) =>
+      access ( ic, githubDetails, page?.next || `/repos/${rootId}/contents/${folderId}`, githubAccessOptions ),
+
     fetchLeaf: ( rootId, leafId ) =>
-      access ( ic, githubDetails, `/repos/${rootId}/contents/${leafId}` ),
+      access ( ic, githubDetails, `/repos/${rootId}/contents/${leafId}`, {} ).then ( x => x.data as GitHubFile ),
     prepareLeaf: ( rootId ) =>
       async ( leaf ) => gitHubFileDetailsToIndexedFile ( leaf )
   } )
 }
 
+export const gitHubPagingTC: PagingTc<GitHubPaging> = {
+  zero: () => ({}),
+  hasMore: ( page ) => page.next !== undefined,
+  logMsg: ( page ) => `Next Page: ${page.next}`
+}
 
-export function githubIndexAnOrganisationTc ( nf: IndexTreeNonFunctionals, ic: IndexingContext, githubDetails: SourceSinkDetails ): IndexForestTc<GitHubOrganisation> {
+export function githubIndexAnOrganisationTc ( nf: IndexTreeNonFunctionals, ic: IndexingContext, githubDetails: SourceSinkDetails ): IndexForestTc<GitHubOrganisation, GitHubPaging> {
   return addNonFunctionalsToIndexForestTc ( nf, {
-    fetchForest: ( forestId ) => access ( ic, githubDetails, `/orgs/${forestId}/repos` ),
-    treeIds: ( forest ) => forest.map ( x => x.full_name )
+    fetchForest: ( forestId, paging ) =>
+      access ( ic, githubDetails, paging?.next || `/orgs/${forestId}/repos`, githubAccessOptions ),
+    treeIds: ( forest ) => forest.map ( x => x.full_name ),
+
   } )
 }
-export function githubIndexAnUserTc ( nf: IndexTreeNonFunctionals, ic: IndexingContext, githubDetails: SourceSinkDetails ): IndexForestTc<GitHubOrganisation> {
+export function githubIndexAnUserTc ( nf: IndexTreeNonFunctionals, ic: IndexingContext, githubDetails: SourceSinkDetails ): IndexForestTc<GitHubOrganisation, GitHubPaging> {
   return addNonFunctionalsToIndexForestTc ( nf, {
-    fetchForest: ( userName ) => access ( ic, githubDetails, `/users/${userName}/repos` ),
+    fetchForest: ( userName, page ) => access ( ic, githubDetails, page.next ? page.next : `/users/${userName}/repos`, githubAccessOptions ),
     treeIds: ( userName ) => userName.map ( x => x.full_name )
   } )
 }
 export function githubIndexAnOrganisationMembersTc ( nf: IndexTreeNonFunctionals, ic: IndexingContext, githubDetails: SourceSinkDetails ): IndexParentChildTc<GitHubOrgMembers, GithubIndexedMember> {
   return addNonFunctionalsToIndexParentChildTc<GitHubOrgMembers, GitHubOrgMember> ( nf, {
-    fetchParent: ( orgName ) => access ( ic, githubDetails, `/orgs/${orgName}/members` ),
+    fetchParent: ( orgName ) => access ( ic, githubDetails, `/orgs/${orgName}/members`, githubAccessOptions ).then ( x => x.data as GitHubOrgMembers ),
     children: ( orgName, parent: GitHubOrgMembers ) => parent.map ( x => ({ login: x.login }) )
   } )
 }
@@ -116,7 +149,7 @@ export const githubDetails: SourceSinkDetails = {
 //an activity I think
 export const indexGitHubRepo = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: Indexer<GitHubFile>, executeOptions: ExecuteIndexOptions ) => {
   const tc = githubRepoTreeTc ( nf, ic, githubDetails );
-  const process = processTreeRoot<GitHubFolder, GitHubFile, GithubIndexedFile> ( ic.treeLogAndMetrics, tc, indexer, executeOptions );
+  const process = processTreeRoot<GitHubFolder, GitHubFile, GithubIndexedFile, GitHubPaging> ( ic.treeLogAndMetrics, tc, gitHubPagingTC,indexer, executeOptions );
   return ( rootId ) =>
     process ( rootId )
 };
@@ -125,13 +158,10 @@ export const indexGitHubRepo = ( nf: IndexTreeNonFunctionals, ic: IndexingContex
 //Probably right level of granularity for a workflow
 //which means we need to change it a little. But again we can do that later
 export const indexGitHubOrganisation = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: Indexer<GitHubFile>, executeOptions: ExecuteIndexOptions ) =>
-  indexForestOfTrees<GitHubOrganisation> ( ic.forestLogAndMetrics, githubIndexAnOrganisationTc ( nf, ic, githubDetails ),
-    orgId => indexGitHubRepo ( nf, ic, indexer, executeOptions )
-  )
+  indexForestOfTrees<GitHubOrganisation, GitHubPaging> ( ic.forestLogAndMetrics, githubIndexAnOrganisationTc ( nf, ic, githubDetails ), gitHubPagingTC, orgId => indexGitHubRepo ( nf, ic, indexer, executeOptions ) )
 //Probably right level of granularity for a workflow
 export const indexGitHubUser = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: Indexer<GitHubFile>, executeOptions: ExecuteIndexOptions ) =>
-  indexForestOfTrees<GitHubOrganisation> ( ic.forestLogAndMetrics, githubIndexAnUserTc ( nf, ic, githubDetails ),
-    userId => indexGitHubRepo ( nf, ic, indexer, executeOptions ) )
+  indexForestOfTrees<GitHubOrganisation, GitHubPaging> ( ic.forestLogAndMetrics, githubIndexAnUserTc ( nf, ic, githubDetails ), gitHubPagingTC, userId => indexGitHubRepo ( nf, ic, indexer, executeOptions ) )
 
 
 export const indexOrganisationMembers = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: Indexer<GithubIndexedMember>, executeOptions: ExecuteIndexOptions ) =>
@@ -140,6 +170,7 @@ export const indexOrganisationMembers = ( nf: IndexTreeNonFunctionals, ic: Index
     githubIndexAnOrganisationMembersTc ( nf, ic, githubDetails ),
     gitHubMemberToIndexedFile,
     indexer,
+    ( orgName, c ) => `${orgName}_${c.login}`,
     executeOptions )
 
 // export const indexGitHubPeopleInOrganisation = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( repoId: string ) => Indexer<GitHubFile>, executeOptions: ExecuteIndexOptions ) =>
@@ -148,13 +179,13 @@ export const indexOrganisationMembers = ( nf: IndexTreeNonFunctionals, ic: Index
 //This is a workflow that calls other workflows. I think we can use this as written as a workflow. We can do that later...
 export function indexGitHubFully ( nf: IndexTreeNonFunctionals,
                                    ic: IndexingContext,
-                                   fileIndexer: (fileTemplate: string, indexId: string ) => Indexer<GitHubFile>,
-                                   memberIndexer: (ileTemplate: string, indexId: string ) => Indexer<GithubIndexedMember>,
+                                   fileIndexer: ( fileTemplate: string, indexId: string ) => Indexer<GitHubFile>,
+                                   memberIndexer: ( ileTemplate: string, indexId: string ) => Indexer<GithubIndexedMember>,
                                    executeOptions: ExecuteIndexOptions ) {
   return async ( github: GitHubDetails ) => {
-    const indexGitHub = indexGitHubOrganisation ( nf, ic, fileIndexer ( github.file,github.index ), executeOptions );
-    const indexOwners = indexGitHubUser ( nf, ic, fileIndexer (github.file, github.index ), executeOptions );
-    const indexOrgMembers = indexOrganisationMembers ( nf, ic, memberIndexer ( github.file,github.aclIndex ), executeOptions );
+    const indexGitHub = indexGitHubOrganisation ( nf, ic, fileIndexer ( github.file, github.index ), executeOptions );
+    const indexOwners = indexGitHubUser ( nf, ic, fileIndexer ( github.file, github.index ), executeOptions );
+    const indexOrgMembers = indexOrganisationMembers ( nf, ic, memberIndexer ( github.file, github.aclIndex ), executeOptions );
     const requestOrgs = toArray ( github.organisations );
     const organisations = mapK ( requestOrgs, indexGitHub )
     const owners = mapK ( toArray ( github.users ), indexOwners )

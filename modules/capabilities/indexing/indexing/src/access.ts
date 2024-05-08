@@ -3,6 +3,7 @@ import { consoleIndexTreeLogAndMetrics, IndexTreeLogAndMetrics } from "./tree.in
 import { consoleIndexForestLogAndMetrics, IndexForestLogAndMetrics } from "./forest.index";
 import { ApiKeyAuthentication, Authentication, BasicAuthentication, isApiKeyAuthentication, isBasicAuthentication, isOAuthAuthentication } from "@itsmworkbench/indexconfig";
 import { consoleIndexParentChildLogAndMetrics, IndexParentChildLogAndMetrics } from "./index.parent.child";
+import { WithPaging } from "./indexer.domain";
 
 export type TokenAuthentication = {
   token: string
@@ -50,6 +51,7 @@ export type FetchFnOptions = {
 }
 export type FetchFn = ( url: string, options?: FetchFnOptions ) => Promise<FetchFnResponse>
 
+
 export type IndexingContext = {
   authFn: AuthFn;
   parentChildLogAndMetrics: IndexParentChildLogAndMetrics
@@ -68,22 +70,32 @@ export function defaultIndexingContext ( env: NameAnd<string>, fetch: FetchFn ):
 }
 
 
-export async function access ( ic: IndexingContext, details: SourceSinkDetails, offsetUrl, method?, body?: any, extraHeaders?: NameAnd<string> ) {
+export type AccessConfig<L> = {
+
+  method?: 'Get' | 'Post' | 'Put' | 'Delete';
+  body?: any;
+  extraHeaders?: NameAnd<string>;
+  pagingFn?: ( json: any, linkHeader: string | undefined ) => L | undefined
+}
+export async function access<T, L> ( ic: IndexingContext, details: SourceSinkDetails, offsetUrl: string, config: AccessConfig<L> ): Promise<WithPaging<T, L>> {
+  const { method, body, extraHeaders, pagingFn } = config;
   const authHeaders = await ic.authFn ( details.authentication )
-  const fullUrl = details.baseurl + offsetUrl;
+  const fullUrl = offsetUrl.startsWith ( 'http' ) ? offsetUrl : details.baseurl + offsetUrl;
   const headers = { ...authHeaders, ...(extraHeaders || {}) };
   const response = await ic.fetch ( fullUrl, {
-    method: method || 'GET',
+    method: method || 'Get',
     headers: headers,
     body: body
   } );
   if ( response.status === 404 )
     throw Error ( 'Not Found' )
   if ( !response.ok )
-    throw new Error ( `Error fetching ${fullUrl}: ${response.statusText}` )
+    throw new Error ( `Error fetching ${fullUrl}: ${response.statusText}\n${await response.text ()}` )
   try {
-    const result = await response.json ();
-    return result
+    const json = await response.json ();
+    const page = pagingFn?. ( json, response.headers[ 'link' ] )
+    const data = json;
+    return { data: data, page }
   } catch ( e: any ) {
     throw e
   }
