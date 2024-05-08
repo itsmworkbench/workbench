@@ -1,6 +1,6 @@
 import { Indexer } from "./indexer.domain";
 import { ExecuteIndexOptions } from "./tree.index";
-import { mapK } from "@laoban/utils";
+import { mapK, NameAnd } from "@laoban/utils";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { withConcurrencyLimit } from "@itsmworkbench/kleislis/src/concurrency.limiter";
@@ -27,6 +27,35 @@ export const consoleIndexParentChildLogAndMetrics: IndexParentChildLogAndMetrics
   failedParent: ( parentId, e ) => console.log ( `failedParent: ${parentId} ${e}` ),
   children: ( parentId, children, asString ) => console.log ( `children: ${parentId} ${children.map ( asString )}` )
 }
+export function defaultIndexParentChildLogAndMetrics ( metrics: NameAnd<number>, delegate: IndexParentChildLogAndMetrics ): IndexParentChildLogAndMetrics {
+  function inc ( name: string ) {
+    if ( !metrics[ name ] ) metrics[ name ] = 0
+    metrics[ name ]++
+  }
+  return {
+    parentId: ( parentId ) => {
+      delegate.parentId ( parentId )
+      inc ( 'parentId' )
+    },
+    finishedParent: ( parentId ) => {
+      delegate.finishedParent ( parentId )
+      inc ( 'finishedParent' )
+    },
+    notfoundParent: ( parentId ) => {
+      delegate.notfoundParent ( parentId )
+      inc ( 'notfoundParent' )
+    },
+    failedParent: ( parentId, e ) => {
+      delegate.failedParent ( parentId, e )
+      inc ( 'failedParent' )
+    },
+    children: ( parentId, children, asString ) => {
+      delegate.children ( parentId, children, asString )
+      inc ( 'children' )
+
+    }
+  }
+}
 export const rememberIndexParentChildLogsAndMetrics = ( msgs: string[] ): IndexParentChildLogAndMetrics => {
   return {
     parentId: ( parentId ) => msgs.push ( `parentId: ${parentId}` ),
@@ -44,7 +73,7 @@ export type IndexParentChildTc<Parent, Child> = {
 
 export function addNonFunctionalsToIndexParentChildTc<Parent, Child> ( nf: IndexTreeNonFunctionals, tc: IndexParentChildTc<Parent, Child> ): IndexParentChildTc<Parent, Child> {
   return {
-    fetchParent: withRetry ( nf.queryRetryPolicy, withConcurrencyLimit ( nf.queryConcurrencyLimit, [], withThrottle ( nf.queryThrottle, tc.fetchParent ) ) ),
+    fetchParent: withRetry ( nf.queryRetryPolicy, withConcurrencyLimit ( nf.queryConcurrencyLimit, nf.queryQueue, withThrottle ( nf.queryThrottle, tc.fetchParent ) ) ),
     children: ( parentId, parent ) => tc.children ( parentId, parent )
 
   }

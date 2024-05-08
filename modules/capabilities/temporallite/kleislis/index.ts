@@ -1,3 +1,4 @@
+export * from "./src/concurrency.limiter";
 export * from "./src/debug";
 export * from "./src/kleisli";
 export * from "./src/log";

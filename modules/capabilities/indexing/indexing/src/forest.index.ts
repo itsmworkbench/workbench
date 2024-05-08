@@ -1,4 +1,4 @@
-import { mapK } from "@laoban/utils";
+import { mapK, NameAnd } from "@laoban/utils";
 import { K1, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { Task, withConcurrencyLimit } from "@itsmworkbench/kleislis/src/concurrency.limiter";
@@ -13,10 +13,9 @@ export interface IndexForestTc<Forest, Paging> {
 }
 
 export function addNonFunctionalsToIndexForestTc<Forest, Paging> ( nf: IndexTreeNonFunctionals, tc: IndexForestTc<Forest, Paging> ): IndexForestTc<Forest, Paging> {
-  const { queryConcurrencyLimit, queryThrottle, queryRetryPolicy } = nf;
-  const queue: Task<any>[] = []
+  const { queryConcurrencyLimit, queryThrottle, queryRetryPolicy,queryQueue } = nf;
   return {
-    fetchForest: withRetry ( queryRetryPolicy, withConcurrencyLimit ( queryConcurrencyLimit, queue, withThrottle ( queryThrottle, tc.fetchForest ) ) ),
+    fetchForest: withRetry ( queryRetryPolicy, withConcurrencyLimit ( queryConcurrencyLimit, queryQueue, withThrottle ( queryThrottle, tc.fetchForest ) ) ),
     treeIds: tc.treeIds,
   }
 }
@@ -38,6 +37,33 @@ export const nullIndexForestLogAndMetrics: IndexForestLogAndMetrics = {
   finishedRoot: () => { },
   failedRoot: () => { }
 }
+export function defaultForestLogAndMetrics ( metrics: NameAnd<number>, logAndMetrics: IndexForestLogAndMetrics ): IndexForestLogAndMetrics {
+
+  function inc ( name: string ) {
+    if ( !metrics[ name ] ) metrics[ name ] = 0
+    metrics[ name ]++
+  }
+
+  return {
+    rootIds: ( page, ids ) => {
+      logAndMetrics.rootIds ( page, ids )
+      inc ( 'rootIds' )
+    },
+    finishedRoot: ( id ) => {
+      logAndMetrics.finishedRoot ( id )
+      inc ( 'finishedRoot' )
+    },
+    notfoundRoot: ( id ) => {
+      logAndMetrics.notfoundRoot ( id )
+      inc ( 'notfoundRoot' )
+    },
+    failedRoot: ( id, e ) => {
+      logAndMetrics.failedRoot ( id, e )
+      inc ( 'failedRoot' )
+    }
+  }
+}
+
 export function rememberForestLogsAndMetrics ( msgs: string[] ): IndexForestLogAndMetrics {
   return {
     rootIds: ( page: string, ids: string[] ) => msgs.push ( `rootIds: ${page} - ${ids}` ),

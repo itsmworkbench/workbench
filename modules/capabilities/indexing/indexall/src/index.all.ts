@@ -25,10 +25,12 @@ export type ResultAndNfc = {
 export const indexOneSource = ( context: IndexingContext, indexer: (nfc: IndexTreeNonFunctionals) =>( fileTemplate: string,indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) => ( item: PopulatedIndexItem, ): ResultAndNfc => {
   const { index, query, target, auth, scan, type } = item
   const nfc: IndexTreeNonFunctionals = {
+    queryQueue:  [],
     queryConcurrencyLimit: item.query.concurrencyLimit || 1000,
     queryThrottle: item.query.throttle,
     queryRetryPolicy: item.query.retry,
     indexThrottle: item.target.throttle,
+    indexQueue: [],
     prepareLeafRetryPolicy: item.target.retry,
     indexRetryPolicy: item.target.retry,
     indexerConcurrencyLimit: item.target.concurrencyLimit

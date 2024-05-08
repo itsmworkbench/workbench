@@ -1,10 +1,12 @@
-import { RetryPolicyConfig, Throttling } from "@itsmworkbench/kleislis";
-import { IndexItem, PopulatedIndexItem } from "@itsmworkbench/indexconfig/src/index.config";
+import { RetryPolicyConfig, Task, Throttling } from "@itsmworkbench/kleislis";
+import { PopulatedIndexItem } from "@itsmworkbench/indexconfig";
 
 export type IndexTreeNonFunctionals = {
+  queryQueue: Task<any>[];
   queryConcurrencyLimit: number;
   queryThrottle: Throttling;
   queryRetryPolicy: RetryPolicyConfig;
+  indexQueue: Task<any>[];
   indexThrottle: Throttling;
   prepareLeafRetryPolicy: RetryPolicyConfig;
   indexRetryPolicy: RetryPolicyConfig;
@@ -13,9 +15,11 @@ export type IndexTreeNonFunctionals = {
 
 export function treeNonFunctionalsFromConfig ( indexItem: PopulatedIndexItem ): IndexTreeNonFunctionals {
   return {
+    queryQueue: [],
     queryConcurrencyLimit: indexItem.query.concurrencyLimit || 1000,
     queryThrottle: indexItem.query.throttle,
     queryRetryPolicy: indexItem.query.retry,
+    indexQueue: [],
     indexThrottle: indexItem.target.throttle,
     prepareLeafRetryPolicy: indexItem.target.retry,
     indexRetryPolicy: indexItem.target.retry,
@@ -25,10 +29,12 @@ export function treeNonFunctionalsFromConfig ( indexItem: PopulatedIndexItem ): 
 
 export function treeNonFunctionals ( queryThrottle: Throttling, retryPolicy: RetryPolicyConfig, indexThrottle: Throttling, concurrencyLimit: number = 1000, indexerConcurrencyLimit: number = 2 ): IndexTreeNonFunctionals {
   return {
+    queryQueue: [],
     queryConcurrencyLimit: concurrencyLimit,
-    indexerConcurrencyLimit,
     queryThrottle,
     queryRetryPolicy: retryPolicy,
+    indexerConcurrencyLimit,
+    indexQueue: [],
     indexThrottle,
     prepareLeafRetryPolicy: retryPolicy,
     indexRetryPolicy: retryPolicy
@@ -41,7 +47,7 @@ export const treeRetryPolicy: RetryPolicyConfig = {
   initialInterval: 5000,
   maximumInterval: 30000,
   maximumAttempts: 50, //we do want to get there. This is a seriously slow retry. We have a decent throttling policy.I think this is OK and not abusive
-  nonRecoverableErrors: ['Not Found']
+  nonRecoverableErrors: [ 'Not Found' ]
 }
 export function defaultIndexTreeNfs (): IndexTreeNonFunctionals {
   return treeNonFunctionals ( { ...queryThrottlePrototype }, treeRetryPolicy, { ...indexThrottlePrototype } );

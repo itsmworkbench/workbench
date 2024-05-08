@@ -67,13 +67,13 @@ export function cleanAndEnrichConfig ( config: RawIndexConfig, defaults: NameAnd
   }
   for ( const [ key, thisItem ] of Object.entries ( result ) ) {
 
-    if ( thisItem.query?.throttle ) thisItem.query.throttle = { ...thisItem.query.throttle }
+    if ( thisItem.query?.throttle ) thisItem.query.throttle = { current: thisItem.query.throttle.max || 0, ...thisItem.query.throttle }
     if ( thisItem.query?.concurrencyLimit === undefined ) thisItem.query.concurrencyLimit = 1000
-    if ( thisItem.target?.throttle ) thisItem.target.throttle = { ...thisItem.target.throttle }
+    if ( thisItem.target?.throttle ) thisItem.target.throttle = { current: thisItem.target.throttle.max || 0, ...thisItem.target.throttle }
     if ( thisItem.target?.concurrencyLimit === undefined ) thisItem.target.concurrencyLimit = 20
     thisItem.scan.index = thisItem.scan?.index || key
     if ( isFileTarget ( thisItem.target ) )
-      thisItem.scan.file =  thisItem.target.file
+      thisItem.scan.file = thisItem.target.file
     else throw new Error ( 'Only file targets are supported' )
 
     thisItem.scan.aclIndex = simpleTemplate ( thisItem.scan?.aclIndex, { source: key, index: thisItem.index } )

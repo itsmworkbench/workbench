@@ -1,14 +1,14 @@
 import { Task, withConcurrencyLimit } from "@itsmworkbench/kleislis/src/concurrency.limiter";
 import { stopThrottling, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
-import { mapK } from "@laoban/utils";
+import { mapK, NameAnd } from "@laoban/utils";
 import { Indexer, WithPaging } from "./indexer.domain";
 import { PagingTc } from "./paging";
 
 export type IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging> = {
   folderIds: ( rootId: string, parentId: string | undefined, f: Folder ) => string[];
   leafIds: ( rootId: string, parentId: string | undefined, f: Folder ) => string[];
-  fetchFolder: ( rootId: string, folderId: string , page: Paging) => Promise<WithPaging<Folder, Paging>>,
+  fetchFolder: ( rootId: string, folderId: string, page: Paging ) => Promise<WithPaging<Folder, Paging>>,
   fetchLeaf: ( rootId: string, leafId: string ) => Promise<Leaf>;
   prepareLeaf: ( rootId: string ) => ( leaf: Leaf ) => Promise<IndexedLeaf>;    // Function to prepare leaf for indexing
 }
@@ -30,13 +30,13 @@ export function addNonFunctionalsToIndexTreeTC<Folder, Leaf, IndexedLeaf, Paging
 
 
 export function addNonFunctionsToIndexer<T> ( nf: IndexTreeNonFunctionals, indexer: Indexer<T> ): Indexer<T> {
-  const queue: Task<any>[] = []
-  const { indexerConcurrencyLimit, queryThrottle, queryRetryPolicy, indexThrottle, prepareLeafRetryPolicy, indexRetryPolicy } = nf;
+
+  const { indexerConcurrencyLimit, queryThrottle, queryRetryPolicy, indexThrottle, prepareLeafRetryPolicy, indexRetryPolicy, queryQueue, indexQueue } = nf;
   return {
-    start: withRetry ( queryRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, queue, withThrottle ( queryThrottle, indexer.start ) ) ),
-    processLeaf: ( rootId, id: string ) => withRetry ( prepareLeafRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, queue, indexer.processLeaf ( rootId, id ) ) ),
-    finished: withRetry ( queryRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, queue, withThrottle ( queryThrottle, indexer.finished ) ) ),
-    failed: withRetry ( queryRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, queue, withThrottle ( queryThrottle, indexer.failed ) ) ),
+    start: withRetry ( queryRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, queryQueue, withThrottle ( queryThrottle, indexer.start ) ) ),
+    processLeaf: ( rootId, id: string ) => withRetry ( prepareLeafRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, indexQueue, indexer.processLeaf ( rootId, id ) ) ),
+    finished: withRetry ( queryRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, indexQueue, withThrottle ( queryThrottle, indexer.finished ) ) ),
+    failed: withRetry ( queryRetryPolicy, withConcurrencyLimit ( indexerConcurrencyLimit, indexQueue, withThrottle ( queryThrottle, indexer.failed ) ) ),
   }
 }
 export function stopNonFunctionals ( nft: IndexTreeNonFunctionals ) {
@@ -67,6 +67,36 @@ export const consoleIndexTreeLogAndMetrics: IndexTreeLogAndMetrics = {
   failedLeaf: ( id, e ) => console.log ( `Failed Leaf: ${id} ${e}` ),
   finishedFolder: ( id ) => console.log ( `Finished Folder: ${id}` )
 }
+export function defaultTreeLogAndMetrics ( metrics: NameAnd<number>, logAndMetrics: IndexTreeLogAndMetrics ): IndexTreeLogAndMetrics {
+  function inc ( name: string ) {
+    if ( !metrics[ name ] ) metrics[ name ] = 0
+    metrics[ name ]++
+  }
+  return {
+    leafIds: ( page, ids ) => {
+      logAndMetrics.leafIds ( page, ids )
+      inc ( 'leafIds' )
+    },
+    folderIds: ( page, ids ) => {
+      logAndMetrics.folderIds ( page, ids )
+      inc ( 'folderIds' )
+    },
+    finishedLeaf: ( id ) => {
+      logAndMetrics.finishedLeaf ( id )
+      inc ( 'finishedLeaf' )
+    },
+    failedLeaf: ( id, e ) => {
+      logAndMetrics.failedLeaf ( id, e )
+      inc ( 'failedLeaf' )
+    },
+    finishedFolder: ( id ) => {
+      logAndMetrics.finishedFolder ( id )
+      inc ( 'finishedFolder' )
+
+    }
+  }
+}
+
 export function rememberIndexTreeLogAndMetrics ( msgs: string[] ): IndexTreeLogAndMetrics {
   return {
     leafIds: ( ids ) => msgs.push ( `LeafIds: ${ids}` ),
@@ -87,7 +117,7 @@ export function processTreeRoot<Folder, Leaf, IndexedLeaf, Paging> ( logAndMetri
   async function processFolder ( rootId: string, folderId: string, parentId?: string ): Promise<void> {
     let page = pc.zero ();
     do {
-      const folderAndPaging = await tc.fetchFolder ( rootId, folderId , page);
+      const folderAndPaging = await tc.fetchFolder ( rootId, folderId, page );
       const folder = folderAndPaging.data;
       page = folderAndPaging.page;
       const leafIds = tc.leafIds ( rootId, parentId, folder );

@@ -8,7 +8,7 @@ defaults:
         - "Not Found"
     throttle: # OK this isn't much of a throttle
       max: 100
-      tokensPer100ms: 1
+      tokensPer100ms: 0.1
   auth:
     method: ApiKey
     credentials:
@@ -25,8 +25,8 @@ defaults:
 index:
   github:
     scan:
-      organisations:
-        - itsmworkbench
+      organisationrs:
+        - itsmwokbench
       users:
         - phil-rice
       indexPeople: true

@@ -1,8 +1,8 @@
 import { NameAnd } from "@laoban/utils";
-import { consoleIndexTreeLogAndMetrics, IndexTreeLogAndMetrics } from "./tree.index";
-import { consoleIndexForestLogAndMetrics, IndexForestLogAndMetrics } from "./forest.index";
+import { consoleIndexTreeLogAndMetrics, defaultTreeLogAndMetrics, IndexTreeLogAndMetrics } from "./tree.index";
+import { consoleIndexForestLogAndMetrics, defaultForestLogAndMetrics, IndexForestLogAndMetrics, nullIndexForestLogAndMetrics } from "./forest.index";
 import { ApiKeyAuthentication, Authentication, BasicAuthentication, isApiKeyAuthentication, isBasicAuthentication, isOAuthAuthentication } from "@itsmworkbench/indexconfig";
-import { consoleIndexParentChildLogAndMetrics, IndexParentChildLogAndMetrics } from "./index.parent.child";
+import { consoleIndexParentChildLogAndMetrics, defaultIndexParentChildLogAndMetrics, IndexParentChildLogAndMetrics } from "./index.parent.child";
 import { WithPaging } from "./indexer.domain";
 
 export type TokenAuthentication = {
@@ -59,7 +59,21 @@ export type IndexingContext = {
   forestLogAndMetrics: IndexForestLogAndMetrics
   fetch: FetchFn
 }
-export function defaultIndexingContext ( env: NameAnd<string>, fetch: FetchFn ): IndexingContext {
+export function defaultIndexingContext ( env: NameAnd<string>, fetch: FetchFn, metrics: NameAnd<number> ): IndexingContext {
+  return {
+    authFn: defaultAuthFn ( env ),
+    treeLogAndMetrics: defaultTreeLogAndMetrics ( metrics, consoleIndexTreeLogAndMetrics ),
+    forestLogAndMetrics: defaultForestLogAndMetrics ( metrics, consoleIndexForestLogAndMetrics ),
+    parentChildLogAndMetrics: defaultIndexParentChildLogAndMetrics ( metrics, consoleIndexParentChildLogAndMetrics ),
+    fetch: ( url, options ) => {
+      const u = new URL ( url )
+      const domainKey = 'fetch.' + u.hostname
+      metrics[ domainKey ] = metrics[ domainKey ] ? metrics[ domainKey ] + 1 : 1
+      return fetch ( url, options )
+    }
+  }
+}
+export function consoleIndexingContext ( env: NameAnd<string>, fetch: FetchFn ): IndexingContext {
   return {
     authFn: defaultAuthFn ( env ),
     treeLogAndMetrics: consoleIndexTreeLogAndMetrics,
