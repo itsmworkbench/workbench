@@ -7,8 +7,8 @@ defaults:
       nonRecoverableErrors:
         - "Not Found"
     throttle: # OK this isn't much of a throttle
-      max: 1000
-      tokensPer100ms: 10
+      max: 100
+      tokensPer100ms: 1
   auth:
     method: ApiKey
     credentials:
