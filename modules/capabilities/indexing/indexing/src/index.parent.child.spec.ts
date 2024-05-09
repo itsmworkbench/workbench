@@ -3,7 +3,7 @@ import { indexParentChildForestTc, IndexTestFolder, TestPageQuery, TestPageQuery
 import { rememberIndex } from "./indexer.domain";
 
 describe ( "Index parent child", () => {
-  it ( "should index the test fixture",async  () => {
+  it ( "should index the test fixture", async () => {
     const logs: string[] = []
     let remembered: string[] = [];
     const indexer = indexParentChild<IndexTestFolder, string, string, TestPageQuery> (
@@ -11,20 +11,20 @@ describe ( "Index parent child", () => {
       indexParentChildForestTc,
       TestPageQueryPC,
       t => t + "_indexed",
-      rememberIndex ( "test", remembered ),
       ( p, c ) => `${p}/${c}`,
       {}
-    )
-    await indexer('/')
-    expect(remembered).toEqual([
+    ) ( rememberIndex ( "test", remembered ) )
+
+    await indexer ( '/' )
+    expect ( remembered ).toEqual ( [
       "Started: test /",
       "Processing: test / - //a - \"a_indexed\"",
       "Processing: test / - //b - \"b_indexed\"",
       "Finished: test /"
-    ])
-    expect(logs).toEqual([
+    ] )
+    expect ( logs ).toEqual ( [
       "parentId: /",
       "finishedParent: /"
-    ])
+    ] )
   } )
 } )

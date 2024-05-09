@@ -20,13 +20,14 @@ defaults:
     file: "target/index/{index}/{name}_{num}.json"
     max: 10000000
   scan:
-    aclIndex: ".search-acl-filter-{index}"
+    aclIndex: "{source}/.search-acl-filter-{index}"
 
 index:
   github:
     scan:
-      organisationrs:
-        - itsmwokbench
+      organisations:
+        - itsmworkbench
+        - "run-book"
       users:
         - phil-rice
       indexPeople: true

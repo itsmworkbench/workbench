@@ -121,7 +121,11 @@ export type ExecuteIndexOptions = {
 }
 
 export type ProcessTreeRoot = <Folder, Leaf, IndexedLeaf, Paging> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging>, indexer: Indexer<IndexedLeaf>, options: ExecuteIndexOptions ) => ( rootId: string ) => Promise<void>;
-export function processTreeRoot<Folder, Leaf, IndexedLeaf, Paging> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging>, pc: PagingTc<Paging>, indexer: Indexer<IndexedLeaf>, options: ExecuteIndexOptions ) {
+export function processTreeRoot<Folder, Leaf, IndexedLeaf, Paging> ( logAndMetrics: IndexTreeLogAndMetrics,
+                                                                     tc: IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging>,
+                                                                     pc: PagingTc<Paging>,
+                                                                     indexer: Indexer<IndexedLeaf>,
+                                                                     options: ExecuteIndexOptions ) {
   async function processFolder ( rootId: string, folderId: string, parentId?: string ): Promise<void> {
     let page = pc.zero ();
     async function fetchData () {

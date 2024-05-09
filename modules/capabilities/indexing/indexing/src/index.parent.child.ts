@@ -84,10 +84,9 @@ export function indexParentChild<Parent, Child, IndexedChild, Page> ( logAndMetr
                                                                       tc: IndexParentChildTc<Parent, Child>,
                                                                       pc: PagingTc<Page>,
                                                                       transformer: ( t: Child ) => IndexedChild,
-                                                                      indexer: Indexer<IndexedChild>,
                                                                       childId: ( parentId: string, c: Child ) => string,
                                                                       executeOptions: ExecuteIndexOptions ) {
-  return async ( parentId: string ) => {
+  return ( indexer: Indexer<IndexedChild> ) => async ( parentId: string ) => {
     try {
       indexer.start ( parentId );
       logAndMetrics.parentId ( parentId );
@@ -95,7 +94,7 @@ export function indexParentChild<Parent, Child, IndexedChild, Page> ( logAndMetr
       const children = tc.children ( parentId, parent );
       if ( executeOptions.dryRunJustShowTrees !== true && executeOptions.dryRunDoEverythingButIndex !== true ) {
         await mapK ( children, child => indexer.processLeaf ( parentId, childId ( parentId, child ) ) ( transformer ( child ) ) );
-      }
+      } else logAndMetrics.children ( parentId, children, c => childId ( parentId, c ) );
       indexer.finished ( parentId );
       logAndMetrics.finishedParent ( parentId );
     } catch ( e: any ) {

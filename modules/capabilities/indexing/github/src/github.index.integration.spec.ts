@@ -1,16 +1,16 @@
-import { defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberIndex, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
-import { indexGitHubFully, indexGitHubOrganisation, indexGitHubRepo, indexGitHubUser, indexOrganisationMembers } from "./github.index.tree";
-import { rememberForestLogsAndMetrics } from "@itsmworkbench/indexing/src/forest.index";
 import fetch from 'node-fetch'
 import { NameAnd } from "@laoban/utils";
 import { indexConfigExample } from "./github.fixture";
 import { cleanAndEnrichConfig } from "@itsmworkbench/indexconfig";
+import { defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberForestLogsAndMetrics, rememberIndex, rememberIndexParentChildLogsAndMetrics, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
+import { githubTcs, indexGitHubFully, indexOneGithubRepo, indexOrganisations, indexOrgMembers, indexTheUserRepos } from "./github.index";
 
 const msgs: string[] = []
 export const indexContext: IndexingContext = {
   authFn: defaultAuthFn ( process.env ),
   treeLogAndMetrics: rememberIndexTreeLogAndMetrics ( msgs ),
   forestLogAndMetrics: rememberForestLogsAndMetrics ( msgs ),
+  parentChildLogAndMetrics: rememberIndexParentChildLogsAndMetrics ( msgs ),
   fetch: async ( url, options ) => {
     console.log ( `Fetching: ${url}` )
     const res = await fetch ( url, options );
@@ -30,7 +30,7 @@ export const indexContext: IndexingContext = {
   }
 }
 const nfs = defaultIndexTreeNfs ();
-
+const tcs = githubTcs ( nfs, indexContext )
 describe ( 'githubOneRepoWF', () => {
   beforeEach ( () => {
     msgs.length = 0
@@ -40,11 +40,10 @@ describe ( 'githubOneRepoWF', () => {
     stopNonFunctionals ( nfs )
   } );
 
-  describe ( 'indexrepo', () => {
+  describe ( 'indexOneGithubRepo', () => {
     it ( 'should index a repo - dryrun true', async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubRepo ( nfs, indexContext, rememberIndex ( 'test', remembered ), { dryRunJustShowTrees: true } )
-      const config = cleanAndEnrichConfig ( indexConfigExample, {} )
+      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), { dryRunJustShowTrees: true } )
       await indexer ( 'phil-rice/typescriptDragons' )
       expect ( remembered.sort () ).toEqual ( [
         "Finished: test phil-rice/typescriptDragons",
@@ -54,8 +53,7 @@ describe ( 'githubOneRepoWF', () => {
     } )
     it ( 'should index a repo - dryRunDoEverythingButIndex true', async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubRepo ( nfs, indexContext, rememberIndex ( 'test', remembered ), { dryRunDoEverythingButIndex: true } )
-      const config = cleanAndEnrichConfig ( indexConfigExample, {} )
+      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), { dryRunDoEverythingButIndex: true } )
       await indexer ( 'phil-rice/typescriptDragons' )
       expect ( remembered.sort () ).toEqual ( [
         "Finished: test phil-rice/typescriptDragons",
@@ -64,14 +62,14 @@ describe ( 'githubOneRepoWF', () => {
       expect ( msgs.sort () ).toEqual ( [
         "Finished Folder: ",
         "Finished Leaf: README.md",
-        "FolderIds: ",
-        "LeafIds: README.md"
+        "FolderIds: Page: undefined",
+        "LeafIds: Page: undefined"
       ] )
     } )
     it ( 'should index a repo - dryrun false', async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubRepo ( nfs, indexContext, rememberIndex ( 'test', remembered ), {} ) //we actually go for it
-      const config = cleanAndEnrichConfig ( indexConfigExample, {} )
+      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), {}
+      ) //we actually go for it
       await indexer ( 'phil-rice/typescriptDragons' )
       expect ( remembered.sort () ).toEqual ( [
         "Finished: test phil-rice/typescriptDragons",
@@ -81,45 +79,51 @@ describe ( 'githubOneRepoWF', () => {
       expect ( msgs.sort () ).toEqual ( [
         "Finished Folder: ",
         "Finished Leaf: README.md",
-        "FolderIds: ",
-        "LeafIds: README.md"
-      ] )
+        "FolderIds: Page: undefined",
+        "LeafIds: Page: undefined"
+      ])
 
     } )
 
     it ( 'should report not found if a repo not found', async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubRepo ( nfs, indexContext, rememberIndex ( 'test', remembered ), { dryRunJustShowTrees: false } ) //we actually go for it
-      const config = cleanAndEnrichConfig ( indexConfigExample, {} )
+      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), { dryRunJustShowTrees: false } ) //we actually go for it
       await indexer ( 'phil-rice/repodoesntexist' )
       expect ( remembered.sort () ).toEqual ( [
         "Failed: test phil-rice/repodoesntexist Error: Not Found",
         "Started: test phil-rice/repodoesntexist"
       ] )
-      expect ( msgs.sort () ).toEqual ( [] )
+      expect ( msgs.sort () ).toEqual ( [
+        "Failed Fetch:  {}"
+      ] )
     } )
   } )
   describe ( 'index org', () => {
-    it ( 'should index an org - dryrun on', async () => {
+    it ( 'should index an org ', async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubOrganisation ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowTrees: true } )
-      const config = cleanAndEnrichConfig ( indexConfigExample, {} )
-      await indexer ( 'itsmworkbench' )
-      expect ( remembered.sort () ).toEqual ( [//we sort because this is very async... so here we just assert that at some time we got these messages
-        "Finished: itsmworkbench itsmworkbench/forissues",
-        "Finished: itsmworkbench itsmworkbench/workbench",
-        "Started: itsmworkbench itsmworkbench/forissues",
-        "Started: itsmworkbench itsmworkbench/workbench"
-      ] )
+      await indexOrganisations ( indexContext, tcs.indexAnOrganisationTc,
+        async rootId => {remembered.push ( rootId )}, [ 'run-book' ] )
       expect ( msgs.sort () ).toEqual ( [
-        "finished Root: itsmworkbench",
-        "rootIds: itsmworkbench/workbench,itsmworkbench/forissues"
+        "finished Root: run-book",
+        "rootIds: Page: undefined - run-book/runbook,run-book/testRepo1,run-book/instruments,run-book/testRepo2,run-book/malformed_instruments,run-book/storybook-state,run-book/runbookTestConfig,run-book/backstage,run-book/fusion,run-book/camunda"
+      ])
+      expect ( remembered.sort () ).toEqual ( [
+        "run-book/backstage",
+        "run-book/camunda",
+        "run-book/fusion",
+        "run-book/instruments",
+        "run-book/malformed_instruments",
+        "run-book/runbook",
+        "run-book/runbookTestConfig",
+        "run-book/storybook-state",
+        "run-book/testRepo1",
+        "run-book/testRepo2"
       ] )
     } )
     it ( "should report not found if an org not found", async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubOrganisation ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowTrees: false } )
-      await indexer ( 'orgdoesntexist' )
+      await indexOrganisations ( indexContext, tcs.indexAnOrganisationTc, async rootId => {remembered.push ( rootId )}, [ 'orgdoesntexist' ] )
+
       expect ( remembered.sort () ).toEqual ( [] )
       expect ( msgs.sort () ).toEqual ( [
         "notfound Root: orgdoesntexist"
@@ -129,21 +133,21 @@ describe ( 'githubOneRepoWF', () => {
   describe ( 'index user repos', () => {
     it ( 'should index people - dryrun on', async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubUser ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowTrees: true } )
-      await indexer ( 'phil-rice-HCL' )
+      await indexTheUserRepos ( indexContext, tcs.indexAnUserTc, async rootId => {remembered.push ( rootId )},
+        [ 'phil-rice-HCL' ] )
+
       expect ( remembered.sort () ).toEqual ( [
-        "Finished: phil-rice-HCL phil-rice-HCL/HelloDataNucleusJBoss",
-        "Started: phil-rice-HCL phil-rice-HCL/HelloDataNucleusJBoss"
+        "phil-rice-HCL/HelloDataNucleusJBoss"
       ] )
       expect ( msgs.sort () ).toEqual ( [
         "finished Root: phil-rice-HCL",
-        "rootIds: phil-rice-HCL/HelloDataNucleusJBoss"
-      ] )
+        "rootIds: Page: undefined - phil-rice-HCL/HelloDataNucleusJBoss"
+      ])
     } )
     it ( "should report not found if a user not found", async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubUser ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowTrees: false } )
-      await indexer ( 'userdoesntexist999' )
+      await indexTheUserRepos ( indexContext, tcs.indexAnUserTc, async rootId => {remembered.push ( rootId )},
+        [ 'userdoesntexist999' ] )
       expect ( remembered.sort () ).toEqual ( [] )
       expect ( msgs.sort () ).toEqual ( [
         "notfound Root: userdoesntexist999"
@@ -153,26 +157,27 @@ describe ( 'githubOneRepoWF', () => {
   describe ( "indexOrganisationMembers", () => {
     it ( "should index members of an organisation - dryrun on", async () => {
       const remembered: string[] = []
-      const indexer = indexOrganisationMembers ( nfs, indexContext, id => rememberIndex ( id, remembered ), { dryRunJustShowTrees: true } )
-      await indexer ( 'itsmworkbench' )
-      expect ( remembered.sort () ).toEqual ( [
-        "Finished: itsmworkbench eyupbarlas",
-        "Finished: itsmworkbench phil-rice",
-        "Started: itsmworkbench eyupbarlas",
-        "Started: itsmworkbench phil-rice"
-      ] )
+      await indexOrgMembers ( indexContext, tcs.indexAnOrganisationMembersTc, rememberIndex ( '', remembered ),
+        { dryRunJustShowTrees: true }, [ 'run-book' ] )
       expect ( msgs.sort () ).toEqual ( [
-        "finished Root: itsmworkbench",
-        "rootIds: eyupbarlas,phil-rice"
-      ] )
+        "children: run-book run-book_alikor,run-book_phil-rice",
+        "finishedParent: run-book",
+        "parentId: run-book"
+      ])
+      expect ( remembered.sort () ).toEqual ( [
+        "Finished:  run-book",
+        "Started:  run-book"
+      ])
 
     } )
   } )
   describe ( "indexGitHubFully", () => {
-
     it ( "should say what it is going to do when we dryRunJustShowRepo", async () => {
       const remembered: string[] = []
-      const indexer = indexGitHubFully ( nfs, indexContext, ( forestId ) => rememberIndex ( forestId, remembered ), { dryRunJustShowTrees: true } )
+      const indexer = indexGitHubFully ( nfs, indexContext,
+        ( forestId ) => rememberIndex ( forestId, remembered ),
+        ( forestId ) => rememberIndex ( forestId, remembered ),
+        { dryRunJustShowTrees: true } )
       const config = cleanAndEnrichConfig ( indexConfigExample, {} )
       await indexer ( config.github.scan as any )
       expect ( remembered.sort () ).toEqual ( [
@@ -186,15 +191,15 @@ describe ( 'githubOneRepoWF', () => {
         "Started: itsmworkbench itsmworkbench/workbench",
         "Started: itsmworkbench phil-rice",
         "Started: phil-rice-HCL phil-rice-HCL/HelloDataNucleusJBoss"
-      ])
-      expect(msgs.sort()).toEqual([
+      ] )
+      expect ( msgs.sort () ).toEqual ( [
         "finished Root: itsmworkbench",
         "finished Root: itsmworkbench",
         "finished Root: phil-rice-HCL",
         "rootIds: eyupbarlas,phil-rice",
         "rootIds: itsmworkbench/workbench,itsmworkbench/forissues",
         "rootIds: phil-rice-HCL/HelloDataNucleusJBoss"
-      ])
+      ] )
     } )
   } )
 } )

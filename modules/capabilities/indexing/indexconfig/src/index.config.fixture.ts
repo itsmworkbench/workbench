@@ -25,7 +25,7 @@ export const indexConfigExample: RawIndexConfig = {
       max: 10 * 1000 * 1000
     },
     scan: {
-      aclIndex: '.search-acl-filter-{index}'
+      aclIndex: '{source}/.search-acl-filter-{index}'
     }
   },
 
