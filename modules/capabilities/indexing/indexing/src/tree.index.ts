@@ -51,6 +51,7 @@ export type IndexTreeLogAndMetrics = {
   finishedLeaf: ( id: string ) => void;
   failedLeaf: ( id: string, e: any ) => void;
   finishedFolder: ( id: string ) => void;
+  failedFetch ( id: string, page: any, e: any ): void;
 }
 
 export const nullIndexTreeLogAndMetrics: IndexTreeLogAndMetrics = {
@@ -58,14 +59,16 @@ export const nullIndexTreeLogAndMetrics: IndexTreeLogAndMetrics = {
   folderIds: () => { },
   finishedLeaf: () => { },
   failedLeaf: () => { },
-  finishedFolder: () => { }
+  finishedFolder: () => { },
+  failedFetch: () => { }
 }
 export const consoleIndexTreeLogAndMetrics: IndexTreeLogAndMetrics = {
   leafIds: ( ids ) => console.log ( `LeafIds: ${ids}` ),
   folderIds: ( ids ) => console.log ( `FolderIds: ${ids}` ),
   finishedLeaf: ( id ) => console.log ( `Finished Leaf: ${id}` ),
   failedLeaf: ( id, e ) => console.log ( `Failed Leaf: ${id} ${e}` ),
-  finishedFolder: ( id ) => console.log ( `Finished Folder: ${id}` )
+  finishedFolder: ( id ) => console.log ( `Finished Folder: ${id}` ),
+  failedFetch: ( id, page, e ) => console.log ( `Failed Fetch: ${id} ${JSON.stringify ( page )} ${JSON.stringify(e)}` )
 }
 export function defaultTreeLogAndMetrics ( metrics: NameAnd<number>, logAndMetrics: IndexTreeLogAndMetrics ): IndexTreeLogAndMetrics {
   function inc ( name: string ) {
@@ -89,6 +92,10 @@ export function defaultTreeLogAndMetrics ( metrics: NameAnd<number>, logAndMetri
       logAndMetrics.failedLeaf ( id, e )
       inc ( 'failedLeaf' )
     },
+    failedFetch: ( id, page, e ) => {
+      logAndMetrics.failedFetch ( id, page, e )
+      inc ( 'failedFetch' )
+    },
     finishedFolder: ( id ) => {
       logAndMetrics.finishedFolder ( id )
       inc ( 'finishedFolder' )
@@ -103,7 +110,8 @@ export function rememberIndexTreeLogAndMetrics ( msgs: string[] ): IndexTreeLogA
     folderIds: ( ids ) => msgs.push ( `FolderIds: ${ids}` ),
     finishedLeaf: ( id ) => msgs.push ( `Finished Leaf: ${id}` ),
     failedLeaf: ( id, e ) => msgs.push ( `Failed Leaf: ${id} ${e}` ),
-    finishedFolder: ( id ) => msgs.push ( `Finished Folder: ${id}` )
+    finishedFolder: ( id ) => msgs.push ( `Finished Folder: ${id}` ),
+    failedFetch: ( id, e ) => msgs.push ( `Failed Fetch: ${id} ${JSON.stringify(e)}` )
   }
 }
 
@@ -116,14 +124,22 @@ export type ProcessTreeRoot = <Folder, Leaf, IndexedLeaf, Paging> ( logAndMetric
 export function processTreeRoot<Folder, Leaf, IndexedLeaf, Paging> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging>, pc: PagingTc<Paging>, indexer: Indexer<IndexedLeaf>, options: ExecuteIndexOptions ) {
   async function processFolder ( rootId: string, folderId: string, parentId?: string ): Promise<void> {
     let page = pc.zero ();
+    async function fetchData () {
+      try {
+        return await tc.fetchFolder ( rootId, folderId, page );
+      } catch ( e ) {
+        logAndMetrics.failedFetch ( folderId, page, e );
+        throw e;
+      }
+    }
     do {
-      const folderAndPaging = await tc.fetchFolder ( rootId, folderId, page );
+      const folderAndPaging = await fetchData ();
       const folder = folderAndPaging.data;
       page = folderAndPaging.page;
-      const leafIds = tc.leafIds ( rootId, parentId, folder );
+      const leafIds = tc.leafIds ( rootId, folderId, folder );
       const pageMsg = pc.logMsg ( page );
       logAndMetrics.leafIds ( pageMsg, leafIds );
-      const folderIds = tc.folderIds ( rootId, parentId, folder );
+      const folderIds = tc.folderIds ( rootId, folderId, folder );
       logAndMetrics.folderIds ( pageMsg, folderIds );
       await mapK ( leafIds, leafId => processLeaf ( rootId, leafId ) );
       await mapK ( folderIds, child => processFolder ( rootId, child, folderId ) );

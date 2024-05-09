@@ -4,6 +4,7 @@ import { mapK, NameAnd } from "@laoban/utils";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { withConcurrencyLimit } from "@itsmworkbench/kleislis/src/concurrency.limiter";
+import { PagingTc } from "./paging";
 
 export type IndexParentChildLogAndMetrics = {
   parentId: ( parentId: string ) => void;
@@ -79,12 +80,13 @@ export function addNonFunctionalsToIndexParentChildTc<Parent, Child> ( nf: Index
   }
 
 }
-export function indexParentChild<Parent, Child, IndexedChild> ( logAndMetrics: IndexParentChildLogAndMetrics,
-                                                                tc: IndexParentChildTc<Parent, Child>,
-                                                                transformer: ( t: Child ) => IndexedChild,
-                                                                indexer: Indexer<IndexedChild>,
-                                                                childId: ( parentId: string, c: Child ) => string,
-                                                                executeOptions: ExecuteIndexOptions ) {
+export function indexParentChild<Parent, Child, IndexedChild, Page> ( logAndMetrics: IndexParentChildLogAndMetrics,
+                                                                      tc: IndexParentChildTc<Parent, Child>,
+                                                                      pc: PagingTc<Page>,
+                                                                      transformer: ( t: Child ) => IndexedChild,
+                                                                      indexer: Indexer<IndexedChild>,
+                                                                      childId: ( parentId: string, c: Child ) => string,
+                                                                      executeOptions: ExecuteIndexOptions ) {
   return async ( parentId: string ) => {
     try {
       indexer.start ( parentId );

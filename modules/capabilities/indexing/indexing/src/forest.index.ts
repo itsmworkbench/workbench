@@ -82,11 +82,12 @@ export function indexForestOfTrees<Forest, Page> ( logAndMetrics: IndexForestLog
     try {
       let page = paging.zero ()
       do {
+        const logMsg = paging.logMsg ( page );
         const pageAndData = await tc.fetchForest ( forestId, page );
         page = pageAndData.page
         const forest = pageAndData.data;
         const treeIds = tc.treeIds ( forest );
-        logAndMetrics.rootIds ( paging.logMsg ( page ), treeIds );
+        logAndMetrics.rootIds ( logMsg, treeIds );
         await mapK ( treeIds, processTreeRoot ( forestId ) )
       } while ( paging.hasMore ( page ) )
       logAndMetrics.finishedRoot ( forestId )

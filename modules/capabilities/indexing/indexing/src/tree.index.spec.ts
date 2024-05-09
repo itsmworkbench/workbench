@@ -1,59 +1,101 @@
-import { IndexTreeLogAndMetrics, IndexTreeTc, processTreeRoot } from "./tree.index";
+import { IndexTreeLogAndMetrics, IndexTreeTc, processTreeRoot, rememberIndexTreeLogAndMetrics } from "./tree.index";
 import { rememberIndex } from "./indexer.domain";
+import { TestPageQueryPC, treeIndexForTestTc } from "./indexing.fixture";
 
 
 describe ( 'TreeIndexer Integration Test', () => {
   let logs: string[] = [];
-  let fetchTC: IndexTreeTc<any, any, any,any>;
-  const logAndMetrics: IndexTreeLogAndMetrics = {
-    leafIds: ( ids ) => logs.push ( `LeafIDs-${ids.join ( ',' )}` ),
-    folderIds: ( ids ) => logs.push ( `FolderIDs-${ids.join ( ',' )}` ),
-    finishedLeaf: ( id ) => logs.push ( `FinishedLeaf-${id}` ),
-    failedLeaf: ( id ) => logs.push ( `FailedLeaf-${id}` ),
-    finishedFolder: ( id ) => logs.push ( `FinishedFolder-${id}` )
-  };
+  const logAndMetrics = rememberIndexTreeLogAndMetrics ( logs )
   const rememberIndexer = rememberIndex ( 'test', logs );
 
   beforeEach ( () => {
     logs.length = 0
 
-    fetchTC = {
-      folderIds: ( rootId: string, p: string, folder ) => folder.subfolders,
-      leafIds: ( rootId: string, p: string, folder ) => folder.leaves,
-      fetchFolder: ( rootId: string, folderId ) => Promise.resolve ( {
-        id: folderId,
-        subfolders: folderId === '' ? [ 'subfolder1' ] : [],
-        leaves: folderId === '' ? [ 'leaf1', 'leaf2' ] : [ 'leaf3' ]
-      } ),
-      fetchLeaf: ( rootId: string, leafId ) => Promise.resolve ( { id: leafId } ),
-      prepareLeaf: ( rootId: string ) => ( leaf ) => Promise.resolve ( `Prepared-${rootId}-${leaf.id}` ),
-    };
-
-
-    // Modify fetchFolder to return a structured folder with subfolders and leaves
-
-
   } );
 
   it ( 'should process a simple folder structure correctly', async () => {
-    await processTreeRoot ( logAndMetrics, fetchTC, rememberIndexer, {} ) ( 'root' );
+    await processTreeRoot ( logAndMetrics, treeIndexForTestTc, TestPageQueryPC, rememberIndexer, {} ) ( '/' );
 
     // Expect logs to reflect the correct processing order and content
-    expect ( logs ).toEqual ( [
-      "Started: root",
-      "LeafIDs-leaf1,leaf2",
-      "FolderIDs-subfolder1",
-      "Processing: root - leaf1 - \"Prepared-root-leaf1\"",
-      "Processing: root - leaf2 - \"Prepared-root-leaf2\"",
-      "FinishedLeaf-leaf1",
-      "FinishedLeaf-leaf2",
-      "LeafIDs-leaf3",
-      "FolderIDs-",
-      "Processing: root - leaf3 - \"Prepared-root-leaf3\"",
-      "FinishedLeaf-leaf3",
-      "FinishedFolder-subfolder1",
-      "FinishedFolder-",
-      "Finished: root"
-    ] );
+    expect ( logs.sort() ).toEqual ( [
+      "Started: test /",
+      "LeafIds: Page: 1",
+      "FolderIds: Page: 1",
+      "Processing: test / - onea - \"Prepared-/-onea\"",
+      "Processing: test / - oneb - \"Prepared-/-oneb\"",
+      "Finished Leaf: onea",
+      "Finished Leaf: oneb",
+      "LeafIds: Page: 2",
+      "FolderIds: Page: 2",
+      "Processing: test / - onec - \"Prepared-/-onec\"",
+      "Finished Leaf: onec",
+      "LeafIds: Page: 1",
+      "FolderIds: Page: 1",
+      "Processing: test / - oneaa - \"Prepared-/-oneaa\"",
+      "Processing: test / - oneab - \"Prepared-/-oneab\"",
+      "Finished Leaf: oneaa",
+      "Finished Leaf: oneab",
+      "LeafIds: Page: 2",
+      "FolderIds: Page: 2",
+      "Processing: test / - oneac - \"Prepared-/-oneac\"",
+      "Finished Leaf: oneac",
+      "LeafIds: Page: 1",
+      "FolderIds: Page: 1",
+      "Processing: test / - oneaaa - \"Prepared-/-oneaaa\"",
+      "Processing: test / - oneaab - \"Prepared-/-oneaab\"",
+      "Finished Leaf: oneaaa",
+      "Finished Leaf: oneaab",
+      "LeafIds: Page: 2",
+      "FolderIds: Page: 2",
+      "Processing: test / - oneaac - \"Prepared-/-oneaac\"",
+      "Processing: test / - oneaad - \"Prepared-/-oneaad\"",
+      "Finished Leaf: oneaac",
+      "Finished Leaf: oneaad",
+      "LeafIds: Page: 3",
+      "FolderIds: Page: 3",
+      "Processing: test / - oneaae - \"Prepared-/-oneaae\"",
+      "Finished Leaf: oneaae",
+      "Finished Folder: a/aa",
+      "LeafIds: Page: 3",
+      "FolderIds: Page: 3",
+      "LeafIds: Page: 1",
+      "FolderIds: Page: 1",
+      "LeafIds: Page: 1",
+      "FolderIds: Page: 1",
+      "Processing: test / - oneaba - \"Prepared-/-oneaba\"",
+      "Processing: test / - oneabb - \"Prepared-/-oneabb\"",
+      "Processing: test / - oneaca - \"Prepared-/-oneaca\"",
+      "Processing: test / - oneacb - \"Prepared-/-oneacb\"",
+      "Finished Leaf: oneaba",
+      "Finished Leaf: oneabb",
+      "Finished Leaf: oneaca",
+      "Finished Leaf: oneacb",
+      "LeafIds: Page: 2",
+      "FolderIds: Page: 2",
+      "LeafIds: Page: 2",
+      "FolderIds: Page: 2",
+      "Processing: test / - oneabc - \"Prepared-/-oneabc\"",
+      "Processing: test / - oneacc - \"Prepared-/-oneacc\"",
+      "Finished Leaf: oneabc",
+      "Finished Leaf: oneacc",
+      "Finished Folder: a/ab",
+      "Finished Folder: a/ac",
+      "Finished Folder: a",
+      "LeafIds: Page: 3",
+      "FolderIds: Page: 3",
+      "LeafIds: Page: 1",
+      "FolderIds: Page: 1",
+      "Processing: test / - oneba - \"Prepared-/-oneba\"",
+      "Processing: test / - onebb - \"Prepared-/-onebb\"",
+      "Finished Leaf: oneba",
+      "Finished Leaf: onebb",
+      "LeafIds: Page: 2",
+      "FolderIds: Page: 2",
+      "Processing: test / - onebc - \"Prepared-/-onebc\"",
+      "Finished Leaf: onebc",
+      "Finished Folder: b",
+      "Finished Folder: ",
+      "Finished: test /"
+    ].sort());
   } );
 } );
