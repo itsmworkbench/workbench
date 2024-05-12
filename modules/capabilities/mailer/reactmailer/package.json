@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/reactmailer",
   "description": "How to display emails we want to send in react",
-  "version": "0.0.36",
+  "version": "0.0.39",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,11 +15,11 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/ai": "0.0.36",
-    "@itsmworkbench/actions": "0.0.36",
-    "@itsmworkbench/components": "0.0.36",
-    "@itsmworkbench/reactevents": "0.0.36",
-    "@itsmworkbench/tickets": "0.0.36",
+    "@itsmworkbench/ai": "0.0.39",
+    "@itsmworkbench/actions": "0.0.39",
+    "@itsmworkbench/components": "0.0.39",
+    "@itsmworkbench/reactevents": "0.0.39",
+    "@itsmworkbench/tickets": "0.0.39",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

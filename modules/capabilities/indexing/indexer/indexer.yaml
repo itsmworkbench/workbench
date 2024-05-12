@@ -25,11 +25,12 @@ defaults:
 index:
   github:
     scan:
-      organisations: []
-#        - "run-book"
+      organisations:
+        - "focuson-ts"
+        - "run-book"
       users:
         - phil-rice-HCL
-#        - phil-rice
+        - phil-rice
       indexPeople: true
   jira1:
     type: jira
@@ -39,7 +40,6 @@ index:
         credentials:
           username: 'phil.rice@validoc.org'
           password: 'JIRA_TOKEN'
-      index: 'jira'
       aclIndex: 'jira1-acl'
       projects: "*"
       indexPeople: true
@@ -54,7 +54,6 @@ index:
         credentials:
           username: 'phil.rice'
           password: 'JIRA_LOCAL_TOKEN'
-      index: 'jira'
       aclIndex: 'jira2-acl'
       projects: "*"
       indexPeople: true

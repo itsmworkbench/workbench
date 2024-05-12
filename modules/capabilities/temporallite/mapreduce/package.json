@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/mapreduce",
   "description": "workflow protected mapreduce for temporallite",
-  "version": "0.0.36",
+  "version": "0.0.39",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.51",
-    "@itsmworkbench/activities": "0.0.36",
-    "@itsmworkbench/workflow": "0.0.36",
+    "@itsmworkbench/activities": "0.0.39",
+    "@itsmworkbench/workflow": "0.0.39",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -22,7 +22,9 @@
     "@itsmworkbench/kleislis",
     "@itsmworkbench/commander12",
     "@itsmworkbench/cli",
-    "@itsmworkbench/jsyaml"
+    "@itsmworkbench/jsyaml",
+    "@itsmworkbench/koa"
+
   ],
   "guards":      {
     "compile": true,

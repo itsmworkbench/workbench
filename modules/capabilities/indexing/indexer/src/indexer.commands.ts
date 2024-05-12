@@ -4,7 +4,7 @@ import { hasErrors, NameAnd } from "@laoban/utils";
 import { cleanAndEnrichConfig, PopulatedIndexItem } from "@itsmworkbench/indexconfig";
 import { defaultIndexingContext, ExecuteIndexOptions, IndexTreeNonFunctionals, insertIntoFileWithNonFunctionals, stopNonFunctionals } from "@itsmworkbench/indexing";
 import { indexAll } from "@itsmworkbench/indexall";
-import { startKoa } from "@itsmworkbench/koa";
+import { startKoa, stopKoa } from "@itsmworkbench/koa";
 import { indexerHandlers } from "./indexer.api";
 
 async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>, file: string | boolean ) {
@@ -31,13 +31,14 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
       '-t,--target <target>': { description: 'where we put the indexed data', default: 'target/indexer' },
       '--debug': { description: 'Show debug information' },
       '--api': { description: 'Start the api' },
+      '--keep': { description: 'if you started the api this keeps it running at the end' },
       '--port <port>': { description: 'The port to start the api on', default: '1235' },
       '--dryrun': { description: `don't actually do the indexing, but report what would be done` },
       '--detailedDryRun': { description: `don't actually do the indexing, but report what would be done` },
     },
     action: async ( _, opts ) => {
       console.log ( `Indexing `, opts )
-      const { file, debug, dryrun, target, api, port } = opts
+      const { file, debug, dryrun, target, api, keep, port } = opts
       const config = await getConfig ( tc, file );
       const metrics: NameAnd<number> = {}
       const ic = defaultIndexingContext ( tc.context.env, tc.context.fetch, metrics )
@@ -46,7 +47,7 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
         insertIntoFileWithNonFunctionals ( target.toString (), fileTemplate, index, nfc )
       const resultsAndNfcs = indexAll ( ic, indexIntoFile, executeOptions ) ( config )
       const allNfcs = resultsAndNfcs.map ( r => r.nfc )
-      const apiFuture = api === true ? startKoa ( 'target/indexer', Number.parseInt ( port.toString () ), debug === true, indexerHandlers ( metrics,allNfcs ) ) : undefined
+      const apiFuture = api === true ? startKoa ( 'target/indexer', Number.parseInt ( port.toString () ), debug === true, indexerHandlers ( metrics, allNfcs ) ) : undefined
       for ( const { result, nfc } of resultsAndNfcs ) {
         await result
       }
@@ -54,7 +55,11 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
         stopNonFunctionals ( nfc )
       }
       console.log ( 'done' )
-      if ( apiFuture !== undefined ) console.log ( `still running as api is enabled on port ${port}` )
+      if ( apiFuture !== undefined ) {
+        if ( keep ) console.log ( `still running as api is enabled on port ${port}` )
+        else
+          stopKoa ( await apiFuture )
+      }
     }
   }
 }
