@@ -1,11 +1,13 @@
 import { indexGitHubFully } from "@itsmworkbench/indexing_github";
+import { indexJiraFully } from "@itsmworkbench/indexing_jira";
 import { ExecuteIndexOptions, Indexer, IndexingContext, IndexTreeNonFunctionals } from "@itsmworkbench/indexing";
 import { PopulatedIndexItem } from "@itsmworkbench/indexconfig";
 import { NameAnd } from "@laoban/utils";
 
 export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
   return {
-    github: indexGitHubFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions )
+    github: indexGitHubFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
+    jira: indexJiraFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
   };
 }
 //export type IndexTreeNonFunctionals = {

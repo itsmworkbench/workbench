@@ -33,7 +33,8 @@ export function withConcurrencyLimit<TInput, TOutput> ( limit: number, queue: Ta
   };
 
   return async ( ...args: any[] ) => new Promise<TOutput> ( ( resolve, reject ) => {
-    const task: Task<TOutput> = { fn: () => fn ( ...args ), resolve, reject };
+    const task: Task<TOutput> = { fn: () =>
+        fn ( ...args ), resolve, reject };
     queue.push ( task );
     next ();
   } );

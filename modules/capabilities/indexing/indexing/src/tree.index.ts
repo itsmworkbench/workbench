@@ -1,4 +1,4 @@
-import { Task, withConcurrencyLimit } from "@itsmworkbench/kleislis/src/concurrency.limiter";
+import { Task, withConcurrencyLimit } from "@itsmworkbench/kleislis";
 import { stopThrottling, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { mapK, NameAnd } from "@laoban/utils";

@@ -3,7 +3,7 @@ import { IndexerContext } from "./context";
 import { hasErrors, NameAnd } from "@laoban/utils";
 import { cleanAndEnrichConfig, PopulatedIndexItem } from "@itsmworkbench/indexconfig";
 import { defaultIndexingContext, ExecuteIndexOptions, IndexTreeNonFunctionals, insertIntoFileWithNonFunctionals, stopNonFunctionals } from "@itsmworkbench/indexing";
-import { indexAll } from "@itsmworkbench/indexall/src/index.all";
+import { indexAll } from "@itsmworkbench/indexall";
 import { startKoa } from "@itsmworkbench/koa";
 import { indexerHandlers } from "./indexer.api";
 

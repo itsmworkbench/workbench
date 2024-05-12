@@ -38,9 +38,8 @@ export type TestPageQuery = { page: number, size: number, maxCount: number }
 
 export const TestPageQueryPC: PagingTc<TestPageQuery> = {
   zero: () => ({ page: 0, size: 2, maxCount: 5 }),
-  hasMore: ( page ) => (page.page) * page.size < page.maxCount,
+  hasMore: ( page ) => (page.page) * page.size <= page.maxCount,
   logMsg: ( page ) => `Page: ${page.page}`
-
 }
 
 export function getFromTestForest ( forest: IndexTestFolder, id: string ): IndexTestFolder {
@@ -87,8 +86,12 @@ export const treeIndexForTestTc: IndexTreeTc<IndexTestFolder, string, string, Te
 }
 
 //TODO no paging yet
-export const indexParentChildForestTc: IndexParentChildTc<IndexTestFolder, string> = {
-  fetchParent: async ( rootId: string ) => indexTestFolder,
-  children: ( rootId: string, parent: IndexTestFolder ) => Object.keys ( parent.folders || {} )
+export const indexParentChildForTestTc: IndexParentChildTc<IndexTestFolder, string, TestPageQuery> = {
+  fetchParent: async ( rootId: string, page: TestPageQuery ) => {
+    const folder = getFromTestForest ( indexTestFolder, rootId )
+    return forestAndPageToResult ( folder, page )
+  },
+  children: ( rootId: string, parent: IndexTestFolder ): string[] =>
+    [ ...Object.keys ( parent.folders || {} ), ...parent.leafs ]
 
 }

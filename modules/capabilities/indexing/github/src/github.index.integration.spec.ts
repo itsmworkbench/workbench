@@ -160,9 +160,9 @@ describe ( 'githubOneRepoWF', () => {
       await indexOrgMembers ( indexContext, tcs.indexAnOrganisationMembersTc, rememberIndex ( '', remembered ),
         { dryRunJustShowTrees: true }, [ 'run-book' ] )
       expect ( msgs.sort () ).toEqual ( [
-        "children: run-book run-book_alikor,run-book_phil-rice",
         "finishedParent: run-book",
-        "parentId: run-book"
+        "parent: run-book, page: Page: undefined, children: run-book_alikor,run-book_phil-rice",
+        "parentId: run-book, page: Page: undefined"
       ])
       expect ( remembered.sort () ).toEqual ( [
         "Finished:  run-book",
@@ -181,24 +181,39 @@ describe ( 'githubOneRepoWF', () => {
       const config = cleanAndEnrichConfig ( indexConfigExample, {} )
       await indexer ( config.github.scan as any )
       expect ( remembered.sort () ).toEqual ( [
-        "Finished: itsmworkbench eyupbarlas",
-        "Finished: itsmworkbench itsmworkbench/forissues",
-        "Finished: itsmworkbench itsmworkbench/workbench",
-        "Finished: itsmworkbench phil-rice",
-        "Finished: phil-rice-HCL phil-rice-HCL/HelloDataNucleusJBoss",
-        "Started: itsmworkbench eyupbarlas",
-        "Started: itsmworkbench itsmworkbench/forissues",
-        "Started: itsmworkbench itsmworkbench/workbench",
-        "Started: itsmworkbench phil-rice",
-        "Started: phil-rice-HCL phil-rice-HCL/HelloDataNucleusJBoss"
-      ] )
+        "Finished: target/index/{source}/{name}_{num}.json phil-rice-HCL/HelloDataNucleusJBoss",
+        "Finished: target/index/{source}/{name}_{num}.json run-book",
+        "Finished: target/index/{source}/{name}_{num}.json run-book/backstage",
+        "Finished: target/index/{source}/{name}_{num}.json run-book/camunda",
+        "Finished: target/index/{source}/{name}_{num}.json run-book/fusion",
+        "Finished: target/index/{source}/{name}_{num}.json run-book/instruments",
+        "Finished: target/index/{source}/{name}_{num}.json run-book/malformed_instruments",
+        "Finished: target/index/{source}/{name}_{num}.json run-book/runbook",
+        "Finished: target/index/{source}/{name}_{num}.json run-book/runbookTestConfig",
+        "Finished: target/index/{source}/{name}_{num}.json run-book/storybook-state",
+        "Finished: target/index/{source}/{name}_{num}.json run-book/testRepo1",
+        "Finished: target/index/{source}/{name}_{num}.json run-book/testRepo2",
+        "Started: target/index/{source}/{name}_{num}.json phil-rice-HCL/HelloDataNucleusJBoss",
+        "Started: target/index/{source}/{name}_{num}.json run-book",
+        "Started: target/index/{source}/{name}_{num}.json run-book/backstage",
+        "Started: target/index/{source}/{name}_{num}.json run-book/camunda",
+        "Started: target/index/{source}/{name}_{num}.json run-book/fusion",
+        "Started: target/index/{source}/{name}_{num}.json run-book/instruments",
+        "Started: target/index/{source}/{name}_{num}.json run-book/malformed_instruments",
+        "Started: target/index/{source}/{name}_{num}.json run-book/runbook",
+        "Started: target/index/{source}/{name}_{num}.json run-book/runbookTestConfig",
+        "Started: target/index/{source}/{name}_{num}.json run-book/storybook-state",
+        "Started: target/index/{source}/{name}_{num}.json run-book/testRepo1",
+        "Started: target/index/{source}/{name}_{num}.json run-book/testRepo2"
+      ])
       expect ( msgs.sort () ).toEqual ( [
-        "finished Root: itsmworkbench",
-        "finished Root: itsmworkbench",
         "finished Root: phil-rice-HCL",
-        "rootIds: eyupbarlas,phil-rice",
-        "rootIds: itsmworkbench/workbench,itsmworkbench/forissues",
-        "rootIds: phil-rice-HCL/HelloDataNucleusJBoss"
+        "finished Root: run-book",
+        "finishedParent: run-book",
+        "parent: run-book, page: Page: undefined, children: run-book_alikor,run-book_phil-rice",
+        "parentId: run-book, page: Page: undefined",
+        "rootIds: Page: undefined - phil-rice-HCL/HelloDataNucleusJBoss",
+        "rootIds: Page: undefined - run-book/runbook,run-book/testRepo1,run-book/instruments,run-book/testRepo2,run-book/malformed_instruments,run-book/storybook-state,run-book/runbookTestConfig,run-book/backstage,run-book/fusion,run-book/camunda"
       ] )
     } )
   } )

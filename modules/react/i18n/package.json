@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/i18n",
   "description": "The react chat area",
-  "version": "0.0.30",
+  "version": "0.0.36",
   "browserslist": {
     "development": [
       "last 1 chrome version",

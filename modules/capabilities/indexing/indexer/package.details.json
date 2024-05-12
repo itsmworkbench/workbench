@@ -4,12 +4,16 @@
   "description": "cli for indexer",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":     "1.4.51",
-      "@laoban/variables": "1.4.51"
+      "@laoban/utils":         "1.4.51",
+      "@laoban/filesops-node": "1.4.51",
+      "@laoban/variables":     "1.4.51"
     },
     "devDependencies": {},
     "browser":         {
       "child_process": false
+    },
+    "bin":             {
+      "index": "dist/index.js"
     }
   },
   "links":       [

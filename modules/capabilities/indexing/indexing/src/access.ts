@@ -11,7 +11,7 @@ export type TokenAuthentication = {
 
 export type SourceSinkDetails = {
   baseurl: string;
-  authentication: Authentication;
+  auth: Authentication;
 }
 
 export type AuthFn = ( auth: Authentication ) => Promise<NameAnd<string>>
@@ -85,15 +85,19 @@ export function consoleIndexingContext ( env: NameAnd<string>, fetch: FetchFn ):
 
 
 export type AccessConfig<L> = {
-
   method?: 'Get' | 'Post' | 'Put' | 'Delete';
   body?: any;
   extraHeaders?: NameAnd<string>;
   pagingFn?: ( json: any, linkHeader: string | undefined ) => L | undefined
 }
+
+export function nullAccessConfig<T> (): AccessConfig<T> {
+  return {}
+}
+
 export async function access<T, L> ( ic: IndexingContext, details: SourceSinkDetails, offsetUrl: string, config: AccessConfig<L> ): Promise<WithPaging<T, L>> {
   const { method, body, extraHeaders, pagingFn } = config;
-  const authHeaders = await ic.authFn ( details.authentication )
+  const authHeaders = await ic.authFn ( details.auth )
   const fullUrl = offsetUrl.startsWith ( 'http' ) ? offsetUrl : details.baseurl + offsetUrl;
   const headers = { ...authHeaders, ...(extraHeaders || {}) };
   const response = await ic.fetch ( fullUrl, {

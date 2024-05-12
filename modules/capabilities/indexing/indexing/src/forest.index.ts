@@ -1,9 +1,7 @@
 import { mapK, NameAnd } from "@laoban/utils";
-import { K1, withRetry, withThrottle } from "@itsmworkbench/kleislis";
+import { K1, withConcurrencyLimit, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
-import { Task, withConcurrencyLimit } from "@itsmworkbench/kleislis/src/concurrency.limiter";
-import { Indexer, WithPaging } from "./indexer.domain";
-import { ExecuteIndexOptions } from "./tree.index";
+import { WithPaging } from "./indexer.domain";
 import { PagingTc } from "./paging";
 
 

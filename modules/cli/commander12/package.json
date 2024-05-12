@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/commander12",
   "description": "",
-  "version": "0.0.30",
+  "version": "0.0.36",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "commander": "^v12.0.0",
-    "@itsmworkbench/cli": "0.0.30",
+    "@itsmworkbench/cli": "0.0.36",
     "debug": "^4.3.4"
   },
   "devDependencies": {

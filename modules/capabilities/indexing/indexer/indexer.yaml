@@ -20,14 +20,44 @@ defaults:
     file: "target/index/{index}/{name}_{num}.json"
     max: 10000000
   scan:
-    aclIndex: "{source}/.search-acl-filter-{index}"
+    aclIndex: ".search-acl-filter-{index}"
 
 index:
   github:
     scan:
-      organisations:
-        - itsmworkbench
-        - "run-book"
+      organisations: []
+#        - "run-book"
       users:
-        - phil-rice
+        - phil-rice-HCL
+#        - phil-rice
       indexPeople: true
+  jira1:
+    type: jira
+    scan:
+      auth:
+        method: 'Basic'
+        credentials:
+          username: 'phil.rice@validoc.org'
+          password: 'JIRA_TOKEN'
+      index: 'jira'
+      aclIndex: 'jira1-acl'
+      projects: "*"
+      indexPeople: true
+      baseurl: "https://validoc.atlassian.net/"
+      apiVersion: "3"
+
+  jira2:
+    type: jira
+    scan:
+      auth:
+        method: 'Basic'
+        credentials:
+          username: 'phil.rice'
+          password: 'JIRA_LOCAL_TOKEN'
+      index: 'jira'
+      aclIndex: 'jira2-acl'
+      projects: "*"
+      indexPeople: true
+      baseurl: "http://localhost:8080/"
+      apiVersion: "2"
+

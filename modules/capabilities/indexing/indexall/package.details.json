@@ -16,7 +16,8 @@
     "@itsmworkbench/utils",
     "@itsmworkbench/kleislis",
     "@itsmworkbench/nodetemporal",
-    "@itsmworkbench/indexing_github"
+    "@itsmworkbench/indexing_github",
+    "@itsmworkbench/indexing_jira"
   ],
   "guards":      {
     "compile": true,

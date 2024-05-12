@@ -1,9 +1,12 @@
 {
   "name": "@itsmworkbench/indexer",
   "description": "cli for indexer",
-  "version": "0.0.30",
+  "version": "0.0.36",
   "main": "dist/index",
   "types": "dist/index",
+  "bin": {
+    "index": "dist/index.js"
+  },
   "browser": {
     "child_process": false
   },
@@ -21,13 +24,14 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.51",
+    "@laoban/filesops-node": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/indexall": "0.0.30",
-    "@itsmworkbench/utils": "0.0.30",
-    "@itsmworkbench/kleislis": "0.0.30",
-    "@itsmworkbench/commander12": "0.0.30",
-    "@itsmworkbench/cli": "0.0.30",
-    "@itsmworkbench/jsyaml": "0.0.30",
+    "@itsmworkbench/indexall": "0.0.36",
+    "@itsmworkbench/utils": "0.0.36",
+    "@itsmworkbench/kleislis": "0.0.36",
+    "@itsmworkbench/commander12": "0.0.36",
+    "@itsmworkbench/cli": "0.0.36",
+    "@itsmworkbench/jsyaml": "0.0.36",
     "debug": "^4.3.4"
   },
   "devDependencies": {

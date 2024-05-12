@@ -70,5 +70,5 @@ if ( token === null || token == undefined ) {
 
 export const githubDetails: SourceSinkDetails = {
   baseurl: "https://api.github.com",
-  authentication: { method: 'ApiKey', credentials: { apiKey: 'GITHUB_TOKEN' } }
+  auth: { method: 'ApiKey', credentials: { apiKey: 'GITHUB_TOKEN' } }
 };
