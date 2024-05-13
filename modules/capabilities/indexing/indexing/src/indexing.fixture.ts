@@ -64,7 +64,7 @@ function forestAndPageToResult ( forest: IndexTestFolder, page: TestPageQuery ):
   }
   return { data, page }
 }
-export const indexForestTc: IndexForestTc<IndexTestFolder, TestPageQuery> = {
+export const indexForestTc: IndexForestTc<IndexTestFolder, string, TestPageQuery> = {
   fetchForest: async ( forestId: string, page: TestPageQuery ): Promise<WithPaging<IndexTestFolder, TestPageQuery>> => {
     const forest = getFromTestForest ( indexTestFolder, forestId )
     return forestAndPageToResult ( forest, page );

@@ -42,7 +42,7 @@ export function gitHubFileDetailsToIndexedFile ( file: GitHubFile ): GithubIndex
 }
 
 export type GithubIndexedMember = GitHubOrgMember
-export function gitHubMemberToIndexedFile ( member: GitHubOrgMember ): GithubIndexedMember {
+export async function gitHubMemberToIndexedFile ( member: GitHubOrgMember ): Promise<GithubIndexedMember> {
   return { login: member.login }
 
 }

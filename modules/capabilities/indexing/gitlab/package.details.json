@@ -1,7 +1,7 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/indexing_jira",
-  "description": "indexing jira",
+  "name":        "@itsmworkbench/indexing_gitlab",
+  "description": "indexing gitlab",
   "packageJson": {
     "dependencies":    {
       "@laoban/utils":     "1.4.51",

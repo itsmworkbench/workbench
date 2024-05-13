@@ -1,5 +1,4 @@
-import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, nullAccessConfig, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
-import { flatMap } from "@laoban/utils";
+import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
 
 export interface JiraDetails extends SourceSinkDetails {
   index: string;
@@ -100,7 +99,7 @@ export function getAllParagraphContent ( doc: JiraDoc ): string {
       .map ( c => c.text )
       .join ( '\n' ) ).join ( '\n' )
 }
-export const jiraProjectsForestTc = ( ic: IndexingContext, details: JiraDetails ): IndexForestTc<JiraProjects, JiraProjectPaging> => ({
+export const jiraProjectsForestTc = ( ic: IndexingContext, details: JiraDetails ): IndexForestTc<JiraProjects, string,JiraProjectPaging> => ({
   fetchForest: ( forestId, paging ) =>
     access ( ic, details,  `rest/api/${details.apiVersion}/project`, jiraProjectAccessOptions ),
   treeIds: ( forest ) =>
@@ -116,7 +115,7 @@ export const JiraProjectToIssueTc = ( ic: IndexingContext, details: JiraDetails 
 })
 
 export type JiraTcs = {
-  jiraProjectsForestTc: IndexForestTc<JiraProjects, JiraProjectPaging>
+  jiraProjectsForestTc: IndexForestTc<JiraProjects, string,JiraProjectPaging>
   jiraProjectToIssueTc: IndexParentChildTc<JiraProjectTopLevelSummary, JiraIssue, JiraIssuePaging>
 }
 export const jiraTcs = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, jiraDetails: JiraDetails ): JiraTcs => ({
@@ -135,7 +134,7 @@ export type JiraIndexedIssue = {
   reporter: string
   comments: string // probably want some better structure here
 }
-export function jiraIssueToIndexedJiraIssue ( j: JiraIssue ): JiraIndexedIssue {
+export async function jiraIssueToIndexedJiraIssue ( j: JiraIssue ): Promise<JiraIndexedIssue> {
   return {
     id: j.id,
     self: j.self,

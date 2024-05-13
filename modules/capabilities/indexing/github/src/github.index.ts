@@ -23,13 +23,13 @@ export function githubRepoTreeTc ( nf: IndexTreeNonFunctionals, ic: IndexingCont
 }
 
 
-const indexAnOrganisationTc = ( ic: IndexingContext ): IndexForestTc<GitHubOrganisation, GitHubPaging> => ({
+const indexAnOrganisationTc = ( ic: IndexingContext ): IndexForestTc<GitHubOrganisation, string,GitHubPaging> => ({
   fetchForest: ( forestId, paging ) =>
     access ( ic, githubDetails, paging?.next || `/orgs/${forestId}/repos`, githubAccessOptions ),
   treeIds: ( forest ) => forest.map ( x => x.full_name ),
 });
 
-const indexAUserTc = ( ic: IndexingContext ): IndexForestTc<GitHubOrganisation, GitHubPaging> => ({
+const indexAUserTc = ( ic: IndexingContext ): IndexForestTc<GitHubOrganisation, string, GitHubPaging> => ({
   fetchForest: ( userName, page ) => access ( ic, githubDetails, page.next ? page.next : `/users/${userName}/repos`, githubAccessOptions ),
   treeIds: ( userName ) => userName.map ( x => x.full_name )
 })
@@ -40,8 +40,8 @@ const indexMembersTc = ( ic: IndexingContext ): IndexParentChildTc<GitHubOrgMemb
 
 export type GitHubTcs = {
   indexGitHubRepoTc: IndexTreeTc<GitHubFolder, GitHubFile, GithubIndexedFile, GitHubPaging>,
-  indexAnOrganisationTc: IndexForestTc<GitHubOrganisation, GitHubPaging>
-  indexAnUserTc: IndexForestTc<GitHubOrganisation, GitHubPaging>
+  indexAnOrganisationTc: IndexForestTc<GitHubOrganisation, string, GitHubPaging>
+  indexAnUserTc: IndexForestTc<GitHubOrganisation, string, GitHubPaging>
   indexAnOrganisationMembersTc: IndexParentChildTc<GitHubOrgMembers, GithubIndexedMember, GitHubPaging>
 }
 
@@ -62,10 +62,10 @@ export const githubTcs = ( nf: IndexTreeNonFunctionals, ic: IndexingContext ): G
 export function indexOneGithubRepo ( ic: IndexingContext, indexGitHubRepoTc: IndexTreeTc<GitHubFolder, GitHubFile, GithubIndexedFile, GitHubPaging>, indexer: Indexer<GitHubFile>, executeOptions: ExecuteIndexOptions ) {
   return processTreeRoot<GitHubFolder, GitHubFile, GithubIndexedFile, GitHubPaging> ( ic.treeLogAndMetrics, indexGitHubRepoTc, gitHubPagingTC, indexer, executeOptions );
 }
-export function indexOrganisations ( ic: IndexingContext, indexAnOrganisationTc: IndexForestTc<GitHubOrganisation, GitHubPaging>, indexGitHubRepo: ( rootId: string ) => Promise<void>, requestOrgs: string[] ) {
+export function indexOrganisations ( ic: IndexingContext, indexAnOrganisationTc: IndexForestTc<GitHubOrganisation,  string,GitHubPaging>, indexGitHubRepo: ( rootId: string ) => Promise<void>, requestOrgs: string[] ) {
   return mapK ( requestOrgs, indexForestOfTrees ( ic.forestLogAndMetrics, indexAnOrganisationTc, gitHubPagingTC, orgId => indexGitHubRepo ) );
 }
-export function indexTheUserRepos ( ic: IndexingContext, indexAnUserTc: IndexForestTc<GitHubOrganisation, GitHubPaging>, indexGitHubRepo: ( rootId: string ) => Promise<void>, users: string[] ) {
+export function indexTheUserRepos ( ic: IndexingContext, indexAnUserTc: IndexForestTc<GitHubOrganisation, string, GitHubPaging>, indexGitHubRepo: ( rootId: string ) => Promise<void>, users: string[] ) {
   return mapK ( toArray ( users ), indexForestOfTrees ( ic.forestLogAndMetrics, indexAnUserTc, gitHubPagingTC, userId => indexGitHubRepo ) );
 }
 

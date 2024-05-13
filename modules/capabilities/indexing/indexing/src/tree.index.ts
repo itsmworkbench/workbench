@@ -47,7 +47,7 @@ export function stopNonFunctionals ( nft: IndexTreeNonFunctionals ) {
 
 export type IndexTreeLogAndMetrics = {
   leafIds: ( page: string, ids: string[] ) => void;
-  folderIds: ( page: string, ids: string[] ) => void;
+  folderIds: ( page: string, parentId: string | undefined, ids: string[] ) => void;
   finishedLeaf: ( id: string ) => void;
   failedLeaf: ( id: string, e: any ) => void;
   finishedFolder: ( id: string ) => void;
@@ -68,7 +68,7 @@ export const consoleIndexTreeLogAndMetrics: IndexTreeLogAndMetrics = {
   finishedLeaf: ( id ) => console.log ( `Finished Leaf: ${id}` ),
   failedLeaf: ( id, e ) => console.log ( `Failed Leaf: ${id} ${e}` ),
   finishedFolder: ( id ) => console.log ( `Finished Folder: ${id}` ),
-  failedFetch: ( id, page, e ) => console.log ( `Failed Fetch: ${id} ${JSON.stringify ( page )} ${JSON.stringify(e)}` )
+  failedFetch: ( id, page, e ) => console.log ( `Failed Fetch: ${id} ${JSON.stringify ( page )} ${JSON.stringify ( e )}` )
 }
 export function defaultTreeLogAndMetrics ( metrics: NameAnd<number>, logAndMetrics: IndexTreeLogAndMetrics ): IndexTreeLogAndMetrics {
   function inc ( name: string ) {
@@ -80,8 +80,8 @@ export function defaultTreeLogAndMetrics ( metrics: NameAnd<number>, logAndMetri
       logAndMetrics.leafIds ( page, ids )
       inc ( 'leafIds' )
     },
-    folderIds: ( page, ids ) => {
-      logAndMetrics.folderIds ( page, ids )
+    folderIds: ( page, parent, ids ) => {
+      logAndMetrics.folderIds ( page, parent, ids )
       inc ( 'folderIds' )
     },
     finishedLeaf: ( id ) => {
@@ -106,12 +106,12 @@ export function defaultTreeLogAndMetrics ( metrics: NameAnd<number>, logAndMetri
 
 export function rememberIndexTreeLogAndMetrics ( msgs: string[] ): IndexTreeLogAndMetrics {
   return {
-    leafIds: ( ids ) => msgs.push ( `LeafIds: ${ids}` ),
-    folderIds: ( ids ) => msgs.push ( `FolderIds: ${ids}` ),
+    leafIds: ( page, ids ) => msgs.push ( `LeafIds:${ids} -- Page ${page}` ),
+    folderIds: ( page,parent, ids ) => msgs.push ( `FolderIds: ${JSON.stringify ( ids )} -- Page ${page}, Parent ${parent}` ),
     finishedLeaf: ( id ) => msgs.push ( `Finished Leaf: ${id}` ),
     failedLeaf: ( id, e ) => msgs.push ( `Failed Leaf: ${id} ${e}` ),
     finishedFolder: ( id ) => msgs.push ( `Finished Folder: ${id}` ),
-    failedFetch: ( id, e ) => msgs.push ( `Failed Fetch: ${id} ${JSON.stringify(e)}` )
+    failedFetch: ( id, e ) => msgs.push ( `Failed Fetch: ${id} ${JSON.stringify ( e )}` )
   }
 }
 
@@ -144,7 +144,7 @@ export function processTreeRoot<Folder, Leaf, IndexedLeaf, Paging> ( logAndMetri
       const pageMsg = pc.logMsg ( page );
       logAndMetrics.leafIds ( pageMsg, leafIds );
       const folderIds = tc.folderIds ( rootId, folderId, folder );
-      logAndMetrics.folderIds ( pageMsg, folderIds );
+      logAndMetrics.folderIds ( pageMsg, folderId, folderIds );
       await mapK ( leafIds, leafId => processLeaf ( rootId, leafId ) );
       await mapK ( folderIds, child => processFolder ( rootId, child, folderId ) );
     } while ( pc.hasMore ( page ) )

@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import { firstSegment, NameAnd } from "@laoban/utils";
+import { firstSegment, fromEntries, NameAnd } from "@laoban/utils";
 import path from 'path';
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { addNonFunctionsToIndexer } from "./tree.index";
@@ -40,7 +40,9 @@ export function insertIntoFile<T> ( ins: InsertIntoFile<T> ): Indexer<T> {
 export const insertIntoFileWithNonFunctionals = ( rootDir: string, fileTemplate: string, _index: string, nf: IndexTreeNonFunctionals ) =>
   addNonFunctionsToIndexer ( nf, insertIntoFile ( {
     file: ( id: string ) => {
-      const res = simpleTemplate ( fileTemplate, { rootDir, index: _index, name: firstSegment ( id ), id, num: 0 } )
+      const entries: [ string, string ][] = id.split ( '/' ).map ( ( p, i ) => [ `id_${i}`, p ] );
+      const parts = fromEntries<string> ( ...entries )
+      const res = simpleTemplate ( fileTemplate, { ...parts, rootDir, index: _index, name: firstSegment ( id ), id, num: 0 } )
       return res;
     },
     max: 1000,

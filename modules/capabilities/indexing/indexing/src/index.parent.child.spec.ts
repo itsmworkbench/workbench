@@ -10,7 +10,7 @@ describe ( "Index parent child", () => {
       rememberIndexParentChildLogsAndMetrics ( logs ),
       indexParentChildForTestTc,
       TestPageQueryPC,
-      t => t + "_indexed",
+      async t => t + "_indexed",
       ( p, c ) => `${p}${c}`,
       {}
     ) ( rememberIndex ( "test", remembered ) )
@@ -42,7 +42,7 @@ describe ( "Index parent child", () => {
       rememberIndexParentChildLogsAndMetrics ( logs ),
       indexParentChildForTestTc,
       TestPageQueryPC,
-      t => t + "_indexed",
+      async t => t + "_indexed",
       ( p, c ) => `${p}/${c}`,
       {}
     ) ( rememberIndex ( "test", remembered ) )

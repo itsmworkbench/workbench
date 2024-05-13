@@ -62,9 +62,9 @@ describe ( 'githubOneRepoWF', () => {
       expect ( msgs.sort () ).toEqual ( [
         "Finished Folder: ",
         "Finished Leaf: README.md",
-        "FolderIds: Page: undefined",
-        "LeafIds: Page: undefined"
-      ] )
+        "FolderIds: [] -- Page Page: undefined, Parent ",
+        "LeafIds:README.md -- Page Page: undefined"
+      ])
     } )
     it ( 'should index a repo - dryrun false', async () => {
       const remembered: string[] = []
@@ -79,8 +79,8 @@ describe ( 'githubOneRepoWF', () => {
       expect ( msgs.sort () ).toEqual ( [
         "Finished Folder: ",
         "Finished Leaf: README.md",
-        "FolderIds: Page: undefined",
-        "LeafIds: Page: undefined"
+        "FolderIds: [] -- Page Page: undefined, Parent ",
+        "LeafIds:README.md -- Page Page: undefined"
       ])
 
     } )

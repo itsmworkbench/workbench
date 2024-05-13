@@ -81,7 +81,7 @@ export function addNonFunctionalsToIndexParentChildTc<Parent, Child, Page> ( nf:
 export function indexParentChild<Parent, Child, IndexedChild, Page> ( logAndMetrics: IndexParentChildLogAndMetrics,
                                                                       tc: IndexParentChildTc<Parent, Child, Page>,
                                                                       pc: PagingTc<Page>,
-                                                                      transformer: ( t: Child ) => IndexedChild,
+                                                                      transformer: ( t: Child ) => Promise<IndexedChild>,
                                                                       childId: ( parentId: string, c: Child ) => string,
                                                                       executeOptions: ExecuteIndexOptions ) {
   return ( indexer: Indexer<IndexedChild> ) => async ( parentId: string ) => {
@@ -96,8 +96,8 @@ export function indexParentChild<Parent, Child, IndexedChild, Page> ( logAndMetr
         page = pageAndData.page;
         const children = tc.children ( parentId, parent );
         if ( executeOptions.dryRunJustShowTrees !== true && executeOptions.dryRunDoEverythingButIndex !== true ) {
-          await mapK ( children, child =>
-            indexer.processLeaf ( parentId, childId ( parentId, child ) ) ( transformer ( child ) ) );
+          await mapK ( children, async child =>
+            indexer.processLeaf ( parentId, childId ( parentId, child ) ) ( await transformer ( child ) ) );
         }
         logAndMetrics.children ( parentId, pageLogMsg, children, c => childId ( parentId, c ) );
       } while ( pc.hasMore ( page ) );

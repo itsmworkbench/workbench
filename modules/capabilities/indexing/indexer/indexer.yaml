@@ -27,11 +27,22 @@ index:
     scan:
       organisations:
         - "focuson-ts"
-        - "run-book"
+      #        - "run-book"
       users:
         - phil-rice-HCL
-        - phil-rice
+      #        - phil-rice
       indexPeople: true
+  gitlab:
+    target:
+      file: "target/index/{index}/Project_{id_3}_{num}.json"
+    scan:
+      baseurl: "https://gitlab.com/"
+      auth:
+        method: 'PrivateToken'
+        credentials:
+          token: 'GITLAB_TOKEN'
+      projects:
+        - "validoc" #I think this needs work on it... We need to start thinking about groups...
   jira1:
     type: jira
     scan:
@@ -46,17 +57,17 @@ index:
       baseurl: "https://validoc.atlassian.net/"
       apiVersion: "3"
 
-  jira2:
-    type: jira
-    scan:
-      auth:
-        method: 'Basic'
-        credentials:
-          username: 'phil.rice'
-          password: 'JIRA_LOCAL_TOKEN'
-      aclIndex: 'jira2-acl'
-      projects: "*"
-      indexPeople: true
-      baseurl: "http://localhost:8080/"
-      apiVersion: "2"
+#  jira2:
+#    type: jira
+#    scan:
+#      auth:
+#        method: 'Basic'
+#        credentials:
+#          username: 'phil.rice'
+#          password: 'JIRA_LOCAL_TOKEN'
+#      aclIndex: 'jira2-acl'
+#      projects: "*"
+#      indexPeople: true
+#      baseurl: "http://localhost:8080/"
+#      apiVersion: "2"
 

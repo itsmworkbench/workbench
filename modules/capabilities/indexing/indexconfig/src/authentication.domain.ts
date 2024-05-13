@@ -31,6 +31,16 @@ export function isApiKeyAuthentication(auth: Authentication): auth is ApiKeyAuth
   return auth?.method === 'ApiKey';
 }
 
+export type PrivateTokenAuthentication = {
+  method: 'PrivateToken';
+  credentials: {
+    token: string;
+  };
+};
+export function isPrivateTokenAuthentication(auth: Authentication): auth is PrivateTokenAuthentication {
+  return auth?.method === 'PrivateToken';
+}
+
 export type NoAuthentication = {
   method: 'none';
 };
@@ -40,7 +50,7 @@ export function isNoAuthentication(auth: Authentication): auth is NoAuthenticati
 
 
 // Union export type for general authentication
-export type Authentication = OAuthAuthentication | BasicAuthentication | ApiKeyAuthentication | NoAuthentication;
+export type Authentication = OAuthAuthentication | BasicAuthentication | ApiKeyAuthentication|PrivateTokenAuthentication | NoAuthentication;
 export function isAuthentication(auth: Authentication): auth is Authentication {
   return isOAuthAuthentication(auth) || isBasicAuthentication(auth) || isApiKeyAuthentication(auth) || isNoAuthentication(auth);
 }

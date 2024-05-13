@@ -1,7 +1,7 @@
 import { NameAnd } from "@laoban/utils";
 import { consoleIndexTreeLogAndMetrics, defaultTreeLogAndMetrics, IndexTreeLogAndMetrics } from "./tree.index";
 import { consoleIndexForestLogAndMetrics, defaultForestLogAndMetrics, IndexForestLogAndMetrics, nullIndexForestLogAndMetrics } from "./forest.index";
-import { ApiKeyAuthentication, Authentication, BasicAuthentication, isApiKeyAuthentication, isBasicAuthentication, isOAuthAuthentication } from "@itsmworkbench/indexconfig";
+import { ApiKeyAuthentication, Authentication, BasicAuthentication, isApiKeyAuthentication, isBasicAuthentication, isOAuthAuthentication, isPrivateTokenAuthentication, PrivateTokenAuthentication } from "@itsmworkbench/indexconfig";
 import { consoleIndexParentChildLogAndMetrics, defaultIndexParentChildLogAndMetrics, IndexParentChildLogAndMetrics } from "./index.parent.child";
 import { WithPaging } from "./indexer.domain";
 
@@ -29,10 +29,18 @@ function authForBasic ( env: NameAnd<string>, auth: BasicAuthentication ) {
   if ( !password ) throw Error ( 'No password in environment for ' + auth.credentials.password )
   return { Authorization: `Basic ${Buffer.from ( `${auth.credentials.username}:${password}` ).toString ( 'base64' )}` }
 }
+async function authForPrivate ( env: NameAnd<string>, auth: PrivateTokenAuthentication ) {
+  const privateKey = auth.credentials?.token;
+  if ( !privateKey ) throw Error ( 'No privateKey in ' + JSON.stringify ( auth ) )
+  const token = env[ privateKey ]
+  if ( !token ) throw Error ( 'No token for privateKey ' + privateKey )
+  return { 'PRIVATE-TOKEN': token }
+}
 export const defaultAuthFn = ( env: NameAnd<string> ): AuthFn => async ( auth: Authentication ) => {
   if ( isOAuthAuthentication ( auth ) ) throw Error ( 'OAuth not supported yet' )
   if ( isApiKeyAuthentication ( auth ) ) return authForApiToken ( env, auth );
   if ( isBasicAuthentication ( auth ) ) return authForBasic ( env, auth );
+  if ( isPrivateTokenAuthentication ( auth ) ) return authForPrivate ( env, auth )
   throw Error ( 'Unknown auth method ' + JSON.stringify ( auth ) )
 };
 export type FetchFnResponse = {
@@ -95,7 +103,7 @@ export function nullAccessConfig<T> (): AccessConfig<T> {
   return {}
 }
 
-export async function access<T, L> ( ic: IndexingContext, details: SourceSinkDetails, offsetUrl: string, config: AccessConfig<L> ): Promise<WithPaging<T, L>> {
+export async function access<T, L> ( ic: IndexingContext, details: SourceSinkDetails, offsetUrl: string, config: AccessConfig<L>, resfn?: ( response: FetchFnResponse ) => Promise<T> ): Promise<WithPaging<T, L>> {
   const { method, body, extraHeaders, pagingFn } = config;
   const authHeaders = await ic.authFn ( details.auth )
   const fullUrl = offsetUrl.startsWith ( 'http' ) ? offsetUrl : details.baseurl + offsetUrl;
@@ -110,7 +118,7 @@ export async function access<T, L> ( ic: IndexingContext, details: SourceSinkDet
   if ( !response.ok )
     throw new Error ( `Error fetching ${fullUrl}: ${response.statusText}\n${await response.text ()}` )
   try {
-    const json = await response.json ();
+    const json = resfn ? await resfn ( response ) : await response.json ();
     const page = pagingFn?. ( json, response.headers[ 'link' ] )
     const data = json;
     return { data: data, page }
