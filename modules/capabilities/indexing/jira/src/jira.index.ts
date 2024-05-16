@@ -9,7 +9,6 @@ export interface JiraDetails extends SourceSinkDetails {
 }
 
 
-
 export type JiraIssuePaging = {
   startAt: number
   maxResults: number
@@ -23,7 +22,7 @@ export function jiraIssuePagingQuerySuffix ( j: JiraIssuePaging ) {
 export const JiraIssuePagingTc: PagingTc<JiraIssuePaging> = {
   zero: () => ({ startAt: 0, maxResults: 100, total: undefined as number }),
   hasMore: ( page ) =>
-    page.startAt  < page.total, //remember this is 'next page' we are talking about. So we are asking if this page is the last one
+    page.startAt < page.total, //remember this is 'next page' we are talking about. So we are asking if this page is the last one
   logMsg: ( page ) => `Page: ${page.startAt}..${page.startAt + page.maxResults} of ${page.total}`
 }
 export type JiraProjectTopLevelSummary = {
@@ -77,7 +76,7 @@ export type JiraParagraphContent = {
   text: string
 }
 
-export const jiraIssueAccessOptions: AccessConfig<JiraIssuePaging> = {
+export const jiraPagedAccessOptions: AccessConfig<JiraIssuePaging> = {
   extraHeaders: { 'Accept': 'application/json' },
   //remember this is 'get me the next page'
   pagingFn: ( json, linkHeader ) =>
@@ -90,28 +89,46 @@ export function getAllParagraphContent ( doc: JiraDoc ): string {
       .map ( c => c.text )
       .join ( '\n' ) ).join ( '\n' )
 }
-export const jiraProjectsForestTc = ( ic: IndexingContext, details: JiraDetails ): IndexForestTc<JiraProjects, string,NoPaging> => ({
+export const jiraProjectsForestTc = ( ic: IndexingContext, details: JiraDetails ): IndexForestTc<JiraProjects, string, NoPaging> => ({
   fetchForest: ( forestId, paging ) =>
-    access ( ic, details,  `rest/api/${details.apiVersion}/project`, noPagingAccessConfig ),
+    access ( ic, details, `rest/api/${details.apiVersion}/project`, noPagingAccessConfig ),
   treeIds: ( forest ) =>
     forest.map ( x => x.key ),
 })
 export const JiraProjectToIssueTc = ( ic: IndexingContext, details: JiraDetails ): IndexParentChildTc<JiraProjectTopLevelSummary, JiraIssue, JiraIssuePaging> => ({
   fetchParent: ( forestId, page ) => {
     const url = `rest/api/${details.apiVersion}/search?jql=project=${forestId}&fields=*all,comment${jiraIssuePagingQuerySuffix ( page )}`;
-    return access ( ic, details, url, jiraIssueAccessOptions );
+    return access ( ic, details, url, jiraPagedAccessOptions );
   },
   children: ( parentId, parent ) =>
     parent.issues
 })
+export type JiraRolesForProject = {
+  actors: JiraActor[]
+}
+export type JiraActor = {
+  name: string
+  "type": "atlassian-group-role-actor" | "atlassian-user-role-actor"
+}
+export const jiraProjectToMembersTc = ( ic: IndexingContext, details: JiraDetails ): IndexForestTc<JiraRolesForProject, JiraActor, JiraIssuePaging> => ({
+  fetchForest: ( forestId, page ) => {
+    const url = `rest/api/${details.apiVersion}/project/${forestId}/role${jiraIssuePagingQuerySuffix ( page )}`;
+    return access ( ic, details, url, jiraPagedAccessOptions );
+  },
+  treeIds: ( forest ) =>
+    forest.actors,
+  treeToString: ( tree ) => tree.name
+})
 
 export type JiraTcs = {
-  jiraProjectsForestTc: IndexForestTc<JiraProjects, string,NoPaging>
+  jiraProjectsForestTc: IndexForestTc<JiraProjects, string, NoPaging>
   jiraProjectToIssueTc: IndexParentChildTc<JiraProjectTopLevelSummary, JiraIssue, JiraIssuePaging>
+  jiraProjectToMembersTc: IndexForestTc<JiraRolesForProject, JiraActor, JiraIssuePaging>
 }
 export const jiraTcs = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, jiraDetails: JiraDetails ): JiraTcs => ({
   jiraProjectsForestTc: addNonFunctionalsToIndexForestTc ( nf, jiraProjectsForestTc ( ic, jiraDetails ) ),
-  jiraProjectToIssueTc: addNonFunctionalsToIndexParentChildTc ( nf, JiraProjectToIssueTc ( ic, jiraDetails ) )
+  jiraProjectToIssueTc: addNonFunctionalsToIndexParentChildTc ( nf, JiraProjectToIssueTc ( ic, jiraDetails ) ),
+  jiraProjectToMembersTc: addNonFunctionalsToIndexForestTc ( nf, jiraProjectToMembersTc ( ic, jiraDetails ) )
 })
 
 export type JiraIndexedIssue = {
@@ -154,7 +171,27 @@ export function indexJiraProject ( ic: IndexingContext, tc: IndexParentChildTc<J
   return async ( projectkey: string ) => {
     await indexerForProject ( projectkey )
   }
-
+}
+export function indexJiraProjectsForActors ( ic: IndexingContext,
+                                             tc: IndexForestTc<JiraRolesForProject, JiraActor, JiraIssuePaging>,
+                                             actorFn: ( name: string ) => Promise<void>,
+                                             roleFn: ( name: string ) => Promise<void>,
+                                             unknownFn: ( name: string, actorType: string ) => Promise<void>
+) {
+  const indexerForProject = indexForestOfTrees ( ic.forestLogAndMetrics,
+    tc,
+    JiraIssuePagingTc,
+    forestId => async ( actor: JiraActor ) => {
+      if ( actor.type === 'atlassian-user-role-actor' )
+        return actorFn ( actor.name )
+      else if ( actor.type === 'atlassian-group-role-actor' )
+        return roleFn ( actor.name )
+      else
+        return unknownFn ( actor.name, actor.type )
+    } )
+  return async ( projectkey: string ) => {
+    await indexerForProject ( projectkey )
+  }
 }
 
 export function indexJiraFully ( nf: IndexTreeNonFunctionals,
