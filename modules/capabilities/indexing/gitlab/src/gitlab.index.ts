@@ -1,7 +1,6 @@
-import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
-import { mapK, safeArray, toArray } from "@laoban/utils";
+import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, NoPaging, NoPagingTc, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
+import { mapK, safeArray } from "@laoban/utils";
 import { K1 } from "@itsmworkbench/kleislis";
-import { GitHubFile } from "@itsmworkbench/indexing_github";
 
 export interface GitlabDetails extends SourceSinkDetails {
   index: string;
@@ -112,17 +111,70 @@ export function indexGitlabProjects ( ic: IndexingContext, tc: IndexForestTc<Git
   return ( projectId: string ) =>
     indexerForProject ( projectId )
 }
+
+
+export type GitLabUser = {
+  id: string
+  username: string
+  name: string
+  membership_state: 'active'
+}
+export type GitLabMemberDetails = {
+  id: string
+  username: string
+  public_email: string
+}
+export function indexGitLabRepoToMembersTc ( ic: IndexingContext, details: GitlabDetails ): IndexForestTc<GitLabUser[], GitLabUser, GitlabPaging> {
+  return {
+    fetchForest: ( projectId, page ) =>
+      access ( ic, details, page.next ? page.next : `api/v4/projects/${projectId}/members/all`, gitlabAccessOptions ),
+    treeIds: ( users ) => users.filter ( u => u.membership_state === 'active' ),
+    treeToString: ( u ) => `${u.id}/${u.username}`
+  }
+}
+
+export function indexGitLabUserToGitLabMemberDetails ( ic: IndexingContext, details: GitlabDetails ): IndexParentChildTc<GitLabMemberDetails, GitLabMemberDetails, NoPaging> {
+  return {
+    fetchParent: ( projectId, page ) =>
+      access ( ic, details, `api/v4/users/${projectId}`, gitlabAccessOptions ),
+    children: ( parentId, parent ) => [ parent ],
+    // treeToString: ( u ) => `${u.id}/${u.username}`
+  }
+}
+
+export function indexGitLabMembers ( ic: IndexingContext,
+                                     tcToUser: IndexForestTc<GitLabUser[], GitLabUser, GitlabPaging>,
+                                     tcToMember: IndexParentChildTc<GitLabMemberDetails, GitLabMemberDetails, NoPaging>,
+                                     indexer: Indexer<GitLabMemberDetails>,
+                                     executeOptions: ExecuteIndexOptions ): ( projectId: string ) => Promise<void> {
+  const indexerForMembers: ( forestId: string ) => Promise<void> =
+          indexParentChild ( ic.parentChildLogAndMetrics,
+            tcToMember, GitlabPagingTc,
+            async ( p ) => ({ id: p.id, username: p.username, public_email: p.public_email }),
+            ( p, c ) => c.id,
+            executeOptions ) ( indexer )
+  const indexerForUsers = indexForestOfTrees ( ic.forestLogAndMetrics, tcToUser, NoPagingTc, pid => u => indexerForMembers ( u.id.toString() ) )
+  return ( projectId: string ) => indexerForUsers ( projectId )
+}
+
 export function indexGitlabFully ( nfc: IndexTreeNonFunctionals, ic: IndexingContext,
                                    fileIndexer: ( fileTemplate: string, indexId: string ) => Indexer<GitLabIndexedFile>,
+                                   memberIndex: ( fileTemplate: string, indexId: string ) => Indexer<GitLabMemberDetails>,
                                    executeOptions: ExecuteIndexOptions ) {
-  return ( details: GitlabDetails ) => {
-    const indexProjects = addNonFunctionalsToIndexForestTc ( nfc, gitlabProjectsTc ( ic, details ) )
-    const indexRepo = addNonFunctionalsToIndexParentChildTc ( nfc, gitlabRepoTc ( ic, details ) )
-    const indexer = fileIndexer ( details.file, details.index );
+  return async ( details: GitlabDetails ) => {
+    const indexProjectsTc = addNonFunctionalsToIndexForestTc ( nfc, gitlabProjectsTc ( ic, details ) )
+    const indexRepoTc = addNonFunctionalsToIndexParentChildTc ( nfc, gitlabRepoTc ( ic, details ) )
+    const indexUsersTc = addNonFunctionalsToIndexForestTc ( nfc, indexGitLabRepoToMembersTc ( ic, details ) )
+    const indexMembersTc = addNonFunctionalsToIndexParentChildTc ( nfc, indexGitLabUserToGitLabMemberDetails ( ic, details ) )
+    const indexMembers = indexGitLabMembers ( ic, indexUsersTc, indexMembersTc, memberIndex ( details.file, details.aclIndex ), executeOptions )
 
     const projects = safeArray ( details.projects );
-    return mapK ( projects, indexGitlabProjects ( ic, indexProjects,
-      indexGitlabRepo ( ic, details, indexRepo, indexer, executeOptions ) ) )
-
+    const processOneProject = async ( p: GitlabProject ) => {
+      const projectResults = indexGitlabRepo ( ic, details, indexRepoTc, fileIndexer ( details.file, details.index ), executeOptions ) ( p );
+      const memberResults = indexMembers ( p.id.toString () );
+      await projectResults;
+      await memberResults;
+    };
+    await mapK ( projects, indexGitlabProjects ( ic, indexProjectsTc, processOneProject ) )
   }
 }

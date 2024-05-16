@@ -40,9 +40,8 @@ export function insertIntoFile<T> ( ins: InsertIntoFile<T> ): Indexer<T> {
 export const insertIntoFileWithNonFunctionals = ( rootDir: string, fileTemplate: string, _index: string, nf: IndexTreeNonFunctionals ) =>
   addNonFunctionsToIndexer ( nf, insertIntoFile ( {
     file: ( id: string ) => {
-      const entries: [ string, string ][] = id.split ( '/' ).map ( ( p, i ) => [ `id_${i}`, p ] );
-      const parts = fromEntries<string> ( ...entries )
-      const res = simpleTemplate ( fileTemplate, { ...parts, rootDir, index: _index, name: firstSegment ( id ), id, num: 0 } )
+      const entries: [ string, string ][] = id.toString().split ( '/' ).map ( ( p, i ) => [ `id_${i}`, p ] );
+      const res = simpleTemplate ( fileTemplate, { rootDir, index: _index, name: firstSegment ( id ), id, num: 0 } )
       return res;
     },
     max: 1000,

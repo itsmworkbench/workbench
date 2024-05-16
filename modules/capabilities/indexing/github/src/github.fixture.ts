@@ -1,4 +1,5 @@
-import { configDefaults, RawIndexConfig } from "@itsmworkbench/indexconfig";
+import {  RawIndexConfig } from "@itsmworkbench/indexconfig";
+import { configDefaults } from "@itsmworkbench/indexing";
 
 export const indexConfigExample: RawIndexConfig = {
   defaults: configDefaults,

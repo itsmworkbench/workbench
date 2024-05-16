@@ -1,5 +1,9 @@
 export type WithPaging<T, P> = { data: T, page?: P }
 
+export function mapWithPaging<T, T1> ( fn: ( t: T ) => T1 ): <P>( wp: WithPaging<T, P> ) => WithPaging<T1, P> {
+  return wp => ({ data: fn ( wp.data ), page: wp.page })
+}
+
 export type Indexer<T> = {
   start: ( rootId: string ) => Promise<void>
   processLeaf: ( rootId: string, id: string ) => ( t: T ) => Promise<void>
@@ -26,8 +30,7 @@ export const consoleIndexer: Indexer<any> = {
 export function rememberIndex<T> ( prefix: string, store: string[] ): Indexer<T> {
   return {
     start: async ( rootId: string ) => { store.push ( `Started: ${prefix} ${rootId}` ) },
-    processLeaf: ( rootId: string, id: string ) => async ( t: T ) =>
-    { store.push ( `Processing: ${prefix} ${rootId} - ${id} - ${JSON.stringify ( t )}` ) },
+    processLeaf: ( rootId: string, id: string ) => async ( t: T ) => { store.push ( `Processing: ${prefix} ${rootId} - ${id} - ${JSON.stringify ( t )}` ) },
     finished: async ( rootId: string ) => { store.push ( `Finished: ${prefix} ${rootId}` ) },
     failed: async ( rootId: string, e: any ) => { store.push ( `Failed: ${prefix} ${rootId} ${e}` ) }
   }

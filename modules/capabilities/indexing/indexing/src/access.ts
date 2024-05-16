@@ -105,24 +105,26 @@ export function nullAccessConfig<T> (): AccessConfig<T> {
 
 export async function access<T, L> ( ic: IndexingContext, details: SourceSinkDetails, offsetUrl: string, config: AccessConfig<L>, resfn?: ( response: FetchFnResponse ) => Promise<T> ): Promise<WithPaging<T, L>> {
   const { method, body, extraHeaders, pagingFn } = config;
-  const authHeaders = await ic.authFn ( details.auth )
   const fullUrl = offsetUrl.startsWith ( 'http' ) ? offsetUrl : details.baseurl + offsetUrl;
-  const headers = { ...authHeaders, ...(extraHeaders || {}) };
-  const response = await ic.fetch ( fullUrl, {
-    method: method || 'Get',
-    headers: headers,
-    body: body
-  } );
-  if ( response.status === 404 )
-    throw Error ( 'Not Found' )
-  if ( !response.ok )
-    throw new Error ( `Error fetching ${fullUrl}: ${response.statusText}\n${await response.text ()}` )
   try {
+    const authHeaders = await ic.authFn ( details.auth )
+    const headers = { ...authHeaders, ...(extraHeaders || {}) };
+    const response = await ic.fetch ( fullUrl, {
+      method: method || 'Get',
+      headers: headers,
+      body: body
+    } );
+    if ( response.status === 404 )
+      throw Error ( 'Not Found' )
+    if ( !response.ok )
+      throw new Error ( `Error fetching ${fullUrl}: ${response.statusText}\n${await response.text ()}` )
+
     const json = resfn ? await resfn ( response ) : await response.json ();
     const page = pagingFn?. ( json, response.headers[ 'link' ] )
     const data = json;
     return { data: data, page }
   } catch ( e: any ) {
+    console.error ( 'Error in access', method, fullUrl, e )
     throw e
   }
 }

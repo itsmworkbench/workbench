@@ -8,7 +8,7 @@ import { indexGitlabFully } from "@itsmworkbench/indexing_gitlab";
 export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
   return {
     github: indexGitHubFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
-    gitlab: indexGitlabFully ( nfc, ic, indexer ( nfc ), executeOptions ),
+    gitlab: indexGitlabFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
     jira: indexJiraFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
   };
 }

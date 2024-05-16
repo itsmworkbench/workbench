@@ -1,4 +1,4 @@
-import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
+import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, NoPaging, noPagingAccessConfig, NoPagingTc, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
 
 export interface JiraDetails extends SourceSinkDetails {
   index: string;
@@ -8,15 +8,7 @@ export interface JiraDetails extends SourceSinkDetails {
   apiVersion: string; //2 for jira data center, 3 for cloud
 }
 
-export type JiraProjectPaging = {
 
-}
-
-export const JiraProjectPagingTc: PagingTc<JiraProjectPaging> = {
-  zero: () => ({}),
-  hasMore: ( page ) => false,
-  logMsg: ( page ) => ``
-}
 
 export type JiraIssuePaging = {
   startAt: number
@@ -29,8 +21,9 @@ export function jiraIssuePagingQuerySuffix ( j: JiraIssuePaging ) {
 }
 
 export const JiraIssuePagingTc: PagingTc<JiraIssuePaging> = {
-  zero: () => ({ startAt: 0, maxResults: 1, total: undefined as number }),
-  hasMore: ( page ) => page.startAt + page.maxResults <= page.total,
+  zero: () => ({ startAt: 0, maxResults: 100, total: undefined as number }),
+  hasMore: ( page ) =>
+    page.startAt  < page.total, //remember this is 'next page' we are talking about. So we are asking if this page is the last one
   logMsg: ( page ) => `Page: ${page.startAt}..${page.startAt + page.maxResults} of ${page.total}`
 }
 export type JiraProjectTopLevelSummary = {
@@ -84,13 +77,11 @@ export type JiraParagraphContent = {
   text: string
 }
 
-export const jiraProjectAccessOptions: AccessConfig<JiraProjectPaging> = {
-  pagingFn: ( json, linkHeader ) => ({})
-}
 export const jiraIssueAccessOptions: AccessConfig<JiraIssuePaging> = {
   extraHeaders: { 'Accept': 'application/json' },
   //remember this is 'get me the next page'
-  pagingFn: ( json, linkHeader ) => ({ startAt: json.startAt + json.maxResults, maxResults: json.maxResults, total: json.total })
+  pagingFn: ( json, linkHeader ) =>
+    ({ startAt: json.startAt + json.maxResults, maxResults: json.maxResults, total: json.total })
 }
 
 export function getAllParagraphContent ( doc: JiraDoc ): string {
@@ -99,9 +90,9 @@ export function getAllParagraphContent ( doc: JiraDoc ): string {
       .map ( c => c.text )
       .join ( '\n' ) ).join ( '\n' )
 }
-export const jiraProjectsForestTc = ( ic: IndexingContext, details: JiraDetails ): IndexForestTc<JiraProjects, string,JiraProjectPaging> => ({
+export const jiraProjectsForestTc = ( ic: IndexingContext, details: JiraDetails ): IndexForestTc<JiraProjects, string,NoPaging> => ({
   fetchForest: ( forestId, paging ) =>
-    access ( ic, details,  `rest/api/${details.apiVersion}/project`, jiraProjectAccessOptions ),
+    access ( ic, details,  `rest/api/${details.apiVersion}/project`, noPagingAccessConfig ),
   treeIds: ( forest ) =>
     forest.map ( x => x.key ),
 })
@@ -115,7 +106,7 @@ export const JiraProjectToIssueTc = ( ic: IndexingContext, details: JiraDetails 
 })
 
 export type JiraTcs = {
-  jiraProjectsForestTc: IndexForestTc<JiraProjects, string,JiraProjectPaging>
+  jiraProjectsForestTc: IndexForestTc<JiraProjects, string,NoPaging>
   jiraProjectToIssueTc: IndexParentChildTc<JiraProjectTopLevelSummary, JiraIssue, JiraIssuePaging>
 }
 export const jiraTcs = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, jiraDetails: JiraDetails ): JiraTcs => ({
@@ -173,7 +164,7 @@ export function indexJiraFully ( nf: IndexTreeNonFunctionals,
                                  executeOptions: ExecuteIndexOptions ) {
   return async ( jira: JiraDetails ) => {
     const { jiraProjectsForestTc, jiraProjectToIssueTc } = jiraTcs ( nf, ic, jira )
-    const indexer = indexForestOfTrees ( ic.forestLogAndMetrics, jiraProjectsForestTc, JiraProjectPagingTc,
+    const indexer = indexForestOfTrees ( ic.forestLogAndMetrics, jiraProjectsForestTc, NoPagingTc,
       _ => indexJiraProject ( ic, jiraProjectToIssueTc, issueIndexer ( jira.file, jira.index ), executeOptions ) )
     await indexer ( '/' )// THere isn't really a root for Jira.
   }

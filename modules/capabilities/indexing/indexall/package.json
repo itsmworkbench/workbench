@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/indexall",
   "description": "An example of the workflow and indexing working together",
-  "version": "0.0.39",
+  "version": "0.0.41",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,12 +22,12 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.39",
-    "@itsmworkbench/kleislis": "0.0.39",
-    "@itsmworkbench/nodetemporal": "0.0.39",
-    "@itsmworkbench/indexing_gitlab": "0.0.39",
-    "@itsmworkbench/indexing_github": "0.0.39",
-    "@itsmworkbench/indexing_jira": "0.0.39",
+    "@itsmworkbench/utils": "0.0.41",
+    "@itsmworkbench/kleislis": "0.0.41",
+    "@itsmworkbench/nodetemporal": "0.0.41",
+    "@itsmworkbench/indexing_gitlab": "0.0.41",
+    "@itsmworkbench/indexing_github": "0.0.41",
+    "@itsmworkbench/indexing_jira": "0.0.41",
     "debug": "^4.3.4"
   },
   "devDependencies": {

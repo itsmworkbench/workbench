@@ -1,5 +1,6 @@
 export * from './src/access'
 export * from './src/forest.index'
+export * from './src/index.config.defaults'
 export * from './src/indexer.domain'
 export * from './src/index.into.file'
 export * from './src/paging'
