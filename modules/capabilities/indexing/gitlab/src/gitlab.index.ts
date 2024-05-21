@@ -1,6 +1,6 @@
-import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, NoPaging, NoPagingTc, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
+import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, SourceSinkDetails } from "@itsmworkbench/indexing";
 import { mapK, safeArray } from "@laoban/utils";
-import { K1 } from "@itsmworkbench/kleislis";
+import { K1, NoPaging, NoPagingTc, PagingTc } from "@itsmworkbench/kleislis";
 
 export interface GitlabDetails extends SourceSinkDetails {
   index: string;
@@ -22,7 +22,9 @@ export type GitlabPaging = {
 export const GitlabPagingTc: PagingTc<GitlabPaging> = {
   zero: () => ({ next: undefined }),  // Initialize without a next page
   hasMore: ( p: GitlabPaging ) => !!p.next,  // Check if the next page URL exists
-  logMsg: ( p: GitlabPaging ) => p.next ? `Next page available at: ${p.next}` : "No more pages available"
+  logMsg: ( p: GitlabPaging ) => p.next ? `Next page available at: ${p.next}` : "No more pages available",
+  url: () => {throw new Error ( 'Not implemented' )},
+  fromResponse: ( json, linkHeader ) => {throw new Error ( 'Not implemented' ) }
 };
 export function parseLinkHeader ( linkHeader: string | null ): GitlabPaging {
   if ( linkHeader ) {
@@ -153,7 +155,7 @@ export function indexGitLabMembers ( ic: IndexingContext,
             async ( p ) => ({ id: p.id, username: p.username, public_email: p.public_email }),
             ( p, c ) => c.id,
             executeOptions ) ( indexer )
-  const indexerForUsers = indexForestOfTrees ( ic.forestLogAndMetrics, tcToUser, NoPagingTc, pid => u => indexerForMembers ( u.id.toString() ) )
+  const indexerForUsers = indexForestOfTrees ( ic.forestLogAndMetrics, tcToUser, NoPagingTc, pid => u => indexerForMembers ( u.id.toString () ) )
   return ( projectId: string ) => indexerForUsers ( projectId )
 }
 

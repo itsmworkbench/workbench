@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import { firstSegment, fromEntries, NameAnd } from "@laoban/utils";
+import { firstSegment, NameAnd } from "@laoban/utils";
 import path from 'path';
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { addNonFunctionsToIndexer } from "./tree.index";
@@ -23,12 +23,12 @@ export function insertIntoFile<T> ( ins: InsertIntoFile<T> ): Indexer<T> {
     processLeaf: ( rootId, id ) => async ( t: T ) => {
       allData[ rootId ] = allData[ rootId ] || [];
       const data = allData[ rootId ];
-      await addToFile ( ins.file ( rootId ), ins, data, ins.formatter ( rootId, id, t ) );
+      await addToFile ( ins.file ( rootId.toString() ), ins, data, ins.formatter ( rootId, id, t ) );
     },
     finished: async ( id: string ) => {
       allData[ id ] = allData[ id ] || [];
       const data = allData[ id ]
-      await appendFile ( ins.file ( id ), data );
+      await appendFile ( ins.file ( id?.toString() ), data );
       allData[ id ] = [];
     },
     failed: async ( id: string, e: any ) => {
@@ -44,7 +44,7 @@ export const insertIntoFileWithNonFunctionals = ( rootDir: string, fileTemplate:
       const res = simpleTemplate ( fileTemplate, { rootDir, index: _index, name: firstSegment ( id ), id, num: 0 } )
       return res;
     },
-    max: 1000,
+    max: 5,
     formatter: ( rootId, _id, data ) =>
       `${JSON.stringify ( { index: { _index, _id } } )}\n${JSON.stringify ( data )}\n`
   } ) )

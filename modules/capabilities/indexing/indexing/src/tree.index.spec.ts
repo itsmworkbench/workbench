@@ -1,4 +1,4 @@
-import { IndexTreeLogAndMetrics, IndexTreeTc, processTreeRoot, rememberIndexTreeLogAndMetrics } from "./tree.index";
+import { processTreeRoot, rememberIndexTreeLogAndMetrics } from "./tree.index";
 import { rememberIndex } from "./indexer.domain";
 import { TestPageQueryPC, treeIndexForTestTc } from "./indexing.fixture";
 

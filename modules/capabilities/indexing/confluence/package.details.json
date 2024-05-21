@@ -1,7 +1,7 @@
 {
   "template":    "typescript",
-  "name":        "@itsmworkbench/indexall",
-  "description": "An example of the workflow and indexing working together",
+  "name":        "@itsmworkbench/indexing_confluence",
+  "description": "indexing jira",
   "packageJson": {
     "dependencies":    {
       "@laoban/utils":     "1.4.51",
@@ -14,16 +14,12 @@
   },
   "links":       [
     "@itsmworkbench/utils",
-    "@itsmworkbench/kleislis",
-    "@itsmworkbench/nodetemporal",
-    "@itsmworkbench/indexing_confluence",
-    "@itsmworkbench/indexing_gitlab",
-    "@itsmworkbench/indexing_github",
-    "@itsmworkbench/indexing_jira"
+    "@itsmworkbench/indexing",
+    "@itsmworkbench/indexconfig"
   ],
   "guards":      {
     "compile": true,
     "publish": true,
-    "test":    false
+    "test":    true
   }
 }

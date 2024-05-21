@@ -23,51 +23,64 @@ defaults:
     aclIndex: ".search-acl-filter-{index}"
 
 index:
-#  github:
-#    scan:
-#      organisations:
-#        - "focuson-ts"
-#      #        - "run-book"
-#      users:
-#        - phil-rice-HCL
-#      #        - phil-rice
-#      indexPeople: true
-#  gitlab:
-#    target:
-#      file: "target/index/{index}/Project_{id_3}_{num}.json"
-#    scan:
-#      baseurl: "https://gitlab.com/"
-#      auth:
-#        method: 'PrivateToken'
-#        credentials:
-#          token: 'GITLAB_TOKEN'
-#      projects:
-#        - "validoc" #I think this needs work on it... We need to start thinking about groups...
-#  jira1:
-#    type: jira
-#    scan:
-#      auth:
-#        method: 'Basic'
-#        credentials:
-#          username: 'phil.rice@validoc.org'
-#          password: 'JIRA_TOKEN'
-#      aclIndex: 'jira1-acl'
-#      projects: "*"
-#      indexPeople: true
-#      baseurl: "https://validoc.atlassian.net/"
-#      apiVersion: "3"
-  jiraProd:
-    type: jira
+  #  github:
+  #    scan:
+  #      organisations:
+  #        - "focuson-ts"
+  #      #        - "run-book"
+  #      users:
+  #        - phil-rice-HCL
+  #      #        - phil-rice
+  #      indexPeople: true
+  #  gitlab:
+  #    target:
+  #      file: "target/index/{index}/Project_{id_3}_{num}.json"
+  #    scan:
+  #      baseurl: "https://gitlab.com/"
+  #      auth:
+  #        method: 'PrivateToken'
+  #        credentials:
+  #          token: 'GITLAB_TOKEN'
+  #      projects:
+  #        - "validoc" #I think this needs work on it... We need to start thinking about groups...
+  #  jira1:
+  #    type: jira
+  #    scan:
+  #      auth:
+  #        method: 'Basic'
+  #        credentials:
+  #          username: 'phil.rice@validoc.org'
+  #          password: 'JIRA_TOKEN'
+  #      aclIndex: 'jira1-acl'
+  #      projects: "*"
+  #      indexPeople: true
+  #      baseurl: "https://validoc.atlassian.net/"
+  #      apiVersion: "3"
+  confluence:
+    query:
+      throttle:
+        max: 100
+        tokensPer100ms: 0.1
     scan:
+      baseurl: "https://confluence.eon.com/"
       auth:
         method: 'ApiKey'
         credentials:
-          apiKey: 'JIRA_PROD'
-      aclIndex: 'jira-prod-acl'
-      projects: "*"
-      indexPeople: true
-      baseurl: "https://jira.eon.com/"
-      apiVersion: "2"
+          apiKey: 'CONFLUENCE_TOKEN'
+      index: 'confluence'
+      aclIndex: 'confluence-acl'
+#  jiraProd:
+#    type: jira
+#    scan:
+#      auth:
+#        method: 'ApiKey'
+#        credentials:
+#          apiKey: 'JIRA_PROD'
+#      aclIndex: 'jira-prod-acl'
+#      projects: "*"
+#      indexPeople: true
+#      baseurl: "https://jira.eon.com/"
+#      apiVersion: "2"
 
 #  jira2:
 #    type: jira

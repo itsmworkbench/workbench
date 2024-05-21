@@ -2,30 +2,32 @@ import { addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc
 import fetch from "node-fetch";
 import { NameAnd } from "@laoban/utils";
 import { GitlabDetails, GitlabProject, gitlabProjectsTc, gitlabRepoTc, indexGitlabFully, indexGitLabMembers, indexGitlabProjects, indexGitlabRepo, indexGitLabRepoToMembersTc, indexGitLabUserToGitLabMemberDetails } from "./gitlab.index";
+import { DateTimeService } from "@itsmworkbench/utils";
 
 const msgs: string[] = []
 const remember: string[] = []
+let fetchFn = async ( url, options ) => {
+  const res = await fetch ( url, options );
+  const headers: NameAnd<string> = {}
+  res.headers.forEach ( ( value, name ) => {
+    headers[ name ] = value
+  } )
+  const result: FetchFnResponse = {
+    status: res.status,
+    ok: res.ok,
+    json: () => res.json (),
+    text: () => res.text (),
+    headers,
+    statusText: res.statusText
+  }
+  return result;
+};
 export const indexContext: IndexingContext = {
-  authFn: defaultAuthFn ( process.env ),
+  authFn: defaultAuthFn ( process.env, fetchFn, DateTimeService ),
   treeLogAndMetrics: rememberIndexTreeLogAndMetrics ( msgs ),
   forestLogAndMetrics: rememberForestLogsAndMetrics ( msgs ),
   parentChildLogAndMetrics: rememberIndexParentChildLogsAndMetrics ( msgs ),
-  fetch: async ( url, options ) => {
-    const res = await fetch ( url, options );
-    const headers: NameAnd<string> = {}
-    res.headers.forEach ( ( value, name ) => {
-      headers[ name ] = value
-    } )
-    const result: FetchFnResponse = {
-      status: res.status,
-      ok: res.ok,
-      json: () => res.json (),
-      text: () => res.text (),
-      headers,
-      statusText: res.statusText
-    }
-    return result;
-  }
+  fetch: fetchFn
 }
 const nfs = defaultIndexTreeNfs ();
 const gitlabDetails: GitlabDetails = {

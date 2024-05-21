@@ -1,13 +1,15 @@
-export type OAuthAuthentication = {
-  method: 'OAuth';
+export type EntraIdAuthentication = {
+  method: 'EntraId';
   credentials: {
+    tenantId?: string
     clientId: string;            // Public identifier for the app
     clientSecret: string;        // Secret used to authenticate the app and obtain tokens
-    tokenEndpoint: string;       // Endpoint used to request tokens
+    scope: string
+
   };
 };
-export function isOAuthAuthentication(auth: Authentication): auth is OAuthAuthentication {
-  return auth?.method === 'OAuth';
+export function isEntraIdAuthentication ( auth: Authentication ): auth is EntraIdAuthentication {
+  return auth?.method === 'EntraId';
 }
 
 export type BasicAuthentication = {
@@ -17,9 +19,7 @@ export type BasicAuthentication = {
     password: string;
   };
 };
-export function isBasicAuthentication(auth: Authentication): auth is BasicAuthentication {
-  return auth?.method === 'Basic';
-}
+export const isBasicAuthentication = ( auth: Authentication ): auth is BasicAuthentication => auth?.method === 'Basic';
 
 export type ApiKeyAuthentication = {
   method: 'ApiKey';
@@ -27,7 +27,7 @@ export type ApiKeyAuthentication = {
     apiKey: string;
   };
 };
-export function isApiKeyAuthentication(auth: Authentication): auth is ApiKeyAuthentication {
+export function isApiKeyAuthentication ( auth: Authentication ): auth is ApiKeyAuthentication {
   return auth?.method === 'ApiKey';
 }
 
@@ -37,21 +37,21 @@ export type PrivateTokenAuthentication = {
     token: string;
   };
 };
-export function isPrivateTokenAuthentication(auth: Authentication): auth is PrivateTokenAuthentication {
+export function isPrivateTokenAuthentication ( auth: Authentication ): auth is PrivateTokenAuthentication {
   return auth?.method === 'PrivateToken';
 }
 
 export type NoAuthentication = {
   method: 'none';
 };
-export function isNoAuthentication(auth: Authentication): auth is NoAuthentication {
+export function isNoAuthentication ( auth: Authentication ): auth is NoAuthentication {
   return auth?.method === 'none';
 }
 
 
 // Union export type for general authentication
-export type Authentication = OAuthAuthentication | BasicAuthentication | ApiKeyAuthentication|PrivateTokenAuthentication | NoAuthentication;
-export function isAuthentication(auth: Authentication): auth is Authentication {
-  return isOAuthAuthentication(auth) || isBasicAuthentication(auth) || isApiKeyAuthentication(auth) || isNoAuthentication(auth);
+export type Authentication = EntraIdAuthentication | BasicAuthentication | ApiKeyAuthentication | PrivateTokenAuthentication | NoAuthentication;
+export function isAuthentication ( auth: Authentication ): auth is Authentication {
+  return isEntraIdAuthentication ( auth ) || isBasicAuthentication ( auth ) || isApiKeyAuthentication ( auth ) || isNoAuthentication ( auth );
 }
 // Example Usage

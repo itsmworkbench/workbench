@@ -1,9 +1,10 @@
 import { NameAnd } from "@laoban/utils";
 import { consoleIndexTreeLogAndMetrics, defaultTreeLogAndMetrics, IndexTreeLogAndMetrics } from "./tree.index";
-import { consoleIndexForestLogAndMetrics, defaultForestLogAndMetrics, IndexForestLogAndMetrics, nullIndexForestLogAndMetrics } from "./forest.index";
-import { ApiKeyAuthentication, Authentication, BasicAuthentication, isApiKeyAuthentication, isBasicAuthentication, isOAuthAuthentication, isPrivateTokenAuthentication, PrivateTokenAuthentication } from "@itsmworkbench/indexconfig";
+import { consoleIndexForestLogAndMetrics, defaultForestLogAndMetrics, IndexForestLogAndMetrics } from "./forest.index";
+import { ApiKeyAuthentication, Authentication, BasicAuthentication, EntraIdAuthentication, isApiKeyAuthentication, isBasicAuthentication, isEntraIdAuthentication, isPrivateTokenAuthentication, PrivateTokenAuthentication } from "@itsmworkbench/indexconfig";
 import { consoleIndexParentChildLogAndMetrics, defaultIndexParentChildLogAndMetrics, IndexParentChildLogAndMetrics } from "./index.parent.child";
-import { WithPaging } from "./indexer.domain";
+import { WithPaging } from "@itsmworkbench/kleislis";
+import { DateTimeService, Timeservice } from "@itsmworkbench/utils";
 
 export type TokenAuthentication = {
   token: string
@@ -36,8 +37,69 @@ async function authForPrivate ( env: NameAnd<string>, auth: PrivateTokenAuthenti
   if ( !token ) throw Error ( 'No token for privateKey ' + privateKey )
   return { 'PRIVATE-TOKEN': token }
 }
-export const defaultAuthFn = ( env: NameAnd<string> ): AuthFn => async ( auth: Authentication ) => {
-  if ( isOAuthAuthentication ( auth ) ) throw Error ( 'OAuth not supported yet' )
+
+export type TokenAndTime = {
+  token: string
+  expires: number
+}
+
+export type TokenCache = NameAnd<Promise<TokenAndTime>>
+
+
+export type AuthForEntraIdFn = ( env: NameAnd<string>, fetch: FetchFn, oauth: EntraIdAuthentication ) => Promise<TokenAndTime>
+export const authForEntraId: AuthForEntraIdFn = async ( env: NameAnd<string>, fetch: FetchFn, oauth: EntraIdAuthentication ) => {
+  const { tenantId, clientId, clientSecret, scope } = oauth.credentials;
+  const url = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;
+  const body = new URLSearchParams ();
+  const secret = env[ clientSecret ]
+  if ( !secret ) throw Error ( `Need Environment variable for client secret ${clientSecret}` )
+  body.append ( 'grant_type', 'client_credentials' );
+  body.append ( 'client_id', clientId );
+  body.append ( 'client_secret', secret );
+  body.append ( 'scope', scope );
+
+  const response = await fetch ( url, {
+    method: 'Post',
+    body: body.toString (),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  } );
+
+  if ( !response.ok ) {
+    throw new Error ( `Error fetching access token: ${response.statusText}` );
+  }
+
+  const data = await response.json ();
+  return { token: data.access_token, expires: data.expires_in }
+};
+export async function getOrUpdateEntraId (
+  fetch: FetchFn,
+  timeService: Timeservice,
+  oauth: EntraIdAuthentication,
+  tokenCache: TokenCache,
+  authForEntraIdFn: AuthForEntraIdFn = authForEntraId
+): Promise<string> {
+  const tokenDataPromise = tokenCache[ oauth.credentials.clientId ];
+  if ( tokenDataPromise ) {
+    const tokenData = await tokenDataPromise;
+    if ( tokenData && tokenData.expires > timeService () ) return tokenData.token;
+  }
+  const newToken = authForEntraIdFn ( process.env, fetch, oauth ).then ( ( token: TokenAndTime ) => {
+    if ( !token.token ) throw Error ( 'No access token in ' + JSON.stringify ( token ) )
+    if ( !token.expires ) throw Error ( 'No expires in ' + JSON.stringify ( token ) )
+    return ({ ...token, token: token.token, expires: timeService () + token.expires * 500 }) // we will get a new token well before the expiry is up
+  } ).catch ( e => {
+    console.error ( e );
+    tokenCache[ oauth.credentials.clientId ] = undefined;
+    throw e
+  } )
+  tokenCache[ oauth.credentials.clientId ] = newToken
+  return (await newToken).token;
+}
+const globalTokenCache: TokenCache = {}
+export const defaultAuthFn = ( env: NameAnd<string>, fetch: FetchFn, timeService: Timeservice, tokenCache: TokenCache = globalTokenCache ): AuthFn => async ( auth: Authentication ) => {
+  if ( isEntraIdAuthentication ( auth ) ) getOrUpdateEntraId ( fetch, timeService, auth, tokenCache )
   if ( isApiKeyAuthentication ( auth ) ) return authForApiToken ( env, auth );
   if ( isBasicAuthentication ( auth ) ) return authForBasic ( env, auth );
   if ( isPrivateTokenAuthentication ( auth ) ) return authForPrivate ( env, auth )
@@ -53,9 +115,9 @@ export type FetchFnResponse = {
 }
 
 export type FetchFnOptions = {
-  method: 'Get' | 'Post' | 'Put' | 'Delete';
-  headers: NameAnd<string>;
-  body: string
+  method?: 'Get' | 'Post' | 'Put' | 'Delete';
+  headers?: NameAnd<string>;
+  body?: string
 }
 export type FetchFn = ( url: string, options?: FetchFnOptions ) => Promise<FetchFnResponse>
 
@@ -69,7 +131,7 @@ export type IndexingContext = {
 }
 export function defaultIndexingContext ( env: NameAnd<string>, fetch: FetchFn, metrics: NameAnd<number> ): IndexingContext {
   return {
-    authFn: defaultAuthFn ( env ),
+    authFn: defaultAuthFn ( env, fetch, DateTimeService ),
     treeLogAndMetrics: defaultTreeLogAndMetrics ( metrics, consoleIndexTreeLogAndMetrics ),
     forestLogAndMetrics: defaultForestLogAndMetrics ( metrics, consoleIndexForestLogAndMetrics ),
     parentChildLogAndMetrics: defaultIndexParentChildLogAndMetrics ( metrics, consoleIndexParentChildLogAndMetrics ),
@@ -83,7 +145,7 @@ export function defaultIndexingContext ( env: NameAnd<string>, fetch: FetchFn, m
 }
 export function consoleIndexingContext ( env: NameAnd<string>, fetch: FetchFn ): IndexingContext {
   return {
-    authFn: defaultAuthFn ( env ),
+    authFn: defaultAuthFn ( env, fetch, DateTimeService ),
     treeLogAndMetrics: consoleIndexTreeLogAndMetrics,
     forestLogAndMetrics: consoleIndexForestLogAndMetrics,
     parentChildLogAndMetrics: consoleIndexParentChildLogAndMetrics,

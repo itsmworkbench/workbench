@@ -1,5 +1,6 @@
 import { AccessConfig } from "@itsmworkbench/indexing";
-import { PagingTc } from "@itsmworkbench/indexing";
+import {} from "@itsmworkbench/indexing";
+import { PagingTc } from "@itsmworkbench/kleislis";
 
 export type GitHubPaging = {
   next?: string
@@ -28,5 +29,7 @@ export const githubAccessOptions: AccessConfig<GitHubPaging> = {
 export const gitHubPagingTC: PagingTc<GitHubPaging> = {
   zero: () => ({}),
   hasMore: ( page ) => page.next !== undefined,
-  logMsg: ( page ) => `Page: ${page.next}`
+  logMsg: ( page ) => `Page: ${page?.next}`,
+  url: ( baseUrl, page ) => page.next || baseUrl,
+  fromResponse: ( json, linkHeader ) => ({ data: json, page: parseGitHubLinkHeader ( json, linkHeader ) })
 }

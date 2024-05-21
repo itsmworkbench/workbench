@@ -1,4 +1,4 @@
-import { validateConfig, cleanAndEnrichConfig, IndexItem, PopulatedIndexItem } from "./index.config";
+import { cleanAndEnrichConfig, PopulatedIndexItem, validateConfig } from "./index.config";
 import { indexConfigExample } from "./index.config.fixture";
 import { isApiKeyAuthentication } from "./authentication.domain";
 import { NameAnd } from "@laoban/utils";

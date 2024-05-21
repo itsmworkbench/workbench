@@ -1,8 +1,3 @@
-export type WithPaging<T, P> = { data: T, page?: P }
-
-export function mapWithPaging<T, T1> ( fn: ( t: T ) => T1 ): <P>( wp: WithPaging<T, P> ) => WithPaging<T1, P> {
-  return wp => ({ data: fn ( wp.data ), page: wp.page })
-}
 
 export type Indexer<T> = {
   start: ( rootId: string ) => Promise<void>

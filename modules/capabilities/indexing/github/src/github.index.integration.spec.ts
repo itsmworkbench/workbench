@@ -4,30 +4,32 @@ import { indexConfigExample } from "./github.fixture";
 import { cleanAndEnrichConfig } from "@itsmworkbench/indexconfig";
 import { defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberForestLogsAndMetrics, rememberIndex, rememberIndexParentChildLogsAndMetrics, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
 import { githubTcs, indexGitHubFully, indexOneGithubRepo, indexOrganisations, indexOrgMembers, indexTheUserRepos } from "./github.index";
+import { DateTimeService } from "@itsmworkbench/utils";
 
 const msgs: string[] = []
+let fetchFn = async ( url, options ) => {
+  console.log ( `Fetching: ${url}` )
+  const res = await fetch ( url, options );
+  const headers: NameAnd<string> = {}
+  res.headers.forEach ( ( value, name ) => {
+    headers[ name ] = value
+  } )
+  const result: FetchFnResponse = {
+    status: res.status,
+    ok: res.ok,
+    json: () => res.json (),
+    text: () => res.text (),
+    headers,
+    statusText: res.statusText
+  }
+  return result;
+};
 export const indexContext: IndexingContext = {
-  authFn: defaultAuthFn ( process.env ),
+  authFn: defaultAuthFn ( process.env, fetchFn, DateTimeService ),
   treeLogAndMetrics: rememberIndexTreeLogAndMetrics ( msgs ),
   forestLogAndMetrics: rememberForestLogsAndMetrics ( msgs ),
   parentChildLogAndMetrics: rememberIndexParentChildLogsAndMetrics ( msgs ),
-  fetch: async ( url, options ) => {
-    console.log ( `Fetching: ${url}` )
-    const res = await fetch ( url, options );
-    const headers: NameAnd<string> = {}
-    res.headers.forEach ( ( value, name ) => {
-      headers[ name ] = value
-    } )
-    const result: FetchFnResponse = {
-      status: res.status,
-      ok: res.ok,
-      json: () => res.json (),
-      text: () => res.text (),
-      headers,
-      statusText: res.statusText
-    }
-    return result;
-  }
+  fetch: fetchFn
 }
 const nfs = defaultIndexTreeNfs ();
 const tcs = githubTcs ( nfs, indexContext )
@@ -64,7 +66,7 @@ describe ( 'githubOneRepoWF', () => {
         "Finished Leaf: README.md",
         "FolderIds: [] -- Page Page: undefined, Parent ",
         "LeafIds:README.md -- Page Page: undefined"
-      ])
+      ] )
     } )
     it ( 'should index a repo - dryrun false', async () => {
       const remembered: string[] = []
@@ -81,7 +83,7 @@ describe ( 'githubOneRepoWF', () => {
         "Finished Leaf: README.md",
         "FolderIds: [] -- Page Page: undefined, Parent ",
         "LeafIds:README.md -- Page Page: undefined"
-      ])
+      ] )
 
     } )
 
@@ -106,7 +108,7 @@ describe ( 'githubOneRepoWF', () => {
       expect ( msgs.sort () ).toEqual ( [
         "finished Root: run-book",
         "rootIds: Page: undefined - run-book/runbook,run-book/testRepo1,run-book/instruments,run-book/testRepo2,run-book/malformed_instruments,run-book/storybook-state,run-book/runbookTestConfig,run-book/backstage,run-book/fusion,run-book/camunda"
-      ])
+      ] )
       expect ( remembered.sort () ).toEqual ( [
         "run-book/backstage",
         "run-book/camunda",
@@ -142,7 +144,7 @@ describe ( 'githubOneRepoWF', () => {
       expect ( msgs.sort () ).toEqual ( [
         "finished Root: phil-rice-HCL",
         "rootIds: Page: undefined - phil-rice-HCL/HelloDataNucleusJBoss"
-      ])
+      ] )
     } )
     it ( "should report not found if a user not found", async () => {
       const remembered: string[] = []
@@ -163,11 +165,11 @@ describe ( 'githubOneRepoWF', () => {
         "finishedParent: run-book",
         "parent: run-book, page: Page: undefined, children: run-book_alikor,run-book_phil-rice",
         "parentId: run-book, page: Page: undefined"
-      ])
+      ] )
       expect ( remembered.sort () ).toEqual ( [
         "Finished:  run-book",
         "Started:  run-book"
-      ])
+      ] )
 
     } )
   } )
@@ -205,7 +207,7 @@ describe ( 'githubOneRepoWF', () => {
         "Started: target/index/{source}/{name}_{num}.json run-book/storybook-state",
         "Started: target/index/{source}/{name}_{num}.json run-book/testRepo1",
         "Started: target/index/{source}/{name}_{num}.json run-book/testRepo2"
-      ])
+      ] )
       expect ( msgs.sort () ).toEqual ( [
         "finished Root: phil-rice-HCL",
         "finished Root: run-book",

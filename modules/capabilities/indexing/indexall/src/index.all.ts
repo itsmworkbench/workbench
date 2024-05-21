@@ -4,11 +4,13 @@ import { ExecuteIndexOptions, Indexer, IndexingContext, IndexTreeNonFunctionals 
 import { PopulatedIndexItem } from "@itsmworkbench/indexconfig";
 import { NameAnd } from "@laoban/utils";
 import { indexGitlabFully } from "@itsmworkbench/indexing_gitlab";
+import { indexConfluenceSpaces } from "@itsmworkbench/indexing_confluence";
 
 export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
   return {
     github: indexGitHubFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
     gitlab: indexGitlabFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
+    confluence: indexConfluenceSpaces ( ic, nfc, indexer ( nfc ), executeOptions ),
     jira: indexJiraFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
   };
 }
@@ -48,5 +50,5 @@ export const indexOneSource = ( context: IndexingContext, indexer: ( nfc: IndexT
 
 export const indexAll = ( context: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) =>
   ( items: NameAnd<PopulatedIndexItem> ): ResultAndNfc[] =>
-    Object.values ( items ).map (      item =>
-        indexOneSource ( context, indexer, executeOptions )(item) )
+    Object.values ( items ).map ( item =>
+      indexOneSource ( context, indexer, executeOptions ) ( item ) )

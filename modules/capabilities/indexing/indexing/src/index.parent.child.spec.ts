@@ -1,5 +1,5 @@
 import { indexParentChild, rememberIndexParentChildLogsAndMetrics } from "./index.parent.child";
-import { indexParentChildForTestTc, IndexTestFolder, TestPageQuery, TestPageQueryPC, treeIndexForTestTc } from "./indexing.fixture";
+import { indexParentChildForTestTc, IndexTestFolder, TestPageQuery, TestPageQueryPC } from "./indexing.fixture";
 import { rememberIndex } from "./indexer.domain";
 
 describe ( "Index parent child", () => {

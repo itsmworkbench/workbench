@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/indexall",
-  "description": "An example of the workflow and indexing working together",
+  "name": "@itsmworkbench/indexing_confluence",
+  "description": "indexing jira",
   "version": "0.0.41",
   "main": "dist/index",
   "types": "dist/index",
@@ -23,12 +23,8 @@
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
     "@itsmworkbench/utils": "0.0.41",
-    "@itsmworkbench/kleislis": "0.0.41",
-    "@itsmworkbench/nodetemporal": "0.0.41",
-    "@itsmworkbench/indexing_confluence": "0.0.41",
-    "@itsmworkbench/indexing_gitlab": "0.0.41",
-    "@itsmworkbench/indexing_github": "0.0.41",
-    "@itsmworkbench/indexing_jira": "0.0.41",
+    "@itsmworkbench/indexing": "0.0.41",
+    "@itsmworkbench/indexconfig": "0.0.41",
     "debug": "^4.3.4"
   },
   "devDependencies": {

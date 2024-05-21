@@ -1,7 +1,6 @@
 import { deepCombineTwoObjects, NameAnd } from "@laoban/utils";
-import { defaultRetryPolicy, RetryPolicyConfig, Throttling } from "@itsmworkbench/kleislis";
+import { RetryPolicyConfig, Throttling } from "@itsmworkbench/kleislis";
 import { Authentication, isAuthentication } from "./authentication.domain";
-import { indexThrottlePrototype, queryThrottlePrototype, treeRetryPolicy } from "@itsmworkbench/indexing";
 import { simpleTemplate } from "@itsmworkbench/utils";
 
 export type TargetDetails = NonFunctionals & Target

@@ -1,7 +1,7 @@
 import { EmailData, EmailPurpose, isEmailDataWithMissingData } from "@itsmworkbench/ai";
 
 import { OpenAI } from "openai";
-import { ChatCompletionCreateParams, ChatCompletionCreateParamsBase } from "openai/src/resources/chat/completions";
+import { ChatCompletionCreateParams } from "openai/src/resources/chat/completions";
 
 export const clientSecret = process.env[ 'CHATGPT_CLIENT_SECRET' ]
 

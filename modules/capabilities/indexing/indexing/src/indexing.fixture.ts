@@ -1,9 +1,8 @@
 import { fromEntries, NameAnd } from "@laoban/utils";
 import { IndexForestTc } from "./forest.index";
-import { WithPaging } from "./indexer.domain";
 import { IndexTreeTc } from "./tree.index";
 import { IndexParentChildTc } from "./index.parent.child";
-import { PagingTc } from "./paging";
+import { PagingTc, WithPaging } from "@itsmworkbench/kleislis";
 
 export type IndexTestFolder = {
   leafs: string[]
@@ -39,7 +38,10 @@ export type TestPageQuery = { page: number, size: number, maxCount: number }
 export const TestPageQueryPC: PagingTc<TestPageQuery> = {
   zero: () => ({ page: 0, size: 2, maxCount: 5 }),
   hasMore: ( page ) => (page.page) * page.size <= page.maxCount,
-  logMsg: ( page ) => `Page: ${page.page}`
+  logMsg: ( page ) => `Page: ${page.page}`,
+  url: ( baseUrl, page ) => baseUrl,
+  fromResponse: ( json, linkHeader ) => {throw Error ( 'Not implemented' )}
+
 }
 
 export function getFromTestForest ( forest: IndexTestFolder, id: string ): IndexTestFolder {
@@ -52,7 +54,7 @@ export function getFromTestForest ( forest: IndexTestFolder, id: string ): Index
   return f
 }
 
-function forestAndPageToResult ( forest: IndexTestFolder, page: TestPageQuery ): WithPaging<IndexTestFolder, TestPageQuery> {
+export function forestAndPageToResult ( forest: IndexTestFolder, page: TestPageQuery ): WithPaging<IndexTestFolder, TestPageQuery> {
   const all = [ ...(forest.leafs), ...(Object.entries ( forest.folders || {} )) ];
   const inThisPage = all.slice ( page.page * page.size, page.page * page.size + page.size )
   page = { ...page, page: page.page + 1, maxCount: all.length }

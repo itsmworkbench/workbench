@@ -1,9 +1,7 @@
-import { Task, withConcurrencyLimit } from "@itsmworkbench/kleislis";
-import { stopThrottling, withRetry, withThrottle } from "@itsmworkbench/kleislis";
+import { PagingTc, stopThrottling, Task, withConcurrencyLimit, WithPaging, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { mapK, NameAnd } from "@laoban/utils";
-import { Indexer, WithPaging } from "./indexer.domain";
-import { PagingTc } from "./paging";
+import { Indexer } from "./indexer.domain";
 
 export type IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging> = {
   folderIds: ( rootId: string, parentId: string | undefined, f: Folder ) => string[];
@@ -107,7 +105,7 @@ export function defaultTreeLogAndMetrics ( metrics: NameAnd<number>, logAndMetri
 export function rememberIndexTreeLogAndMetrics ( msgs: string[] ): IndexTreeLogAndMetrics {
   return {
     leafIds: ( page, ids ) => msgs.push ( `LeafIds:${ids} -- Page ${page}` ),
-    folderIds: ( page,parent, ids ) => msgs.push ( `FolderIds: ${JSON.stringify ( ids )} -- Page ${page}, Parent ${parent}` ),
+    folderIds: ( page, parent, ids ) => msgs.push ( `FolderIds: ${JSON.stringify ( ids )} -- Page ${page}, Parent ${parent}` ),
     finishedLeaf: ( id ) => msgs.push ( `Finished Leaf: ${id}` ),
     failedLeaf: ( id, e ) => msgs.push ( `Failed Leaf: ${id} ${e}` ),
     finishedFolder: ( id ) => msgs.push ( `Finished Folder: ${id}` ),

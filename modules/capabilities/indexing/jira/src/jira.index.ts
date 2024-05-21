@@ -1,4 +1,5 @@
-import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, NoPaging, noPagingAccessConfig, NoPagingTc, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
+import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, noPagingAccessConfig, SourceSinkDetails } from "@itsmworkbench/indexing";
+import { NoPaging, NoPagingTc, PagingTc } from "@itsmworkbench/kleislis";
 
 export interface JiraDetails extends SourceSinkDetails {
   index: string;
@@ -23,7 +24,9 @@ export const JiraIssuePagingTc: PagingTc<JiraIssuePaging> = {
   zero: () => ({ startAt: 0, maxResults: 100, total: undefined as number }),
   hasMore: ( page ) =>
     page.startAt < page.total, //remember this is 'next page' we are talking about. So we are asking if this page is the last one
-  logMsg: ( page ) => `Page: ${page.startAt}..${page.startAt + page.maxResults} of ${page.total}`
+  logMsg: ( page ) => `Page: ${page.startAt}..${page.startAt + page.maxResults} of ${page.total}`,
+  url: () => {throw new Error ( 'Not implemented' )},
+  fromResponse: ( json, linkHeader ) => {throw new Error ( 'Not implemented' ) }
 }
 export type JiraProjectTopLevelSummary = {
   id: string

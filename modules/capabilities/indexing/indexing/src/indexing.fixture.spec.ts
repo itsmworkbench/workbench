@@ -1,5 +1,4 @@
 import { indexForestTc, indexTestFolder, TestPageQueryPC, treeIndexForTestTc } from "./indexing.fixture";
-import { indexForestOfTrees } from "./forest.index";
 
 describe ( "test indexing fixture", () => {
   it ( "should return the correct folder root page 0", async () => {
