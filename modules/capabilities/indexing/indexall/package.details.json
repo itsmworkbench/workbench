@@ -19,7 +19,8 @@
     "@itsmworkbench/indexing_confluence",
     "@itsmworkbench/indexing_gitlab",
     "@itsmworkbench/indexing_github",
-    "@itsmworkbench/indexing_jira"
+    "@itsmworkbench/indexing_jira",
+    "@itsmworkbench/indexing_jira_acl"
   ],
   "guards":      {
     "compile": true,

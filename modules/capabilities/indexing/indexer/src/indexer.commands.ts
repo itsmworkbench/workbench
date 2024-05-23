@@ -6,6 +6,7 @@ import { defaultIndexingContext, ExecuteIndexOptions, IndexTreeNonFunctionals, i
 import { indexAll } from "@itsmworkbench/indexall";
 import { startKoa, stopKoa } from "@itsmworkbench/koa";
 import { indexerHandlers } from "./indexer.api";
+import { addPushCommand } from "./elastic.search.commands";
 
 async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>, file: string | boolean ) {
   const yamlFile = await tc.context.fileOps.loadFileOrUrl ( file.toString () )
@@ -85,6 +86,7 @@ export function indexerCommands<Commander, Config, CleanConfig> ( tc: ContextCon
     commands: [
       addConfigCommand<Commander, Config, CleanConfig> ( tc ),
       addIndexCommand<Commander, Config, CleanConfig> ( tc ),
+      addPushCommand<Commander, Config, CleanConfig> ( tc )
     ]
   }
 }

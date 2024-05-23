@@ -23,12 +23,12 @@ export function insertIntoFile<T> ( ins: InsertIntoFile<T> ): Indexer<T> {
     processLeaf: ( rootId, id ) => async ( t: T ) => {
       allData[ rootId ] = allData[ rootId ] || [];
       const data = allData[ rootId ];
-      await addToFile ( ins.file ( rootId.toString() ), ins, data, ins.formatter ( rootId, id, t ) );
+      await addToFile ( ins.file ( rootId.toString () ), ins, data, ins.formatter ( rootId, id, t ) );
     },
     finished: async ( id: string ) => {
       allData[ id ] = allData[ id ] || [];
       const data = allData[ id ]
-      await appendFile ( ins.file ( id?.toString() ), data );
+      await appendFile ( ins.file ( id?.toString () ), data );
       allData[ id ] = [];
     },
     failed: async ( id: string, e: any ) => {
@@ -40,7 +40,7 @@ export function insertIntoFile<T> ( ins: InsertIntoFile<T> ): Indexer<T> {
 export const insertIntoFileWithNonFunctionals = ( rootDir: string, fileTemplate: string, _index: string, nf: IndexTreeNonFunctionals ) =>
   addNonFunctionsToIndexer ( nf, insertIntoFile ( {
     file: ( id: string ) => {
-      const entries: [ string, string ][] = id.toString().split ( '/' ).map ( ( p, i ) => [ `id_${i}`, p ] );
+      const entries: [ string, string ][] = id.toString ().split ( '/' ).map ( ( p, i ) => [ `id_${i}`, p ] );
       const res = simpleTemplate ( fileTemplate, { rootDir, index: _index, name: firstSegment ( id ), id, num: 0 } )
       return res;
     },
@@ -51,8 +51,10 @@ export const insertIntoFileWithNonFunctionals = ( rootDir: string, fileTemplate:
 export const addToFile = async <T> ( file: string, ins: InsertIntoFile<T>, data: string[], s: string ) => {
   const { max } = ins;
   data.push ( s );
-  if ( data.length >= max )
+  if ( data.length >= max ) {
     await appendFile ( file, data );
+    data.length = 0
+  }
 };
 export async function appendFile<T> ( file: string, data: string[] ) {
   const content = data.join ( '' );

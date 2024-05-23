@@ -1,5 +1,6 @@
 import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, noPagingAccessConfig, SourceSinkDetails } from "@itsmworkbench/indexing";
 import { NoPaging, NoPagingTc, PagingTc } from "@itsmworkbench/kleislis";
+import { safeArray, toArray } from "@laoban/utils";
 
 export interface JiraDetails extends SourceSinkDetails {
   index: string;
@@ -61,7 +62,7 @@ export type JiraIssueFields = {
   assignee: { email: string },
   comment: JiraIssueCommentField
   description: JiraDoc
-  project: { self: string }
+  project: { self: string, key: string }
   priority: any;
   summary: string
   status: { name: string, }
@@ -87,7 +88,8 @@ export const jiraPagedAccessOptions: AccessConfig<JiraIssuePaging> = {
 }
 
 export function getAllParagraphContent ( doc: JiraDoc ): string {
-  return doc.content.filter ( c => c.type === 'paragraph' )
+  if ( doc==null || doc?.content === null ) return ''
+  return safeArray ( doc.content ).filter ( c => c.type === 'paragraph' )
     .map ( p => p.content.filter ( p => p.type === 'text' )
       .map ( c => c.text )
       .join ( '\n' ) ).join ( '\n' )
@@ -137,22 +139,26 @@ export const jiraTcs = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, jiraD
 export type JiraIndexedIssue = {
   id: string
   self: string
+  key: string
   project: string
   priority: any
   status: any
   summary: string
   assignee: string
   reporter: string
+  description: string
   comments: string // probably want some better structure here
 }
 export async function jiraIssueToIndexedJiraIssue ( j: JiraIssue ): Promise<JiraIndexedIssue> {
   return {
     id: j.id,
     self: j.self,
+    key: j.fields.project.key,
     project: j.fields.project.self,
     priority: j.fields?.priority?.name,
     status: j.fields?.status?.name,
     summary: j.summary,
+    description: fromJiraDocOrString ( j.fields.description ),
     assignee: j.fields.assignee?.email,
     reporter: j.fields?.reporter?.email,
     comments: allComments ( j )

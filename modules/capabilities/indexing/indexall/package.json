@@ -29,6 +29,7 @@
     "@itsmworkbench/indexing_gitlab": "0.0.41",
     "@itsmworkbench/indexing_github": "0.0.41",
     "@itsmworkbench/indexing_jira": "0.0.41",
+    "@itsmworkbench/indexing_jira_acl": "0.0.41",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -72,7 +72,8 @@ export const indexConfluenceSpaces = ( ic: IndexingContext, nfs: IndexTreeNonFun
                      async function onePage ( pageSummary: ConfluencePageSummary ) {
                        if ( confluenceDetails.maxPages !== undefined && pagesCount++ >= confluenceDetails.maxPages ) return
                        console.log ( 'page', pageSummary.id )
-                       const page = await fOne<ConfluencePage> ( `${confluenceDetails.baseurl}rest/api/content/${pageSummary.id}?expand=body.view`, options )
+
+                       const page = await fOne<ConfluencePage> ( `${confluenceDetails.baseurl}rest/api/content/${pageSummary.id}?expand=body.view,history`, options )
                        if ( !executeOptions.dryRunDoEverythingButIndex ) {
                          const forIndexing = pageForIndexing ( page );
                          if ( forIndexing.body.length > 0 )
