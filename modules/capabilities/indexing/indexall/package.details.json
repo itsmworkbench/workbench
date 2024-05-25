@@ -17,6 +17,7 @@
     "@itsmworkbench/kleislis",
     "@itsmworkbench/nodetemporal",
     "@itsmworkbench/indexing_confluence",
+    "@itsmworkbench/indexing_confluence_acl",
     "@itsmworkbench/indexing_gitlab",
     "@itsmworkbench/indexing_github",
     "@itsmworkbench/indexing_jira",

@@ -203,7 +203,6 @@ export function indexJiraProject ( ic: IndexingContext, tc: IndexParentChildTc<J
     ( projectkey, issue ) => `${projectkey}_${issue.id}`,
     executeOptions ) ( indexer )
   return async ( projectkey: string ) => {
-
     await indexerForProject ( projectkey )
   }
 }

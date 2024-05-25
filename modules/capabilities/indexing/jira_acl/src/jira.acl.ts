@@ -56,7 +56,7 @@ export function convertMemberAndGroupsToAclStructure ( mag: MemberAndGroups ): A
     }
   }) )
 }
-export const makeAclIndexForGroupAndMember = ( indexerFn: ( fileTemplate: string, indexId: string ) => Indexer<any> ) => async ( details: JiraAclDetails ) => {
+export const indexJiraAcl = ( indexerFn: ( fileTemplate: string, indexId: string ) => Indexer<any> ) => async ( details: JiraAclDetails ) => {
   const indexer: Indexer<any> = indexerFn ( details.file, details.index )
   await indexer.start ( details.index )
   try {

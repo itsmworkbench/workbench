@@ -26,6 +26,7 @@
     "@itsmworkbench/kleislis": "0.0.41",
     "@itsmworkbench/nodetemporal": "0.0.41",
     "@itsmworkbench/indexing_confluence": "0.0.41",
+    "@itsmworkbench/indexing_confluence_acl": "0.0.41",
     "@itsmworkbench/indexing_gitlab": "0.0.41",
     "@itsmworkbench/indexing_github": "0.0.41",
     "@itsmworkbench/indexing_jira": "0.0.41",
