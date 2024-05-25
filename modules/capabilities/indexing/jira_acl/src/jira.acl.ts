@@ -14,6 +14,7 @@ export interface JiraAclDetails extends SourceSinkDetails {
   groupMembersFile: string
   file: string
   index: string
+  findkey?: string
 }
 
 export function convertFileToGroupAndMembers ( file: string ): GroupAndMembers {
@@ -44,30 +45,14 @@ export function convertGroupAndMembersToMemberAndGroups ( gms: GroupAndMembers )
 }
 export type AclStructure = {
   _id: string,
-  body: {
-    identity: { kid: string },
-    query: {
-      template: {
-        params: {
-          access_control: string[]
-        }
-      }
-    }
-  }
+  body: { allowed_keys: string[] }
 }
 
 export function convertMemberAndGroupsToAclStructure ( mag: MemberAndGroups ): AclStructure[] {
   return Object.keys ( mag ).map ( member => ({
     _id: member,
     body: {
-      identity: { kid: member },
-      query: {
-        template: {
-          params: {
-            access_control: mag[ member ].map ( group => `group ${group}` )
-          }
-        }
-      }
+      "allowed_keys": mag[ member ]
     }
   }) )
 }
@@ -85,6 +70,4 @@ export const makeAclIndexForGroupAndMember = ( indexerFn: ( fileTemplate: string
   } catch ( e ) {
     await indexer.failed ( details.index, e )
   }
-
-
 };

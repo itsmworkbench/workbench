@@ -1,6 +1,6 @@
 import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, noPagingAccessConfig, SourceSinkDetails } from "@itsmworkbench/indexing";
 import { NoPaging, NoPagingTc, PagingTc } from "@itsmworkbench/kleislis";
-import { safeArray, toArray } from "@laoban/utils";
+import { safeArray } from "@laoban/utils";
 
 export interface JiraDetails extends SourceSinkDetails {
   index: string;
@@ -88,7 +88,7 @@ export const jiraPagedAccessOptions: AccessConfig<JiraIssuePaging> = {
 }
 
 export function getAllParagraphContent ( doc: JiraDoc ): string {
-  if ( doc==null || doc?.content === null ) return ''
+  if ( doc == null || doc?.content === null ) return ''
   return safeArray ( doc.content ).filter ( c => c.type === 'paragraph' )
     .map ( p => p.content.filter ( p => p.type === 'text' )
       .map ( c => c.text )
@@ -100,9 +100,25 @@ export const jiraProjectsForestTc = ( ic: IndexingContext, details: JiraDetails 
   treeIds: ( forest ) =>
     forest.map ( x => x.key ),
 })
-export const JiraProjectToIssueTc = ( ic: IndexingContext, details: JiraDetails ): IndexParentChildTc<JiraProjectTopLevelSummary, JiraIssue, JiraIssuePaging> => ({
+
+/**
+ * Constructs a Jira JQL URL for fetching issues from a specific project.
+ * @param apiVersion - The API version to use.
+ * @param since - An optional string representing the time range for updated issues (e.g., "1d" for the last day).
+ * @param forestId - The project ID for which issues are to be fetched.
+ * @param page - Paging details for fetching Jira issues.
+ * @returns The constructed URL for fetching issues.
+ */
+export function makeJqlUrlForProject ( apiVersion: string, since: string | undefined, forestId: string, page: JiraIssuePaging ) {
+  const sinceString = since ? ` and updated >= -${since}` : '';
+  const jqlQuery = `project=${forestId}${sinceString}`;
+  const encodedJqlQuery = encodeURIComponent ( jqlQuery );
+  const url = `rest/api/${apiVersion}/search?jql=${encodedJqlQuery}&fields=*all,comment${jiraIssuePagingQuerySuffix ( page )}`;
+  return url;
+}
+export const JiraProjectToIssueTc = ( ic: IndexingContext, details: JiraDetails, since: string | undefined ): IndexParentChildTc<JiraProjectTopLevelSummary, JiraIssue, JiraIssuePaging> => ({
   fetchParent: ( forestId, page ) => {
-    const url = `rest/api/${details.apiVersion}/search?jql=project=${forestId}&fields=*all,comment${jiraIssuePagingQuerySuffix ( page )}`;
+    const url = makeJqlUrlForProject ( details.apiVersion, since, forestId, page );
     return access ( ic, details, url, jiraPagedAccessOptions );
   },
   children: ( parentId, parent ) =>
@@ -130,9 +146,9 @@ export type JiraTcs = {
   jiraProjectToIssueTc: IndexParentChildTc<JiraProjectTopLevelSummary, JiraIssue, JiraIssuePaging>
   jiraProjectToMembersTc: IndexForestTc<JiraRolesForProject, JiraActor, JiraIssuePaging>
 }
-export const jiraTcs = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, jiraDetails: JiraDetails ): JiraTcs => ({
+export const jiraTcs = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, jiraDetails: JiraDetails, since: string | undefined ): JiraTcs => ({
   jiraProjectsForestTc: addNonFunctionalsToIndexForestTc ( nf, jiraProjectsForestTc ( ic, jiraDetails ) ),
-  jiraProjectToIssueTc: addNonFunctionalsToIndexParentChildTc ( nf, JiraProjectToIssueTc ( ic, jiraDetails ) ),
+  jiraProjectToIssueTc: addNonFunctionalsToIndexParentChildTc ( nf, JiraProjectToIssueTc ( ic, jiraDetails, since ) ),
   jiraProjectToMembersTc: addNonFunctionalsToIndexForestTc ( nf, jiraProjectToMembersTc ( ic, jiraDetails ) )
 })
 
@@ -209,7 +225,7 @@ export function indexJiraFully ( nf: IndexTreeNonFunctionals,
                                  memberIndexer: ( fileTemplate: string, indexId: string ) => Indexer<any>,
                                  executeOptions: ExecuteIndexOptions ) {
   return async ( jira: JiraDetails ) => {
-    const { jiraProjectsForestTc, jiraProjectToIssueTc } = jiraTcs ( nf, ic, jira )
+    const { jiraProjectsForestTc, jiraProjectToIssueTc } = jiraTcs ( nf, ic, jira, executeOptions.since )
     const indexer = indexForestOfTrees ( ic.forestLogAndMetrics, jiraProjectsForestTc, NoPagingTc,
       _ => indexJiraProject ( ic, jiraProjectToIssueTc, issueIndexer ( jira.file, jira.index ), executeOptions ) )
     await indexer ( '/' )// THere isn't really a root for Jira.

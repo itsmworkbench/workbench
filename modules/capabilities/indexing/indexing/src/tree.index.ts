@@ -116,6 +116,7 @@ export function rememberIndexTreeLogAndMetrics ( msgs: string[] ): IndexTreeLogA
 export type ExecuteIndexOptions = {
   dryRunJustShowTrees?: boolean;
   dryRunDoEverythingButIndex?: boolean;
+  since: string | undefined
 }
 
 export type ProcessTreeRoot = <Folder, Leaf, IndexedLeaf, Paging> ( logAndMetrics: IndexTreeLogAndMetrics, tc: IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging>, indexer: Indexer<IndexedLeaf>, options: ExecuteIndexOptions ) => ( rootId: string ) => Promise<void>;

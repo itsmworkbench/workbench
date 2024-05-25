@@ -19,9 +19,19 @@ async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndC
   return actualConfig;
 }
 function findExecuteOptions ( opts: NameAnd<string | boolean> ): ExecuteIndexOptions {
-  if ( opts.detailedDryRun ) return { dryRunDoEverythingButIndex: true }
-  if ( opts.dryrun ) return { dryRunJustShowTrees: true }
-  return {}
+  let since = opts.since.toString ();
+  validateSince ( since )
+  if ( opts.detailedDryRun ) return { since, dryRunDoEverythingButIndex: true }
+  if ( opts.dryrun ) return { since, dryRunJustShowTrees: true }
+  return { since }
+}
+export function validateSince ( since: string | undefined ) {
+  if ( since === undefined ) return
+  const timePattern = /^(\d+)([dhm])$/;
+  const match = since.match ( timePattern );
+  if ( !match ) {
+    throw new Error ( `Invalid value for --since option: ${since}. Legal examples include 1d or 3h or 30s.` );
+  }
 }
 export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
   return {
@@ -32,6 +42,7 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
       '-t,--target <target>': { description: 'where we put the indexed data', default: 'target/indexer' },
       '--debug': { description: 'Show debug information' },
       '--api': { description: 'Start the api' },
+      '--since <time>': { description: 'Index only issues updated since the specified time (e.g., 1d for last day, 2h for last 2 hours, 30m for last 30 minutes)' },
       '--keep': { description: 'if you started the api this keeps it running at the end' },
       '--port <port>': { description: 'The port to start the api on', default: '1235' },
       '--dryrun': { description: `don't actually do the indexing, but report what would be done` },
@@ -39,11 +50,12 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
     },
     action: async ( _, opts ) => {
       console.log ( `Indexing `, opts )
-      const { file, debug, dryrun, target, api, keep, port } = opts
+      const { file, debug, dryrun, target, api, keep, port, since } = opts
       const config = await getConfig ( tc, file );
+
       const metrics: NameAnd<number> = {}
       const ic = defaultIndexingContext ( tc.context.env, tc.context.fetch, metrics )
-      const executeOptions = findExecuteOptions ( opts )
+      const executeOptions: ExecuteIndexOptions = findExecuteOptions ( opts )
       const indexIntoFile = ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, index: string ) =>
         insertIntoFileWithNonFunctionals ( target.toString (), fileTemplate, index, nfc )
       const resultsAndNfcs = indexAll ( ic, indexIntoFile, executeOptions ) ( config )
