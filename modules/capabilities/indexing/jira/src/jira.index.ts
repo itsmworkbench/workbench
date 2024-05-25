@@ -65,6 +65,9 @@ export type JiraIssueFields = {
   project: { self: string, key: string }
   priority: any;
   summary: string
+  creator: { name: string }
+  created: string
+  updated: string
   status: { name: string, }
 }
 export type JiraDoc = {
@@ -157,6 +160,9 @@ export type JiraIndexedIssue = {
   self: string
   key: string
   project: string
+  created_by: string
+  created: string
+  last_updated: string
   priority: any
   status: any
   summary: string
@@ -171,6 +177,9 @@ export async function jiraIssueToIndexedJiraIssue ( j: JiraIssue ): Promise<Jira
     self: j.self,
     key: j.fields.project.key,
     project: j.fields.project.self,
+    created_by: j.fields.creator.name,
+    created: j.fields.created,
+    last_updated: j.fields.updated,
     priority: j.fields?.priority?.name,
     status: j.fields?.status?.name,
     summary: j.summary,
