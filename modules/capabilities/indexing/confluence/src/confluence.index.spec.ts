@@ -54,7 +54,9 @@ describe ( "confluence integration spec", () => {
     stopNonFunctionals ( nfs )
   } );
   it ( "should index spaces", async () => {
-    const indexer = await indexConfluenceSpaces ( indexContext, nfs, ( ft, i ) => rememberIndex ( `${ft} ${i}`, remember ), {} ) ( details )
+    const indexer = await indexConfluenceSpaces ( indexContext, nfs,
+      ( ft, i ) => rememberIndex ( `${ft} ${i}`, remember ),
+      {} ) ( details )
     expect ( remember ).toEqual ( [] )
     expect ( msgs ).toEqual ( [] )
 

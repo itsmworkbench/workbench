@@ -73,19 +73,19 @@ index:
   #      indexPeople: true
   #      baseurl: "https://validoc.atlassian.net/"
   #      apiVersion: "3"
-#  confluence:
-#    query:
-#      throttle:
-#        max: 100
-#        tokensPer100ms: 0.1
-#    scan:
-#      baseurl: "https://confluence.eon.com/"
-#      auth:
-#        method: 'ApiKey'
-#        credentials:
-#          apiKey: 'CONFLUENCE_TOKEN'
-#      index: 'confluence'
-#      aclIndex: 'confluence-acl'
+  confluence:
+    query:
+      throttle:
+        max: 100
+        tokensPer100ms: 0.1
+    scan:
+      baseurl: "https://confluence.eon.com/"
+      auth:
+        method: 'ApiKey'
+        credentials:
+          apiKey: 'CONFLUENCE_TOKEN'
+      index: 'confluence'
+      aclIndex: 'confluence-acl'
 
 #  jira2:
 #    type: jira

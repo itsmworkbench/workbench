@@ -26,7 +26,9 @@ export function mapWithPaging<T, T1> ( fn: ( t: T ) => T1 ): <P>( wp: WithPaging
   return wp => ({ data: fn ( wp.data ), page: wp.page })
 }
 
-export function fetchOneItem ( fetch: FetchFn ): <T>( url: string, options: FetchFnOptions, resfn?: ( response: FetchFnResponse ) => Promise<T> ) => Promise<T> {
+export type FetchOneItemType = <T>( url: string, options: FetchFnOptions, resfn?: ( response: FetchFnResponse ) => Promise<T> ) => Promise<T>
+
+export function fetchOneItem ( fetch: FetchFn ): FetchOneItemType {
   return async <T> ( url: string, options: FetchFnOptions, respFn?: ( response: FetchFnResponse ) => Promise<T> ): Promise<T> => {
     const response = await fetch ( url, {
       method: options?.method || 'Get',
@@ -85,12 +87,13 @@ export function fetchWithPaging<P> (
   };
 }
 
+export type FetchArrayWithPagingType = <T>( url: string, options?: FetchFnOptions, resfn?: ( response: FetchFnResponse ) => Promise<T[]> ) => AsyncGenerator<T, void>
 export function fetchArrayWithPaging<P> (
   fetch: FetchFn,
   log: IndexParentChildLogAndMetrics,
   tc: PagingTc<P>,
   retry?: RetryPolicyConfig,
-): <T>( url: string, options?: FetchFnOptions, resfn?: ( response: FetchFnResponse ) => Promise<T[]> ) => AsyncGenerator<T, void> {
+): FetchArrayWithPagingType {
   const f = fetchWithPaging ( fetch, log, tc, retry );
   return async function* <T> ( url: string, options?: FetchFnOptions, resfn?: ( response: FetchFnResponse ) => Promise<T[]> ): AsyncGenerator<T, void> {
     for await ( const item of f ( url, options, resfn ) ) {

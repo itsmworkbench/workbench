@@ -124,6 +124,7 @@ export type FetchFn = ( url: string, options?: FetchFnOptions ) => Promise<Fetch
 
 export type IndexingContext = {
   authFn: AuthFn;
+  timeService: Timeservice
   parentChildLogAndMetrics: IndexParentChildLogAndMetrics
   treeLogAndMetrics: IndexTreeLogAndMetrics
   forestLogAndMetrics: IndexForestLogAndMetrics
@@ -132,6 +133,7 @@ export type IndexingContext = {
 export function defaultIndexingContext ( env: NameAnd<string>, fetch: FetchFn, metrics: NameAnd<number> ): IndexingContext {
   return {
     authFn: defaultAuthFn ( env, fetch, DateTimeService ),
+    timeService: DateTimeService,
     treeLogAndMetrics: defaultTreeLogAndMetrics ( metrics, consoleIndexTreeLogAndMetrics ),
     forestLogAndMetrics: defaultForestLogAndMetrics ( metrics, consoleIndexForestLogAndMetrics ),
     parentChildLogAndMetrics: defaultIndexParentChildLogAndMetrics ( metrics, consoleIndexParentChildLogAndMetrics ),
@@ -145,6 +147,7 @@ export function defaultIndexingContext ( env: NameAnd<string>, fetch: FetchFn, m
 }
 export function consoleIndexingContext ( env: NameAnd<string>, fetch: FetchFn ): IndexingContext {
   return {
+    timeService: DateTimeService,
     authFn: defaultAuthFn ( env, fetch, DateTimeService ),
     treeLogAndMetrics: consoleIndexTreeLogAndMetrics,
     forestLogAndMetrics: consoleIndexForestLogAndMetrics,

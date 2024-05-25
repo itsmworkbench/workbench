@@ -19,7 +19,7 @@ async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndC
   return actualConfig;
 }
 function findExecuteOptions ( opts: NameAnd<string | boolean> ): ExecuteIndexOptions {
-  let since = opts.since.toString ();
+  let since = opts.since?.toString ();
   validateSince ( since )
   if ( opts.detailedDryRun ) return { since, dryRunDoEverythingButIndex: true }
   if ( opts.dryrun ) return { since, dryRunJustShowTrees: true }
