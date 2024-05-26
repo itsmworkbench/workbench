@@ -5,8 +5,9 @@ import { cleanAndEnrichConfig, PopulatedIndexItem } from "@itsmworkbench/indexco
 import { defaultIndexingContext, ExecuteIndexOptions, IndexTreeNonFunctionals, insertIntoFileWithNonFunctionals, stopNonFunctionals } from "@itsmworkbench/indexing";
 import { indexAll } from "@itsmworkbench/indexall";
 import { startKoa, stopKoa } from "@itsmworkbench/koa";
-import { indexerHandlers } from "./indexer.api";
+import { apiKeyHandlers, metricIndexerHandlers } from "./indexer.api";
 import { addPushCommand } from "./elastic.search.commands";
+import { apiKeyDetails, loadQueriesForEmail, makeApiKey } from "./apikey.for.dls";
 
 async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>, file: string | boolean ) {
   const yamlFile = await tc.context.fileOps.loadFileOrUrl ( file.toString () )
@@ -60,7 +61,8 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
         insertIntoFileWithNonFunctionals ( target.toString (), fileTemplate, index, nfc )
       const resultsAndNfcs = indexAll ( ic, indexIntoFile, executeOptions ) ( config )
       const allNfcs = resultsAndNfcs.map ( r => r.nfc )
-      const apiFuture = api === true ? startKoa ( 'target/indexer', Number.parseInt ( port.toString () ), debug === true, indexerHandlers ( metrics, allNfcs ) ) : undefined
+      const apiFuture = api === true ? startKoa ( 'target/indexer', Number.parseInt ( port.toString () ), debug === true,
+        metricIndexerHandlers ( metrics, allNfcs ) ) : undefined
       for ( const { result, nfc } of resultsAndNfcs ) {
         await result
       }
@@ -73,6 +75,54 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
         else
           stopKoa ( await apiFuture )
       }
+    }
+  }
+}
+
+
+export function addApiKeyCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
+  return {
+    cmd: 'apiKey <email>',
+    description: 'returns the api key and query for the email',
+    options: {
+      '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
+      '-i, --index <index...>': { description: 'The indexes to be accessed by the query for the api key', default: [ 'jira-prod' ] },
+      '-u, --username <username>': { description: 'elastic search username', default: 'Indexer_NPA' },
+      '-p, --password <password>': { description: 'Variable name that holds the elastic search password', default: 'ELASTIC_SEARCH_PASSWORD' },
+      '--dryRun': { description: 'Show what would be done' },
+      '--debug': { description: 'Show debug information' },
+    },
+    action: async ( _, opts, email ) => {
+      console.log ( 'email', email )
+      console.log ( 'opts', opts )
+      const details = apiKeyDetails ( opts, tc.context.env )
+      console.log ( JSON.stringify ( details, null, 2 ) )
+      const queries = await loadQueriesForEmail ( tc.context.fetch, details, email )
+      console.log ( JSON.stringify ( queries, null, 2 ) )
+      if ( opts.dryRun ) return
+      const response = await makeApiKey ( tc.context.fetch, details, email, queries )
+      console.log ( response )
+    }
+  }
+}
+export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
+  return {
+    cmd: 'apiKeyApi',
+    description: 'launches an api to get api keys',
+    options: {
+      '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
+      '-i, --index <index...>': { description: 'The indexes to be accessed by the query for the api key', default: [ 'jira-prod' ] },
+      '-u, --username <username>': { description: 'elastic search username', default: 'Indexer_NPA' },
+      '-p, --password <password>': { description: 'Variable name that holds the elastic search password', default: 'ELASTIC_SEARCH_PASSWORD' },
+      '--port <port>': { description: 'The port to start the api on', default: '1236' },
+      '--dryRun': { description: 'Show what would be done' },
+      '--debug': { description: 'Show debug information' },
+    },
+    action: async ( _, opts, email ) => {
+      const details = apiKeyDetails ( opts, tc.context.env )
+      await startKoa ( 'target/indexer', Number.parseInt ( opts.port.toString () ), opts.debug === true,
+        apiKeyHandlers ( tc.context.fetch, details ) )
+      console.log ( `api key api running on port ${opts.port}` )
     }
   }
 }
@@ -96,9 +146,11 @@ export function indexerCommands<Commander, Config, CleanConfig> ( tc: ContextCon
     cmd: 'index',
     description: 'Commands that index things',
     commands: [
+      addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc ),
       addConfigCommand<Commander, Config, CleanConfig> ( tc ),
       addIndexCommand<Commander, Config, CleanConfig> ( tc ),
-      addPushCommand<Commander, Config, CleanConfig> ( tc )
+      addPushCommand<Commander, Config, CleanConfig> ( tc ),
+      addApiKeyCommand<Commander, Config, CleanConfig> ( tc )
     ]
   }
 }

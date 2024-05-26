@@ -85,7 +85,6 @@ index:
         credentials:
           apiKey: 'CONFLUENCE_TOKEN'
       index: 'confluence'
-      aclIndex: 'confluence-acl'
 
 #  jira2:
 #    type: jira

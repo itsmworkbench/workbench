@@ -2,6 +2,8 @@ import { promises as fs } from 'fs';
 import path from "node:path";
 import { CommandDetails, ContextConfigAndCommander } from "@itsmworkbench/cli";
 import { IndexerContext } from "./context";
+import { NameAnd } from "@laoban/utils";
+import { getElasticSearchAuthHeaderWithApiToken, getElasticSearchToken } from "./apikey.for.dls";
 
 async function processFilesRecursively ( rootDir: string, processFile: ( filePath: string ) => Promise<void> ) {
   async function processDirectory ( directory: string ) {
@@ -33,11 +35,7 @@ export function addPushCommand<Commander, Config, CleanConfig> ( tc: ContextConf
     action: async ( _, opts ) => {
       console.log ( `Pushing `, opts )
       const { directory, elasticSearch, dryRun, token } = opts
-      const tokenValue = tc.context.env[ token.toString () ]
-      if ( tokenValue === undefined ) {
-        console.log ( 'Environment variable [' + token + '] not defined' )
-        process.exit ( 2 )
-      }
+      // const tokenValue = getElasticSearchToken ( tc.context.env, token );
       processFilesRecursively ( directory.toString (), async f => {
         if ( dryRun )
           console.log ( f );
@@ -47,7 +45,7 @@ export function addPushCommand<Commander, Config, CleanConfig> ( tc: ContextConf
           if ( body.length > 0 ) {
             const response = await tc.context.fetch ( `${elasticSearch}_bulk`, {
               method: 'Post',
-              headers: { 'Content-Type': 'application/x-ndjson', 'Authorization': `ApiKey ${tokenValue}` },
+              headers: { ...getElasticSearchAuthHeaderWithApiToken ( tc.context.env, token ), 'Content-Type': 'application/x-ndjson' },
               body: body
             } );
             console.log ( 'file: ', f, response.status, response.statusText, await response.text () )

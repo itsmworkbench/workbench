@@ -14,7 +14,7 @@ export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext,
     gitlab: indexGitlabFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
     confluence: indexConfluenceSpaces ( ic, nfc, indexer ( nfc ), executeOptions ),
     confluenceAcl: indexConfluenceAcl ( indexer ( nfc ) ), //not working yet
-    jira: indexJiraFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
+    jira: indexJiraFully ( nfc, ic, indexer ( nfc ), executeOptions ),
     jiraAcl: indexJiraAcl ( indexer ( nfc ) ),
   };
 }

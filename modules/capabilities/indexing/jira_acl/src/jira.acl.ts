@@ -47,15 +47,29 @@ export type AclStructure = {
   _id: string,
   body: { allowed_keys: string[] }
 }
-
+function extractKey ( input: string ): string | null {
+  const regex = /^JIRA_(.*?)_/;
+  const match = input.match ( regex );
+  return match ? match[ 1 ] : null;
+}
 export function convertMemberAndGroupsToAclStructure ( mag: MemberAndGroups ): AclStructure[] {
   return Object.keys ( mag ).map ( member => ({
     _id: member,
     body: {
-      "allowed_keys": mag[ member ]
+      "allowed_keys": mag[ member ],
+      query: JSON.stringify (
+        {
+          "bool": {
+            "filter": [
+              { "term": { "type": "jira" } },
+              { "terms": { "key.keyword": mag[ member ].map ( extractKey ) } }
+            ]
+          }
+        } )
     }
-  }) )
+  }) );
 }
+
 export const indexJiraAcl = ( indexerFn: ( fileTemplate: string, indexId: string ) => Indexer<any> ) => async ( details: JiraAclDetails ) => {
   const indexer: Indexer<any> = indexerFn ( details.file, details.index )
   await indexer.start ( details.index )

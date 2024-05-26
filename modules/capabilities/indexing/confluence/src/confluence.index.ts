@@ -54,6 +54,7 @@ export type ConfluenceHistory = {
 export function pageForIndexing ( page: ConfluencePage ) {
   return {
     id: page.id,
+    type: 'confluence',
     status: page.status,
     title: page.title,
     body: page?.body?.view?.value,

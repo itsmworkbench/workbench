@@ -8,7 +8,7 @@ import { CliConfigTC, CliTcFinder, loadConfig } from "./cliconfig";
 export type ActionFn<Commander> = ( commander: Commander, opts: NameAnd<string | boolean>, ...args: any[] ) => void | Promise<void>
 export interface Option {
   description?: string
-  default?: string
+  default?: any
 }
 export interface CommandDetails<Commander> {
   cmd: string

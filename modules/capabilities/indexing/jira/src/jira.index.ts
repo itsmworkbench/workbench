@@ -157,6 +157,7 @@ export const jiraTcs = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, jiraD
 
 export type JiraIndexedIssue = {
   id: string
+  type: 'jira'
   self: string
   key: string
   project: string
@@ -174,6 +175,7 @@ export type JiraIndexedIssue = {
 export async function jiraIssueToIndexedJiraIssue ( j: JiraIssue ): Promise<JiraIndexedIssue> {
   return {
     id: j.id,
+    type: 'jira',
     self: j.self,
     key: j.fields.project.key,
     project: j.fields.project.self,
@@ -196,48 +198,45 @@ export function allComments ( j: JiraIssue ) {
 export function fromJiraDocOrString ( d: JiraDoc | string ): string {
   return typeof d === 'string' ? d : getAllParagraphContent ( d )
 }
-export function indexJiraProject ( ic: IndexingContext, tc: IndexParentChildTc<JiraProjectDetail, JiraIssue, JiraIssuePaging>, indexer: Indexer<JiraIndexedIssue>, executeOptions: ExecuteIndexOptions ) {
-  const indexerForProject = indexParentChild ( ic.parentChildLogAndMetrics,
-    tc, JiraIssuePagingTc,
-    jiraIssueToIndexedJiraIssue,
-    ( projectkey, issue ) => `${projectkey}_${issue.id}`,
-    executeOptions ) ( indexer )
-  return async ( projectkey: string ) => {
-    await indexerForProject ( projectkey )
-  }
-}
-export function indexJiraProjectsForActors ( ic: IndexingContext,
-                                             tc: IndexForestTc<JiraRolesForProject, JiraActor, JiraIssuePaging>,
-                                             actorFn: ( name: string ) => Promise<void>,
-                                             roleFn: ( name: string ) => Promise<void>,
-                                             unknownFn: ( name: string, actorType: string ) => Promise<void>
-) {
-  const indexerForProject = indexForestOfTrees ( ic.forestLogAndMetrics,
-    tc,
-    JiraIssuePagingTc,
-    forestId => async ( actor: JiraActor ) => {
-      if ( actor.type === 'atlassian-user-role-actor' )
-        return actorFn ( actor.name )
-      else if ( actor.type === 'atlassian-group-role-actor' )
-        return roleFn ( actor.name )
-      else
-        return unknownFn ( actor.name, actor.type )
-    } )
-  return async ( projectkey: string ) => {
-    await indexerForProject ( projectkey )
-  }
-}
 
+// export function indexJiraProjectsForActors ( ic: IndexingContext,
+//                                              tc: IndexForestTc<JiraRolesForProject, JiraActor, JiraIssuePaging>,
+//                                              actorFn: ( name: string ) => Promise<void>,
+//                                              roleFn: ( name: string ) => Promise<void>,
+//                                              unknownFn: ( name: string, actorType: string ) => Promise<void>
+// ) {
+//   const indexerForProject = indexForestOfTrees ( ic.forestLogAndMetrics,
+//     tc,
+//     JiraIssuePagingTc,
+//     forestId => async ( actor: JiraActor ) => {
+//       if ( actor.type === 'atlassian-user-role-actor' )
+//         return actorFn ( actor.name )
+//       else if ( actor.type === 'atlassian-group-role-actor' )
+//         return roleFn ( actor.name )
+//       else
+//         return unknownFn ( actor.name, actor.type )
+//     } )
+//   return async ( projectkey: string ) => {
+//     await indexerForProject ( projectkey )
+//   }
+// }
+export function indexJiraProject ( ic: IndexingContext, tc: IndexParentChildTc<JiraProjectDetail, JiraIssue, JiraIssuePaging>, indexer: Indexer<JiraIndexedIssue>, executeOptions: ExecuteIndexOptions ) {
+  return async ( projectkey: string ) => {
+    await indexParentChild ( ic.parentChildLogAndMetrics,
+      tc, JiraIssuePagingTc,
+      jiraIssueToIndexedJiraIssue,
+      ( projectkey, issue ) => `${projectkey}_${issue.id}`,
+      executeOptions ) ( indexer ) ( projectkey )
+  }
+}
 export function indexJiraFully ( nf: IndexTreeNonFunctionals,
                                  ic: IndexingContext,
                                  issueIndexer: ( fileTemplate: string, indexId: string ) => Indexer<JiraIndexedIssue>,
-                                 memberIndexer: ( fileTemplate: string, indexId: string ) => Indexer<any>,
                                  executeOptions: ExecuteIndexOptions ) {
   return async ( jira: JiraDetails ) => {
     const { jiraProjectsForestTc, jiraProjectToIssueTc } = jiraTcs ( nf, ic, jira, executeOptions.since )
     const indexer = indexForestOfTrees ( ic.forestLogAndMetrics, jiraProjectsForestTc, NoPagingTc,
       _ => indexJiraProject ( ic, jiraProjectToIssueTc, issueIndexer ( jira.file, jira.index ), executeOptions ) )
-    await indexer ( '/' )// THere isn't really a root for Jira.
+    await indexer ( '/' )// There isn't really a root for Jira.
   }
-
 }
