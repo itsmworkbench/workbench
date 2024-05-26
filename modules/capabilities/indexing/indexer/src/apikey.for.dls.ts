@@ -24,12 +24,14 @@ export type ApiKeyDetails = {
   elasticSearchUrl: string
   index: string[]
   headers: NameAnd<string>
+  deletePrevious: boolean
 }
 export function apiKeyDetails ( opts: NameAnd<any>, env: NameAnd<string> ): ApiKeyDetails {
   return {
     username: opts.username,
     elasticSearchUrl: opts.elasticSearch.toString (),
     index: opts.index || [],
+    deletePrevious: opts.invalidatePrevious || false,
     headers: getElasticSearchAuthHeaderWithBasicToken ( env, opts.username, opts.password )
   }
 }
@@ -75,5 +77,32 @@ export async function makeApiKey ( fetchFn: FetchFn, apiDetails: ApiKeyDetails, 
   } )
   console.log ( JSON.stringify ( body, null, 2 ) )
   if ( response.ok ) return { ...await response.json (), username: apiDetails.username }
+  throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
+}
+
+type ElasticSearchApiKey = { id: string, name: string }
+
+
+export const fetchAllApiKeys = async ( fetchFn: FetchFn, apiDetails: ApiKeyDetails ): Promise<ElasticSearchApiKey[]> => {
+  const response = await fetchFn ( `${apiDetails.elasticSearchUrl}_security/api_key`, {
+    headers: apiDetails.headers
+  } )
+  if ( response.ok ) return (await response.json ()).api_keys
+  throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
+}
+
+export const findApiKeysForEmail = ( fetchFn: FetchFn, apiDetails: ApiKeyDetails ) => async ( email: string ) => {
+  const apiKeys = await fetchAllApiKeys ( fetchFn, apiDetails )
+  return apiKeys.filter ( k => k.name === `dls_for_${email}` )
+}
+export const invalidateApiKeysForEmail = ( fetchFn: FetchFn, apiDetails: ApiKeyDetails ) => async ( email: string ) => {
+  const apiKeys = await findApiKeysForEmail ( fetchFn, apiDetails ) ( email )
+  console.log ( 'deleting', apiKeys )
+  const response = await fetchFn ( `${apiDetails.elasticSearchUrl}_security/api_key`, {
+    headers: { ...apiDetails.headers, 'Content-Type': 'application/json' },
+    method: 'Delete',
+    body: JSON.stringify ( { ids: apiKeys.map ( k => k.id ) } )
+  } )
+  if ( response.ok ) return await response.json ()
   throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
 }

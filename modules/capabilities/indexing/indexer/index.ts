@@ -31,9 +31,9 @@ const makeContext = (): IndexerContext => ({
     res.headers.forEach ( ( value, name ) => {
       headers[ name ] = value
     } )
-    if (res.status===403){
-      console.log('403')
-      console.log(await res.text())
+    if ( res.status === 403 ) {
+      console.log ( '403' )
+      console.log ( await res.text () )
     }
     const result: FetchFnResponse = {
       status: res.status,
@@ -53,6 +53,6 @@ makeCli<Commander12, IndexerContext, NoConfig, NoConfig> ( makeContext (), confi
     reportErrors ( commander )
     process.exit ( 1 )
   }
-  cliTc.addSubCommand ( commander, indexerCommands ( commander ) )
+  indexerCommands ( commander , cliTc)
   return await cliTc.execute ( commander.commander, process.argv )
 } )
