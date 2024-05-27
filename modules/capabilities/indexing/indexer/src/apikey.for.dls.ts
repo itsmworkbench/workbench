@@ -31,7 +31,7 @@ export function apiKeyDetails ( opts: NameAnd<any>, env: NameAnd<string> ): ApiK
     username: opts.username,
     elasticSearchUrl: opts.elasticSearch.toString (),
     index: opts.index || [],
-    deletePrevious: opts.invalidatePrevious || false,
+    deletePrevious: opts.deletePrevious || false,
     headers: getElasticSearchAuthHeaderWithBasicToken ( env, opts.username, opts.password )
   }
 }

@@ -125,6 +125,7 @@ export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: Contex
       '--debug': { description: 'Show debug information' },
     },
     action: async ( _, opts, email ) => {
+      console.log(opts)
       const details = apiKeyDetails ( opts, tc.context.env )
       await startKoa ( 'target/indexer', Number.parseInt ( opts.port.toString () ), opts.debug === true,
         apiKeyHandlers ( tc.context.fetch, details ) )
@@ -132,7 +133,7 @@ export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: Contex
     }
   }
 }
-export function removeApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
+export function removeApiKeyCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
   return {
     cmd: 'removeApiKey <email>',
     description: 'remove api keys for the specified email',
@@ -169,7 +170,7 @@ export function indexerCommands<Commander, Config, CleanConfig> ( tc: ContextCon
 ) {
   cliTc.addCommands ( tc, [
     addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc ),
-    removeApiKeyApiCommand<Commander, Config, CleanConfig> ( tc ),
+    removeApiKeyCommand<Commander, Config, CleanConfig> ( tc ),
     addConfigCommand<Commander, Config, CleanConfig> ( tc ),
     addIndexCommand<Commander, Config, CleanConfig> ( tc ),
     addPushCommand<Commander, Config, CleanConfig> ( tc ),

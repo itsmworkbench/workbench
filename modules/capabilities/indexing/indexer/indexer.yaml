@@ -39,6 +39,18 @@ index:
       indexPeople: false
       baseurl: "https://jira.eon.com/"
       apiVersion: "2"
+  gitlab:
+    target:
+      file: "target/index/{index}/Project_{id_3}_{num}.json"
+    scan:
+      baseurl: "https://gitlab.com/"
+      auth:
+        method: 'PrivateToken'
+        credentials:
+          token: 'GITLAB_TOKEN'
+      projects:
+        - "validoc" #I think this needs work on it... We need to start thinking about groups...
+
 
   #  github:
   #    scan:
@@ -49,17 +61,6 @@ index:
   #        - phil-rice-HCL
   #      #        - phil-rice
   #      indexPeople: true
-    gitlab:
-      target:
-        file: "target/index/{index}/Project_{id_3}_{num}.json"
-      scan:
-        baseurl: "https://gitlab.com/"
-        auth:
-          method: 'PrivateToken'
-          credentials:
-            token: 'GITLAB_TOKEN'
-        projects:
-          - "validoc" #I think this needs work on it... We need to start thinking about groups...
   #  jira1:
   #    type: jira
   #    scan:
@@ -73,18 +74,18 @@ index:
   #      indexPeople: true
   #      baseurl: "https://validoc.atlassian.net/"
   #      apiVersion: "3"
-  confluence:
-    query:
-      throttle:
-        max: 100
-        tokensPer100ms: 0.1
-    scan:
-      baseurl: "https://confluence.eon.com/"
-      auth:
-        method: 'ApiKey'
-        credentials:
-          apiKey: 'CONFLUENCE_TOKEN'
-      index: 'confluence'
+#  confluence:
+#    query:
+#      throttle:
+#        max: 100
+#        tokensPer100ms: 0.1
+#    scan:
+#      baseurl: "https://confluence.eon.com/"
+#      auth:
+#        method: 'ApiKey'
+#        credentials:
+#          apiKey: 'CONFLUENCE_TOKEN'
+#      index: 'confluence'
 
 #  jira2:
 #    type: jira

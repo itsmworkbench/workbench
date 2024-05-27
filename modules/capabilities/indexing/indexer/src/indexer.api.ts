@@ -2,7 +2,7 @@ import { ContextAndStats, defaultShowsError, KoaPartialFunction, notFoundIs404 }
 import { chainOfResponsibility } from "@itsmworkbench/utils";
 import { NameAnd } from "@laoban/utils";
 import { FetchFn, IndexTreeNonFunctionals } from "@itsmworkbench/indexing";
-import { ApiKeyDetails, loadQueriesForEmail, makeApiKey } from "./apikey.for.dls";
+import { ApiKeyDetails, invalidateApiKeysForEmail, loadQueriesForEmail, makeApiKey } from "./apikey.for.dls";
 
 
 export const getMetrics = ( metrics: NameAnd<number>, nfcs: IndexTreeNonFunctionals[] ): KoaPartialFunction => {
@@ -36,6 +36,10 @@ export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails ): KoaPartialF
       const { elasticSearchUrl, index, headers } = details
       const email = decodeURIComponent ( ctx.context.request.path.substring ( 8 ) )
       try {
+        console.log('delete', details.deletePrevious)
+        if ( details.deletePrevious ) {
+          console.log ( await invalidateApiKeysForEmail ( fetch, details ) ( email ) )
+        }
         const response = await makeApiKey ( fetch, details, email, await loadQueriesForEmail ( fetch, details, email ) )
         ctx.context.body = JSON.stringify ( response, null, 2 )
         ctx.context.set ( 'Content-Type', 'application/json' );
