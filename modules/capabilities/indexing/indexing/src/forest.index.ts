@@ -1,6 +1,7 @@
 import { mapK, NameAnd } from "@laoban/utils";
-import { K1, PagingTc, withConcurrencyLimit, WithPaging, withRetry, withThrottle } from "@itsmworkbench/kleislis";
+import { K1, withConcurrencyLimit, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
+import { PagingTc, WithPaging } from "./paging";
 
 
 export interface IndexForestTc<Forest, Tree, Paging> {

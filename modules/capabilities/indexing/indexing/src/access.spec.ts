@@ -103,7 +103,7 @@ describe ( 'authForEntraId', () => {
       json: async () => tokenResponse,
     } as FetchFnResponse );
 
-    const result = await authForEntraId ( fetchMock, oauthMock );
+    const result = await authForEntraId ( {}, fetchMock, oauthMock );
 
     expect ( result ).toEqual ( { token: 'new-access-token', expires: 3600 } );
     expect ( fetchMock ).toHaveBeenCalledWith (
@@ -130,7 +130,7 @@ describe ( 'authForEntraId', () => {
       statusText: 'Bad Request',
     } as FetchFnResponse );
 
-    await expect ( authForEntraId ( fetchMock, oauthMock ) ).rejects.toThrow ( 'Error fetching access token: Bad Request' );
+    await expect ( authForEntraId ( {}, fetchMock, oauthMock ) ).rejects.toThrow ( 'Error fetching access token: Bad Request' );
   } );
 } );
 

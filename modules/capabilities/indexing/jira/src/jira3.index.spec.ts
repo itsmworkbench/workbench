@@ -1,8 +1,7 @@
-import { indexJiraFully, indexJiraProject, JiraDetails, JiraProjectToIssueTc, jiraTcs } from "./jira.index";
+import { indexJiraFully, indexJiraProject, JiraDetails, JiraProjectToIssueTc } from "./jira.index";
 import { defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberForestLogsAndMetrics, rememberIndex, rememberIndexParentChildLogsAndMetrics, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
 import fetch from "node-fetch";
 import { NameAnd } from "@laoban/utils";
-import { githubTcs } from "@itsmworkbench/indexing_github";
 import { DateTimeService } from "@itsmworkbench/utils";
 
 const msgs: string[] = []
@@ -24,6 +23,7 @@ let fetchFn = async ( url, options ) => {
   return result;
 };
 export const indexContext: IndexingContext = {
+  timeService: DateTimeService,
   authFn: defaultAuthFn ( process.env, fetchFn, DateTimeService ),
   treeLogAndMetrics: rememberIndexTreeLogAndMetrics ( msgs ),
   forestLogAndMetrics: rememberForestLogsAndMetrics ( msgs ),
@@ -55,7 +55,7 @@ describe ( "jira integration spec for jira3 (validox.atlassian.net)", () => {
     stopNonFunctionals ( nfs )
   } );
   it ( "should index a single project", async () => {
-    const tc = JiraProjectToIssueTc ( indexContext, jiraDetails )
+    const tc = JiraProjectToIssueTc ( indexContext, jiraDetails, undefined )
     const indexer = indexJiraProject ( indexContext, tc, rememberIndex ( '', remember ), {} )
     await indexer ( 'KAN' )
     expect ( remember ).toEqual ( [
@@ -76,7 +76,6 @@ describe ( "jira integration spec for jira3 (validox.atlassian.net)", () => {
   it ( "should index jira fully", async () => {
     const indexer = indexJiraFully ( nfs, indexContext,
       ( fileTemplate: string, indexId: string ) => rememberIndex ( 'file', remember ),
-      ( fileTemplate: string, indexId: string ) => rememberIndex ( 'member', remember ),
       {} )
     await indexer ( jiraDetails )
     expect ( remember ).toEqual ( [

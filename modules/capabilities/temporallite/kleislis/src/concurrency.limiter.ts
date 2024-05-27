@@ -1,6 +1,5 @@
 // Define a generic function type that takes an input and returns a promise with an output
 import { K0, K1, K2, K3, K4, K5 } from "./kleisli";
-import { LogConfig0, LogFn } from "./log";
 
 
 // Type for tasks in the concurrency limiter's queue

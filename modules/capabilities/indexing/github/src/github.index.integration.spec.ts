@@ -25,6 +25,7 @@ let fetchFn = async ( url, options ) => {
   return result;
 };
 export const indexContext: IndexingContext = {
+  timeService:DateTimeService,
   authFn: defaultAuthFn ( process.env, fetchFn, DateTimeService ),
   treeLogAndMetrics: rememberIndexTreeLogAndMetrics ( msgs ),
   forestLogAndMetrics: rememberForestLogsAndMetrics ( msgs ),

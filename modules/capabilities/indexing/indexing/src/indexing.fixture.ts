@@ -2,7 +2,7 @@ import { fromEntries, NameAnd } from "@laoban/utils";
 import { IndexForestTc } from "./forest.index";
 import { IndexTreeTc } from "./tree.index";
 import { IndexParentChildTc } from "./index.parent.child";
-import { PagingTc, WithPaging } from "@itsmworkbench/kleislis";
+import { PagingTc, WithPaging } from "./paging";
 
 export type IndexTestFolder = {
   leafs: string[]

@@ -1,5 +1,4 @@
-import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, noPagingAccessConfig, SourceSinkDetails } from "@itsmworkbench/indexing";
-import { NoPaging, NoPagingTc, PagingTc } from "@itsmworkbench/kleislis";
+import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, NoPaging, noPagingAccessConfig, NoPagingTc, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
 import { safeArray } from "@laoban/utils";
 
 export interface JiraDetails extends SourceSinkDetails {

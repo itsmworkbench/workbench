@@ -1,7 +1,8 @@
-import { PagingTc, stopThrottling, Task, withConcurrencyLimit, WithPaging, withRetry, withThrottle } from "@itsmworkbench/kleislis";
+import { stopThrottling, Task, withConcurrencyLimit, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { mapK, NameAnd } from "@laoban/utils";
 import { Indexer } from "./indexer.domain";
+import { PagingTc, WithPaging } from "./paging";
 
 export type IndexTreeTc<Folder, Leaf, IndexedLeaf, Paging> = {
   folderIds: ( rootId: string, parentId: string | undefined, f: Folder ) => string[];

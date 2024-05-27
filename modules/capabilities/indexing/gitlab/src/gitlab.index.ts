@@ -1,6 +1,6 @@
-import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, SourceSinkDetails } from "@itsmworkbench/indexing";
+import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, NoPaging, NoPagingTc, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
 import { mapK, safeArray } from "@laoban/utils";
-import { K1, NoPaging, NoPagingTc, PagingTc } from "@itsmworkbench/kleislis";
+import { K1, } from "@itsmworkbench/kleislis";
 
 export interface GitlabDetails extends SourceSinkDetails {
   index: string;

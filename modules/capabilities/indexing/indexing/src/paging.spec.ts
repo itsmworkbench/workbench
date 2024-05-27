@@ -1,6 +1,7 @@
 // Array of mock return values
 import { fetchArrayWithPaging, fetchWithPaging, PagingTc, WithPaging } from "./paging";
-import { FetchFnOptions, FetchFnResponse, rememberIndexParentChildLogsAndMetrics } from "@itsmworkbench/indexing";
+import { FetchFnOptions, FetchFnResponse } from "./access";
+import { rememberIndexParentChildLogsAndMetrics } from "./index.parent.child";
 
 const remembered: any[ ] = []
 const msgs: string[] = []

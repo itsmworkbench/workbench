@@ -1,5 +1,5 @@
-import { ExecuteIndexOptions, FetchFn, Indexer, IndexingContext, IndexTreeNonFunctionals, SourceSinkDetails } from "@itsmworkbench/indexing";
-import { fetchArrayWithPaging, FetchArrayWithPagingType, fetchOneItem, PagingTc, withRetry, withThrottle } from "@itsmworkbench/kleislis";
+import { ExecuteIndexOptions, fetchArrayWithPaging, FetchArrayWithPagingType, FetchFn, fetchOneItem, Indexer, IndexingContext, IndexTreeNonFunctionals, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
+import {  withRetry, withThrottle } from "@itsmworkbench/kleislis";
 
 export interface ConfluenceDetails extends SourceSinkDetails {
   index: string;

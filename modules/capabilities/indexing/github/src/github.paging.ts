@@ -1,6 +1,6 @@
-import { AccessConfig } from "@itsmworkbench/indexing";
+import { AccessConfig, PagingTc } from "@itsmworkbench/indexing";
 import {} from "@itsmworkbench/indexing";
-import { PagingTc } from "@itsmworkbench/kleislis";
+import {  } from "@itsmworkbench/kleislis";
 
 export type GitHubPaging = {
   next?: string

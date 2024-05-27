@@ -1,4 +1,4 @@
-import { indexJiraFully, indexJiraProject, indexJiraProjectsForActors, JiraDetails, JiraProjectToIssueTc, jiraProjectToMembersTc } from "./jira.index";
+import { indexJiraFully, indexJiraProject, JiraDetails, JiraProjectToIssueTc, jiraProjectToMembersTc } from "./jira.index";
 import { defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberForestLogsAndMetrics, rememberIndex, rememberIndexParentChildLogsAndMetrics, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
 import fetch from "node-fetch";
 import { NameAnd } from "@laoban/utils";
@@ -23,6 +23,7 @@ let fetchFn = async ( url, options ) => {
   return result;
 };
 export const indexContext: IndexingContext = {
+  timeService: DateTimeService,
   authFn: defaultAuthFn ( process.env, fetchFn, DateTimeService ),
   treeLogAndMetrics: rememberIndexTreeLogAndMetrics ( msgs ),
   forestLogAndMetrics: rememberForestLogsAndMetrics ( msgs ),
@@ -54,7 +55,7 @@ describe ( "jira integration spec for jira 2 (localhost)", () => {
     stopNonFunctionals ( nfs )
   } );
   it ( "should index a single project", async () => {
-    const tc = JiraProjectToIssueTc ( indexContext, jiraDetails )
+    const tc = JiraProjectToIssueTc ( indexContext, jiraDetails, undefined )
     const indexer = indexJiraProject ( indexContext, tc, rememberIndex ( '', remember ), {} )
     await indexer ( 'KAN' )
     expect ( remember ).toEqual ( [
@@ -68,23 +69,10 @@ describe ( "jira integration spec for jira 2 (localhost)", () => {
       "finishedParent: KAN"
     ] )
   } )
-  it ( "should index people ", async () => {
-    const tc = jiraProjectToMembersTc ( indexContext, jiraDetails )
-    const indexer = indexJiraProjectsForActors ( indexContext, tc, async name => {remember.push ( `actor: ${name}` )},
-      async ( name ) => {remember.push ( `group: ${name}` )},
-      async ( name, type ) => {remember.push ( `unknown role: ${name} / ${type}` )} )
-    await indexer ( 'KAN' )
-    expect ( remember ).toEqual ( [
-      "asd"
-    ] )
-    expect ( msgs ).toEqual ( [] );
-  } )
-
   it ( "should index jira fully", async () => {
     const indexer = indexJiraFully ( nfs, indexContext,
       ( fileTemplate: string, indexId: string ) => rememberIndex ( 'file', remember ),
-      ( fileTemplate: string, indexId: string ) => rememberIndex ( 'member', remember ),
-      {} )
+       {} )
     await indexer ( jiraDetails )
     expect ( remember ).toEqual ( [
       "Started: file KAN",

@@ -2,7 +2,8 @@ import { Indexer, } from "./indexer.domain";
 import { ExecuteIndexOptions } from "./tree.index";
 import { mapK, NameAnd } from "@laoban/utils";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
-import { PagingTc, withConcurrencyLimit, WithPaging, withRetry, withThrottle } from "@itsmworkbench/kleislis";
+import { withConcurrencyLimit, withRetry, withThrottle } from "@itsmworkbench/kleislis";
+import { PagingTc, WithPaging } from "./paging";
 
 export type IndexParentChildLogAndMetrics = {
   parentId: ( parentId: string, page: string ) => void;

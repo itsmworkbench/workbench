@@ -3,8 +3,8 @@ import { consoleIndexTreeLogAndMetrics, defaultTreeLogAndMetrics, IndexTreeLogAn
 import { consoleIndexForestLogAndMetrics, defaultForestLogAndMetrics, IndexForestLogAndMetrics } from "./forest.index";
 import { ApiKeyAuthentication, Authentication, BasicAuthentication, EntraIdAuthentication, isApiKeyAuthentication, isBasicAuthentication, isEntraIdAuthentication, isPrivateTokenAuthentication, PrivateTokenAuthentication } from "@itsmworkbench/indexconfig";
 import { consoleIndexParentChildLogAndMetrics, defaultIndexParentChildLogAndMetrics, IndexParentChildLogAndMetrics } from "./index.parent.child";
-import { WithPaging } from "@itsmworkbench/kleislis";
 import { DateTimeService, Timeservice } from "@itsmworkbench/utils";
+import { WithPaging } from "./paging";
 
 export type TokenAuthentication = {
   token: string
