@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/apifetchemail",
   "description": "code to support the api/fetchemail integration",
-  "version": "0.0.43",
+  "version": "0.0.44",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -19,9 +19,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.43",
-    "@itsmworkbench/koa": "0.0.43",
-    "@itsmworkbench/fetchemail": "0.0.43",
+    "@itsmworkbench/utils": "0.0.44",
+    "@itsmworkbench/koa": "0.0.44",
+    "@itsmworkbench/fetchemail": "0.0.44",
     "debug": "^4.3.4"
   },
   "devDependencies": {

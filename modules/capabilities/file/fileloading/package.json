@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/fileloading",
   "description": "A event source library for node.js backed with a file",
-  "version": "0.0.43",
+  "version": "0.0.44",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,10 +23,10 @@
     "node": "^v14.4.0",
     "@laoban/utils": "1.4.51",
     "@focuson/lens": "1.44.3",
-    "@itsmworkbench/utils": "0.0.43",
-    "@itsmworkbench/events": "0.0.43",
-    "@itsmworkbench/kleislis": "0.0.43",
-    "@itsmworkbench/eventstore": "0.0.43",
+    "@itsmworkbench/utils": "0.0.44",
+    "@itsmworkbench/events": "0.0.44",
+    "@itsmworkbench/kleislis": "0.0.44",
+    "@itsmworkbench/eventstore": "0.0.44",
     "debug": "^4.3.4"
   },
   "devDependencies": {

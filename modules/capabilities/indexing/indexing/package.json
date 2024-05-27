@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/indexing",
   "description": "general code to help with indexing",
-  "version": "0.0.43",
+  "version": "0.0.44",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,9 +22,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/indexconfig": "0.0.43",
-    "@itsmworkbench/utils": "0.0.43",
-    "@itsmworkbench/kleislis": "0.0.43",
+    "@itsmworkbench/indexconfig": "0.0.44",
+    "@itsmworkbench/utils": "0.0.44",
+    "@itsmworkbench/kleislis": "0.0.44",
     "debug": "^4.3.4"
   },
   "devDependencies": {

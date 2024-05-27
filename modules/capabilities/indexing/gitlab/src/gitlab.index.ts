@@ -1,6 +1,7 @@
 import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, NoPaging, NoPagingTc, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
 import { mapK, safeArray } from "@laoban/utils";
 import { K1, } from "@itsmworkbench/kleislis";
+import { GitLabMemberDetails, indexGitLabMembers, indexGitLabRepoToMembersTc, indexGitLabUserToGitLabMemberDetails } from "./gitlab.dls";
 
 export interface GitlabDetails extends SourceSinkDetails {
   index: string;
@@ -37,7 +38,7 @@ export function parseLinkHeader ( linkHeader: string | null ): GitlabPaging {
   return {};  // Return undefined if no 'next' link is found
 }
 
-const gitlabAccessOptions: AccessConfig<GitlabPaging> = {
+export const gitlabAccessOptions: AccessConfig<GitlabPaging> = {
   pagingFn: ( json, linkHeader ) => parseLinkHeader ( linkHeader )
 }
 
@@ -114,50 +115,6 @@ export function indexGitlabProjects ( ic: IndexingContext, tc: IndexForestTc<Git
     indexerForProject ( projectId )
 }
 
-
-export type GitLabUser = {
-  id: string
-  username: string
-  name: string
-  membership_state: 'active'
-}
-export type GitLabMemberDetails = {
-  id: string
-  username: string
-  public_email: string
-}
-export function indexGitLabRepoToMembersTc ( ic: IndexingContext, details: GitlabDetails ): IndexForestTc<GitLabUser[], GitLabUser, GitlabPaging> {
-  return {
-    fetchForest: ( projectId, page ) =>
-      access ( ic, details, page.next ? page.next : `api/v4/projects/${projectId}/members/all`, gitlabAccessOptions ),
-    treeIds: ( users ) => users.filter ( u => u.membership_state === 'active' ),
-    treeToString: ( u ) => `${u.id}/${u.username}`
-  }
-}
-
-export function indexGitLabUserToGitLabMemberDetails ( ic: IndexingContext, details: GitlabDetails ): IndexParentChildTc<GitLabMemberDetails, GitLabMemberDetails, NoPaging> {
-  return {
-    fetchParent: ( projectId, page ) =>
-      access ( ic, details, `api/v4/users/${projectId}`, gitlabAccessOptions ),
-    children: ( parentId, parent ) => [ parent ],
-    // treeToString: ( u ) => `${u.id}/${u.username}`
-  }
-}
-
-export function indexGitLabMembers ( ic: IndexingContext,
-                                     tcToUser: IndexForestTc<GitLabUser[], GitLabUser, GitlabPaging>,
-                                     tcToMember: IndexParentChildTc<GitLabMemberDetails, GitLabMemberDetails, NoPaging>,
-                                     indexer: Indexer<GitLabMemberDetails>,
-                                     executeOptions: ExecuteIndexOptions ): ( projectId: string ) => Promise<void> {
-  const indexerForMembers: ( forestId: string ) => Promise<void> =
-          indexParentChild ( ic.parentChildLogAndMetrics,
-            tcToMember, GitlabPagingTc,
-            async ( p ) => ({ id: p.id, username: p.username, public_email: p.public_email }),
-            ( p, c ) => c.id,
-            executeOptions ) ( indexer )
-  const indexerForUsers = indexForestOfTrees ( ic.forestLogAndMetrics, tcToUser, NoPagingTc, pid => u => indexerForMembers ( u.id.toString () ) )
-  return ( projectId: string ) => indexerForUsers ( projectId )
-}
 
 export function indexGitlabFully ( nfc: IndexTreeNonFunctionals, ic: IndexingContext,
                                    fileIndexer: ( fileTemplate: string, indexId: string ) => Indexer<GitLabIndexedFile>,

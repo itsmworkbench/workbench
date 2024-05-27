@@ -4,8 +4,7 @@ import { mapK, NameAnd } from "@laoban/utils";
 export function getElasticSearchToken ( env: NameAnd<string>, token: string | boolean ) {
   const tokenValue = env[ token.toString () ]
   if ( tokenValue === undefined ) {
-    console.log ( 'Environment variable [' + token + '] not defined' )
-    process.exit ( 2 )
+    throw new Error ( 'Environment variable [' + token + '] not defined' )
   }
   return tokenValue;
 }
