@@ -28,7 +28,8 @@ export function insertIntoFile<T> ( ins: InsertIntoFile<T> ): Indexer<T> {
     finished: async ( id: string ) => {
       allData[ id ] = allData[ id ] || [];
       const data = allData[ id ]
-      await appendFile ( ins.file ( id?.toString () ), data );
+      let file = ins.file ( id?.toString () );
+      await appendFile ( file, data );
       allData[ id ] = [];
     },
     failed: async ( id: string, e: any ) => {

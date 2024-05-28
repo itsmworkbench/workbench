@@ -83,13 +83,13 @@ export const indexConfluenceAcl = ( ic: IndexingContext, nfs: IndexTreeNonFuncti
   return async ( details: ConfluenceAclDetails ) => {
     const indexer: Indexer<any> = indexerFn ( details.file, details.index )
     await indexer.start ( details.index )
-    const headers = await ic.authFn ( details.auth )
-    const userToSpaces = await findUserToSpaces ( fOne, fArray, headers, details )
-    for ( const [ user, spaces ] of Object.entries ( userToSpaces ) ) {
-      let result = convertConfDetailsToAclRecord ( user, spaces );
-      await indexer.processLeaf ( details.index, result._id ) ( result.data )
-    }
     try {
+      const headers = await ic.authFn ( details.auth )
+      const userToSpaces = await findUserToSpaces ( fOne, fArray, headers, details )
+      for ( const [ user, spaces ] of Object.entries ( userToSpaces ) ) {
+        let result = convertConfDetailsToAclRecord ( user, spaces );
+        await indexer.processLeaf ( details.index, result._id ) ( result.data )
+      }
       await indexer.finished ( details.index )
     } catch ( e ) {
       await indexer.failed ( details.index, e )
