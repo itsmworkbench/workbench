@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="indexer - since" type="NodeJSConfigurationType" application-parameters="index index --api --keep --since 2d" node-parameters="-r ts-node/register " path-to-js-file="index.ts" working-dir="$PROJECT_DIR$/modules/capabilities/indexing/indexer">
+  <configuration default="false" name="indexer - since" type="NodeJSConfigurationType" application-parameters="index index --api --keep --since 1d" node-parameters="-r ts-node/register " path-to-js-file="index.ts" working-dir="$PROJECT_DIR$/modules/capabilities/indexing/indexer">
     <method v="2" />
   </configuration>
 </component>

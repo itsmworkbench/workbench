@@ -27,18 +27,18 @@ index:
     scan:
       groupMembersFile: 'group.members.csv'
       index: '.search-acl-filter-jira-prod'
-  jiraProd:
-    type: jira
-    scan:
-      auth:
-        method: 'ApiKey'
-        credentials:
-          apiKey: 'JIRA_PROD'
-      index: jira-prod
-      projects: "*"
-      indexPeople: false
-      baseurl: "https://jira.eon.com/"
-      apiVersion: "2"
+  #  jiraProd:
+  #    type: jira
+  #    scan:
+  #      auth:
+  #        method: 'ApiKey'
+  #        credentials:
+  #          apiKey: 'JIRA_PROD'
+  #      index: jira-prod
+  #      projects: "*"
+  #      indexPeople: false
+  #      baseurl: "https://jira.eon.com/"
+  #      apiVersion: "2"
   gitlab:
     target:
       file: "target/index/{index}/Project_{id_3}_{num}.json"
@@ -50,6 +50,29 @@ index:
           token: 'GITLAB_TOKEN'
       projects:
         - "validoc" #I think this needs work on it... We need to start thinking about groups...
+  confluenceAcl:
+    type: confluenceAcl
+    scan:
+      baseurl: "https://confluence.eon.com/"
+      spaces:
+        - m8nmvp1
+      auth:
+        method: 'ApiKey'
+        credentials:
+          apiKey: 'CONFLUENCE_TOKEN'
+      index: '.search-acl-filter-confluence-prod'
+  confluence:
+    query:
+      throttle:
+        max: 100
+        tokensPer100ms: 0.1
+    scan:
+      baseurl: "https://confluence.eon.com/"
+      auth:
+        method: 'ApiKey'
+        credentials:
+          apiKey: 'CONFLUENCE_TOKEN'
+      index: 'confluence-prod'
 
 
   #  github:
@@ -74,18 +97,6 @@ index:
   #      indexPeople: true
   #      baseurl: "https://validoc.atlassian.net/"
   #      apiVersion: "3"
-#  confluence:
-#    query:
-#      throttle:
-#        max: 100
-#        tokensPer100ms: 0.1
-#    scan:
-#      baseurl: "https://confluence.eon.com/"
-#      auth:
-#        method: 'ApiKey'
-#        credentials:
-#          apiKey: 'CONFLUENCE_TOKEN'
-#      index: 'confluence'
 
 #  jira2:
 #    type: jira

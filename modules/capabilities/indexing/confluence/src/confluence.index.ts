@@ -1,5 +1,5 @@
 import { ExecuteIndexOptions, fetchArrayWithPaging, FetchArrayWithPagingType, FetchFn, fetchOneItem, Indexer, IndexingContext, IndexTreeNonFunctionals, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
-import {  withRetry, withThrottle } from "@itsmworkbench/kleislis";
+import { withRetry, withThrottle } from "@itsmworkbench/kleislis";
 
 export interface ConfluenceDetails extends SourceSinkDetails {
   index: string;
@@ -53,8 +53,9 @@ export type ConfluenceHistory = {
 
 export function pageForIndexing ( page: ConfluencePage ) {
   return {
-    id: page.id,
     type: 'confluence',
+    id: page.id,
+    space: page.space.key,
     status: page.status,
     title: page.title,
     body: page?.body?.view?.value,
@@ -86,7 +87,7 @@ export const indexConfluenceSpaces = ( ic: IndexingContext, nfs: IndexTreeNonFun
       const spacesTerm = ` AND space = "${space}"`
       const cql = `type=page${spacesTerm}${sinceTerm}`
       console.log ( `cql`, cql )
-      const indexer = indexerFn ( confluenceDetails.file, space )
+      const indexer = indexerFn ( confluenceDetails.file, confluenceDetails.index )
       let started = false;
       try {
         for await ( const summary of fArray<ConfluencePageSummary> ( `${confluenceDetails.baseurl}rest/api/search?cql=${encodeURIComponent ( cql )}`, options, useResults ) ) {
