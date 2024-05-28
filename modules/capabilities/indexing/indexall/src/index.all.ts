@@ -3,11 +3,10 @@ import { indexJiraFully } from "@itsmworkbench/indexing_jira";
 import { ExecuteIndexOptions, Indexer, IndexingContext, IndexTreeNonFunctionals } from "@itsmworkbench/indexing";
 import { PopulatedIndexItem } from "@itsmworkbench/indexconfig";
 import { NameAnd } from "@laoban/utils";
-import { indexGitlabFully } from "@itsmworkbench/indexing_gitlab";
+import { indexGitlabAcl, indexGitlabFully } from "@itsmworkbench/indexing_gitlab";
 import { indexConfluenceSpaces } from "@itsmworkbench/indexing_confluence";
 import { indexJiraAcl } from "@itsmworkbench/indexing_jira_acl";
 import { indexConfluenceAcl } from "@itsmworkbench/indexing_confluence_acl";
-import { indexGitlabAcl } from "@itsmworkbench/indexing_gitlab/src/gitlab.dls";
 
 export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
   return {

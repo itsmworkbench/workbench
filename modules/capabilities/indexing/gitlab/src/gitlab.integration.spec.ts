@@ -1,8 +1,9 @@
 import { addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberForestLogsAndMetrics, rememberIndex, rememberIndexParentChildLogsAndMetrics, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
 import fetch from "node-fetch";
 import { NameAnd } from "@laoban/utils";
-import { GitlabDetails, GitlabProject, gitlabProjectsTc, gitlabRepoTc, indexGitlabFully, indexGitLabMembers, indexGitlabProjects, indexGitlabRepo, indexGitLabRepoToMembersTc, indexGitLabUserToGitLabMemberDetails } from "./gitlab.index";
 import { DateTimeService } from "@itsmworkbench/utils";
+import { GitlabDetails, GitlabProject, gitlabProjectsTc, gitlabRepoTc, indexGitlabFully, indexGitlabProjects, indexGitlabRepo } from "./gitlab.index";
+import { GitlabAclDetails, indexGitLabMembers, indexGitLabRepoToMembersTc, indexGitLabUserToGitLabMemberDetails } from "./gitlab.dls";
 
 const msgs: string[] = []
 const remember: string[] = []
@@ -44,10 +45,27 @@ const gitlabDetails: GitlabDetails = {
     }
   },
 }
+const gitlabAclDetails: GitlabAclDetails = {
+  baseurl: "https://gitlab.com/",
+  index: 'gitlab',
+  file: 'gitlab-file',
+  projects: [ 'validoc' ],
+  idPattern: '{id}@validoc.org',
+  auth: {
+    method: 'PrivateToken',
+    credentials: {
+      token: 'GITLAB_TOKEN'
+    }
+  },
+}
 
 const project: GitlabProject = {
   "id": 57819826,
   "default_branch": "main",
+  namespace:{
+    kind: 'group',
+    parent_id: 21235180
+  }
 
 }
 describe ( "gitlab integration spec", () => {
@@ -91,8 +109,8 @@ describe ( "gitlab integration spec", () => {
   } )
 
   it ( "should index the members", async () => {
-    const indexUsersTc = indexGitLabRepoToMembersTc ( indexContext, gitlabDetails )
-    const indexMembersTc = indexGitLabUserToGitLabMemberDetails ( indexContext, gitlabDetails )
+    const indexUsersTc = indexGitLabRepoToMembersTc ( indexContext, gitlabAclDetails )
+    const indexMembersTc = indexGitLabUserToGitLabMemberDetails ( indexContext, gitlabAclDetails )
 
     await indexGitLabMembers ( indexContext, indexUsersTc, indexMembersTc, rememberIndex ( '', remember ), {} ) ( "57819826" )
     expect ( remember ).toEqual ( [
