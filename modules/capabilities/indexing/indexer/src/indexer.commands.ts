@@ -120,15 +120,16 @@ export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: Contex
       '-u, --username <username>': { description: 'elastic search username', default: 'Indexer_NPA' },
       '-p, --password <password>': { description: 'Variable name that holds the elastic search password', default: 'ELASTIC_SEARCH_PASSWORD' },
       '-d, --delete-previous': { description: 'invalidate previous if ask for new' },
+      '-s, --secret <secret>': { description: `Optional secret to validate the callers. If set then the caller must provide a bearer token in the authorization header equal to this value. There is only one secret` },
       '--port <port>': { description: 'The port to start the api on', default: '1236' },
       '--dryRun': { description: 'Show what would be done' },
       '--debug': { description: 'Show debug information' },
     },
     action: async ( _, opts, email ) => {
-      console.log(opts)
+      console.log ( opts )
       const details = apiKeyDetails ( opts, tc.context.env )
       await startKoa ( 'target/indexer', Number.parseInt ( opts.port.toString () ), opts.debug === true,
-        apiKeyHandlers ( tc.context.fetch, details ) )
+        apiKeyHandlers ( tc.context.fetch, details, opts.secret?.toString() ) )
       console.log ( `api key api running on port ${opts.port}` )
     }
   }

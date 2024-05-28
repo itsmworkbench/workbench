@@ -129,16 +129,10 @@ export function indexGitlabFully ( nfc: IndexTreeNonFunctionals, ic: IndexingCon
 
     const indexProjectsTc = addNonFunctionalsToIndexForestTc ( nfc, gitlabProjectsTc ( ic, details ) )
     const indexRepoTc = addNonFunctionalsToIndexParentChildTc ( nfc, gitlabRepoTc ( ic, details ) )
-    // const indexUsersTc = addNonFunctionalsToIndexForestTc ( nfc, indexGitLabRepoToMembersTc ( ic, details ) )
-    // const indexMembersTc = addNonFunctionalsToIndexParentChildTc ( nfc, indexGitLabUserToGitLabMemberDetails ( ic, details ) )
-    // const indexMembers = indexGitLabMembers ( ic, indexUsersTc, indexMembersTc, memberIndex ( details.file, details.aclIndex ), executeOptions )
 
     const projects = safeArray ( details.projects );
     const processOneProject = async ( p: GitlabProject ) => {
-      const projectResults = indexGitlabRepo ( ic, details, indexRepoTc, fileIndexer ( details.file, details.index ), executeOptions ) ( p );
-      // const memberResults = indexMembers ( p.id.toString () );
-      await projectResults;
-      // await memberResults;
+      await indexGitlabRepo ( ic, details, indexRepoTc, fileIndexer ( details.file, details.index ), executeOptions ) ( p );
     };
     await mapK ( projects, indexGitlabProjects ( ic, indexProjectsTc, processOneProject ) )
   }

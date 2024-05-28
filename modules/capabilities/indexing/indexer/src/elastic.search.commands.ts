@@ -61,7 +61,7 @@ export function addPushCommand<Commander, Config, CleanConfig> ( tc: ContextConf
               if ( response.ok ) {
                 const result = await response.json ()
                 if ( opts.debug ) console.log ( f, JSON.stringify ( result ) )
-                result.successful += 1
+                results.successful += 1
               } else {
                 results.non200++
                 results.non200Details.push ( `${f} ${response.status} ${response.statusText} ${await response.text ()}` )

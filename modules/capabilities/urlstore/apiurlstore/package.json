@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/apiurlstore",
   "description": "code to support the api/urlstore integration",
-  "version": "0.0.46",
+  "version": "0.0.47",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -19,9 +19,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.46",
-    "@itsmworkbench/koa": "0.0.46",
-    "@itsmworkbench/urlstore": "0.0.46",
+    "@itsmworkbench/utils": "0.0.47",
+    "@itsmworkbench/koa": "0.0.47",
+    "@itsmworkbench/urlstore": "0.0.47",
     "debug": "^4.3.4"
   },
   "devDependencies": {

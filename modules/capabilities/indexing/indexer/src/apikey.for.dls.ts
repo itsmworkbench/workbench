@@ -25,6 +25,7 @@ export type ApiKeyDetails = {
   headers: NameAnd<string>
   deletePrevious: boolean
 }
+
 export function apiKeyDetails ( opts: NameAnd<any>, env: NameAnd<string> ): ApiKeyDetails {
   return {
     username: opts.username,

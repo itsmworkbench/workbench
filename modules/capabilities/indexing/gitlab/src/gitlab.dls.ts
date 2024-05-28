@@ -94,7 +94,7 @@ function toIndexData ( template: string, name: string, projects: number[] ) {
   return {
     _id: simpleTemplate ( template, { id: name } ),
     data: {
-      groups: projects,
+      projects,
       query: JSON.stringify (
         {
           "bool": {

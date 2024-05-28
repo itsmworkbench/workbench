@@ -26,7 +26,8 @@ export const getMetrics = ( metrics: NameAnd<number>, nfcs: IndexTreeNonFunction
 
 }
 
-export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails ): KoaPartialFunction => {
+//Note there is only one secret and that it is optional
+export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails, secretToUseApi?: string ): KoaPartialFunction => {
   return ({
     isDefinedAt: ( ctx: ContextAndStats ) => {
       return ctx.context.request.path.startsWith ( '/apikey/' )
@@ -35,8 +36,14 @@ export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails ): KoaPartialF
       ctx.context.status = 200;
       const { elasticSearchUrl, index, headers } = details
       const email = decodeURIComponent ( ctx.context.request.path.substring ( 8 ) )
+      const auth = ctx.context.request.headers.authorization
+      if ( secretToUseApi && auth !== `Bearer ${secretToUseApi}` ) {
+        ctx.context.status = 401;
+        ctx.context.body = 'Unauthorized. Need a bearer token in the authorisation header'
+        return
+      }
       try {
-        console.log('delete', details.deletePrevious)
+        console.log ( 'delete', details.deletePrevious )
         if ( details.deletePrevious ) {
           console.log ( await invalidateApiKeysForEmail ( fetch, details ) ( email ) )
         }
@@ -57,8 +64,8 @@ export const metricIndexerHandlers = ( metrics: NameAnd<number>, nfcs: IndexTree
     getMetrics ( metrics, nfcs ),
     notFoundIs404,
   )
-export const apiKeyHandlers = ( fetch: FetchFn, apiKeyDetails: ApiKeyDetails ): (( from: ContextAndStats ) => Promise<void>) =>
+export const apiKeyHandlers = ( fetch: FetchFn, apiKeyDetails: ApiKeyDetails , secret: string|undefined): (( from: ContextAndStats ) => Promise<void>) =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
-    getapiKey ( fetch, apiKeyDetails ),
+    getapiKey ( fetch, apiKeyDetails,secret ),
     notFoundIs404,
   )
