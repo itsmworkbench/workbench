@@ -1,0 +1,25 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/agents",
+  "description": "the interfaces and composition functions for the agents",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils": "1.4.51"
+    },
+    "devDependencies": {},
+    "browser":         {
+      "child_process": false
+    },
+    "bin":             {
+      "index": "dist/index.js"
+    }
+  },
+  "links":       [
+    "@itsmworkbench/utils"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    true
+  }
+}

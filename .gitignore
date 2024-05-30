@@ -10,6 +10,7 @@ build/
 .laoban.test.json
 target/
 target2/
+target3/
 tests/git/org/.git
 
 .parcel-cache/

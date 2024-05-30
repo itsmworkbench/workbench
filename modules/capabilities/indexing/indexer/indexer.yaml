@@ -17,7 +17,7 @@ defaults:
     retry: defaultRetryPolicy
     throttle:
       max: 10000
-    file: "target/index/{index}/{name}_{num}.json"
+    file: "{rootDir}/index/{index}/{name}_{num}.json"
     max: 10000000
   scan:
     aclIndex: ".search-acl-filter-{index}"
@@ -27,18 +27,19 @@ index:
     scan:
       groupMembersFile: 'group.members.csv'
       index: '.search-acl-filter-jira-prod'
-  #  jiraProd:
-  #    type: jira
-  #    scan:
-  #      auth:
-  #        method: 'ApiKey'
-  #        credentials:
-  #          apiKey: 'JIRA_PROD'
-  #      index: jira-prod
-  #      projects: "*"
-  #      indexPeople: false
-  #      baseurl: "https://jira.eon.com/"
-  #      apiVersion: "2"
+
+  jiraProd:
+      type: jira
+      scan:
+        auth:
+          method: 'ApiKey'
+          credentials:
+            apiKey: 'JIRA_PROD'
+        index: jira-prod
+        projects: "*"
+        indexPeople: false
+        baseurl: "https://jira.eon.com/"
+        apiVersion: "2"
 #  gitlab:
 #    target:
 #      file: "target/index/{index}/Project_{id_3}_{num}.json"

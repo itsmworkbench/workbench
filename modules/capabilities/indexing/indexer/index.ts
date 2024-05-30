@@ -53,6 +53,9 @@ makeCli<Commander12, IndexerContext, NoConfig, NoConfig> ( makeContext (), confi
     reportErrors ( commander )
     process.exit ( 1 )
   }
-  indexerCommands ( commander , cliTc)
+  indexerCommands ( commander, cliTc )
   return await cliTc.execute ( commander.commander, process.argv )
+} ).catch ( e => {
+  console.error ( e )
+  process.exit ( 1 )
 } )

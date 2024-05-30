@@ -70,14 +70,22 @@ export async function makeApiKey ( fetchFn: FetchFn, apiDetails: ApiKeyDetails, 
       },
     },
   }
-  const response = await fetchFn ( `${apiDetails.elasticSearchUrl}_security/api_key`, {
-    headers: { ...apiDetails.headers, 'Content-Type': 'application/json' },
-    method: 'Post',
-    body: JSON.stringify ( body )
-  } )
-  console.log ( JSON.stringify ( body, null, 2 ) )
-  if ( response.ok ) return { ...await response.json (), username: apiDetails.username }
-  throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
+  console.log ( 'making api key', JSON.stringify ( body, null, 2 ), 'header', apiDetails.headers )
+  try {
+
+    const response = await fetchFn ( `${apiDetails.elasticSearchUrl}_security/api_key`, {
+      headers: { ...apiDetails.headers, 'Content-Type': 'application/json' },
+      method: 'Post',
+      body: JSON.stringify ( body )
+    } )
+    console.log ( 'response', response.status, response.statusText, await response.text () )
+    console.log ( JSON.stringify ( body, null, 2 ) )
+    if ( response.ok ) return { ...await response.json (), username: apiDetails.username }
+    throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
+  } catch ( e ) {
+    console.error ( `Error in makeApiKey`, JSON.stringify ( e ) )
+    throw e;
+  }
 }
 
 type ElasticSearchApiKey = { id: string, name: string }

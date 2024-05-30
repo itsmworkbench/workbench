@@ -25,7 +25,7 @@ let fetchFn = async ( url, options ) => {
   return result;
 };
 export const indexContext: IndexingContext = {
-  timeService:DateTimeService,
+  timeService: DateTimeService,
   authFn: defaultAuthFn ( process.env, fetchFn, DateTimeService ),
   treeLogAndMetrics: rememberIndexTreeLogAndMetrics ( msgs ),
   forestLogAndMetrics: rememberForestLogsAndMetrics ( msgs ),
@@ -33,7 +33,16 @@ export const indexContext: IndexingContext = {
   fetch: fetchFn
 }
 const nfs = defaultIndexTreeNfs ();
-const tcs = githubTcs ( nfs, indexContext )
+const tcs = githubTcs ( nfs, indexContext, {
+  index: 'someIndex',
+  aclIndex: 'someAclIndex',
+  file: 'target/index/{source}/{name}_{num}.json',
+  organisations: [ 'run-book' ],
+  users: [ 'phil-rice-HCL' ],
+  baseurl: 'https://api.github.com',
+  auth: { method: 'ApiKey', credentials: { apiKey: 'GITHUB_TOKEN' } }
+
+} )
 describe ( 'githubOneRepoWF', () => {
   beforeEach ( () => {
     msgs.length = 0

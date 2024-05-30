@@ -55,7 +55,7 @@ export type GithubIndexedFile = {
   content: string;
 }
 
-export type GitHubDetails = {
+export interface GitHubDetails extends SourceSinkDetails {
   index: string,
   aclIndex: string
   file: string
@@ -63,12 +63,3 @@ export type GitHubDetails = {
   users: string[]
   indexPeople?: boolean
 }
-const token = process.env.GITHUB_TOKEN;
-if ( token === null || token == undefined ) {
-  throw new Error ( 'GITHUB_TOKEN not set in environment' )
-}
-
-export const githubDetails: SourceSinkDetails = {
-  baseurl: "https://api.github.com",
-  auth: { method: 'ApiKey', credentials: { apiKey: 'GITHUB_TOKEN' } }
-};

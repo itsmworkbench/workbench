@@ -1,0 +1,73 @@
+# Configuration for external systems
+external:
+  jira:
+    baseurl: "https://validoc.atlassian.net/"
+    auth:
+      method: 'Token'
+      credentials:
+        token: 'JIRA_TOKEN' # Environment variable for token
+    timeout: 250 # Default timeout for Jira
+    throttling:
+      max: 100 # Maximum concurrent operations for Jira
+      tokensPer100ms: 0.1 # Rate limiting tokens per 100ms for Jira
+  confluence:
+    baseurl: "https://confluence.eon.com/"
+    auth:
+      method: 'ApiKey'
+      credentials:
+        apiKey: 'CONFLUENCE_TOKEN' # Environment variable for API key
+    timeout: 300 # Default timeout for Confluence
+    throttling:
+      max: 60 # Maximum concurrent operations for Confluence
+      tokensPer100ms: 0.08 # Rate limiting tokens per 100ms for Confluence
+  elasticSearch:
+    baseurl: "https://elastic.eon.com/"
+    auth:
+      method: 'ApiKey'
+      credentials:
+        apiKey: 'ELASTIC_TOKEN' # Environment variable for API key
+    timeout: 200 # Default timeout for Elasticsearch
+    throttling:
+      max: 50 # Maximum concurrent operations for Elasticsearch
+      tokensPer100ms: 0.05 # Rate limiting tokens per 100ms for Elasticsearch
+
+# Default settings that can be overridden in external definitions
+defaults:
+  timeout: 200 # Default timeout for all operations
+
+# Agent configurations for interacting with external systems
+agents:
+  intention:
+    type: intention # Type of agent
+    description: "Analyzes the intention of the user"
+  agentSelection:
+    description: "Selects the agent(s) to use based on the intention"
+  attributeExtraction:
+    description: "Extracts attributes from the user text"
+  elasticSearch:
+    description: "Generates and executes an Elasticsearch query"
+    external: elasticSearch # Links to external system configuration
+  jql:
+    type: chain
+    chain:
+      - jiraCache
+      - jiraRulesBased
+      - jiraGenAi
+    external: jira # Links to Jira external configuration
+    description: "Generates and executes a JQL query"
+  jiraCache:
+    external: jira # Links to Jira external configuration
+    description: "Caches Jira queries for faster retrieval"
+  jiraRulesBased:
+    external: jira # Links to Jira external configuration
+    description: "Generates a JQL query based on predefined rules and heuristics"
+  jiraGenAI:
+    external: jira # Links to Jira external configuration
+    description: "Generates a JQL query using generative AI"
+
+export:
+  - intention
+  - agentSelection
+  - attributeExtraction
+  - elasticSearch
+  - jql

@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/apiai",
   "description": "code to support the api/ai integration",
-  "version": "0.0.47",
+  "version": "0.0.51",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -19,9 +19,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.47",
-    "@itsmworkbench/koa": "0.0.47",
-    "@itsmworkbench/ai": "0.0.47",
+    "@itsmworkbench/utils": "0.0.51",
+    "@itsmworkbench/koa": "0.0.51",
+    "@itsmworkbench/ai": "0.0.51",
     "debug": "^4.3.4"
   },
   "devDependencies": {
