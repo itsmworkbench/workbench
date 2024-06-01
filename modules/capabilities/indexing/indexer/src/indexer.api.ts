@@ -2,7 +2,7 @@ import { ContextAndStats, defaultShowsError, KoaPartialFunction, notFoundIs404 }
 import { chainOfResponsibility } from "@itsmworkbench/utils";
 import { NameAnd } from "@laoban/utils";
 import { FetchFn, IndexTreeNonFunctionals } from "@itsmworkbench/indexing";
-import { ApiKeyDetails, invalidateApiKeysForEmail, loadQueriesForEmail, makeApiKey } from "./apikey.for.dls";
+import { ApiKeyDetails, invalidateApiKeysForEmail, loadQueriesForEmail, makeApiKey, makeQueriesForUncontrolled } from "./apikey.for.dls";
 
 
 export const getMetrics = ( metrics: NameAnd<number>, nfcs: IndexTreeNonFunctionals[] ): KoaPartialFunction => {

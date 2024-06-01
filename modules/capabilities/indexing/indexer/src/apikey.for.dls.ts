@@ -22,6 +22,7 @@ export type ApiKeyDetails = {
   username: string
   elasticSearchUrl: string
   index: string[]
+  uncontrolled: string[]
   headers: NameAnd<string>
   deletePrevious: boolean
 }
@@ -31,6 +32,7 @@ export function apiKeyDetails ( opts: NameAnd<any>, env: NameAnd<string> ): ApiK
     username: opts.username,
     elasticSearchUrl: opts.elasticSearch.toString (),
     index: opts.index || [],
+    uncontrolled: opts.uncontrolled || [],
     deletePrevious: opts.deletePrevious || false,
     headers: getElasticSearchAuthHeaderWithBasicToken ( env, opts.username, opts.password )
   }
@@ -50,8 +52,12 @@ export async function loadQueriesForEmail ( fetchFn: FetchFn, apiKeyDetails: Api
       return undefined
     throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
   } )
-  let result = { bool: { should: queries.filter ( q => q !== undefined ) } };
+  let result = { bool: { should: [ ...queries, ...makeQueriesForUncontrolled ( apiKeyDetails.uncontrolled ) ].filter ( q => q !== undefined ) } };
   return result
+}
+
+export function makeQueriesForUncontrolled ( uncontrolled: string[] ) {
+  return uncontrolled.map ( u => ({ term: { _index: u } }) )
 }
 
 export async function makeApiKey ( fetchFn: FetchFn, apiDetails: ApiKeyDetails, email: string, query: any ) {
@@ -62,7 +68,7 @@ export async function makeApiKey ( fetchFn: FetchFn, apiDetails: ApiKeyDetails, 
         "cluster": [ "all" ],
         "index": [
           {
-            "names": apiDetails.index,
+            "names": [ ...apiDetails.index, ...apiDetails.uncontrolled ],
             "privileges": [ "read" ],
             query
           }

@@ -89,6 +89,7 @@ export function addApiKeyCommand<Commander, Config, CleanConfig> ( tc: ContextCo
       '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
       '-i, --index <index...>': { description: 'The indexes to be accessed by the query for the api key', default: [ 'jira-prod' ] },
       '-u, --username <username>': { description: 'elastic search username', default: 'Indexer_NPA' },
+      '--uncontrolled <uncontrolled...>': { description: `The indexes that don't implement DLS`, default: [] },
       '-p, --password <password>': { description: 'Variable name that holds the elastic search password', default: 'ELASTIC_SEARCH_PASSWORD' },
       '-d, --delete-previous': { description: 'invalidate previous' },
 
@@ -117,7 +118,8 @@ export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: Contex
     description: 'launches an api to get api keys',
     options: {
       '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
-      '-i, --index <index...>': { description: 'The indexes to be accessed by the query for the api key', default: [ 'jira-prod' ] },
+      '-i, --index <index...>': { description: 'The indexes implementing DLS to be accessed by the query for the api key', default: [ 'jira-prod' ] },
+      '--uncontrolled <uncontrolled...>': { description: `The indexes that don't implement DLS`, default: [] },
       '-u, --username <username>': { description: 'elastic search username', default: 'Indexer_NPA' },
       '-p, --password <password>': { description: 'Variable name that holds the elastic search password', default: 'ELASTIC_SEARCH_PASSWORD' },
       '-d, --delete-previous': { description: 'invalidate previous if ask for new' },
