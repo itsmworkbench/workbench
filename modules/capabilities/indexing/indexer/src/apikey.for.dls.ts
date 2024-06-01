@@ -46,11 +46,12 @@ export async function loadQueriesForEmail ( fetchFn: FetchFn, apiKeyDetails: Api
       if ( json._source.query === undefined ) throw new Error ( `No query found for ${email} in ${i}\n${JSON.stringify ( json )}` )
       return JSON.parse ( json._source.query );
     }
+    if ( response.status === 404 )
+      return undefined
     throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
   } )
-  return {
-    bool: { should: queries }
-  }
+  let result = { bool: { should: queries.filter ( q => q !== undefined ) } };
+  return result
 }
 
 export async function makeApiKey ( fetchFn: FetchFn, apiDetails: ApiKeyDetails, email: string, query: any ) {
@@ -72,18 +73,17 @@ export async function makeApiKey ( fetchFn: FetchFn, apiDetails: ApiKeyDetails, 
   }
   console.log ( 'making api key', JSON.stringify ( body, null, 2 ), 'header', apiDetails.headers )
   try {
-
     const response = await fetchFn ( `${apiDetails.elasticSearchUrl}_security/api_key`, {
       headers: { ...apiDetails.headers, 'Content-Type': 'application/json' },
       method: 'Post',
       body: JSON.stringify ( body )
     } )
-    console.log ( 'response', response.status, response.statusText, await response.text () )
+    console.log ( 'response', response.status, response.statusText )
     console.log ( JSON.stringify ( body, null, 2 ) )
     if ( response.ok ) return { ...await response.json (), username: apiDetails.username }
     throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
   } catch ( e ) {
-    console.error ( `Error in makeApiKey`, JSON.stringify ( e ) )
+    console.error ( `Error in makeApiKey`, e, JSON.stringify ( e ) )
     throw e;
   }
 }

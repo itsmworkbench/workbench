@@ -26,6 +26,28 @@ export const getMetrics = ( metrics: NameAnd<number>, nfcs: IndexTreeNonFunction
 
 }
 
+export const healthZ = ( prefix: string ): KoaPartialFunction => ({
+  isDefinedAt: ( ctx ) => {
+    return ctx.context.request.path === `${prefix}/healthz`;
+  },
+  apply: async ( ctx ) => {
+    ctx.context.status = 200;
+  }
+})
+let rememberedError = ''
+let errorCount = 0
+let rememberedStackTrace = ''
+
+export const getError: KoaPartialFunction = {
+  isDefinedAt: ( ctx ) => {
+    return ctx.context.request.path === '/apikey/error';
+  },
+  apply: async ( ctx ) => {
+    ctx.context.status = 200;
+    ctx.context.body = rememberedError + ' ' + errorCount + '\n' + rememberedStackTrace
+  }
+}
+
 //Note there is only one secret and that it is optional
 export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails, secretToUseApi?: string ): KoaPartialFunction => {
   return ({
@@ -47,10 +69,25 @@ export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails, secretToUseAp
         if ( details.deletePrevious ) {
           console.log ( await invalidateApiKeysForEmail ( fetch, details ) ( email ) )
         }
-        const response = await makeApiKey ( fetch, details, email, await loadQueriesForEmail ( fetch, details, email ) )
+        let queries = await loadQueriesForEmail ( fetch, details, email );
+        if ( queries.bool.should.length === 0 ) {
+          ctx.context.status = 403;
+          ctx.context.body = `There are no indexes that have email ${email} in them. Indexes checked are ${index.join ( ',' )}`
+          return
+        }
+        const response = await makeApiKey ( fetch, details, email, queries )
         ctx.context.body = JSON.stringify ( response, null, 2 )
         ctx.context.set ( 'Content-Type', 'application/json' );
-      } catch ( e ) {
+      } catch ( e: any ) {
+        rememberedError = JSON.stringify ( e )
+        errorCount++
+        if ( e instanceof Error ) {
+          const stackTrace: string | undefined = e.stack;
+
+          // Serialize the stack trace to a string (if needed)
+          rememberedStackTrace = stackTrace ? JSON.stringify ( { stack: stackTrace }, null, 2 ) : '';
+
+        }
         ctx.context.status = 500;
         ctx.context.body = e.toString ();
       }
@@ -61,11 +98,15 @@ export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails, secretToUseAp
 
 export const metricIndexerHandlers = ( metrics: NameAnd<number>, nfcs: IndexTreeNonFunctionals[] ): (( from: ContextAndStats ) => Promise<void>) =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
+    healthZ ( '' ),
+    getError,
     getMetrics ( metrics, nfcs ),
     notFoundIs404,
   )
-export const apiKeyHandlers = ( fetch: FetchFn, apiKeyDetails: ApiKeyDetails , secret: string|undefined): (( from: ContextAndStats ) => Promise<void>) =>
+export const apiKeyHandlers = ( fetch: FetchFn, apiKeyDetails: ApiKeyDetails, secret: string | undefined ): (( from: ContextAndStats ) => Promise<void>) =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
-    getapiKey ( fetch, apiKeyDetails,secret ),
+    healthZ ( '/apikey' ),
+    getError,
+    getapiKey ( fetch, apiKeyDetails, secret ),
     notFoundIs404,
   )

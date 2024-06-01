@@ -46,6 +46,7 @@ export type JiraProjectDetail = {
 
 export type JiraIssue = {
   id: string
+  key: string
   self: string
   summary: string
   fields: JiraIssueFields
@@ -156,6 +157,7 @@ export const jiraTcs = ( nf: IndexTreeNonFunctionals, ic: IndexingContext, jiraD
 
 export type JiraIndexedIssue = {
   id: string
+  issue: string
   type: 'jira'
   self: string
   key: string
@@ -164,6 +166,7 @@ export type JiraIndexedIssue = {
   created: string
   last_updated: string
   priority: any
+  url: string
   status: any
   summary: string
   assignee: string
@@ -172,10 +175,14 @@ export type JiraIndexedIssue = {
   comments: string // probably want some better structure here
 }
 export async function jiraIssueToIndexedJiraIssue ( j: JiraIssue ): Promise<JiraIndexedIssue> {
+  const self = new URL ( j.self )
+  const url = `${self.protocol}//${self.host}/browse/${j.key}`;
+
   return {
     id: j.id,
     type: 'jira',
     self: j.self,
+    issue: j.key,
     key: j.fields.project.key,
     project: j.fields.project.self,
     created_by: j.fields.creator.name,
@@ -183,7 +190,8 @@ export async function jiraIssueToIndexedJiraIssue ( j: JiraIssue ): Promise<Jira
     last_updated: j.fields.updated,
     priority: j.fields?.priority?.name,
     status: j.fields?.status?.name,
-    summary: j.summary,
+    url,
+    summary: j.fields?.summary,
     description: fromJiraDocOrString ( j.fields.description ),
     assignee: j.fields.assignee?.email,
     reporter: j.fields?.reporter?.email,

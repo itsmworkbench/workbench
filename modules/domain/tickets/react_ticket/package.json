@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/reactticket",
   "description": "How to display tickets in react",
-  "version": "0.0.51",
+  "version": "0.0.58",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,11 +15,11 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/react_core": "0.0.51",
-    "@itsmworkbench/components": "0.0.51",
-    "@itsmworkbench/tickets": "0.0.51",
-    "@itsmworkbench/reactevents": "0.0.51",
-    "@itsmworkbench/reacttickettype": "0.0.51",
+    "@itsmworkbench/react_core": "0.0.58",
+    "@itsmworkbench/components": "0.0.58",
+    "@itsmworkbench/tickets": "0.0.58",
+    "@itsmworkbench/reactevents": "0.0.58",
+    "@itsmworkbench/reacttickettype": "0.0.58",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

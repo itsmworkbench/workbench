@@ -1,6 +1,7 @@
 import { Indexer, SourceSinkDetails } from "@itsmworkbench/indexing";
 import * as fs from "fs";
 import { NameAnd } from "@laoban/utils";
+import { removeSearchAclPrefix } from "@itsmworkbench/indexconfig";
 
 export type GroupAndMembers = GroupAndMember[]
 
@@ -52,7 +53,7 @@ function extractKey ( input: string ): string | null {
   const match = input.match ( regex );
   return match ? match[ 1 ] : null;
 }
-export function convertMemberAndGroupsToAclStructure ( mag: MemberAndGroups ): AclStructure[] {
+export function convertMemberAndGroupsToAclStructure ( index: string, mag: MemberAndGroups ): AclStructure[] {
   return Object.keys ( mag ).map ( member => ({
     _id: member,
     body: {
@@ -61,7 +62,7 @@ export function convertMemberAndGroupsToAclStructure ( mag: MemberAndGroups ): A
         {
           "bool": {
             "filter": [
-              { "term": { "type": "jira" } },
+              { "term": { "_index": index } },
               { "terms": { "key.keyword": mag[ member ].map ( extractKey ) } }
             ]
           }
@@ -76,7 +77,7 @@ export const indexJiraAcl = ( indexerFn: ( fileTemplate: string, indexId: string
   try {
     const groupAndMembers = await loadGroupAndMembers ( details )
     const membersAndGroups = convertGroupAndMembersToMemberAndGroups ( groupAndMembers )
-    const aclStructures = convertMemberAndGroupsToAclStructure ( membersAndGroups )
+    const aclStructures = convertMemberAndGroupsToAclStructure ( removeSearchAclPrefix ( details.index ), membersAndGroups )
     console.log ( JSON.stringify ( aclStructures, null, 2 ) )
     for ( const a of aclStructures )
       await indexer.processLeaf ( details.index, a._id ) ( a.body )

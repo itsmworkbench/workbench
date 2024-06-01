@@ -4,6 +4,7 @@ import { NameAnd } from "@laoban/utils";
 import { withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { ConfluencePagingTC } from "@itsmworkbench/indexing_confluence";
 import { simpleTemplate } from "@itsmworkbench/utils";
+import { removeSearchAclPrefix } from "@itsmworkbench/indexconfig";
 
 export type GitLabUser = {
   id: string
@@ -90,7 +91,7 @@ function invert ( p2name: Record<number, string[]> ): NameAnd<number[]> {
   return result
 }
 
-function toIndexData ( template: string, name: string, projects: number[] ) {
+function toIndexData ( index: string, template: string, name: string, projects: number[] ) {
   return {
     _id: simpleTemplate ( template, { id: name } ),
     data: {
@@ -99,7 +100,7 @@ function toIndexData ( template: string, name: string, projects: number[] ) {
         {
           "bool": {
             "filter": [
-              { "term": { "type": "gitlab" } },
+              { "term": { "_index": index } },
               { "terms": { "project": projects } }
             ]
           }
@@ -121,7 +122,7 @@ export const indexGitlabAcl = ( nfs: IndexTreeNonFunctionals, ic: IndexingContex
       const p2name = await projectToName ( fArray, fOne, headers, details )
       const name2Projects = invert ( p2name )
       for ( const [ name, projects ] of Object.entries ( name2Projects ) ) {
-        const result = toIndexData ( details.idPattern, name, projects )
+        const result = toIndexData ( removeSearchAclPrefix(details.index), details.idPattern, name, projects )
         await indexer.processLeaf ( details.index, result._id ) ( result.data )
       }
       await indexer.finished ( details.index )

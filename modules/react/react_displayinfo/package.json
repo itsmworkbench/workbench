@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/react_displayinfo",
   "description": "The react gui about displaying summary info ",
-  "version": "0.0.51",
+  "version": "0.0.58",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,9 +15,9 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/components": "0.0.51",
-    "@itsmworkbench/tickettype": "0.0.51",
-    "@itsmworkbench/reactticket": "0.0.51",
+    "@itsmworkbench/components": "0.0.58",
+    "@itsmworkbench/tickettype": "0.0.58",
+    "@itsmworkbench/reactticket": "0.0.58",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

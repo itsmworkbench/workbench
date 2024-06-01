@@ -8,6 +8,7 @@ import { startKoa, stopKoa } from "@itsmworkbench/koa";
 import { apiKeyHandlers, metricIndexerHandlers } from "./indexer.api";
 import { addPushCommand } from "./elastic.search.commands";
 import { apiKeyDetails, invalidateApiKeysForEmail, loadQueriesForEmail, makeApiKey } from "./apikey.for.dls";
+import * as fs from "node:fs";
 
 async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>, file: string | boolean ) {
   const yamlFile = await tc.context.fileOps.loadFileOrUrl ( file.toString () )
@@ -129,7 +130,7 @@ export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: Contex
       console.log ( opts )
       const details = apiKeyDetails ( opts, tc.context.env )
       await startKoa ( 'target/indexer', Number.parseInt ( opts.port.toString () ), opts.debug === true,
-        apiKeyHandlers ( tc.context.fetch, details, opts.secret?.toString() ) )
+        apiKeyHandlers ( tc.context.fetch, details, opts.secret?.toString () ) )
       console.log ( `api key api running on port ${opts.port}` )
     }
   }
@@ -166,6 +167,34 @@ export function addConfigCommand<Commander, Config, CleanConfig> ( tc: ContextCo
     }
   }
 }
+//
+// export function addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
+//   return {
+//     cmd: 'pipeline',
+//     description: 'makes the pipelines',
+//     options: {
+//       '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
+//       '-u, --username <username>': { description: 'elastic search username', default: 'Indexer_NPA' },
+//       '-p, --password <password>': { description: 'Variable name that holds the elastic search password', default: 'ELASTIC_SEARCH_PASSWORD' },
+//       '-i, --index <index...>': { description: 'The indexes to make the pipeline for', default: [ 'jira-prod' ] },
+//       '-f, --file <file>': { description: 'The config file', default: 'indexer.yaml' },
+//       '-t, --template <template>': { description: 'The template file', default: 'injest.pipeline.template.json' },
+//     },
+//     action: async ( _, opts ) => {
+//       console.log ( `Pipeline `, opts )
+//       const { file, debug, dryrun, template } = opts
+//       if ( typeof template === 'boolean' ) throw new Error ( 'template should be a string' )
+//
+//       const keyDetails = apiKeyDetails ( opts, tc.context.env )
+//       const templateStats = await fs.promises.stat ( template )
+//       if ( !templateStats.isFile () ) throw new Error ( `Template file ${template} is not a file` )
+//       const templateString = await fs.promises.readFile ( template, 'utf8' )
+//       for (const i of opts.index || [])
+//     }
+//   }
+// }
+
+
 export function indexerCommands<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>,
                                                                   cliTc: CliTc<Commander, IndexerContext, Config, CleanConfig>
 ) {
@@ -175,5 +204,7 @@ export function indexerCommands<Commander, Config, CleanConfig> ( tc: ContextCon
     addConfigCommand<Commander, Config, CleanConfig> ( tc ),
     addIndexCommand<Commander, Config, CleanConfig> ( tc ),
     addPushCommand<Commander, Config, CleanConfig> ( tc ),
-    addApiKeyCommand<Commander, Config, CleanConfig> ( tc ) ] )
+    addApiKeyCommand<Commander, Config, CleanConfig> ( tc ),
+    // addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc )
+  ] )
 }

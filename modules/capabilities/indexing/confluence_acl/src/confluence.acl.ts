@@ -3,6 +3,7 @@ import { flatMapK, mapK, NameAnd } from "@laoban/utils";
 import { type } from "node:os";
 import { withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { ConfluencePagingTC } from "@itsmworkbench/indexing_confluence";
+import { removeSearchAclPrefix } from "@itsmworkbench/indexconfig";
 
 export interface ConfluenceAclDetails extends SourceSinkDetails {
   file: string
@@ -57,7 +58,7 @@ async function findUserToSpaces ( fetchOne: FetchOneItemType, fetchArray: FetchA
   }
   return result
 }
-export function convertConfDetailsToAclRecord ( user: string, spaces: string[] ) {
+export function convertConfDetailsToAclRecord ( index: string, user: string, spaces: string[] ) {
   return {
     _id: user,
     data: {
@@ -66,7 +67,7 @@ export function convertConfDetailsToAclRecord ( user: string, spaces: string[] )
         {
           "bool": {
             "filter": [
-              { "term": { "type": "confluence" } },
+              { "term": { "_index": index } },
               { "terms": { "space": spaces } }
             ]
           }
@@ -87,7 +88,7 @@ export const indexConfluenceAcl = ( ic: IndexingContext, nfs: IndexTreeNonFuncti
       const headers = await ic.authFn ( details.auth )
       const userToSpaces = await findUserToSpaces ( fOne, fArray, headers, details )
       for ( const [ user, spaces ] of Object.entries ( userToSpaces ) ) {
-        let result = convertConfDetailsToAclRecord ( user, spaces );
+        let result = convertConfDetailsToAclRecord ( removeSearchAclPrefix(details.index), user, spaces );
         await indexer.processLeaf ( details.index, result._id ) ( result.data )
       }
       await indexer.finished ( details.index )

@@ -16,6 +16,7 @@ tests/git/org/.git
 .parcel-cache/
 
 node_modules/
+coverage/
 
 .idea/
 

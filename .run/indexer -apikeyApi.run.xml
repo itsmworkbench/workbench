@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="indexer -apikeyApi" type="NodeJSConfigurationType" application-parameters=" apiKeyApi" node-parameters="-r ts-node/register " path-to-js-file="index.ts" working-dir="$PROJECT_DIR$/modules/capabilities/indexing/indexer">
+    <method v="2" />
+  </configuration>
+</component>
