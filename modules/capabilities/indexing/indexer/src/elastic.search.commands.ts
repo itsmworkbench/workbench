@@ -64,8 +64,9 @@ export function addPushCommand<Commander, Config, CleanConfig> ( tc: ContextConf
                 results.successful += 1
               } else {
                 results.non200++
-                results.non200Details.push ( `${f} ${response.status} ${response.statusText} ${await response.text ()}` )
-                console.log ( 'file: ', f, response.status, response.statusText, await response.text () )
+                let text = await response.text ();
+                results.non200Details.push ( `${f} ${response.status} ${response.statusText} ${text}` )
+                console.log ( 'file: ', f, response.status, response.statusText, text )
               }
             } else console.log ( 'file: ', f, 'empty' )
           }

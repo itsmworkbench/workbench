@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/indexall",
   "description": "An example of the workflow and indexing working together",
-  "version": "0.0.58",
+  "version": "0.0.61",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,15 +22,15 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.58",
-    "@itsmworkbench/kleislis": "0.0.58",
-    "@itsmworkbench/nodetemporal": "0.0.58",
-    "@itsmworkbench/indexing_confluence": "0.0.58",
-    "@itsmworkbench/indexing_confluence_acl": "0.0.58",
-    "@itsmworkbench/indexing_gitlab": "0.0.58",
-    "@itsmworkbench/indexing_github": "0.0.58",
-    "@itsmworkbench/indexing_jira": "0.0.58",
-    "@itsmworkbench/indexing_jira_acl": "0.0.58",
+    "@itsmworkbench/utils": "0.0.61",
+    "@itsmworkbench/kleislis": "0.0.61",
+    "@itsmworkbench/nodetemporal": "0.0.61",
+    "@itsmworkbench/indexing_confluence": "0.0.61",
+    "@itsmworkbench/indexing_confluence_acl": "0.0.61",
+    "@itsmworkbench/indexing_gitlab": "0.0.61",
+    "@itsmworkbench/indexing_github": "0.0.61",
+    "@itsmworkbench/indexing_jira": "0.0.61",
+    "@itsmworkbench/indexing_jira_acl": "0.0.61",
     "debug": "^4.3.4"
   },
   "devDependencies": {

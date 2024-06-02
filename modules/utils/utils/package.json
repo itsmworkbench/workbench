@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/utils",
   "description": "The usual utility functions",
-  "version": "0.0.58",
+  "version": "0.0.61",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {

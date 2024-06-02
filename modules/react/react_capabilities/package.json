@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/react_capabilities",
   "description": "Developer mode",
-  "version": "0.0.58",
+  "version": "0.0.61",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,10 +15,10 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/domain": "0.0.58",
-    "@itsmworkbench/components": "0.0.58",
-    "@itsmworkbench/react_editors": "0.0.58",
-    "@itsmworkbench/i18n": "0.0.58",
+    "@itsmworkbench/domain": "0.0.61",
+    "@itsmworkbench/components": "0.0.61",
+    "@itsmworkbench/react_editors": "0.0.61",
+    "@itsmworkbench/i18n": "0.0.61",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

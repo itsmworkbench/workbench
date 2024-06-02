@@ -1,12 +1,13 @@
+---
 defaults:
   query:
     retry:
       initialInterval: 5000
       maximumInterval: 30000
-      maximumAttempts: 50 # We really want to finish! But there are huge intervals in the retry
+      maximumAttempts: 50
       nonRecoverableErrors:
-        - "Not Found"
-    throttle: # OK this isn't much of a throttle
+        - Not Found
+    throttle:
       max: 100
       tokensPer100ms: 0.1
   auth:
@@ -20,106 +21,65 @@ defaults:
     file: "{rootDir}/index/{index}/{name}_{num}.json"
     max: 10000000
   scan:
-    aclIndex: ".search-acl-filter-{index}"
-
+    aclIndex: .search-acl-filter-{index}
 index:
-  jiraAcl:
-    scan:
-      groupMembersFile: 'group.members.csv'
-      index: '.search-acl-filter-jira-prod'
-
-  jiraProd:
-      type: jira
-      scan:
-        auth:
-          method: 'ApiKey'
-          credentials:
-            apiKey: 'JIRA_PROD'
-        index: jira-prod
-        projects: "*"
-        indexPeople: false
-        baseurl: "https://jira.eon.com/"
-        apiVersion: "2"
-#  gitlab:
-#    target:
-#      file: "target/index/{index}/Project_{id_3}_{num}.json"
+#  jiraAcl:
 #    scan:
-#      baseurl: "https://gitlab.com/"
-#      auth:
-#        method: 'PrivateToken'
-#        credentials:
-#          token: 'GITLAB_TOKEN'
-#      projects:
-#        - "validoc" #I think this needs work on it... We need to start thinking about groups...
-  gitlabAcl:
-    type: gitlabAcl
-    scan:
-      baseurl: "https://git.eon-cds.de/"
-      idPattern: '{id}@eon.com'
-      index: '.search-acl-filter-gitlab-prod'
-      auth:
-        method: 'PrivateToken'
-        credentials:
-          token: GITLAB_TOKEN_EON
-  confluenceAcl:
-    type: confluenceAcl
-    scan:
-      baseurl: "https://confluence.eon.com/"
-      spaces:
-        - m8nmvp1
-      auth:
-        method: 'ApiKey'
-        credentials:
-          apiKey: 'CONFLUENCE_TOKEN'
-      index: '.search-acl-filter-confluence-prod'
-  #  confluence:
-  #    query:
-  #      throttle:
-  #        max: 100
-  #        tokensPer100ms: 0.1
-  #    scan:
-  #      baseurl: "https://confluence.eon.com/"
-  #      auth:
-  #        method: 'ApiKey'
-  #        credentials:
-  #          apiKey: 'CONFLUENCE_TOKEN'
-  #      index: 'confluence-prod'
-
-
-  #  github:
-  #    scan:
-  #      organisations:
-  #        - "focuson-ts"
-  #      #        - "run-book"
-  #      users:
-  #        - phil-rice-HCL
-  #      #        - phil-rice
-  #      indexPeople: true
-  #  jira1:
-  #    type: jira
-  #    scan:
-  #      auth:
-  #        method: 'Basic'
-  #        credentials:
-  #          username: 'phil.rice@validoc.org'
-  #          password: 'JIRA_TOKEN'
-  #      aclIndex: 'jira1-acl'
-  #      projects: "*"
-  #      indexPeople: true
-  #      baseurl: "https://validoc.atlassian.net/"
-  #      apiVersion: "3"
-
-#  jira2:
+#      groupMembersFile: group.members.csv
+#      index: .search-acl-filter-jira-prod
+#  jiraProd:
 #    type: jira
 #    scan:
 #      auth:
-#        method: 'Basic'
+#        method: ApiKey
 #        credentials:
-#          username: 'phil.rice'
-#          password: 'JIRA_LOCAL_TOKEN'
-#      aclIndex: 'jira2-acl'
+#          apiKey: JIRA_PROD
+#      index: jira-prod
 #      projects: "*"
-#      indexPeople: true
-#      baseurl: "http://localhost:8080/"
+#      indexPeople: false
+#      baseurl: https://jira.eon.com/
 #      apiVersion: "2"
-
+  gitlab:
+    target:
+      file: target/index/{index}/Project_{id_3}_{num}.json
+    scan:
+      baseurl: https://git.eon-cds.de/
+      auth:
+        method: PrivateToken
+        credentials:
+          token: GITLAB_TOKEN
+      projects:
+        - 33519
+  gitlabAcl:
+    type: gitlabAcl
+    scan:
+      baseurl: https://git.eon-cds.de/
+      idPattern: "{id}@eon.com"
+      index: .search-acl-filter-gitlab-prod
+      auth:
+        method: PrivateToken
+        credentials:
+          token: GITLAB_TOKEN
+#  confluenceAcl:
+#    type: confluenceAcl
+#    scan:
+#      baseurl: https://confluence.eon.com/
+#      spaces:
+#        - m8nmvp1
+#      auth:
+#        method: ApiKey
+#        credentials:
+#          apiKey: CONFLUENCE_TOKEN
+#      index: .search-acl-filter-confluence-prod
+#  confluence:
+#    query:
+#      throttle:
+#        max: 100
+#        tokensPer100ms: 0.1
+#    scan:
+#      baseurl: https://confluence.eon.com/
+#      auth:
+#        method: ApiKey
+#        credentials:
+#          apiKey: CONFLUENCE_TOKEN
+#      index: confluence-prod

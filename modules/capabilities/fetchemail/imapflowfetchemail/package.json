@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/imapflowfetchemail",
   "description": "interacting with email: an implementation using imapflow",
-  "version": "0.0.58",
+  "version": "0.0.61",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,9 +23,9 @@
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
     "imapflow": "1.0.158",
-    "@itsmworkbench/utils": "0.0.58",
-    "@itsmworkbench/fetchemail": "0.0.58",
-    "@itsmworkbench/urlstore": "0.0.58",
+    "@itsmworkbench/utils": "0.0.61",
+    "@itsmworkbench/fetchemail": "0.0.61",
+    "@itsmworkbench/urlstore": "0.0.61",
     "debug": "^4.3.4"
   },
   "devDependencies": {
