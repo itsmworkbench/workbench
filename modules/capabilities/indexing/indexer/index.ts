@@ -8,6 +8,7 @@ import { fileOpsNode } from "@laoban/filesops-node";
 import { indexerCommands } from "./src/indexer.commands";
 import fetch from "node-fetch";
 import { FetchFnResponse } from "@itsmworkbench/indexing";
+import { elasticSearchCommands } from "./src/elastic.search.commands";
 
 export function findVersion () {
   let packageJsonFileName = "../package.json";
@@ -53,7 +54,9 @@ makeCli<Commander12, IndexerContext, NoConfig, NoConfig> ( makeContext (), confi
     reportErrors ( commander )
     process.exit ( 1 )
   }
+  elasticSearchCommands ( commander, cliTc )
   indexerCommands ( commander, cliTc )
+
   return await cliTc.execute ( commander.commander, process.argv )
 } ).catch ( e => {
   console.error ( e )

@@ -81,8 +81,7 @@ export const indexConfluenceSpaces = ( ic: IndexingContext, nfs: IndexTreeNonFun
     const headers = await ic.authFn ( confluenceDetails.auth )
     const options = { headers };
     const spaces = confluenceDetails.spaces ?? await allSpacesNames ()
-    const since = executeOptions.since ? executeOptions.since : 'now("-100y")'
-    const sinceTerm = ` AND lastModified >= now("-${since}")`
+    const sinceTerm = ` AND lastModified >= now("-${(executeOptions.since)}")`
     for ( const space of spaces ) {
       const spacesTerm = ` AND space = "${space}"`
       const cql = `type=page${spacesTerm}${sinceTerm}`

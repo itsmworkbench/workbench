@@ -5,7 +5,7 @@ import { ErrorsAnd, mapErrors, NameAnd } from "@laoban/utils";
 import { FileOps } from "@laoban/fileops";
 import { CliConfigTC, CliTcFinder, loadConfig } from "./cliconfig";
 
-export type ActionFn<Commander> = ( commander: Commander, opts: NameAnd<string | boolean>, ...args: any[] ) => void | Promise<void>
+export type ActionFn<Commander> = ( commander: Commander, opts: NameAnd<string | boolean| string[]>, ...args: any[] ) => void | Promise<void>
 export interface Option {
   description?: string
   default?: any

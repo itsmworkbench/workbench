@@ -6,11 +6,10 @@ import { defaultIndexingContext, ExecuteIndexOptions, IndexTreeNonFunctionals, i
 import { indexAll } from "@itsmworkbench/indexall";
 import { startKoa, stopKoa } from "@itsmworkbench/koa";
 import { apiKeyHandlers, metricIndexerHandlers } from "./indexer.api";
-import { addPushCommand } from "./elastic.search.commands";
+import { addAddMappingCommand, addDeleteIndexCommand, addPushCommand } from "./elastic.search.commands";
 import { apiKeyDetails, invalidateApiKeysForEmail, loadQueriesForEmail, makeApiKey } from "./apikey.for.dls";
-import * as fs from "node:fs";
 
-async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>, file: string | boolean ) {
+async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>, file: string ) {
   const yamlFile = await tc.context.fileOps.loadFileOrUrl ( file.toString () )
   const config = tc.context.yaml.parser ( yamlFile )
   if ( hasErrors ( config ) ) {
@@ -20,7 +19,7 @@ async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndC
   const actualConfig: NameAnd<PopulatedIndexItem> = cleanAndEnrichConfig ( config, {} )
   return actualConfig;
 }
-function findExecuteOptions ( opts: NameAnd<string | boolean> ): ExecuteIndexOptions {
+function findExecuteOptions ( opts: NameAnd<string | boolean | string[]> ): ExecuteIndexOptions {
   let since = opts.since?.toString ();
   validateSince ( since )
   if ( opts.detailedDryRun ) return { since, dryRunDoEverythingButIndex: true }
@@ -29,10 +28,10 @@ function findExecuteOptions ( opts: NameAnd<string | boolean> ): ExecuteIndexOpt
 }
 export function validateSince ( since: string | undefined ) {
   if ( since === undefined ) return
-  const timePattern = /^(\d+)([dhm])$/;
+  const timePattern = /^(\d+)([ydhm])$/;
   const match = since.match ( timePattern );
   if ( !match ) {
-    throw new Error ( `Invalid value for --since option: ${since}. Legal examples include 1d or 3h or 30s.` );
+    throw new Error ( `Invalid value for --since option: ${since}. Legal examples include 1y or 1d or 3h or 30s.` );
   }
 }
 export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
@@ -44,7 +43,7 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
       '-t,--target <target>': { description: 'where we put the indexed data', default: 'target/indexer' },
       '--debug': { description: 'Show debug information' },
       '--api': { description: 'Start the api' },
-      '--since <time>': { description: 'Index only issues updated since the specified time (e.g., 1d for last day, 2h for last 2 hours, 30m for last 30 minutes)' },
+      '--since <time>': { description: 'Index only issues updated since the specified time (e.g., 1d for last day, 2h for last 2 hours, 30m for last 30 minutes)' , default: '100y'},
       '--keep': { description: 'if you started the api this keeps it running at the end' },
       '--port <port>': { description: 'The port to start the api on', default: '1235' },
       '--dryrun': { description: `don't actually do the indexing, but report what would be done` },
@@ -52,8 +51,8 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
     },
     action: async ( _, opts ) => {
       console.log ( `Indexing `, opts )
-      const { file, debug, dryrun, target, api, keep, port, since } = opts
-      const config = await getConfig ( tc, file );
+      const { file, debug, target, api, keep, port } = opts
+      const config = await getConfig ( tc, file.toString () );
 
       const metrics: NameAnd<number> = {}
       const ic = defaultIndexingContext ( tc.context.env, tc.context.fetch, metrics )
@@ -64,10 +63,10 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
       const allNfcs = resultsAndNfcs.map ( r => r.nfc )
       const apiFuture = api === true ? startKoa ( 'target/indexer', Number.parseInt ( port.toString () ), debug === true,
         metricIndexerHandlers ( metrics, allNfcs ) ) : undefined
-      for ( const { result, nfc } of resultsAndNfcs ) {
+      for ( const { result } of resultsAndNfcs ) {
         await result
       }
-      for ( const { result, nfc } of resultsAndNfcs ) {
+      for ( const { nfc } of resultsAndNfcs ) {
         stopNonFunctionals ( nfc )
       }
       console.log ( 'done' )
@@ -128,7 +127,7 @@ export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: Contex
       '--dryRun': { description: 'Show what would be done' },
       '--debug': { description: 'Show debug information' },
     },
-    action: async ( _, opts, email ) => {
+    action: async ( _, opts ) => {
       console.log ( opts )
       const details = apiKeyDetails ( opts, tc.context.env )
       await startKoa ( 'target/indexer', Number.parseInt ( opts.port.toString () ), opts.debug === true,
@@ -163,39 +162,12 @@ export function addConfigCommand<Commander, Config, CleanConfig> ( tc: ContextCo
     },
     action: async ( _, opts ) => {
       console.log ( `Indexing `, opts )
-      const { file, debug, dryrun } = opts
-      const config = await getConfig ( tc, file );
+      const { file } = opts
+      const config = await getConfig ( tc, file.toString () );
       console.log ( JSON.stringify ( config, null, 2 ) )
     }
   }
 }
-//
-// export function addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
-//   return {
-//     cmd: 'pipeline',
-//     description: 'makes the pipelines',
-//     options: {
-//       '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
-//       '-u, --username <username>': { description: 'elastic search username', default: 'Indexer_NPA' },
-//       '-p, --password <password>': { description: 'Variable name that holds the elastic search password', default: 'ELASTIC_SEARCH_PASSWORD' },
-//       '-i, --index <index...>': { description: 'The indexes to make the pipeline for', default: [ 'jira-prod' ] },
-//       '-f, --file <file>': { description: 'The config file', default: 'indexer.yaml' },
-//       '-t, --template <template>': { description: 'The template file', default: 'injest.pipeline.template.json' },
-//     },
-//     action: async ( _, opts ) => {
-//       console.log ( `Pipeline `, opts )
-//       const { file, debug, dryrun, template } = opts
-//       if ( typeof template === 'boolean' ) throw new Error ( 'template should be a string' )
-//
-//       const keyDetails = apiKeyDetails ( opts, tc.context.env )
-//       const templateStats = await fs.promises.stat ( template )
-//       if ( !templateStats.isFile () ) throw new Error ( `Template file ${template} is not a file` )
-//       const templateString = await fs.promises.readFile ( template, 'utf8' )
-//       for (const i of opts.index || [])
-//     }
-//   }
-// }
-
 
 export function indexerCommands<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>,
                                                                   cliTc: CliTc<Commander, IndexerContext, Config, CleanConfig>
@@ -205,8 +177,6 @@ export function indexerCommands<Commander, Config, CleanConfig> ( tc: ContextCon
     removeApiKeyCommand<Commander, Config, CleanConfig> ( tc ),
     addConfigCommand<Commander, Config, CleanConfig> ( tc ),
     addIndexCommand<Commander, Config, CleanConfig> ( tc ),
-    addPushCommand<Commander, Config, CleanConfig> ( tc ),
     addApiKeyCommand<Commander, Config, CleanConfig> ( tc ),
-    // addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc )
   ] )
 }
