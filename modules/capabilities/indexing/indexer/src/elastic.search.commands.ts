@@ -4,6 +4,7 @@ import { CliTc, CommandDetails, ContextConfigAndCommander } from "@itsmworkbench
 import { IndexerContext } from "./context";
 import { getElasticSearchAuthHeaderWithApiToken } from "./apikey.for.dls";
 import { addApiKeyApiCommand, addApiKeyCommand, addConfigCommand, addIndexCommand, removeApiKeyCommand } from "./indexer.commands";
+import { defaultVectorisationModel, loadAndValidatePipelines, pipelineBody, usePipelineBody } from "./pipelines";
 
 async function processFilesRecursively ( rootDir: string, processFile: ( filePath: string ) => Promise<void> ) {
   async function processDirectory ( directory: string ) {
@@ -159,39 +160,98 @@ export function addPushCommand<Commander, Config, CleanConfig> ( tc: ContextConf
 }
 
 //
-// export function addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
-//   return {
-//     cmd: 'pipeline',
-//     description: 'makes the pipelines',
-//     options: {
-//       '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
-//       '-u, --username <username>': { description: 'elastic search username', default: 'Indexer_NPA' },
-//       '-p, --password <password>': { description: 'Variable name that holds the elastic search password', default: 'ELASTIC_SEARCH_PASSWORD' },
-//       '-i, --index <index...>': { description: 'The indexes to make the pipeline for', default: [ 'jira-prod' ] },
-//       '-f, --file <file>': { description: 'The config file', default: 'indexer.yaml' },
-//       '-t, --template <template>': { description: 'The template file', default: 'injest.pipeline.template.json' },
-//     },
-//     action: async ( _, opts ) => {
-//       console.log ( `Pipeline `, opts )
-//       const { file, debug, dryrun, template } = opts
-//       if ( typeof template === 'boolean' ) throw new Error ( 'template should be a string' )
-//
-//       const keyDetails = apiKeyDetails ( opts, tc.context.env )
-//       const templateStats = await fs.promises.stat ( template )
-//       if ( !templateStats.isFile () ) throw new Error ( `Template file ${template} is not a file` )
-//       const templateString = await fs.promises.readFile ( template, 'utf8' )
-//       for (const i of opts.index || [])
-//     }
-//   }
-// }
-
-
+export function addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
+  return {
+    cmd: 'pipeline',
+    description: 'makes the pipelines',
+    options: {
+      '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
+      '-t, --token <token>': { description: 'Variable name that holds the elastic search token', default: 'ELASTIC_TOKEN' },
+      '-f, --file <file>': { description: 'The pipeline file', default: 'pipelines.yaml' },
+      '-m, --model <model>': { description: 'The default vectorisation model', default: defaultVectorisationModel },
+      '--debug': { description: 'Show debug information' },
+      '--dryRun': { description: `Just do a dry run instead of actually making the pipelines` }
+    },
+    action: async ( _, opts ) => {
+      if ( opts.debug ) console.log ( `Pipeline `, opts )
+      const pipelines = await loadAndValidatePipelines ( opts.file.toString (), tc.context.yaml, opts.model.toString () )
+      async function callElasticSearch ( url: string, body ) {
+        const response = await tc.context.fetch ( url, {
+          method: 'Put',
+          headers: { ...getElasticSearchAuthHeaderWithApiToken ( tc.context.env, opts.token.toString () ), 'Content-Type': 'application/json' },
+          body: JSON.stringify ( body )
+        } );
+        if ( response.ok ) {
+          const result = await response.json ()
+          if ( opts.debug ) console.log ( JSON.stringify ( result ) )
+        } else {
+          console.log ( response.status, response.statusText, await response.text () )
+        }
+      }
+      for ( const [ name, pipeline ] of Object.entries ( pipelines ) ) {
+        const createBody = pipelineBody ( name, pipeline );
+        const createUrl = `${opts.elasticSearch}_ingest/pipeline/${name}`;
+        const useUrl = `${opts.elasticSearch}${pipeline.index}/_settings`;
+        const useBody = usePipelineBody ( name )
+        if ( opts.dryRun === true || opts.debug ) {
+          console.log ( 'Making pipeline', name )
+          console.log ( createUrl, JSON.stringify ( createBody, null, 2 ) )
+          console.log ( useUrl, JSON.stringify ( useBody, null, 2 ) )
+        }
+        if ( opts.dryRun ) return
+        await callElasticSearch ( createUrl, createBody );
+        await callElasticSearch ( useUrl, useBody );
+      }
+    }
+  }
+}
+export function addRemovePipelinesCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
+  return {
+    cmd: 'pipeline-remove',
+    description: 'stops the pipeline being used as the default pipeline',
+    options: {
+      '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
+      '-t, --token <token>': { description: 'Variable name that holds the elastic search token', default: 'ELASTIC_TOKEN' },
+      '-f, --file <file>': { description: 'The pipeline file', default: 'pipelines.yaml' },
+      '--debug': { description: 'Show debug information' },
+      '--dryRun': { description: `Just do a dry run instead of actually making the pipelines` }
+    },
+    action: async ( _, opts ) => {
+      if ( opts.debug ) console.log ( `Pipeline `, opts )
+      const pipelines = await loadAndValidatePipelines ( opts.file.toString (), tc.context.yaml, 'unused' )
+      async function callElasticSearch ( url: string, body ) {
+        const response = await tc.context.fetch ( url, {
+          method: 'Put',
+          headers: { ...getElasticSearchAuthHeaderWithApiToken ( tc.context.env, opts.token.toString () ), 'Content-Type': 'application/json' },
+          body: JSON.stringify ( body )
+        } );
+        if ( response.ok ) {
+          const result = await response.json ()
+          if ( opts.debug ) console.log ( JSON.stringify ( result ) )
+        } else {
+          console.log ( response.status, response.statusText, await response.text () )
+        }
+      }
+      for ( const [ name, pipeline ] of Object.entries ( pipelines ) ) {
+        const useUrl = `${opts.elasticSearch}${pipeline.index}/_settings`;
+        const useBody = usePipelineBody ( null )
+        if ( opts.dryRun === true || opts.debug ) {
+          console.log ( 'Making pipeline', name )
+          console.log ( useUrl, JSON.stringify ( useBody, null, 2 ) )
+        }
+        if ( opts.dryRun ) return
+        await callElasticSearch ( useUrl, useBody );
+      }
+    }
+  }
+}
 export function elasticSearchCommands<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>,
-                                                                  cliTc: CliTc<Commander, IndexerContext, Config, CleanConfig>
-) {
+                                                                        cliTc: CliTc<Commander, IndexerContext, Config, CleanConfig> ) {
   cliTc.addCommands ( tc, [
     addPushCommand<Commander, Config, CleanConfig> ( tc ),
     addAddMappingCommand<Commander, Config, CleanConfig> ( tc ),
     addDeleteIndexCommand<Commander, Config, CleanConfig> ( tc ),
+    addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc ),
+    addRemovePipelinesCommand<Commander, Config, CleanConfig> ( tc ),
   ] )
 }

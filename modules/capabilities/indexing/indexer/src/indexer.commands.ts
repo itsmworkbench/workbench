@@ -6,7 +6,6 @@ import { defaultIndexingContext, ExecuteIndexOptions, IndexTreeNonFunctionals, i
 import { indexAll } from "@itsmworkbench/indexall";
 import { startKoa, stopKoa } from "@itsmworkbench/koa";
 import { apiKeyHandlers, metricIndexerHandlers } from "./indexer.api";
-import { addAddMappingCommand, addDeleteIndexCommand, addPushCommand } from "./elastic.search.commands";
 import { apiKeyDetails, invalidateApiKeysForEmail, loadQueriesForEmail, makeApiKey } from "./apikey.for.dls";
 
 async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>, file: string ) {
@@ -43,7 +42,7 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
       '-t,--target <target>': { description: 'where we put the indexed data', default: 'target/indexer' },
       '--debug': { description: 'Show debug information' },
       '--api': { description: 'Start the api' },
-      '--since <time>': { description: 'Index only issues updated since the specified time (e.g., 1d for last day, 2h for last 2 hours, 30m for last 30 minutes)' , default: '100y'},
+      '--since <time>': { description: 'Index only issues updated since the specified time (e.g., 1d for last day, 2h for last 2 hours, 30m for last 30 minutes)' , default: '3600d'},
       '--keep': { description: 'if you started the api this keeps it running at the end' },
       '--port <port>': { description: 'The port to start the api on', default: '1235' },
       '--dryrun': { description: `don't actually do the indexing, but report what would be done` },

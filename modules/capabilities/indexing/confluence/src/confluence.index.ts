@@ -37,6 +37,7 @@ export type ConfluencePageSummary = {
 }
 export type ConfluencePage = {
   id: string
+  _links: { webui: string }
   body: { view: { value: string } }
   space: { key: string }
   title: string
@@ -51,10 +52,11 @@ export type ConfluenceHistory = {
 }
 
 
-export function pageForIndexing ( page: ConfluencePage ) {
+export function pageForIndexing ( confluenceDetails: ConfluenceDetails, page: ConfluencePage ) {
   return {
     type: 'confluence',
     id: page.id,
+    url: `${confluenceDetails.baseurl}${page._links.webui.substring(1)}`,
     space: page.space.key,
     status: page.status,
     title: page.title,
@@ -95,7 +97,7 @@ export const indexConfluenceSpaces = ( ic: IndexingContext, nfs: IndexTreeNonFun
             started = true
           }
           const pageDetails: ConfluencePage = await fOne ( summary.content._links.self + '?expand=body.view,space,history,version', options )
-          await indexer.processLeaf ( space, pageDetails.id ) ( pageForIndexing ( pageDetails ) )
+          await indexer.processLeaf ( space, pageDetails.id ) ( pageForIndexing ( confluenceDetails, pageDetails ) )
         }
         if ( started )
           await indexer.finished ( space )

@@ -101,7 +101,7 @@ function toIndexData ( index: string, template: string, name: string, projects: 
           "bool": {
             "filter": [
               { "term": { "_index": index } },
-              { "terms": { "project": projects } }
+              { "terms": { "projectId": projects } }
             ]
           }
         } )

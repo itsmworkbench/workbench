@@ -1,0 +1,21 @@
+jira-prod-pipeline:
+    index: jira-prod
+    fields:
+      - issue
+      - comments
+      - description
+      - priority
+      - status
+conf-prod-pipeline:
+    index: confluence-prod
+    fields:
+      - title
+      - body
+      - space
+      - status
+      - category
+gitlab-prod-pipeline:
+    index: gitlab-prod
+    fields:
+      - id
+      - content
