@@ -13,6 +13,7 @@ export interface GitlabDetails extends SourceSinkDetails {
 
 export type GitlabProject = {
   id: number
+  path_with_namespace: string
   default_branch: string
   namespace: {
     parent_id: number
@@ -56,6 +57,7 @@ export type GitLabIndexedFile = {
   projectId: number
   id: string
   path: string
+  url: string
   content: string
 }
 export type GitLabRepo = GitLabFileOrDir[]
@@ -83,6 +85,7 @@ export const gitLabFileToIndexedFile = ( ic: IndexingContext, gitlabDetails: Git
     projectId: project.id,
     id: f.id,
     path: f.path,
+    url: `${gitlabDetails.baseurl}/${project.path_with_namespace}/-/blob/${project.default_branch}/${f.path }`,
     content: gitlabFileDetails.encoding === 'base64' ? Buffer.from ( gitlabFileDetails.content, 'base64' ).toString ( 'utf-8' ) : gitlabFileDetails.content
   }
   return result

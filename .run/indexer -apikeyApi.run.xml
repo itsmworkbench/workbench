@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="indexer -apikeyApi" type="NodeJSConfigurationType" application-parameters=" apiKeyApi" node-parameters="-r ts-node/register " path-to-js-file="index.ts" working-dir="$PROJECT_DIR$/modules/capabilities/indexing/indexer">
+  <configuration default="false" name="indexer -apikeyApi" type="NodeJSConfigurationType" application-parameters=" apiKeyApi -i jira-prod confluence-prod gitlab-prod -d --uncontrolled  haliiouser_eon_v2 haliiocommunity_eon_v2 haliiopages_eon_v2 sap-number_eon_v1 sap-ponumber_eon_v1 sap-preqno_eon_v1 search-apps" node-parameters="-r ts-node/register " path-to-js-file="index.ts" working-dir="$PROJECT_DIR$/modules/capabilities/indexing/indexer">
     <method v="2" />
   </configuration>
 </component>

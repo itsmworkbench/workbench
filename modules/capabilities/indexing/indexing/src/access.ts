@@ -114,8 +114,9 @@ export type FetchFnResponse = {
   statusText: string;
 }
 
+export type FetchMethod =  'Get' | 'Post' | 'Put' | 'Delete';
 export type FetchFnOptions = {
-  method?: 'Get' | 'Post' | 'Put' | 'Delete';
+  method?: FetchMethod
   headers?: NameAnd<string>;
   body?: string
 }
