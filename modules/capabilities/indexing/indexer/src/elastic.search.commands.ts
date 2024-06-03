@@ -5,6 +5,7 @@ import { IndexerContext } from "./context";
 import { getElasticSearchAuthHeaderWithApiToken } from "./apikey.for.dls";
 import { addApiKeyApiCommand, addApiKeyCommand, addConfigCommand, addIndexCommand, removeApiKeyCommand } from "./indexer.commands";
 import { defaultVectorisationModel, loadAndValidatePipelines, pipelineBody, usePipelineBody } from "./pipelines";
+import { stopThrottling, withThrottle } from "@itsmworkbench/kleislis";
 
 async function processFilesRecursively ( rootDir: string, processFile: ( filePath: string ) => Promise<void> ) {
   async function processDirectory ( directory: string ) {
@@ -127,33 +128,43 @@ export function addPushCommand<Commander, Config, CleanConfig> ( tc: ContextConf
       // const tokenValue = getElasticSearchToken ( tc.context.env, token );
 
       const results: PushResult = { successful: 0, non200: 0, non200Details: [], calls: 0 }
-      await processFilesRecursively ( directory.toString (), async f => {
-          if ( dryRun )
-            console.log ( f );
-          else {
-            const fileContents = await fs.readFile ( f )
-            let body = fileContents.toString ( 'utf8' );
-            if ( body.length > 0 ) {
-              const response = await tc.context.fetch ( `${elasticSearch}_bulk`, {
-                method: 'Post',
-                headers: { ...getElasticSearchAuthHeaderWithApiToken ( tc.context.env, token.toString () ), 'Content-Type': 'application/x-ndjson' },
-                body: body
-              } );
-              results.calls++
-              if ( response.ok ) {
-                const result = await response.json ()
-                if ( opts.debug ) console.log ( f, JSON.stringify ( result ) )
-                results.successful += 1
-              } else {
-                results.non200++
-                let text = await response.text ();
-                results.non200Details.push ( `${f} ${response.status} ${response.statusText} ${text}` )
-                console.log ( 'file: ', f, response.status, response.statusText, text )
-              }
-            } else console.log ( 'file: ', f, 'empty' )
+      let throttle = {
+        max: 10,
+        current: 0,
+        tokensPer100ms: 0.05 //1 post every 2 seconds
+      };
+      const fetch = withThrottle ( throttle, tc.context.fetch )
+      try {
+        await processFilesRecursively ( directory.toString (), async f => {
+            if ( dryRun )
+              console.log ( f );
+            else {
+              const fileContents = await fs.readFile ( f )
+              let body = fileContents.toString ( 'utf8' );
+              if ( body.length > 0 ) {
+                const response = await fetch ( `${elasticSearch}_bulk`, {
+                  method: 'Post',
+                  headers: { ...getElasticSearchAuthHeaderWithApiToken ( tc.context.env, token.toString () ), 'Content-Type': 'application/x-ndjson' },
+                  body: body
+                } );
+                results.calls++
+                if ( response.ok ) {
+                  const result = await response.json ()
+                  if ( opts.debug ) console.log ( f, JSON.stringify ( result ) )
+                  results.successful += 1
+                } else {
+                  results.non200++
+                  let text = await response.text ();
+                  results.non200Details.push ( `${f} ${response.status} ${response.statusText} ${text}` )
+                  console.log ( 'file: ', f, response.status, response.statusText, text )
+                }
+              } else console.log ( 'file: ', f, 'empty' )
+            }
           }
-        }
-      )
+        )
+      } finally {
+        stopThrottling ( throttle )
+      }
       console.log ( JSON.stringify ( results, null, 2 ) )
     }
   }

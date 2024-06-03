@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/shell",
   "description": "executing commands in a shell",
-  "version": "0.0.61",
+  "version": "0.0.63",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,8 +22,8 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.61",
-    "@itsmworkbench/urlstore": "0.0.61",
+    "@itsmworkbench/utils": "0.0.63",
+    "@itsmworkbench/urlstore": "0.0.63",
     "debug": "^4.3.4"
   },
   "devDependencies": {
