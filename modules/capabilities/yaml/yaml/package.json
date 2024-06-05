@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/yaml",
   "description": "",
-  "version": "0.0.63",
+  "version": "0.0.65",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {

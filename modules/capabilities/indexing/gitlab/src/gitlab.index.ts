@@ -2,6 +2,7 @@ import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctiona
 import { mapK, safeArray } from "@laoban/utils";
 import { K1, } from "@itsmworkbench/kleislis";
 import { GitLabMemberDetails } from "./gitlab.dls";
+import { withoutFirstSegment } from "@itsmworkbench/utils";
 
 export interface GitlabDetails extends SourceSinkDetails {
   index: string;
@@ -57,6 +58,7 @@ export type GitLabIndexedFile = {
   projectId: number
   id: string
   path: string
+  fullPath: string
   url: string
   content: string
 }
@@ -85,7 +87,8 @@ export const gitLabFileToIndexedFile = ( ic: IndexingContext, gitlabDetails: Git
     projectId: project.id,
     id: f.id,
     path: f.path,
-    url: `${gitlabDetails.baseurl}/${project.path_with_namespace}/-/blob/${project.default_branch}/${f.path }`,
+    fullPath: `${withoutFirstSegment(project.path_with_namespace)}/${f.path}`,
+    url: `${gitlabDetails.baseurl}/${project.path_with_namespace}/-/blob/${project.default_branch}/${f.path}`,
     content: gitlabFileDetails.encoding === 'base64' ? Buffer.from ( gitlabFileDetails.content, 'base64' ).toString ( 'utf-8' ) : gitlabFileDetails.content
   }
   return result

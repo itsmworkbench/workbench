@@ -6,7 +6,7 @@ export type Pipeline = {
   index: string;
   fields: string[];
 
-  vectorField: string;// default: 'full_text_embedding'
+  vectorField: string;// default: 'full_text_embeddings'
   fullText: string; // default: 'full_text'
   vectorisationModel: string; // default: defaultVectorisationModel
 }
@@ -23,7 +23,7 @@ export function validatePipeline ( prefix: string, vectorisationModel: string, f
   f.fields.forEach ( ( field: any, i ) => {if ( typeof field !== 'string' ) throw new Error ( prefix + ' fields[' + i + '] must be a string' )} )
   if ( f.fullText === undefined ) f.fullText = 'full_text'
   if ( typeof f.fullText !== 'string' ) throw new Error ( prefix + ' fullText must be a string' )
-  if ( f.vectorField === undefined ) f.vectorField = 'full_text_embedding'
+  if ( f.vectorField === undefined ) f.vectorField = 'full_text_embeddings'
   if ( typeof f.vectorField !== 'string' ) throw new Error ( prefix + ' vectorField must be a string' )
   if ( f.vectorisationModel === undefined ) f.vectorisationModel = vectorisationModel
   if ( typeof f.vectorisationModel !== 'string' ) throw new Error ( prefix + ' vectorisationModel must be a string' )

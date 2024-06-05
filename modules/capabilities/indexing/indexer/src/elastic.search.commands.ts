@@ -58,7 +58,7 @@ export function addDeleteIndexCommand<Commander, Config, CleanConfig> ( tc: Cont
           } );
           if ( response.ok ) {
             const result = await response.json ()
-            if ( opts.debug ) console.log ( JSON.stringify ( result ) )
+            console.log ( JSON.stringify ( result ) )
           } else {
             console.log ( response.status, response.statusText, await response.text () )
           }
@@ -76,7 +76,7 @@ export function addAddMappingCommand<Commander, Config, CleanConfig> ( tc: Conte
     options: {
       '-i, --index <index...>': { description: 'The indexes to add the mapping to', default: [] },
       '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
-      '-f, --field <field>': { description: 'The mapping field to add', default: 'full_text_embedding' },
+      '-f, --field <field>': { description: 'The mapping field to add', default: 'full_text_embeddings' },
       '-t, --token <token>': { description: 'Variable name that holds the elastic search token', default: 'ELASTIC_TOKEN' },
       '--debug': { description: 'Show debug information' },
       '--dryRun': { description: `Just do a dry run instead of actually pushing the mapping` }
@@ -133,7 +133,7 @@ export function addPushCommand<Commander, Config, CleanConfig> ( tc: ContextConf
       let throttle = {
         max: 10,
         current: 0,
-        tokensPer100ms: 0.05 //1 post every 2 seconds
+        tokensPer100ms: 0.1 //1 post every  second max
       };
       const fetch = withThrottle ( throttle, tc.context.fetch )
       try {
@@ -190,17 +190,32 @@ export function addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc: Co
       const headers = getElasticSearchAuthHeaderWithApiToken ( tc.context.env, opts.token.toString () )
       const call = callElasticSearch ( tc.context.fetch, headers, 'Put', opts.debug === true );
       for ( const [ name, pipeline ] of Object.entries ( pipelines ) ) {
-        const createBody = pipelineBody ( name, pipeline );
-        const createUrl = `${opts.elasticSearch}_ingest/pipeline/${name}`;
+        const createIndexBody = {
+          mappings: {
+            properties: {
+              [ pipeline.fullText ]: {
+                type: 'text'
+              },
+              [ pipeline.vectorField ]: {
+                type: 'sparse_vector',
+              }
+            }
+          }
+        }
+        const createIndexUrl = `${opts.elasticSearch}${pipeline.index}`
+        const createPipelineBody = pipelineBody ( name, pipeline );
+        const createPipelineUrl = `${opts.elasticSearch}_ingest/pipeline/${name}`;
         const useUrl = `${opts.elasticSearch}${pipeline.index}/_settings`;
         const useBody = usePipelineBody ( name )
         if ( opts.dryRun === true || opts.debug ) {
           console.log ( 'Making pipeline', name )
-          console.log ( createUrl, JSON.stringify ( createBody, null, 2 ) )
+          console.log ( createIndexUrl, JSON.stringify ( createIndexBody, null, 2 ) )
+          console.log ( createPipelineUrl, JSON.stringify ( createPipelineBody, null, 2 ) )
           console.log ( useUrl, JSON.stringify ( useBody, null, 2 ) )
         }
         if ( opts.dryRun ) return
-        await call ( createUrl, createBody );
+        await call ( createIndexUrl, createIndexBody );
+        await call ( createPipelineUrl, createPipelineBody );
         await call ( useUrl, useBody );
       }
     }
@@ -257,9 +272,9 @@ export function addMakeMappingsCommand<Commander, Config, CleanConfig> ( tc: Con
         if ( opts.debug ) console.log ( `Checking index ${index} with ${url}` )
         const existingMappings = await callElasticSearch ( tc.context.fetch, headers, 'Get', opts.debug === true ) ( url )
         if ( opts.debug ) console.log ( JSON.stringify ( existingMappings, null, 2 ) )
-        const indexData = existingMappings[index]?.mappings?.properties
-        console.log(JSON.stringify(indexData, null, 2))
-        deepCombineTwoObjects(indexData, mappingsFileContents[index])
+        const indexData = existingMappings[ index ]?.mappings?.properties
+        console.log ( JSON.stringify ( indexData, null, 2 ) )
+        deepCombineTwoObjects ( indexData, mappingsFileContents[ index ] )
       }
     }
   }

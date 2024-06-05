@@ -20,10 +20,12 @@ async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndC
 }
 function findExecuteOptions ( opts: NameAnd<string | boolean | string[]> ): ExecuteIndexOptions {
   let since = opts.since?.toString ();
+  let index = opts.index ? new RegExp ( opts.index.toString () ) : undefined
+  const base = { since, index }
   validateSince ( since )
-  if ( opts.detailedDryRun ) return { since, dryRunDoEverythingButIndex: true }
-  if ( opts.dryrun ) return { since, dryRunJustShowTrees: true }
-  return { since }
+  if ( opts.detailedDryRun ) return { ...base, dryRunDoEverythingButIndex: true }
+  if ( opts.dryrun ) return { ...base, dryRunJustShowTrees: true }
+  return base
 }
 export function validateSince ( since: string | undefined ) {
   if ( since === undefined ) return
@@ -40,9 +42,10 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
     options: {
       '-f, --file <file>': { description: 'The config file', default: 'indexer.yaml' },
       '-t,--target <target>': { description: 'where we put the indexed data', default: 'target/indexer' },
+      '-i, --index <index>': { description: 'A reg ex for which indicies will be indexed' },
       '--debug': { description: 'Show debug information' },
       '--api': { description: 'Start the api' },
-      '--since <time>': { description: 'Index only issues updated since the specified time (e.g., 1d for last day, 2h for last 2 hours, 30m for last 30 minutes)' , default: '3600d'},
+      '--since <time>': { description: 'Index only issues updated since the specified time (e.g., 1d for last day, 2h for last 2 hours, 30m for last 30 minutes)', default: '3600d' },
       '--keep': { description: 'if you started the api this keeps it running at the end' },
       '--port <port>': { description: 'The port to start the api on', default: '1235' },
       '--dryrun': { description: `don't actually do the indexing, but report what would be done` },
@@ -58,7 +61,7 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
       const executeOptions: ExecuteIndexOptions = findExecuteOptions ( opts )
       const indexIntoFile = ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, index: string ) =>
         insertIntoFileWithNonFunctionals ( target.toString (), fileTemplate, index, nfc )
-      const resultsAndNfcs = indexAll ( ic, indexIntoFile, executeOptions ) ( config )
+      const resultsAndNfcs = (indexAll ( ic, indexIntoFile, executeOptions ) ( config )).filter ( r => r !== undefined )
       const allNfcs = resultsAndNfcs.map ( r => r.nfc )
       const apiFuture = api === true ? startKoa ( 'target/indexer', Number.parseInt ( port.toString () ), debug === true,
         metricIndexerHandlers ( metrics, allNfcs ) ) : undefined

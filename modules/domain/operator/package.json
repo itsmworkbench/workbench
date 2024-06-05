@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/operator",
   "description": "Information about the operator",
-  "version": "0.0.63",
+  "version": "0.0.65",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -24,7 +24,7 @@
     "@laoban/variables": "1.4.51",
     "@focuson/lens": "1.44.3",
     "@focuson/state": "1.44.3",
-    "@itsmworkbench/domain": "0.0.63",
+    "@itsmworkbench/domain": "0.0.65",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/urlstore",
   "description": "urls used with intellimaintain. 'itsm:organisation:namespace/name:nameOrHash'",
-  "version": "0.0.63",
+  "version": "0.0.65",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {

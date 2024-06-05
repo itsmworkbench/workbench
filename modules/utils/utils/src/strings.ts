@@ -82,3 +82,8 @@ export function simpleTemplate(template: string, data: NameAnd<any>): string {
     return match; // Return the original match if no corresponding key is found
   });
 }
+export function withoutFirstSegment ( path: string ): string {
+  if (path === undefined) return '';
+  const index = path.indexOf ( '/' );
+  return index === -1 ? '' : path.slice ( index+1 );
+}

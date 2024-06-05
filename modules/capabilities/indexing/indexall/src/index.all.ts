@@ -35,6 +35,11 @@ export type ResultAndNfc = {
 }
 export const indexOneSource = ( context: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) => ( item: PopulatedIndexItem, ): ResultAndNfc => {
   const { index, query, target, auth, scan, type } = item
+  if ( executeOptions.index && !index.match ( executeOptions.index ) ) {
+    if ( executeOptions.dryRunDoEverythingButIndex || executeOptions.dryRunJustShowTrees )
+      console.log ( `Skipping ${index} because it does not match ${executeOptions.index}` )
+    return
+  }
   const nfc: IndexTreeNonFunctionals = {
     queryQueue: [],
     queryConcurrencyLimit: item.query.concurrencyLimit || 1000,
