@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/mistralai",
   "description": "Code that extras variables from the ticket using AI ... uses mistral",
-  "version": "0.0.68",
+  "version": "0.0.69",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -22,8 +22,8 @@
     "@xenova/transformers": "^2.17.1",
     "aws-sdk": "^2.1604.0",
     "@aws-sdk/client-s3": "^3.556.0",
-    "@itsmworkbench/ai": "0.0.68",
-    "@itsmworkbench/utils": "0.0.68",
+    "@itsmworkbench/ai": "0.0.69",
+    "@itsmworkbench/utils": "0.0.69",
     "debug": "^4.3.4"
   },
   "devDependencies": {

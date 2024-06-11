@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/variables",
   "description": "Each of the artifacts we have needs to be scanned for variables (software catalogs/knowledge models)",
-  "version": "0.0.68",
+  "version": "0.0.69",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,7 +23,7 @@
     "node": "^v14.4.0",
     "@laoban/utils": "1.4.51",
     "@focuson/lens": "1.44.3",
-    "@itsmworkbench/utils": "0.0.68",
+    "@itsmworkbench/utils": "0.0.69",
     "debug": "^4.3.4"
   },
   "devDependencies": {

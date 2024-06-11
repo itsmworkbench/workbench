@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/browsersql",
   "description": "interacting with sql: the api client",
-  "version": "0.0.68",
+  "version": "0.0.69",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,8 +22,8 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/sql": "0.0.68",
-    "@itsmworkbench/utils": "0.0.68",
+    "@itsmworkbench/sql": "0.0.69",
+    "@itsmworkbench/utils": "0.0.69",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/koa",
   "description": "",
-  "version": "0.0.68",
+  "version": "0.0.69",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -19,7 +19,7 @@
   "dependencies": {
     "koa": "^2.14.2",
     "@koa/cors": "^5.0.0",
-    "@itsmworkbench/utils": "0.0.68",
+    "@itsmworkbench/utils": "0.0.69",
     "debug": "^4.3.4"
   },
   "devDependencies": {
