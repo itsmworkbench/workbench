@@ -87,3 +87,4 @@ index:
         credentials:
           apiKey: CONFLUENCE_TOKEN
       index: .search-acl-filter-confluence-prod
+      emailSuffix: "@eon.com"

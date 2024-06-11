@@ -69,14 +69,14 @@ export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails, secretToUseAp
         if ( details.deletePrevious ) {
           console.log ( await invalidateApiKeysForEmail ( fetch, details ) ( email ) )
         }
-        let queries = await loadQueriesForEmail ( fetch, details, email );
-        if ( queries.bool.should.length === 0 ) {
-          ctx.context.status = 403;
-          ctx.context.body = `There are no indexes that have email ${email} in them. Indexes checked are ${index.join ( ',' )}`
-          return
-        }
-        const response = await makeApiKey ( fetch, details, email, queries )
-        ctx.context.body = JSON.stringify ( response, null, 2 )
+        let { index, query } = await loadQueriesForEmail ( fetch, details, email );
+        // if ( queries.bool.should.length === 0 ) {
+        //   ctx.context.status = 403;
+        //   ctx.context.body = `There are no indexes that have email ${email} in them. Indexes checked are ${index.join ( ',' )}`
+        //   return
+        // }
+        const response = await makeApiKey ( fetch, details, email, query )
+        ctx.context.body = JSON.stringify ( { ...response, indicies: index }, null, 2 )
         ctx.context.set ( 'Content-Type', 'application/json' );
       } catch ( e: any ) {
         rememberedError = JSON.stringify ( e )

@@ -9,6 +9,7 @@ export interface ConfluenceAclDetails extends SourceSinkDetails {
   file: string
   index: string
   spaces: string[]
+  emailSuffix: string
 }
 export type ConfPermAll = {
   permissions: NameAnd<ConfluencePermission>
@@ -51,8 +52,9 @@ async function findUserToSpaces ( fetchOne: FetchOneItemType, fetchArray: FetchA
     const usersFromGroups = await flatMapK ( permissions.groups, groupToUsers ( fetchArray, headers, details ) )
     const allUsers = [ ...new Set ( [ ...permissions.users, ...usersFromGroups ] ) ].sort ()
     for ( const user of allUsers ) {
-      const list = result[ user ] || []
-      result[ user ] = list
+      const adjustedUser = user.indexOf ( '@' ) === -1 ? user + details.emailSuffix : user
+      const list = result[ adjustedUser ] || []
+      result[ adjustedUser ] = list
       list.push ( space )
     }
   }
@@ -82,13 +84,14 @@ export const indexConfluenceAcl = ( ic: IndexingContext, nfs: IndexTreeNonFuncti
   const fOne = withRetry ( nfs.queryRetryPolicy, fetchOneItem ( nfcFetch ) )
 
   return async ( details: ConfluenceAclDetails ) => {
+    if ( details.emailSuffix === undefined ) throw new Error ( `emailSuffix for ${details.index} is required` )
     const indexer: Indexer<any> = indexerFn ( details.file, details.index )
     await indexer.start ( details.index )
     try {
       const headers = await ic.authFn ( details.auth )
       const userToSpaces = await findUserToSpaces ( fOne, fArray, headers, details )
       for ( const [ user, spaces ] of Object.entries ( userToSpaces ) ) {
-        let result = convertConfDetailsToAclRecord ( removeSearchAclPrefix(details.index), user, spaces );
+        let result = convertConfDetailsToAclRecord ( removeSearchAclPrefix ( details.index ), user, spaces );
         await indexer.processLeaf ( details.index, result._id ) ( result.data )
       }
       await indexer.finished ( details.index )

@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/react_core",
   "description": "",
-  "version": "0.0.66",
+  "version": "0.0.68",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@focuson/state": "1.44.3",
-    "@itsmworkbench/events": "0.0.66",
-    "@itsmworkbench/eventstore": "0.0.66",
+    "@itsmworkbench/events": "0.0.68",
+    "@itsmworkbench/eventstore": "0.0.68",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -38,22 +38,26 @@ export function apiKeyDetails ( opts: NameAnd<any>, env: NameAnd<string> ): ApiK
   }
 }
 
-export async function loadQueriesForEmail ( fetchFn: FetchFn, apiKeyDetails: ApiKeyDetails, email: string ) {
+export type IndexAndQuery = { index: string, query?: any }
+
+export async function loadQueriesForEmail ( fetchFn: FetchFn, apiKeyDetails: ApiKeyDetails, email: string ): Promise<IndexAndQuery> {
   const { elasticSearchUrl, index, headers } = apiKeyDetails
-  const queries = await mapK ( index, async i => {
+  const indexAndQueries = await mapK ( index, async i => {
     const esUrl = `${elasticSearchUrl}.search-acl-filter-${i}/_doc/${encodeURIComponent ( email )}`;
     const response = await fetchFn ( esUrl, { headers } )
     if ( response.ok ) {
       let json = await response.json ();
       if ( json._source.query === undefined ) throw new Error ( `No query found for ${email} in ${i}\n${JSON.stringify ( json )}` )
-      return JSON.parse ( json._source.query );
+      return { index: i, query: JSON.parse ( json._source.query ) }
     }
     if ( response.status === 404 )
-      return undefined
+      return { index: i }
     throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
   } )
-  let result = { bool: { should: [ ...queries, ...makeQueriesForUncontrolled ( apiKeyDetails.uncontrolled ) ].filter ( q => q !== undefined ) } };
-  return result
+  const allQueries = indexAndQueries.filter ( q => q.query !== undefined ).map ( i => i.query )
+  const allIndexes = indexAndQueries.filter ( q => q.query !== undefined ).map ( i => i.index )
+  let query = { bool: { should: [ ...indexAndQueries, ...makeQueriesForUncontrolled ( apiKeyDetails.uncontrolled ) ].filter ( q => q !== undefined ) } };
+  return { index: allIndexes.join ( ',' ), query }
 }
 
 export function makeQueriesForUncontrolled ( uncontrolled: string[] ) {
@@ -112,7 +116,7 @@ export const findApiKeysForEmail = ( fetchFn: FetchFn, apiDetails: ApiKeyDetails
 export const invalidateApiKeysForEmail = ( fetchFn: FetchFn, apiDetails: ApiKeyDetails ) => async ( email: string ) => {
   const apiKeys = await findApiKeysForEmail ( fetchFn, apiDetails ) ( email )
   console.log ( 'deleting', apiKeys )
-  if (apiKeys.length===0)return;
+  if ( apiKeys.length === 0 ) return;
   const response = await fetchFn ( `${apiDetails.elasticSearchUrl}_security/api_key`, {
     headers: { ...apiDetails.headers, 'Content-Type': 'application/json' },
     method: 'Delete',
