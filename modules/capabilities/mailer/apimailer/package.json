@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/apimailer",
   "description": "code to support the api/mailer integration",
-  "version": "0.0.65",
+  "version": "0.0.66",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -19,9 +19,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.65",
-    "@itsmworkbench/koa": "0.0.65",
-    "@itsmworkbench/mailer": "0.0.65",
+    "@itsmworkbench/utils": "0.0.66",
+    "@itsmworkbench/koa": "0.0.66",
+    "@itsmworkbench/mailer": "0.0.66",
     "debug": "^4.3.4"
   },
   "devDependencies": {

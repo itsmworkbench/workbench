@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/indexing_confluence_acl",
   "description": "indexing confluence ",
-  "version": "0.0.65",
+  "version": "0.0.66",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,9 +22,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.65",
-    "@itsmworkbench/indexing": "0.0.65",
-    "@itsmworkbench/indexconfig": "0.0.65",
+    "@itsmworkbench/utils": "0.0.66",
+    "@itsmworkbench/indexing": "0.0.66",
+    "@itsmworkbench/indexconfig": "0.0.66",
     "debug": "^4.3.4"
   },
   "devDependencies": {
