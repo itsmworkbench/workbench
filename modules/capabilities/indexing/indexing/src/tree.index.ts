@@ -1,4 +1,4 @@
-import { stopThrottling, Task, withConcurrencyLimit, withRetry, withThrottle } from "@itsmworkbench/kleislis";
+import { K3, stopThrottling, Task, withConcurrencyLimit, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { IndexTreeNonFunctionals } from "./indexing.non.functionals";
 import { mapK, NameAnd } from "@laoban/utils";
 import { Indexer } from "./indexer.domain";

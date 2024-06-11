@@ -1,25 +1,26 @@
-#jira-prod-pipeline:
-#    index: jira-prod
-#    fields:
-#      - issue
-#      - comments
-#      - description
-#      - priority
-#      - status
-#confluence-prod-pipeline:
-#    index: confluence-prod
-#    fields:
-#      - title
-#      - body
-#      - space
-#      - status
-#      - category
-#gitlab-prod-pipeline:
-#    index: gitlab-prod
-#    fields:
-#      - id
-#      - content
+jira-prod-pipeline:
+  index: jira-prod
+  fields:
+    - issue
+    - comments
+    - description
+    - priority
+    - status
+confluence-prod-pipeline:
+  index: confluence-prod
+  fields:
+    - title
+    - body
+    - space
+    - status
+    - category
+gitlab-prod-pipeline:
+  index: gitlab-prod
+  fields:
+    - id
+    - content
+
 phil-test-pipeline:
-    index: phil-test
-    fields:
-      - content
+  index: phil-test
+  fields:
+    - content

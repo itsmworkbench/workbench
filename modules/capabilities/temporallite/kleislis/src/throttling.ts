@@ -1,3 +1,6 @@
+import { ReplayConfig, ReplayEngine } from "./replay.events";
+import { InjectedK0, K0, K1, K2, K3, K4, K5 } from "./kleisli";
+
 export type Throttling = {
   current?: number;
   kill?: boolean;
@@ -7,6 +10,13 @@ export type Throttling = {
   intervalId?: NodeJS.Timeout;  // Store the interval ID here
   countOnTooManyErrors?: number; // if we get a 429 too many requests error, we set the current to this value. Default is -500. If the tokensPre100ms is 0.1,This will take 50 seconds before we try again
 };
+
+export function withThrottle<T> ( throttle: Throttling, fn: K0<T> ): K0<T>;
+export function withThrottle<P1, T> (throttle: Throttling, fn: K1<P1, T> ): K1<P1, T>;
+export function withThrottle<P1, P2, T> (throttle: Throttling, fn: K2<P1, P2, T> ): K2<P1, P2, T>;
+export function withThrottle<P1, P2, P3, T> (throttle: Throttling, fn: K3<P1, P2, P3, T> ): K3<P1, P2, P3, T>;
+export function withThrottle<P1, P2, P3, P4, T> ( throttle: Throttling, fn: K4<P1, P2, P3, P4, T> ): K4<P1, P2, P3, P4, T>;
+export function withThrottle<P1, P2, P3, P4, P5, T> ( throttle: Throttling, fn: K5<P1, P2, P3, P4, P5, T> ): K5<P1, P2, P3, P4, P5, T>;
 
 export function withThrottle<T> ( throttle: Throttling, fn: ( ...args: any[] ) => Promise<T> ): ( ...args: any ) => Promise<T> {
   return async ( ...args: any[] ) => {

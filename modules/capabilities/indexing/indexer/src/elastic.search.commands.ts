@@ -4,10 +4,9 @@ import { CliTc, CommandDetails, ContextConfigAndCommander } from "@itsmworkbench
 import { IndexerContext } from "./context";
 import { getElasticSearchAuthHeaderWithApiToken } from "./apikey.for.dls";
 import { defaultVectorisationModel, loadAndValidatePipelines, pipelineBody, usePipelineBody } from "./pipelines";
-import { stopThrottling, withThrottle } from "@itsmworkbench/kleislis";
+import { RetryPolicyConfig, stopThrottling, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { callElasticSearch } from "./callElasticSearch";
-import { loadAndValidateIndexMappings } from "./index.mappings";
-import { deepCombineTwoObjects, NameAnd } from "@laoban/utils";
+import { FetchFn, FetchFnOptions, FetchFnResponse } from "@itsmworkbench/indexing";
 
 async function processFilesRecursively ( rootDir: string, processFile: ( filePath: string ) => Promise<void> ) {
   async function processDirectory ( directory: string ) {
@@ -121,56 +120,82 @@ export function addPushCommand<Commander, Config, CleanConfig> ( tc: ContextConf
       '-d, --directory <directory>': { description: 'The config file', default: 'target' },
       '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
       '-t, --token <token>': { description: 'Variable name that holds the elastic search token', default: 'ELASTIC_TOKEN' },
+      '-b, --batchSize <batchSize>': { description: 'The batch size', default: 1000 },
       '--debug': { description: 'Show debug information' },
       '--dryRun': { description: `Just do a dry run instead of actually pushing the data` }
     },
     action: async ( _, opts ) => {
       console.log ( `Pushing `, opts )
-      const { directory, elasticSearch, dryRun, token } = opts
+      const { directory, elasticSearch, dryRun, token, batchSize } = opts
       // const tokenValue = getElasticSearchToken ( tc.context.env, token );
-
+      const batchSizeNum = Number.parseInt ( batchSize.toString () )
+      if ( isNaN ( batchSizeNum ) ) throw new Error ( `Batch size must be a number` )
       const results: PushResult = { successful: 0, non200: 0, non200Details: [], calls: 0 }
       let throttle = {
         max: 10,
         current: 0,
-        tokensPer100ms: 0.1 //1 post every  second max
+        tokensPer100ms: 0.1 //
       };
-      const fetch = withThrottle ( throttle, tc.context.fetch )
+      let retryPolicy: RetryPolicyConfig = {
+        initialInterval: 5000,
+        maximumInterval: 30000,
+        maximumAttempts: 50,
+        nonRecoverableErrors: [ 'Not Found' ]
+      }
       try {
-        await processFilesRecursively ( directory.toString (), async f => {
-            if ( dryRun )
-              console.log ( f );
-            else {
-              const fileContents = await fs.readFile ( f )
-              let body = fileContents.toString ( 'utf8' );
-              if ( body.length > 0 ) {
-                const response = await fetch ( `${elasticSearch}_bulk`, {
-                  method: 'Post',
-                  headers: { ...getElasticSearchAuthHeaderWithApiToken ( tc.context.env, token.toString () ), 'Content-Type': 'application/x-ndjson' },
-                  body: body
-                } );
-                results.calls++
-                if ( response.ok ) {
-                  const result = await response.json ()
-                  if ( opts.debug ) console.log ( f, JSON.stringify ( result ) )
-                  results.successful += 1
-                } else {
-                  results.non200++
-                  let text = await response.text ();
-                  results.non200Details.push ( `${f} ${response.status} ${response.statusText} ${text}` )
-                  console.log ( 'file: ', f, response.status, response.statusText, text )
-                }
-              } else console.log ( 'file: ', f, 'empty' )
+        async function rawIndexLines ( f: string, lines: string[] ) {
+          let body = lines.join ( '\n' ) + '\n'
+          if ( body.length > 0 ) {
+            const response = await tc.context.fetch ( `${elasticSearch}_bulk`, {
+              method: 'Post',
+              headers: { ...getElasticSearchAuthHeaderWithApiToken ( tc.context.env, token.toString () ), 'Content-Type': 'application/x-ndjson' },
+              body: body
+            } );
+            results.calls++
+            if ( response.ok ) {
+              const result = await response.json ()
+              if ( opts.debug ) console.log ( f, JSON.stringify ( result ) )
+              results.successful += 1
+            } else {
+              results.non200++
+              let text = await response.text ();
+              results.non200Details.push ( `${f} ${response.status} ${response.statusText} ${text}` )
+              console.log ( 'file: ', f, response.status, response.statusText, text )
             }
           }
-        )
+        }
+        const indexLinks = withRetry ( retryPolicy, withThrottle ( throttle, rawIndexLines ) );
+        async function sendLines ( f: string, text: string ) {
+          const lines = text.split ( '\n' ).map ( l => l.trim () ).filter ( l => l.length > 0 )
+          let i = 0;
+          while ( i < lines.length ) {
+            const batch = lines.slice ( i, i + batchSizeNum )
+            await indexLinks ( f, batch )
+            i += batchSizeNum
+          }
+        }
+        try {
+          await processFilesRecursively ( directory.toString (), async f => {
+              if ( dryRun )
+                console.log ( f );
+              else {
+                const fileContents = await fs.readFile ( f )
+                let body = fileContents.toString ( 'utf8' );
+                await sendLines ( f, body )
+              }
+            }
+          )
+        } finally {
+          stopThrottling ( throttle )
+        }
+        console.log ( JSON.stringify ( results, null, 2 ) )
       } finally {
         stopThrottling ( throttle )
       }
-      console.log ( JSON.stringify ( results, null, 2 ) )
     }
   }
 }
+
 //
 export function addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
   return {
@@ -190,33 +215,71 @@ export function addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc: Co
       const headers = getElasticSearchAuthHeaderWithApiToken ( tc.context.env, opts.token.toString () )
       const call = callElasticSearch ( tc.context.fetch, headers, 'Put', opts.debug === true );
       for ( const [ name, pipeline ] of Object.entries ( pipelines ) ) {
-        const createIndexBody = {
-          mappings: {
-            properties: {
-              [ pipeline.fullText ]: {
-                type: 'text'
-              },
-              [ pipeline.vectorField ]: {
-                type: 'sparse_vector',
-              }
+        const addMappingBody = {
+          properties: {
+            [ pipeline.fullText ]: {
+              type: 'text'
+            },
+            [ pipeline.vectorField ]: {
+              type: pipeline.type,
+              dims: pipeline.dims
             }
           }
         }
-        const createIndexUrl = `${opts.elasticSearch}${pipeline.index}`
+        const addMappingUrl = `${opts.elasticSearch}${pipeline.index}/_mapping`
         const createPipelineBody = pipelineBody ( name, pipeline );
         const createPipelineUrl = `${opts.elasticSearch}_ingest/pipeline/${name}`;
         const useUrl = `${opts.elasticSearch}${pipeline.index}/_settings`;
         const useBody = usePipelineBody ( name )
         if ( opts.dryRun === true || opts.debug ) {
           console.log ( 'Making pipeline', name )
-          console.log ( createIndexUrl, JSON.stringify ( createIndexBody, null, 2 ) )
+          console.log ( addMappingUrl, JSON.stringify ( addMappingBody, null, 2 ) )
           console.log ( createPipelineUrl, JSON.stringify ( createPipelineBody, null, 2 ) )
           console.log ( useUrl, JSON.stringify ( useBody, null, 2 ) )
         }
         if ( opts.dryRun ) return
-        await call ( createIndexUrl, createIndexBody );
+        await call ( addMappingUrl, addMappingBody );
         await call ( createPipelineUrl, createPipelineBody );
         await call ( useUrl, useBody );
+      }
+    }
+  }
+}
+//
+export function addMakeIndexes<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
+  return {
+    cmd: 'makeIndexes',
+    description: 'makes the indexes',
+    options: {
+      '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
+      '-t, --token <token>': { description: 'Variable name that holds the elastic search token', default: 'ELASTIC_TOKEN' },
+      '-f, --file <file>': { description: 'The pipeline file', default: 'pipelines.yaml' },
+      '-m, --model <model>': { description: 'The default vectorisation model', default: defaultVectorisationModel },
+      '--debug': { description: 'Show debug information' },
+      '--dryRun': { description: `Just do a dry run instead of actually making the pipelines` }
+    },
+    action: async ( _, opts ) => {
+      if ( opts.debug ) console.log ( `Pipeline `, opts )
+      const pipelines = await loadAndValidatePipelines ( opts.file.toString (), tc.context.yaml, opts.model.toString () )
+      const headers = getElasticSearchAuthHeaderWithApiToken ( tc.context.env, opts.token.toString () )
+      const call = callElasticSearch ( tc.context.fetch, headers, 'Put', opts.debug === true );
+      for ( const [ name, pipeline ] of Object.entries ( pipelines ) ) {
+        try {
+          const createIndexBody = {
+            mappings: {
+              properties: {}
+            }
+          }
+          const createIndexUrl = `${opts.elasticSearch}${pipeline.index}`
+          if ( opts.dryRun === true || opts.debug ) {
+            console.log ( 'Making pipeline', name )
+            console.log ( createIndexUrl, JSON.stringify ( createIndexBody, null, 2 ) )
+          }
+          if ( opts.dryRun ) return
+          await call ( createIndexUrl, createIndexBody );
+        } catch ( e: any ) {
+          console.error ( e )
+        }
       }
     }
   }
@@ -251,34 +314,34 @@ export function addRemovePipelinesCommand<Commander, Config, CleanConfig> ( tc: 
 }
 
 //
-export function addMakeMappingsCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
-  return {
-    cmd: 'mappings',
-    description: 'makes the mappings',
-    options: {
-      '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
-      '-t, --token <token>': { description: 'Variable name that holds the elastic search token', default: 'ELASTIC_TOKEN' },
-      '-f, --file <file>': { description: 'The pipeline file', default: 'mappings.yaml' },
-      '--debug': { description: 'Show debug information' },
-      '--dryRun': { description: `Just do a dry run instead of actually making the pipelines` }
-    },
-    action: async ( _, opts ) => {
-      if ( opts.debug ) console.log ( `Mappings `, opts )
-      const mappingsFileContents = await loadAndValidateIndexMappings ( opts.file.toString (), tc.context.yaml )
-      let headers: NameAnd<string> = getElasticSearchAuthHeaderWithApiToken ( tc.context.env, opts.token.toString () );
-      const indicies = Object.keys ( mappingsFileContents )
-      for ( const index of indicies ) {
-        const url = `${opts.elasticSearch}${index}`
-        if ( opts.debug ) console.log ( `Checking index ${index} with ${url}` )
-        const existingMappings = await callElasticSearch ( tc.context.fetch, headers, 'Get', opts.debug === true ) ( url )
-        if ( opts.debug ) console.log ( JSON.stringify ( existingMappings, null, 2 ) )
-        const indexData = existingMappings[ index ]?.mappings?.properties
-        console.log ( JSON.stringify ( indexData, null, 2 ) )
-        deepCombineTwoObjects ( indexData, mappingsFileContents[ index ] )
-      }
-    }
-  }
-}
+// export function addMakeMappingsCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
+//   return {
+//     cmd: 'mappings',
+//     description: 'makes the mappings',
+//     options: {
+//       '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
+//       '-t, --token <token>': { description: 'Variable name that holds the elastic search token', default: 'ELASTIC_TOKEN' },
+//       '-f, --file <file>': { description: 'The pipeline file', default: 'mappings.yaml' },
+//       '--debug': { description: 'Show debug information' },
+//       '--dryRun': { description: `Just do a dry run instead of actually making the pipelines` }
+//     },
+//     action: async ( _, opts ) => {
+//       if ( opts.debug ) console.log ( `Mappings `, opts )
+//       const mappingsFileContents = await loadAndValidateIndexMappings ( opts.file.toString (), tc.context.yaml )
+//       let headers: NameAnd<string> = getElasticSearchAuthHeaderWithApiToken ( tc.context.env, opts.token.toString () );
+//       const indicies = Object.keys ( mappingsFileContents )
+//       for ( const index of indicies ) {
+//         const url = `${opts.elasticSearch}${index}`
+//         if ( opts.debug ) console.log ( `Checking index ${index} with ${url}` )
+//         const existingMappings = await callElasticSearch ( tc.context.fetch, headers, 'Get', opts.debug === true ) ( url )
+//         if ( opts.debug ) console.log ( JSON.stringify ( existingMappings, null, 2 ) )
+//         const indexData = existingMappings[ index ]?.mappings?.properties
+//         console.log ( JSON.stringify ( indexData, null, 2 ) )
+//         deepCombineTwoObjects ( indexData, mappingsFileContents[ index ] )
+//       }
+//     }
+//   }
+// }
 export function elasticSearchCommands<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>,
                                                                         cliTc: CliTc<Commander, IndexerContext, Config, CleanConfig> ) {
   cliTc.addCommands ( tc, [
@@ -287,7 +350,8 @@ export function elasticSearchCommands<Commander, Config, CleanConfig> ( tc: Cont
     addDeleteIndexCommand<Commander, Config, CleanConfig> ( tc ),
     addMakePipelinesCommand<Commander, Config, CleanConfig> ( tc ),
     addRemovePipelinesCommand<Commander, Config, CleanConfig> ( tc ),
-    addMakeMappingsCommand<Commander, Config, CleanConfig> ( tc )
+    addMakeIndexes<Commander, Config, CleanConfig> ( tc ),
+    // addMakeMappingsCommand<Commander, Config, CleanConfig> ( tc )
   ] )
 }
 

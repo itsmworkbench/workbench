@@ -112,6 +112,7 @@ export const findApiKeysForEmail = ( fetchFn: FetchFn, apiDetails: ApiKeyDetails
 export const invalidateApiKeysForEmail = ( fetchFn: FetchFn, apiDetails: ApiKeyDetails ) => async ( email: string ) => {
   const apiKeys = await findApiKeysForEmail ( fetchFn, apiDetails ) ( email )
   console.log ( 'deleting', apiKeys )
+  if (apiKeys.length===0)return;
   const response = await fetchFn ( `${apiDetails.elasticSearchUrl}_security/api_key`, {
     headers: { ...apiDetails.headers, 'Content-Type': 'application/json' },
     method: 'Delete',

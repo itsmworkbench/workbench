@@ -12,7 +12,7 @@ export type Task<TOutput> = {
 export function withConcurrencyLimit<T> ( limit: number, queue: Task<any>[], fn: K0<T> ): K0<T>;
 export function withConcurrencyLimit<P1, T> ( limit: number, queue: Task<any>[], fn: K1<P1, T> ): K1<P1, T>;
 export function withConcurrencyLimit<P1, P2, T> ( limit: number, queue: Task<any>[], fn: K2<P1, P2, T> ): K2<P1, P2, T>;
-export function withConcurrencyLimit<P1, P2, P3, T> ( limit: number, queue: Task<any>[], fn: K3<P1, P2, P2, T> ): K3<P1, P2, P3, T>;
+export function withConcurrencyLimit<P1, P2, P3, T> ( limit: number, queue: Task<any>[], fn: K3<P1, P2, P3, T> ): K3<P1, P2, P3, T>;
 export function withConcurrencyLimit<P1, P2, P3, P4, T> ( limit: number, queue: Task<any>[], fn: K4<P1, P2, P3, P4, T> ): K4<P1, P2, P3, P4, T>;
 export function withConcurrencyLimit<P1, P2, P3, P4, P5, T> ( limit: number, queue: Task<any>[], fn: K5<P1, P2, P3, P4, P5, T> ): K5<P1, P2, P3, P4, P5, T>;
 
