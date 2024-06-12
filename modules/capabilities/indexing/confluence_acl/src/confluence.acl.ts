@@ -52,7 +52,7 @@ async function findUserToSpaces ( fetchOne: FetchOneItemType, fetchArray: FetchA
     const usersFromGroups = await flatMapK ( permissions.groups, groupToUsers ( fetchArray, headers, details ) )
     const allUsers = [ ...new Set ( [ ...permissions.users, ...usersFromGroups ] ) ].sort ()
     for ( const user of allUsers ) {
-      const adjustedUser = user.indexOf ( '@' ) === -1 ? user + details.emailSuffix : user
+      const adjustedUser = (user.indexOf ( '@' ) === -1 ? user + details.emailSuffix : user).toLowerCase()
       const list = result[ adjustedUser ] || []
       result[ adjustedUser ] = list
       list.push ( space )

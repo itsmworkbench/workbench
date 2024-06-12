@@ -80,7 +80,7 @@ export const indexJiraAcl = ( indexerFn: ( fileTemplate: string, indexId: string
     const aclStructures = convertMemberAndGroupsToAclStructure ( removeSearchAclPrefix ( details.index ), membersAndGroups )
     console.log ( JSON.stringify ( aclStructures, null, 2 ) )
     for ( const a of aclStructures )
-      await indexer.processLeaf ( details.index, a._id ) ( a.body )
+      await indexer.processLeaf ( details.index, a._id.toLowerCase() ) ( a.body )
     await indexer.finished ( details.index )
   } catch ( e ) {
     await indexer.failed ( details.index, e )

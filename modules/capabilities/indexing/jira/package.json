@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/indexing_jira",
   "description": "indexing jira",
-  "version": "0.0.69",
+  "version": "0.0.71",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,9 +22,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.69",
-    "@itsmworkbench/indexing": "0.0.69",
-    "@itsmworkbench/indexconfig": "0.0.69",
+    "@itsmworkbench/utils": "0.0.71",
+    "@itsmworkbench/indexing": "0.0.71",
+    "@itsmworkbench/indexconfig": "0.0.71",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -81,12 +81,13 @@ export async function projectToName ( fetchArray: FetchArrayWithPagingType, fetc
   return result
 }
 
-function invert ( p2name: Record<number, string[]> ): NameAnd<number[]> {
+function invertAndLowercaseNames ( p2name: Record<number, string[]> ): NameAnd<number[]> {
   const result: NameAnd<number[]> = {}
   for ( const [ projectId, names ] of Object.entries ( p2name ) )
     for ( const name of names ) {
-      if ( !result[ name ] ) result[ name ] = []
-      result[ name ].push ( Number.parseInt ( projectId.toString () ) )
+      const lc = name.toLowerCase()
+      if ( !result[ lc ] ) result[ lc ] = []
+      result[ lc ].push ( Number.parseInt ( projectId.toString () ) )
     }
   return result
 }
@@ -120,7 +121,7 @@ export const indexGitlabAcl = ( nfs: IndexTreeNonFunctionals, ic: IndexingContex
     try {
       let headers = await ic.authFn ( details.auth );
       const p2name = await projectToName ( fArray, fOne, headers, details )
-      const name2Projects = invert ( p2name )
+      const name2Projects = invertAndLowercaseNames ( p2name )
       for ( const [ name, projects ] of Object.entries ( name2Projects ) ) {
         const result = toIndexData ( removeSearchAclPrefix(details.index), details.idPattern, name, projects )
         await indexer.processLeaf ( details.index, result._id ) ( result.data )

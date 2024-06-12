@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/indexconfig",
   "description": "The parsing of config files. Default logic",
-  "version": "0.0.69",
+  "version": "0.0.71",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,9 +22,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.69",
-    "@itsmworkbench/kleislis": "0.0.69",
-    "@itsmworkbench/yaml": "0.0.69",
+    "@itsmworkbench/utils": "0.0.71",
+    "@itsmworkbench/kleislis": "0.0.71",
+    "@itsmworkbench/yaml": "0.0.71",
     "debug": "^4.3.4"
   },
   "devDependencies": {

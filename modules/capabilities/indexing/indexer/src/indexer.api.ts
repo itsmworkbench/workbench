@@ -76,7 +76,7 @@ export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails, secretToUseAp
         //   return
         // }
         const response = await makeApiKey ( fetch, details, email, query )
-        ctx.context.body = JSON.stringify ( { ...response, indicies: index }, null, 2 )
+        ctx.context.body = JSON.stringify ( { ...response, indicies: index , query}, null, 2 )
         ctx.context.set ( 'Content-Type', 'application/json' );
       } catch ( e: any ) {
         rememberedError = JSON.stringify ( e )

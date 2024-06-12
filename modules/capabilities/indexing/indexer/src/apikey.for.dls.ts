@@ -56,7 +56,7 @@ export async function loadQueriesForEmail ( fetchFn: FetchFn, apiKeyDetails: Api
   } )
   const allQueries = indexAndQueries.filter ( q => q.query !== undefined ).map ( i => i.query )
   const allIndexes = indexAndQueries.filter ( q => q.query !== undefined ).map ( i => i.index )
-  let query = { bool: { should: [ ...indexAndQueries, ...makeQueriesForUncontrolled ( apiKeyDetails.uncontrolled ) ].filter ( q => q !== undefined ) } };
+  let query = { bool: { should: [ ...allQueries, ...makeQueriesForUncontrolled ( apiKeyDetails.uncontrolled ) ].filter ( q => q !== undefined ) } };
   return { index: allIndexes.join ( ',' ), query }
 }
 

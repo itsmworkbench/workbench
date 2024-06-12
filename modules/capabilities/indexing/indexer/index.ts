@@ -9,6 +9,7 @@ import { indexerCommands } from "./src/indexer.commands";
 import fetch from "node-fetch";
 import { FetchFnResponse } from "@itsmworkbench/indexing";
 import { elasticSearchCommands } from "./src/elastic.search.commands";
+import { addJiraUsersCommand, jiraCommands } from "./src/jira.commands";
 
 export function findVersion () {
   let packageJsonFileName = "../package.json";
@@ -56,6 +57,7 @@ makeCli<Commander12, IndexerContext, NoConfig, NoConfig> ( makeContext (), confi
   }
   elasticSearchCommands ( commander, cliTc )
   indexerCommands ( commander, cliTc )
+  jiraCommands ( commander, cliTc )
 
   return await cliTc.execute ( commander.commander, process.argv )
 } ).catch ( e => {
