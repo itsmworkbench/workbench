@@ -34,7 +34,7 @@ export function apiKeyDetails ( opts: NameAnd<any>, env: NameAnd<string> ): ApiK
     index: opts.index || [],
     uncontrolled: opts.uncontrolled || [],
     deletePrevious: opts.deletePrevious || false,
-    headers: getElasticSearchAuthHeaderWithBasicToken ( env, opts.username, opts.password )
+    headers: opts.username && opts.password ? getElasticSearchAuthHeaderWithBasicToken ( env, opts.username, opts.password ) : {}
   }
 }
 

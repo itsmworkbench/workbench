@@ -166,10 +166,12 @@ export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: Contex
     },
     action: async ( _, opts ) => {
       console.log ( opts )
-      const detailsFromFile = makeApiKeyDetailsFromFile ( opts.file.toString (), tc.context.env )
       const details = apiKeyDetails ( opts, tc.context.env )
+      const detailsFromFile = await makeApiKeyDetailsFromFile ( tc.context.yaml, details, opts.file.toString (), tc.context.env )
+      if (details.username && opts.password && details.elasticSearchUrl)
+        detailsFromFile[ details.username ] = details
       await startKoa ( 'target/indexer', Number.parseInt ( opts.port.toString () ), opts.debug === true,
-        apiKeyHandlers ( tc.context.fetch, details, opts.secret?.toString () ) )
+        apiKeyHandlers ( tc.context.fetch, { dev: details }, opts.secret?.toString () ) )
       console.log ( `api key api running on port ${opts.port}` )
     }
   }
