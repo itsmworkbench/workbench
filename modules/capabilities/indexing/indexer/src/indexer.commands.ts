@@ -6,9 +6,11 @@ import { defaultIndexingContext, ExecuteIndexOptions, IndexTreeNonFunctionals, i
 import { indexAll } from "@itsmworkbench/indexall";
 import { startKoa, stopKoa } from "@itsmworkbench/koa";
 import { apiKeyHandlers, metricIndexerHandlers } from "./indexer.api";
-import { apiKeyDetails, invalidateApiKeysForEmail, loadQueriesForEmail, makeApiKey } from "./apikey.for.dls";
+import { ApiKeyDetails, apiKeyDetails, getElasticSearchAuthHeaderWithBasicToken, invalidateApiKeysForEmail, loadQueriesForEmail, makeApiKey } from "./apikey.for.dls";
+import * as fs from "node:fs";
+import { YamlCapability } from "@itsmworkbench/yaml";
 
-async function getConfig<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>, file: string ) {
+export async function getIndexerFile<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>, file: string ) {
   const yamlFile = await tc.context.fileOps.loadFileOrUrl ( file.toString () )
   const config = tc.context.yaml.parser ( yamlFile )
   if ( hasErrors ( config ) ) {
@@ -54,7 +56,7 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
     action: async ( _, opts ) => {
       console.log ( `Indexing `, opts )
       const { file, debug, target, api, keep, port } = opts
-      const config = await getConfig ( tc, file.toString () );
+      const config = await getIndexerFile ( tc, file.toString () );
 
       const metrics: NameAnd<number> = {}
       const ic = defaultIndexingContext ( tc.context.env, tc.context.fetch, metrics )
@@ -113,11 +115,44 @@ export function addApiKeyCommand<Commander, Config, CleanConfig> ( tc: ContextCo
     }
   }
 }
+async function makeApiKeyDetailsFromFile ( yaml: YamlCapability, prototype: ApiKeyDetails, file: string, env: NameAnd<string> ) {
+  const fileContents = (await fs.promises.readFile ( file )).toString ( 'utf-8' )
+  const fileAsJson = yaml.parser ( fileContents )
+  if ( hasErrors ( fileAsJson ) ) {
+    console.log ( 'Error in file', file )
+    fileAsJson.forEach ( l => console.log ( l ) )
+    process.exit ( 2 )
+  }
+  const result: NameAnd<ApiKeyDetails> = {}
+  for ( const [ key, value ] of Object.entries ( fileAsJson ) ) {
+    if ( typeof value !== 'object' ) {
+      console.log ( `Value for ${key} is not an object` )
+      process.exit ( 2 )
+    }
+    const raw = value as NameAnd<any>
+    if ( raw.url === undefined ) {
+      console.log ( `File ${file}. Value for ${key} does not have a url` )
+      process.exit ( 2 )
+    }
+    if ( raw.username === undefined ) {
+      console.log ( `File ${file}. Value for ${key} does not have a username` )
+      process.exit ( 2 )
+    }
+    if ( raw.password === undefined ) {
+      console.log ( `File ${file}. Value for ${key} does not have a password` )
+      process.exit ( 2 )
+    }
+    result[ key ] = { ...prototype, username: raw.username, elasticSearchUrl: raw.url, headers: getElasticSearchAuthHeaderWithBasicToken ( env, raw.username, raw.password ) }
+  }
+  return result
+
+}
 export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
   return {
     cmd: 'apiKeyApi',
     description: 'launches an api to get api keys',
     options: {
+      '-f, --file <file>': { description: 'a config file mapping environments to urls and secrets', default: 'apikeyapi.yaml' },
       '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
       '-i, --index <index...>': { description: 'The indexes implementing DLS to be accessed by the query for the api key', default: [ 'jira-prod' ] },
       '--uncontrolled <uncontrolled...>': { description: `The indexes that don't implement DLS`, default: [] },
@@ -131,6 +166,7 @@ export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: Contex
     },
     action: async ( _, opts ) => {
       console.log ( opts )
+      const detailsFromFile = makeApiKeyDetailsFromFile ( opts.file.toString (), tc.context.env )
       const details = apiKeyDetails ( opts, tc.context.env )
       await startKoa ( 'target/indexer', Number.parseInt ( opts.port.toString () ), opts.debug === true,
         apiKeyHandlers ( tc.context.fetch, details, opts.secret?.toString () ) )
@@ -165,7 +201,7 @@ export function addConfigCommand<Commander, Config, CleanConfig> ( tc: ContextCo
     action: async ( _, opts ) => {
       console.log ( `Indexing `, opts )
       const { file } = opts
-      const config = await getConfig ( tc, file.toString () );
+      const config = await getIndexerFile ( tc, file.toString () );
       console.log ( JSON.stringify ( config, null, 2 ) )
     }
   }

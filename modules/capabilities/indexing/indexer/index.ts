@@ -10,6 +10,7 @@ import fetch from "node-fetch";
 import { FetchFnResponse } from "@itsmworkbench/indexing";
 import { elasticSearchCommands } from "./src/elastic.search.commands";
 import { addJiraUsersCommand, jiraCommands } from "./src/jira.commands";
+import { authCommands } from "./src/auth.commands";
 import { questionatorCommands } from "./src/questions.commands";
 
 export function findVersion () {
@@ -59,6 +60,7 @@ makeCli<Commander12, IndexerContext, NoConfig, NoConfig> ( makeContext (), confi
   elasticSearchCommands ( commander, cliTc )
   indexerCommands ( commander, cliTc )
   jiraCommands ( commander, cliTc )
+  authCommands ( commander, cliTc )
   questionatorCommands ( commander, cliTc )
 
   return await cliTc.execute ( commander.commander, process.argv )

@@ -49,13 +49,22 @@ export const getError: KoaPartialFunction = {
 }
 
 //Note there is only one secret and that it is optional
-export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails, secretToUseApi?: string ): KoaPartialFunction => {
+export const getapiKey = ( fetch: FetchFn, allDetails: NameAnd<ApiKeyDetails>, secretToUseApi?: string ): KoaPartialFunction => {
+  if ( Object.keys ( allDetails ).length === 0 ) throw Error ( 'No api key details' )
+  const defaultEl = Object.keys ( allDetails )[ 0 ]
   return ({
     isDefinedAt: ( ctx: ContextAndStats ) => {
       return ctx.context.request.path.startsWith ( '/apikey/' )
     },
     apply: async ( ctx ) => {
       ctx.context.status = 200;
+      const name = ctx.context.query?.el || defaultEl
+      const details = allDetails[ name ]
+      if ( !details ) {
+        ctx.context.status = 404;
+        ctx.context.body = `No details for ${name}. Legal values are ${Object.keys ( allDetails )}`
+        return
+      }
       const { elasticSearchUrl, index, headers } = details
       const email = decodeURIComponent ( ctx.context.request.path.substring ( 8 ) )
       const auth = ctx.context.request.headers.authorization
@@ -76,7 +85,7 @@ export const getapiKey = ( fetch: FetchFn, details: ApiKeyDetails, secretToUseAp
         //   return
         // }
         const response = await makeApiKey ( fetch, details, email, query )
-        ctx.context.body = JSON.stringify ( { ...response, indicies: index , query}, null, 2 )
+        ctx.context.body = JSON.stringify ( { ...response, indicies: index, query }, null, 2 )
         ctx.context.set ( 'Content-Type', 'application/json' );
       } catch ( e: any ) {
         rememberedError = JSON.stringify ( e )
@@ -103,7 +112,7 @@ export const metricIndexerHandlers = ( metrics: NameAnd<number>, nfcs: IndexTree
     getMetrics ( metrics, nfcs ),
     notFoundIs404,
   )
-export const apiKeyHandlers = ( fetch: FetchFn, apiKeyDetails: ApiKeyDetails, secret: string | undefined ): (( from: ContextAndStats ) => Promise<void>) =>
+export const apiKeyHandlers = ( fetch: FetchFn, apiKeyDetails: NameAnd<ApiKeyDetails>, secret: string | undefined ): (( from: ContextAndStats ) => Promise<void>) =>
   chainOfResponsibility ( defaultShowsError, //called if no matches
     healthZ ( '/apikey' ),
     getError,

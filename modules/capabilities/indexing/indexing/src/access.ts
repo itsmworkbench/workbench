@@ -99,7 +99,7 @@ export async function getOrUpdateEntraId (
 }
 const globalTokenCache: TokenCache = {}
 export const defaultAuthFn = ( env: NameAnd<string>, fetch: FetchFn, timeService: Timeservice, tokenCache: TokenCache = globalTokenCache ): AuthFn => async ( auth: Authentication ) => {
-  if ( isEntraIdAuthentication ( auth ) ) getOrUpdateEntraId ( fetch, timeService, auth, tokenCache )
+  if ( isEntraIdAuthentication ( auth ) ) return { authorization: `Bearer ${await getOrUpdateEntraId ( fetch, timeService, auth, tokenCache )}` }
   if ( isApiKeyAuthentication ( auth ) ) return authForApiToken ( env, auth );
   if ( isBasicAuthentication ( auth ) ) return authForBasic ( env, auth );
   if ( isPrivateTokenAuthentication ( auth ) ) return authForPrivate ( env, auth )
@@ -114,7 +114,7 @@ export type FetchFnResponse = {
   statusText: string;
 }
 
-export type FetchMethod =  'Get' | 'Post' | 'Put' | 'Delete';
+export type FetchMethod = 'Get' | 'Post' | 'Put' | 'Delete';
 export type FetchFnOptions = {
   method?: FetchMethod
   headers?: NameAnd<string>;
