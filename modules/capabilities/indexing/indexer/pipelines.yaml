@@ -6,6 +6,10 @@ jira-prod-pipeline:
     - description
     - priority
     - status
+questionator-pipeline:
+  index: questionator
+  fields:
+    - question
 confluence-prod-pipeline:
   index: confluence-prod
   fields:
