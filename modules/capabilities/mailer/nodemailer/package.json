@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/nodemailer",
   "description": "interacting with email: the interfaces",
-  "version": "0.0.71",
+  "version": "0.1.0",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,9 +23,9 @@
     "nodemailer": "^6.9.13",
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.0.71",
-    "@itsmworkbench/mailer": "0.0.71",
-    "@itsmworkbench/urlstore": "0.0.71",
+    "@itsmworkbench/utils": "0.1.0",
+    "@itsmworkbench/mailer": "0.1.0",
+    "@itsmworkbench/urlstore": "0.1.0",
     "debug": "^4.3.4"
   },
   "devDependencies": {

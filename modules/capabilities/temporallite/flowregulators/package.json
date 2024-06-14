@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/flowregulator",
   "description": "sets target numbers of active work based on load lag",
-  "version": "0.0.71",
+  "version": "0.1.0",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {

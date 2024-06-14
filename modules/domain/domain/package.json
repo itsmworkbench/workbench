@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/domain",
   "description": "A event source library for node.js backed with a file",
-  "version": "0.0.71",
+  "version": "0.1.0",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,11 +23,11 @@
     "@laoban/utils": "1.4.51",
     "@focuson/lens": "1.44.3",
     "@focuson/state": "1.44.3",
-    "@itsmworkbench/utils": "0.0.71",
-    "@itsmworkbench/events": "0.0.71",
-    "@itsmworkbench/eventstore": "0.0.71",
-    "@itsmworkbench/variables": "0.0.71",
-    "@itsmworkbench/yaml": "0.0.71",
+    "@itsmworkbench/utils": "0.1.0",
+    "@itsmworkbench/events": "0.1.0",
+    "@itsmworkbench/eventstore": "0.1.0",
+    "@itsmworkbench/variables": "0.1.0",
+    "@itsmworkbench/yaml": "0.1.0",
     "debug": "^4.3.4"
   },
   "devDependencies": {
