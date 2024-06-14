@@ -65,8 +65,8 @@ export const getapiKey = ( fetch: FetchFn, allDetails: NameAnd<ApiKeyDetails>, s
         ctx.context.body = `No details for ${name}. Legal values are ${Object.keys ( allDetails )}`
         return
       }
-      const { elasticSearchUrl, index, headers } = details
-      const email = decodeURIComponent ( ctx.context.request.path.substring ( 8 ) )
+      // const { elasticSearchUrl, index, headers } = details
+      const email = decodeURIComponent ( ctx.context.request.path.substring ( 8 ) )?.toLowerCase()
       const auth = ctx.context.request.headers.authorization
       if ( secretToUseApi && auth !== `Bearer ${secretToUseApi}` ) {
         ctx.context.status = 401;
@@ -85,7 +85,7 @@ export const getapiKey = ( fetch: FetchFn, allDetails: NameAnd<ApiKeyDetails>, s
         //   return
         // }
         const response = await makeApiKey ( fetch, details, email, query )
-        ctx.context.body = JSON.stringify ( { ...response, indicies: index, query }, null, 2 )
+        ctx.context.body = JSON.stringify ( { ...response, indicies: index, elasticSearch:details.elasticSearchUrl, query  }, null, 2 )
         ctx.context.set ( 'Content-Type', 'application/json' );
       } catch ( e: any ) {
         rememberedError = JSON.stringify ( e )

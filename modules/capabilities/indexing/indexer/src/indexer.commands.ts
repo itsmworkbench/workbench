@@ -115,37 +115,23 @@ export function addApiKeyCommand<Commander, Config, CleanConfig> ( tc: ContextCo
     }
   }
 }
-async function makeApiKeyDetailsFromFile ( yaml: YamlCapability, prototype: ApiKeyDetails, file: string, env: NameAnd<string> ) {
-  const fileContents = (await fs.promises.readFile ( file )).toString ( 'utf-8' )
-  const fileAsJson = yaml.parser ( fileContents )
-  if ( hasErrors ( fileAsJson ) ) {
-    console.log ( 'Error in file', file )
-    fileAsJson.forEach ( l => console.log ( l ) )
-    process.exit ( 2 )
-  }
+export function parseApiKeyDetailsFromFile ( fileAsJson, file: string, prototype: ApiKeyDetails, env: NameAnd<string> ) {
+  if ( hasErrors ( fileAsJson ) ) throw new Error ( `Error in file ${file} ${fileAsJson}` )
   const result: NameAnd<ApiKeyDetails> = {}
   for ( const [ key, value ] of Object.entries ( fileAsJson ) ) {
-    if ( typeof value !== 'object' ) {
-      console.log ( `Value for ${key} is not an object` )
-      process.exit ( 2 )
-    }
+    if ( typeof value !== 'object' ) throw new Error ( `Value for ${key} in ${file} is not an object` )
     const raw = value as NameAnd<any>
-    if ( raw.url === undefined ) {
-      console.log ( `File ${file}. Value for ${key} does not have a url` )
-      process.exit ( 2 )
-    }
-    if ( raw.username === undefined ) {
-      console.log ( `File ${file}. Value for ${key} does not have a username` )
-      process.exit ( 2 )
-    }
-    if ( raw.password === undefined ) {
-      console.log ( `File ${file}. Value for ${key} does not have a password` )
-      process.exit ( 2 )
-    }
+    if ( raw.url === undefined ) throw new Error ( `File ${file}. Value for ${key} does not have a url` )
+    if ( raw.username === undefined ) throw new Error ( `File ${file}. Value for ${key} does not have a username` )
+    if ( raw.password === undefined ) throw new Error ( `File ${file}. Value for ${key} does not have a password` )
     result[ key ] = { ...prototype, username: raw.username, elasticSearchUrl: raw.url, headers: getElasticSearchAuthHeaderWithBasicToken ( env, raw.username, raw.password ) }
   }
   return result
-
+}
+export async function makeApiKeyDetailsFromFile ( yaml: YamlCapability, prototype: ApiKeyDetails, file: string, env: NameAnd<string> ) {
+  const fileContents = (await fs.promises.readFile ( file )).toString ( 'utf-8' )
+  const fileAsJson = yaml.parser ( fileContents )
+  return parseApiKeyDetailsFromFile ( fileAsJson, file, prototype, env );
 }
 export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
   return {
@@ -153,11 +139,8 @@ export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: Contex
     description: 'launches an api to get api keys',
     options: {
       '-f, --file <file>': { description: 'a config file mapping environments to urls and secrets', default: 'apikeyapi.yaml' },
-      '-e, --elastic-search <elastic-search-url>': { description: 'the url of elastic search', default: 'https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/' },
       '-i, --index <index...>': { description: 'The indexes implementing DLS to be accessed by the query for the api key', default: [ 'jira-prod' ] },
       '--uncontrolled <uncontrolled...>': { description: `The indexes that don't implement DLS`, default: [] },
-      '-u, --username <username>': { description: 'elastic search username', default: 'Indexer_NPA' },
-      '-p, --password <password>': { description: 'Variable name that holds the elastic search password', default: 'ELASTIC_SEARCH_PASSWORD' },
       '-d, --delete-previous': { description: 'invalidate previous if ask for new' },
       '-s, --secret <secret>': { description: `Optional secret to validate the callers. If set then the caller must provide a bearer token in the authorization header equal to this value. There is only one secret` },
       '--port <port>': { description: 'The port to start the api on', default: '1236' },
@@ -166,12 +149,10 @@ export function addApiKeyApiCommand<Commander, Config, CleanConfig> ( tc: Contex
     },
     action: async ( _, opts ) => {
       console.log ( opts )
-      const details = apiKeyDetails ( opts, tc.context.env )
-      const detailsFromFile = await makeApiKeyDetailsFromFile ( tc.context.yaml, details, opts.file.toString (), tc.context.env )
-      if (details.username && opts.password && details.elasticSearchUrl)
-        detailsFromFile[ details.username ] = details
+      const prototypeDetails = apiKeyDetails ( opts, tc.context.env )
+      const nameAndDetails = await makeApiKeyDetailsFromFile ( tc.context.yaml, prototypeDetails, opts.file.toString (), tc.context.env )
       await startKoa ( 'target/indexer', Number.parseInt ( opts.port.toString () ), opts.debug === true,
-        apiKeyHandlers ( tc.context.fetch, { dev: details }, opts.secret?.toString () ) )
+        apiKeyHandlers ( tc.context.fetch, nameAndDetails, opts.secret?.toString () ) )
       console.log ( `api key api running on port ${opts.port}` )
     }
   }

@@ -30,7 +30,7 @@ export type ApiKeyDetails = {
 export function apiKeyDetails ( opts: NameAnd<any>, env: NameAnd<string> ): ApiKeyDetails {
   return {
     username: opts.username,
-    elasticSearchUrl: opts.elasticSearch.toString (),
+    elasticSearchUrl: opts?.elasticSearch?.toString (),
     index: opts.index || [],
     uncontrolled: opts.uncontrolled || [],
     deletePrevious: opts.deletePrevious || false,

@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 dev:
   url: https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/
-  username: elastic
-  password: ELASTIC_PASSWORD
+  username: Indexer_NPA
+  password: ELASTIC_SEARCH_PASSWORD
 prod:
   url: https://f0571c62200b4d249a4c6750ab7f4716.westeurope.azure.elastic-cloud.com:9243/
-  username: elastic
-  secret: ELASTIC_PASSWORD_PROD
-=======
-dev:
-  url: https://c3224bc073f74e73b4d7cec2bb0d5b5e.westeurope.azure.elastic-cloud.com:9243/
-  username: elastic
-  password: ELASTIC_PASSWORD
-preprod:
-  url: https://f0571c62200b4d249a4c6750ab7f4716.westeurope.azure.elastic-cloud.com:9243/
-  username: elastic
-  secret: ELASTIC_TOKEN_2
->>>>>>> 5ddc339 (wip)
+  username: Indexer_NPA
+  password: ELASTIC_SEARCH_PASSWORD
+
