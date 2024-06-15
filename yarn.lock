@@ -7,6 +7,11 @@
   resolved "https://registry.npmjs.org/@adobe/css-tools/-/css-tools-4.3.3.tgz"
   integrity sha512-rE0Pygv0sEZ4vBWHlAgJLGDU7Pm8xoO6p3wsEceb7GYAjScrOHpEo8KK/eVkAcnSM+slAEtXjA2JpdjLp4fJQQ==
 
+"@adobe/css-tools@^4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@adobe/css-tools/-/css-tools-4.4.0.tgz#728c484f4e10df03d5a3acd0d8adcbbebff8ad63"
+  integrity sha512-Ff9+ksdQQB3rMncgqDK78uLznstjyfIf2Arnh22pW8kBpLs6rpKDwgnZT46hin5Hl1WzazzK64DOrhSwYpS7bQ==
+
 "@ampproject/remapping@^2.2.0":
   version "2.3.0"
   resolved "https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz"
@@ -67,7 +72,7 @@
     "@aws-sdk/util-utf8-browser" "^3.0.0"
     tslib "^1.11.1"
 
-"@aws-crypto/sha256-js@^3.0.0", "@aws-crypto/sha256-js@3.0.0":
+"@aws-crypto/sha256-js@3.0.0", "@aws-crypto/sha256-js@^3.0.0":
   version "3.0.0"
   resolved "https://registry.npmjs.org/@aws-crypto/sha256-js/-/sha256-js-3.0.0.tgz"
   integrity sha512-PnNN7os0+yd1XvXAy23CFOmTbMaDxgxXtTKHybrJ39Y8kGzBATgBFibWJKH6BhytLI/Zyszs87xCOBNyBig6vQ==
@@ -343,7 +348,7 @@
     "@smithy/types" "^2.12.0"
     tslib "^2.6.2"
 
-"@aws-sdk/credential-provider-node@^3.556.0", "@aws-sdk/credential-provider-node@3.556.0":
+"@aws-sdk/credential-provider-node@3.556.0":
   version "3.556.0"
   resolved "https://registry.npmjs.org/@aws-sdk/credential-provider-node/-/credential-provider-node-3.556.0.tgz"
   integrity sha512-s1xVtKjyGc60O8qcNIzS1X3H+pWEwEfZ7TgNznVDNyuXvLrlNWiAcigPWGl2aAkc8tGcsSG0Qpyw2KYC939LFg==
@@ -555,7 +560,7 @@
     "@smithy/types" "^2.12.0"
     tslib "^2.6.2"
 
-"@aws-sdk/types@^3.222.0", "@aws-sdk/types@3.535.0":
+"@aws-sdk/types@3.535.0", "@aws-sdk/types@^3.222.0":
   version "3.535.0"
   resolved "https://registry.npmjs.org/@aws-sdk/types/-/types-3.535.0.tgz"
   integrity sha512-aY4MYfduNj+sRR37U7XxYR8wemfbKP6lx00ze2M2uubn7mZotuVrWYAafbMSXrdEMSToE5JDhr28vArSOoLcSg==
@@ -630,12 +635,20 @@
     "@babel/highlight" "^7.24.2"
     picocolors "^1.0.0"
 
+"@babel/code-frame@^7.10.4":
+  version "7.24.7"
+  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.24.7.tgz#882fd9e09e8ee324e496bd040401c6f046ef4465"
+  integrity sha512-BcYH1CVJBO9tvyIZ2jVeXgSIMvGZ2FDRvDdOIVQyuklNKSsx+eppDEBq/g47Ayw+RqNFE+URvOShmf+f/qwAlA==
+  dependencies:
+    "@babel/highlight" "^7.24.7"
+    picocolors "^1.0.0"
+
 "@babel/compat-data@^7.23.5":
   version "7.24.1"
   resolved "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.24.1.tgz"
   integrity sha512-Pc65opHDliVpRHuKfzI+gSA4zcgr65O4cl64fFJIWEEh8JoHIHh0Oez1Eo8Arz8zq/JhgKodQaxEwUPRtZylVA==
 
-"@babel/core@^7.0.0", "@babel/core@^7.0.0-0", "@babel/core@^7.11.6", "@babel/core@^7.12.3", "@babel/core@^7.23.9", "@babel/core@^7.8.0", "@babel/core@>=7.0.0-beta.0 <8":
+"@babel/core@^7.11.6", "@babel/core@^7.12.3", "@babel/core@^7.23.9":
   version "7.24.3"
   resolved "https://registry.npmjs.org/@babel/core/-/core-7.24.3.tgz"
   integrity sha512-5FcvN1JHw2sHJChotgx8Ek0lyuh4kCKelgMTTqhYJJtloNvUfpAFMeNQUtdlIaktwrSV9LtCdqwk48wL2wBacQ==
@@ -751,6 +764,11 @@
   resolved "https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.22.20.tgz"
   integrity sha512-Y4OZ+ytlatR8AI+8KZfKuL5urKp7qey08ha31L8b3BwewJAoJamTzyvxPR/5D+KkdJCGPq/+8TukHBlY10FX9A==
 
+"@babel/helper-validator-identifier@^7.24.7":
+  version "7.24.7"
+  resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.24.7.tgz#75b889cfaf9e35c2aaf42cf0d72c8e91719251db"
+  integrity sha512-rR+PBcQ1SMQDDyF6X0wxtG8QyLCgUB0eRAGguqRLfkCA87l7yAP7ehq8SNj96OOGTO8OBV70KhuFYcIkHXOg0w==
+
 "@babel/helper-validator-option@^7.23.5":
   version "7.23.5"
   resolved "https://registry.npmjs.org/@babel/helper-validator-option/-/helper-validator-option-7.23.5.tgz"
@@ -771,6 +789,16 @@
   integrity sha512-Yac1ao4flkTxTteCDZLEvdxg2fZfz1v8M4QpaGypq/WPDqg3ijHYbDfs+LG5hvzSoqaSZ9/Z9lKSP3CjZjv+pA==
   dependencies:
     "@babel/helper-validator-identifier" "^7.22.20"
+    chalk "^2.4.2"
+    js-tokens "^4.0.0"
+    picocolors "^1.0.0"
+
+"@babel/highlight@^7.24.7":
+  version "7.24.7"
+  resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.24.7.tgz#a05ab1df134b286558aae0ed41e6c5f731bf409d"
+  integrity sha512-EStJpq4OuY8xYfhGVXngigBJRWxftKX9ksiGDnmlY3o7B/V7KIAc9X4oiK87uPJSc/vs5L869bem5fhZa8caZw==
+  dependencies:
+    "@babel/helper-validator-identifier" "^7.24.7"
     chalk "^2.4.2"
     js-tokens "^4.0.0"
     picocolors "^1.0.0"
@@ -1026,7 +1054,7 @@
   resolved "https://registry.npmjs.org/@emotion/memoize/-/memoize-0.8.1.tgz"
   integrity sha512-W2P2c/VRW1/1tLox0mVUalvnWXxavmv/Oum2aPsRcoDJuob75FC3Y8FbpfLwUegRcxINtGUMPq0tFCvYNTBXNA==
 
-"@emotion/react@^11.0.0-rc.0", "@emotion/react@^11.11.3", "@emotion/react@^11.4.1", "@emotion/react@^11.5.0":
+"@emotion/react@^11.11.3":
   version "11.11.4"
   resolved "https://registry.npmjs.org/@emotion/react/-/react-11.11.4.tgz"
   integrity sha512-t8AjMlF0gHpvvxk5mAtCqR4vmxiGHCeJBaQO6gncUSdklELOgtwjerNY2yuJNfwnc6vi16U/+uMF+afIawJ9iw==
@@ -1056,7 +1084,7 @@
   resolved "https://registry.npmjs.org/@emotion/sheet/-/sheet-1.2.2.tgz"
   integrity sha512-0QBtGvaqtWi+nx6doRwDdBIzhNdZrXUppvTM4dtZZWEGTXL/XE/yJxLMGlDT1Gt+UHH5IX1n+jkXyytE/av7OA==
 
-"@emotion/styled@^11.11.0", "@emotion/styled@^11.3.0":
+"@emotion/styled@^11.11.0":
   version "11.11.0"
   resolved "https://registry.npmjs.org/@emotion/styled/-/styled-11.11.0.tgz"
   integrity sha512-hM5Nnvu9P3midq5aaXj4I+lnSfNi7Pmd4EWk1fOZ3pxookaQTNew6bp4JaCBYM4HVFZF9g7UjJmsUmC2JlxOng==
@@ -1160,958 +1188,6 @@
   resolved "https://registry.npmjs.org/@istanbuljs/schema/-/schema-0.1.3.tgz"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@itsmworkbench/actions@0.0.65", "@itsmworkbench/actions@file:C:\\git\\itsmworkbench\\modules\\domain\\actions":
-  version "0.0.65"
-  resolved "file:modules/domain/actions"
-  dependencies:
-    "@itsmworkbench/domain" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/activities@0.0.65", "@itsmworkbench/activities@file:C:\\git\\itsmworkbench\\modules\\capabilities\\temporallite\\activities":
-  version "0.0.65"
-  resolved "file:modules/capabilities/temporallite/activities"
-  dependencies:
-    "@itsmworkbench/kleislis" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/agents@file:C:\\git\\itsmworkbench\\modules\\capabilities\\agents\\agents":
-  version "0.0.65"
-  resolved "file:modules/capabilities/agents/agents"
-  dependencies:
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/ai@0.0.65", "@itsmworkbench/ai@file:C:\\git\\itsmworkbench\\modules\\capabilities\\ai\\ai":
-  version "0.0.65"
-  resolved "file:modules/capabilities/ai/ai"
-  dependencies:
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/api@0.0.65", "@itsmworkbench/api@file:C:\\git\\itsmworkbench\\modules\\cli\\api":
-  version "0.0.65"
-  resolved "file:modules/cli/api"
-  dependencies:
-    "@itsmworkbench/apiai" "0.0.65"
-    "@itsmworkbench/apifetchemail" "0.0.65"
-    "@itsmworkbench/apimailer" "0.0.65"
-    "@itsmworkbench/apisql" "0.0.65"
-    "@itsmworkbench/apiurlstore" "0.0.65"
-    "@itsmworkbench/chatgptai" "0.0.65"
-    "@itsmworkbench/cli" "0.0.65"
-    "@itsmworkbench/dbpathsql" "0.0.65"
-    "@itsmworkbench/defaultdomains" "0.0.65"
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/fetchemail" "0.0.65"
-    "@itsmworkbench/fileloading" "0.0.65"
-    "@itsmworkbench/koa" "0.0.65"
-    "@itsmworkbench/mailer" "0.0.65"
-    "@itsmworkbench/nodeurlstore" "0.0.65"
-    "@itsmworkbench/shellgit" "0.0.65"
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@runbook/utils" "0.3.15"
-    debug "^4.3.4"
-
-"@itsmworkbench/apiai@0.0.65", "@itsmworkbench/apiai@file:C:\\git\\itsmworkbench\\modules\\capabilities\\ai\\apiai":
-  version "0.0.65"
-  resolved "file:modules/capabilities/ai/apiai"
-  dependencies:
-    "@itsmworkbench/ai" "0.0.65"
-    "@itsmworkbench/koa" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/apifetchemail@0.0.65", "@itsmworkbench/apifetchemail@file:C:\\git\\itsmworkbench\\modules\\capabilities\\fetchemail\\apifetchemail":
-  version "0.0.65"
-  resolved "file:modules/capabilities/fetchemail/apifetchemail"
-  dependencies:
-    "@itsmworkbench/fetchemail" "0.0.65"
-    "@itsmworkbench/koa" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/apimailer@0.0.65", "@itsmworkbench/apimailer@file:C:\\git\\itsmworkbench\\modules\\capabilities\\mailer\\apimailer":
-  version "0.0.65"
-  resolved "file:modules/capabilities/mailer/apimailer"
-  dependencies:
-    "@itsmworkbench/koa" "0.0.65"
-    "@itsmworkbench/mailer" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/apisql@0.0.65", "@itsmworkbench/apisql@file:C:\\git\\itsmworkbench\\modules\\capabilities\\sql\\apisql":
-  version "0.0.65"
-  resolved "file:modules/capabilities/sql/apisql"
-  dependencies:
-    "@itsmworkbench/koa" "0.0.65"
-    "@itsmworkbench/sql" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/apiurlstore@0.0.65", "@itsmworkbench/apiurlstore@file:C:\\git\\itsmworkbench\\modules\\capabilities\\urlstore\\apiurlstore":
-  version "0.0.65"
-  resolved "file:modules/capabilities/urlstore/apiurlstore"
-  dependencies:
-    "@itsmworkbench/koa" "0.0.65"
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/browserai@0.0.65", "@itsmworkbench/browserai@file:C:\\git\\itsmworkbench\\modules\\capabilities\\ai\\browserai":
-  version "0.0.65"
-  resolved "file:modules/capabilities/ai/browserai"
-  dependencies:
-    "@itsmworkbench/ai" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/browserfetchemail@file:C:\\git\\itsmworkbench\\modules\\capabilities\\fetchemail\\browserfetchemail":
-  version "0.0.65"
-  resolved "file:modules/capabilities/fetchemail/browserfetchemail"
-  dependencies:
-    "@itsmworkbench/fetchemail" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/browsermailer@0.0.65", "@itsmworkbench/browsermailer@file:C:\\git\\itsmworkbench\\modules\\capabilities\\mailer\\browsermailer":
-  version "0.0.65"
-  resolved "file:modules/capabilities/mailer/browsermailer"
-  dependencies:
-    "@itsmworkbench/mailer" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/browsersql@0.0.65", "@itsmworkbench/browsersql@file:C:\\git\\itsmworkbench\\modules\\capabilities\\sql\\browsersql":
-  version "0.0.65"
-  resolved "file:modules/capabilities/sql/browsersql"
-  dependencies:
-    "@itsmworkbench/sql" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/browserurlstore@file:C:\\git\\itsmworkbench\\modules\\capabilities\\urlstore\\browserurlstore":
-  version "0.0.65"
-  resolved "file:modules/capabilities/urlstore/browserurlstore"
-  dependencies:
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/git" "0.0.65"
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@laoban/fileops" "1.4.51"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/chatgptai@0.0.65", "@itsmworkbench/chatgptai@file:C:\\git\\itsmworkbench\\modules\\capabilities\\ai\\chatgptai":
-  version "0.0.65"
-  resolved "file:modules/capabilities/ai/chatgptai"
-  dependencies:
-    "@itsmworkbench/ai" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-    openai "^4.28.4"
-
-"@itsmworkbench/cli@0.0.65", "@itsmworkbench/cli@file:C:\\git\\itsmworkbench\\modules\\cli\\cli":
-  version "0.0.65"
-  resolved "file:modules/cli/cli"
-  dependencies:
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/fileops" "1.4.51"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/commander12@0.0.65", "@itsmworkbench/commander12@file:C:\\git\\itsmworkbench\\modules\\cli\\commander12":
-  version "0.0.65"
-  resolved "file:modules/cli/commander12"
-  dependencies:
-    "@itsmworkbench/cli" "0.0.65"
-    commander "^v12.0.0"
-    debug "^4.3.4"
-
-"@itsmworkbench/components@0.0.65", "@itsmworkbench/components@file:C:\\git\\itsmworkbench\\modules\\react\\components":
-  version "0.0.65"
-  resolved "file:modules/react/components"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/events" "0.0.65"
-    "@itsmworkbench/eventstore" "0.0.65"
-    "@itsmworkbench/mailer" "0.0.65"
-    "@itsmworkbench/react_core" "0.0.65"
-    "@itsmworkbench/sql" "0.0.65"
-    "@itsmworkbench/variables" "0.0.65"
-    "@itsmworkbench/yaml" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-    react-markdown "^8.0.7"
-    rehype-raw "^7.0.0"
-    rehype-sanitize "^6.0.0"
-
-"@itsmworkbench/config@0.0.65", "@itsmworkbench/config@file:C:\\git\\itsmworkbench\\modules\\cli\\config":
-  version "0.0.65"
-  resolved "file:modules/cli/config"
-  dependencies:
-    "@itsmworkbench/cli" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/dbpathsql@0.0.65", "@itsmworkbench/dbpathsql@file:C:\\git\\itsmworkbench\\modules\\capabilities\\sql\\dbpathsql":
-  version "0.0.65"
-  resolved "file:modules/capabilities/sql/dbpathsql"
-  dependencies:
-    "@itsmworkbench/shell" "0.0.65"
-    "@itsmworkbench/sql" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/defaultdomains@0.0.65", "@itsmworkbench/defaultdomains@file:C:\\git\\itsmworkbench\\modules\\domain\\defaultdomains":
-  version "0.0.65"
-  resolved "file:modules/domain/defaultdomains"
-  dependencies:
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/git" "0.0.65"
-    "@itsmworkbench/operator" "0.0.65"
-    "@itsmworkbench/ticketevents" "0.0.65"
-    "@itsmworkbench/tickets" "0.0.65"
-    "@itsmworkbench/tickettype" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@itsmworkbench/yaml" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/dependentdata@0.0.65", "@itsmworkbench/dependentdata@file:C:\\git\\itsmworkbench\\modules\\capabilities\\dependentdata":
-  version "0.0.65"
-  resolved "file:modules/capabilities/dependentdata"
-  dependencies:
-    "@focuson/lens" "1.44.3"
-    "@itsmworkbench/utils" "0.0.29"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/domain@0.0.65", "@itsmworkbench/domain@file:C:\\git\\itsmworkbench\\modules\\domain\\domain":
-  version "0.0.65"
-  resolved "file:modules/domain/domain"
-  dependencies:
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/events" "0.0.65"
-    "@itsmworkbench/eventstore" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@itsmworkbench/variables" "0.0.65"
-    "@itsmworkbench/yaml" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/events@0.0.65", "@itsmworkbench/events@file:C:\\git\\itsmworkbench\\modules\\capabilities\\eventstore\\events":
-  version "0.0.65"
-  resolved "file:modules/capabilities/eventstore/events"
-  dependencies:
-    "@focuson/lens" "1.44.3"
-    "@itsmworkbench/optics" "0.0.65"
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/eventstore@0.0.65", "@itsmworkbench/eventstore@file:C:\\git\\itsmworkbench\\modules\\capabilities\\eventstore\\eventstore":
-  version "0.0.65"
-  resolved "file:modules/capabilities/eventstore/eventstore"
-  dependencies:
-    "@focuson/lens" "1.44.3"
-    "@itsmworkbench/events" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/experimentalai@file:C:\\git\\itsmworkbench\\modules\\capabilities\\ai\\experimentalai":
-  version "0.0.65"
-  resolved "file:modules/capabilities/ai/experimentalai"
-  dependencies:
-    "@itsmworkbench/ai" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-    openai "^4.28.4"
-
-"@itsmworkbench/fetchemail@0.0.65", "@itsmworkbench/fetchemail@file:C:\\git\\itsmworkbench\\modules\\capabilities\\fetchemail\\fetchemail":
-  version "0.0.65"
-  resolved "file:modules/capabilities/fetchemail/fetchemail"
-  dependencies:
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/fileloading@0.0.65", "@itsmworkbench/fileloading@file:C:\\git\\itsmworkbench\\modules\\capabilities\\file\\fileloading":
-  version "0.0.65"
-  resolved "file:modules/capabilities/file/fileloading"
-  dependencies:
-    "@focuson/lens" "1.44.3"
-    "@itsmworkbench/events" "0.0.65"
-    "@itsmworkbench/eventstore" "0.0.65"
-    "@itsmworkbench/kleislis" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/flowregulator@file:C:\\git\\itsmworkbench\\modules\\capabilities\\temporallite\\flowregulators":
-  version "0.0.65"
-  resolved "file:modules/capabilities/temporallite/flowregulators"
-  dependencies:
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/git@0.0.65", "@itsmworkbench/git@file:C:\\git\\itsmworkbench\\modules\\capabilities\\git\\git":
-  version "0.0.65"
-  resolved "file:modules/capabilities/git/git"
-  dependencies:
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/shell" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/i18n@0.0.65", "@itsmworkbench/i18n@file:C:\\git\\itsmworkbench\\modules\\react\\i18n":
-  version "0.0.65"
-  resolved "file:modules/react/i18n"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-    i18next "^23.10.1"
-    i18next-browser-languagedetector "7.2.0"
-    react-i18next "^14.1.0"
-
-"@itsmworkbench/imapflowfetchemail@0.0.65", "@itsmworkbench/imapflowfetchemail@file:C:\\git\\itsmworkbench\\modules\\capabilities\\fetchemail\\imapflowfetchemail":
-  version "0.0.65"
-  resolved "file:modules/capabilities/fetchemail/imapflowfetchemail"
-  dependencies:
-    "@itsmworkbench/fetchemail" "0.0.65"
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-    imapflow "1.0.158"
-
-"@itsmworkbench/indexall@0.0.65", "@itsmworkbench/indexall@file:C:\\git\\itsmworkbench\\modules\\capabilities\\indexing\\indexall":
-  version "0.0.65"
-  resolved "file:modules/capabilities/indexing/indexall"
-  dependencies:
-    "@itsmworkbench/indexing_confluence" "0.0.65"
-    "@itsmworkbench/indexing_confluence_acl" "0.0.65"
-    "@itsmworkbench/indexing_github" "0.0.65"
-    "@itsmworkbench/indexing_gitlab" "0.0.65"
-    "@itsmworkbench/indexing_jira" "0.0.65"
-    "@itsmworkbench/indexing_jira_acl" "0.0.65"
-    "@itsmworkbench/kleislis" "0.0.65"
-    "@itsmworkbench/nodetemporal" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/indexconfig@0.0.65", "@itsmworkbench/indexconfig@file:C:\\git\\itsmworkbench\\modules\\capabilities\\indexing\\indexconfig":
-  version "0.0.65"
-  resolved "file:modules/capabilities/indexing/indexconfig"
-  dependencies:
-    "@itsmworkbench/kleislis" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@itsmworkbench/yaml" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/indexer@file:C:\\git\\itsmworkbench\\modules\\capabilities\\indexing\\indexer":
-  version "0.0.65"
-  resolved "file:modules/capabilities/indexing/indexer"
-  dependencies:
-    "@itsmworkbench/cli" "0.0.65"
-    "@itsmworkbench/commander12" "0.0.65"
-    "@itsmworkbench/indexall" "0.0.65"
-    "@itsmworkbench/jsyaml" "0.0.65"
-    "@itsmworkbench/kleislis" "0.0.65"
-    "@itsmworkbench/koa" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/filesops-node" "1.4.51"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/indexing_confluence_acl@0.0.65", "@itsmworkbench/indexing_confluence_acl@file:C:\\git\\itsmworkbench\\modules\\capabilities\\indexing\\confluence_acl":
-  version "0.0.65"
-  resolved "file:modules/capabilities/indexing/confluence_acl"
-  dependencies:
-    "@itsmworkbench/indexconfig" "0.0.65"
-    "@itsmworkbench/indexing" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/indexing_confluence@0.0.65", "@itsmworkbench/indexing_confluence@file:C:\\git\\itsmworkbench\\modules\\capabilities\\indexing\\confluence":
-  version "0.0.65"
-  resolved "file:modules/capabilities/indexing/confluence"
-  dependencies:
-    "@itsmworkbench/indexconfig" "0.0.65"
-    "@itsmworkbench/indexing" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/indexing_github@0.0.65", "@itsmworkbench/indexing_github@file:C:\\git\\itsmworkbench\\modules\\capabilities\\indexing\\github":
-  version "0.0.65"
-  resolved "file:modules/capabilities/indexing/github"
-  dependencies:
-    "@itsmworkbench/indexconfig" "0.0.65"
-    "@itsmworkbench/indexing" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/indexing_gitlab@0.0.65", "@itsmworkbench/indexing_gitlab@file:C:\\git\\itsmworkbench\\modules\\capabilities\\indexing\\gitlab":
-  version "0.0.65"
-  resolved "file:modules/capabilities/indexing/gitlab"
-  dependencies:
-    "@itsmworkbench/indexconfig" "0.0.65"
-    "@itsmworkbench/indexing" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/indexing_jira_acl@0.0.65", "@itsmworkbench/indexing_jira_acl@file:C:\\git\\itsmworkbench\\modules\\capabilities\\indexing\\jira_acl":
-  version "0.0.65"
-  resolved "file:modules/capabilities/indexing/jira_acl"
-  dependencies:
-    "@itsmworkbench/indexconfig" "0.0.65"
-    "@itsmworkbench/indexing" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/indexing_jira@0.0.65", "@itsmworkbench/indexing_jira@file:C:\\git\\itsmworkbench\\modules\\capabilities\\indexing\\jira":
-  version "0.0.65"
-  resolved "file:modules/capabilities/indexing/jira"
-  dependencies:
-    "@itsmworkbench/indexconfig" "0.0.65"
-    "@itsmworkbench/indexing" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/indexing@0.0.65", "@itsmworkbench/indexing@file:C:\\git\\itsmworkbench\\modules\\capabilities\\indexing\\indexing":
-  version "0.0.65"
-  resolved "file:modules/capabilities/indexing/indexing"
-  dependencies:
-    "@itsmworkbench/indexconfig" "0.0.65"
-    "@itsmworkbench/kleislis" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/jsyaml@0.0.65", "@itsmworkbench/jsyaml@file:C:\\git\\itsmworkbench\\modules\\capabilities\\yaml\\jsyaml":
-  version "0.0.65"
-  resolved "file:modules/capabilities/yaml/jsyaml"
-  dependencies:
-    "@itsmworkbench/yaml" "0.0.65"
-    debug "^4.3.4"
-    js-yaml "^4.1.0"
-
-"@itsmworkbench/kleislis@0.0.65", "@itsmworkbench/kleislis@file:C:\\git\\itsmworkbench\\modules\\capabilities\\temporallite\\kleislis":
-  version "0.0.65"
-  resolved "file:modules/capabilities/temporallite/kleislis"
-  dependencies:
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/koa@0.0.65", "@itsmworkbench/koa@file:C:\\git\\itsmworkbench\\modules\\cli\\koa":
-  version "0.0.65"
-  resolved "file:modules/cli/koa"
-  dependencies:
-    "@itsmworkbench/utils" "0.0.65"
-    "@koa/cors" "^5.0.0"
-    debug "^4.3.4"
-    koa "^2.14.2"
-
-"@itsmworkbench/mailer@0.0.65", "@itsmworkbench/mailer@file:C:\\git\\itsmworkbench\\modules\\capabilities\\mailer\\mailer":
-  version "0.0.65"
-  resolved "file:modules/capabilities/mailer/mailer"
-  dependencies:
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/mistralai@0.0.65", "@itsmworkbench/mistralai@file:C:\\git\\itsmworkbench\\modules\\capabilities\\ai\\mistralai":
-  version "0.0.65"
-  resolved "file:modules/capabilities/ai/mistralai"
-  dependencies:
-    "@aws-sdk/client-s3" "^3.556.0"
-    "@itsmworkbench/ai" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    "@xenova/transformers" "^2.17.1"
-    aws-sdk "^2.1604.0"
-    debug "^4.3.4"
-
-"@itsmworkbench/nodekleislis@0.0.65", "@itsmworkbench/nodekleislis@file:C:\\git\\itsmworkbench\\modules\\capabilities\\temporallite\\nodekleislis":
-  version "0.0.65"
-  resolved "file:modules/capabilities/temporallite/nodekleislis"
-  dependencies:
-    "@itsmworkbench/kleislis" "0.0.65"
-    "@itsmworkbench/workflow" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/nodemailer@0.0.65", "@itsmworkbench/nodemailer@file:C:\\git\\itsmworkbench\\modules\\capabilities\\mailer\\nodemailer":
-  version "0.0.65"
-  resolved "file:modules/capabilities/mailer/nodemailer"
-  dependencies:
-    "@itsmworkbench/mailer" "0.0.65"
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-    nodemailer "^6.9.13"
-
-"@itsmworkbench/nodeshell@0.0.65", "@itsmworkbench/nodeshell@file:C:\\git\\itsmworkbench\\modules\\capabilities\\shell\\nodeshell":
-  version "0.0.65"
-  resolved "file:modules/capabilities/shell/nodeshell"
-  dependencies:
-    "@itsmworkbench/shell" "0.0.65"
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/nodetemporal@0.0.65", "@itsmworkbench/nodetemporal@file:C:\\git\\itsmworkbench\\modules\\capabilities\\temporallite\\nodetemporal":
-  version "0.0.65"
-  resolved "file:modules/capabilities/temporallite/nodetemporal"
-  dependencies:
-    "@itsmworkbench/activities" "0.0.65"
-    "@itsmworkbench/nodekleislis" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/nodeurlstore@0.0.65", "@itsmworkbench/nodeurlstore@file:C:\\git\\itsmworkbench\\modules\\capabilities\\urlstore\\nodeurlstore":
-  version "0.0.65"
-  resolved "file:modules/capabilities/urlstore/nodeurlstore"
-  dependencies:
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/fileloading" "0.0.65"
-    "@itsmworkbench/git" "0.0.65"
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@laoban/fileops" "1.4.51"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/operator@0.0.65", "@itsmworkbench/operator@file:C:\\git\\itsmworkbench\\modules\\domain\\operator":
-  version "0.0.65"
-  resolved "file:modules/domain/operator"
-  dependencies:
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/domain" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/optics@0.0.65", "@itsmworkbench/optics@file:C:\\git\\itsmworkbench\\modules\\utils\\optics":
-  version "0.0.65"
-  resolved "file:modules/utils/optics"
-  dependencies:
-    "@focuson/lens" "1.44.3"
-    debug "^4.3.4"
-
-"@itsmworkbench/react_capabilities@0.0.65", "@itsmworkbench/react_capabilities@file:C:\\git\\itsmworkbench\\modules\\react\\react_capabilities":
-  version "0.0.65"
-  resolved "file:modules/react/react_capabilities"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/i18n" "0.0.65"
-    "@itsmworkbench/react_editors" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/react_conversation@0.0.65", "@itsmworkbench/react_conversation@file:C:\\git\\itsmworkbench\\modules\\react\\conversation":
-  version "0.0.65"
-  resolved "file:modules/react/conversation"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/react_core" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@laoban/variables" "1.4.51"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/react_core@0.0.65", "@itsmworkbench/react_core@file:C:\\git\\itsmworkbench\\modules\\react\\react_core":
-  version "0.0.65"
-  resolved "file:modules/react/react_core"
-  dependencies:
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/events" "0.0.65"
-    "@itsmworkbench/eventstore" "0.0.65"
-    debug "^4.3.4"
-
-"@itsmworkbench/react_devmode@0.0.65", "@itsmworkbench/react_devmode@file:C:\\git\\itsmworkbench\\modules\\react\\react_devmode":
-  version "0.0.65"
-  resolved "file:modules/react/react_devmode"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/react_conversation" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/react_displayinfo@0.0.65", "@itsmworkbench/react_displayinfo@file:C:\\git\\itsmworkbench\\modules\\react\\react_displayinfo":
-  version "0.0.65"
-  resolved "file:modules/react/react_displayinfo"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/reactticket" "0.0.65"
-    "@itsmworkbench/tickettype" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/react_editors@0.0.65", "@itsmworkbench/react_editors@file:C:\\git\\itsmworkbench\\modules\\react\\react_editors":
-  version "0.0.65"
-  resolved "file:modules/react/react_editors"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/events" "0.0.65"
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@itsmworkbench/yaml" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@monaco-editor/react" "^4.6.0"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/react_variables@0.0.65", "@itsmworkbench/react_variables@file:C:\\git\\itsmworkbench\\modules\\react\\react_variables":
-  version "0.0.65"
-  resolved "file:modules/react/react_variables"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/components" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/react@file:C:\\git\\itsmworkbench\\modules\\react\\react":
-  version "0.0.65"
-  resolved "file:modules/react/react"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/browserai" "0.0.65"
-    "@itsmworkbench/browsermailer" "0.0.65"
-    "@itsmworkbench/browsersql" "0.0.65"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/dependentdata" "0.0.65"
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/events" "0.0.65"
-    "@itsmworkbench/eventstore" "0.0.65"
-    "@itsmworkbench/jsyaml" "0.0.65"
-    "@itsmworkbench/react_capabilities" "0.0.65"
-    "@itsmworkbench/react_conversation" "0.0.65"
-    "@itsmworkbench/react_core" "0.0.65"
-    "@itsmworkbench/react_devmode" "0.0.65"
-    "@itsmworkbench/react_displayinfo" "0.0.65"
-    "@itsmworkbench/react_variables" "0.0.65"
-    "@itsmworkbench/reactevents" "0.0.65"
-    "@itsmworkbench/reactfetchemail" "0.0.65"
-    "@itsmworkbench/reactmailer" "0.0.65"
-    "@itsmworkbench/reactsql" "0.0.65"
-    "@itsmworkbench/reactticket" "0.0.65"
-    "@itsmworkbench/variables" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-    react "^18.2.0"
-    react-dom "^18.2.0"
-
-"@itsmworkbench/reactevents@0.0.65", "@itsmworkbench/reactevents@file:C:\\git\\itsmworkbench\\modules\\capabilities\\eventstore\\reactevents":
-  version "0.0.65"
-  resolved "file:modules/capabilities/eventstore/reactevents"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/events" "0.0.65"
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/reactfetchemail@0.0.65", "@itsmworkbench/reactfetchemail@file:C:\\git\\itsmworkbench\\modules\\capabilities\\fetchemail\\reactfetchemail":
-  version "0.0.65"
-  resolved "file:modules/capabilities/fetchemail/reactfetchemail"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/actions" "0.0.65"
-    "@itsmworkbench/ai" "0.0.65"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/reactevents" "0.0.65"
-    "@itsmworkbench/tickets" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/reactmailer@0.0.65", "@itsmworkbench/reactmailer@file:C:\\git\\itsmworkbench\\modules\\capabilities\\mailer\\reactmailer":
-  version "0.0.65"
-  resolved "file:modules/capabilities/mailer/reactmailer"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/actions" "0.0.65"
-    "@itsmworkbench/ai" "0.0.65"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/reactevents" "0.0.65"
-    "@itsmworkbench/tickets" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/reactsql@0.0.65", "@itsmworkbench/reactsql@file:C:\\git\\itsmworkbench\\modules\\capabilities\\sql\\reactsql":
-  version "0.0.65"
-  resolved "file:modules/capabilities/sql/reactsql"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/reactevents" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/reactticket@0.0.65", "@itsmworkbench/reactticket@file:C:\\git\\itsmworkbench\\modules\\domain\\tickets\\react_ticket":
-  version "0.0.65"
-  resolved "file:modules/domain/tickets/react_ticket"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/react_core" "0.0.65"
-    "@itsmworkbench/reactevents" "0.0.65"
-    "@itsmworkbench/reacttickettype" "0.0.65"
-    "@itsmworkbench/tickets" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/reacttickettype@0.0.65", "@itsmworkbench/reacttickettype@file:C:\\git\\itsmworkbench\\modules\\domain\\tickettype\\react_tickettype":
-  version "0.0.65"
-  resolved "file:modules/domain/tickettype/react_tickettype"
-  dependencies:
-    "@emotion/react" "^11.11.3"
-    "@emotion/styled" "^11.11.0"
-    "@focuson/lens" "1.44.3"
-    "@focuson/state" "1.44.3"
-    "@itsmworkbench/components" "0.0.65"
-    "@itsmworkbench/tickettype" "0.0.65"
-    "@laoban/utils" "1.4.45"
-    "@material-ui/core" "^4.12.4"
-    "@mui/icons-material" "^5.15.10"
-    "@mui/material" "^5.15.10"
-    debug "^4.3.4"
-
-"@itsmworkbench/shell@0.0.65", "@itsmworkbench/shell@file:C:\\git\\itsmworkbench\\modules\\capabilities\\shell\\shell":
-  version "0.0.65"
-  resolved "file:modules/capabilities/shell/shell"
-  dependencies:
-    "@itsmworkbench/urlstore" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/shellgit@0.0.65", "@itsmworkbench/shellgit@file:C:\\git\\itsmworkbench\\modules\\capabilities\\git\\shellgit":
-  version "0.0.65"
-  resolved "file:modules/capabilities/git/shellgit"
-  dependencies:
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/git" "0.0.65"
-    "@itsmworkbench/nodeshell" "0.0.65"
-    "@itsmworkbench/shell" "0.0.65"
-    "@laoban/fileops" "1.4.51"
-    "@laoban/filesops-node" "1.4.51"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/sql@0.0.65", "@itsmworkbench/sql@file:C:\\git\\itsmworkbench\\modules\\capabilities\\sql\\sql":
-  version "0.0.65"
-  resolved "file:modules/capabilities/sql/sql"
-  dependencies:
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    "@laoban/variables" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/ticketevents@0.0.65", "@itsmworkbench/ticketevents@file:C:\\git\\itsmworkbench\\modules\\domain\\ticketevents":
-  version "0.0.65"
-  resolved "file:modules/domain/ticketevents"
-  dependencies:
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/events" "0.0.65"
-    debug "^4.3.4"
-
-"@itsmworkbench/tickets@0.0.65", "@itsmworkbench/tickets@file:C:\\git\\itsmworkbench\\modules\\domain\\tickets\\tickets":
-  version "0.0.65"
-  resolved "file:modules/domain/tickets/tickets"
-  dependencies:
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/yaml" "0.0.65"
-    debug "^4.3.4"
-
-"@itsmworkbench/tickettype@0.0.65", "@itsmworkbench/tickettype@file:C:\\git\\itsmworkbench\\modules\\domain\\tickettype\\tickettype":
-  version "0.0.65"
-  resolved "file:modules/domain/tickettype/tickettype"
-  dependencies:
-    "@itsmworkbench/actions" "0.0.65"
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/tickets" "0.0.65"
-    "@itsmworkbench/yaml" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/timeservice@file:C:\\git\\itsmworkbench\\modules\\capabilities\\file\\filetimeservice":
-  version "0.0.65"
-  resolved "file:modules/capabilities/file/filetimeservice"
-  dependencies:
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/urlstore@0.0.65", "@itsmworkbench/urlstore@file:C:\\git\\itsmworkbench\\modules\\capabilities\\urlstore\\urlstore":
-  version "0.0.65"
-  resolved "file:modules/capabilities/urlstore/urlstore"
-  dependencies:
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
 "@itsmworkbench/utils@0.0.29":
   version "0.0.29"
   resolved "https://registry.npmjs.org/@itsmworkbench/utils/-/utils-0.0.29.tgz"
@@ -2120,47 +1196,6 @@
     "@focuson/lens" "1.44.3"
     debug "^4.3.4"
     node "^v14.4.0"
-
-"@itsmworkbench/utils@0.0.65", "@itsmworkbench/utils@file:C:\\git\\itsmworkbench\\modules\\utils\\utils":
-  version "0.0.65"
-  resolved "file:modules/utils/utils"
-  dependencies:
-    "@focuson/lens" "1.44.3"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/variables@0.0.65", "@itsmworkbench/variables@file:C:\\git\\itsmworkbench\\modules\\utils\\variables":
-  version "0.0.65"
-  resolved "file:modules/utils/variables"
-  dependencies:
-    "@focuson/lens" "1.44.3"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-    node "^v14.4.0"
-
-"@itsmworkbench/workflow@0.0.65", "@itsmworkbench/workflow@file:C:\\git\\itsmworkbench\\modules\\capabilities\\temporallite\\workflow":
-  version "0.0.65"
-  resolved "file:modules/capabilities/temporallite/workflow"
-  dependencies:
-    "@itsmworkbench/activities" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/workflowqueue@file:C:\\git\\itsmworkbench\\modules\\capabilities\\temporallite\\workflowqueue":
-  version "0.0.65"
-  resolved "file:modules/capabilities/temporallite/workflowqueue"
-  dependencies:
-    "@itsmworkbench/nodekleislis" "0.0.65"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-
-"@itsmworkbench/yaml@0.0.65", "@itsmworkbench/yaml@file:C:\\git\\itsmworkbench\\modules\\capabilities\\yaml\\yaml":
-  version "0.0.65"
-  resolved "file:modules/capabilities/yaml/yaml"
-  dependencies:
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
 
 "@jest/console@^29.7.0":
   version "29.7.0"
@@ -2245,7 +1280,7 @@
     jest-mock "^29.7.0"
     jest-util "^29.7.0"
 
-"@jest/globals@^29.7.0", "@jest/globals@>= 28":
+"@jest/globals@^29.7.0":
   version "29.7.0"
   resolved "https://registry.npmjs.org/@jest/globals/-/globals-29.7.0.tgz"
   integrity sha512-mpiz3dutLbkW2MNFubUGUEVLkTGiqW6yLVTA+JbP6fI6J5iL9Y0Nlg8k95pcF8ctKwCS7WVxteBs29hhfAotzQ==
@@ -2342,7 +1377,7 @@
     slash "^3.0.0"
     write-file-atomic "^4.0.2"
 
-"@jest/types@^29.0.0", "@jest/types@^29.6.3":
+"@jest/types@^29.6.3":
   version "29.6.3"
   resolved "https://registry.npmjs.org/@jest/types/-/types-29.6.3.tgz"
   integrity sha512-u3UPsIilWKOM3F9CXtrG8LEJmNxwoCQC/XVj4IKYXvvpx7QIi/Kg1LI5uDmDpKlac62NUtX7eLjRh+jVZcLOzw==
@@ -2378,14 +1413,6 @@
   resolved "https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.15.tgz"
   integrity sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==
 
-"@jridgewell/trace-mapping@^0.3.12", "@jridgewell/trace-mapping@^0.3.18", "@jridgewell/trace-mapping@^0.3.24", "@jridgewell/trace-mapping@^0.3.25":
-  version "0.3.25"
-  resolved "https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.25.tgz"
-  integrity sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==
-  dependencies:
-    "@jridgewell/resolve-uri" "^3.1.0"
-    "@jridgewell/sourcemap-codec" "^1.4.14"
-
 "@jridgewell/trace-mapping@0.3.9":
   version "0.3.9"
   resolved "https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.9.tgz"
@@ -2393,6 +1420,14 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
+
+"@jridgewell/trace-mapping@^0.3.12", "@jridgewell/trace-mapping@^0.3.18", "@jridgewell/trace-mapping@^0.3.24", "@jridgewell/trace-mapping@^0.3.25":
+  version "0.3.25"
+  resolved "https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.25.tgz"
+  integrity sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==
+  dependencies:
+    "@jridgewell/resolve-uri" "^3.1.0"
+    "@jridgewell/sourcemap-codec" "^1.4.14"
 
 "@koa/cors@^5.0.0":
   version "5.0.0"
@@ -2472,6 +1507,31 @@
   integrity sha512-Wst46p51km8gH0ZUmeNrtpRYmdlRHUpN1DQd3GFAyKANi8WVz8c2jHYTf1CVScFaCjQw1iO3ZZdqGDxQPRErTg==
   dependencies:
     "@lezer/common" "^1.0.0"
+
+"@lmdb/lmdb-darwin-arm64@2.8.5":
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/@lmdb/lmdb-darwin-arm64/-/lmdb-darwin-arm64-2.8.5.tgz#895d8cb16a9d709ce5fedd8b60022903b875e08e"
+  integrity sha512-KPDeVScZgA1oq0CiPBcOa3kHIqU+pTOwRFDIhxvmf8CTNvqdZQYp5cCKW0bUk69VygB2PuTiINFWbY78aR2pQw==
+
+"@lmdb/lmdb-darwin-x64@2.8.5":
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/@lmdb/lmdb-darwin-x64/-/lmdb-darwin-x64-2.8.5.tgz#ca243534c8b37d5516c557e4624256d18dd63184"
+  integrity sha512-w/sLhN4T7MW1nB3R/U8WK5BgQLz904wh+/SmA2jD8NnF7BLLoUgflCNxOeSPOWp8geP6nP/+VjWzZVip7rZ1ug==
+
+"@lmdb/lmdb-linux-arm64@2.8.5":
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/@lmdb/lmdb-linux-arm64/-/lmdb-linux-arm64-2.8.5.tgz#b44a8023057e21512eefb9f6120096843b531c1e"
+  integrity sha512-vtbZRHH5UDlL01TT5jB576Zox3+hdyogvpcbvVJlmU5PdL3c5V7cj1EODdh1CHPksRl+cws/58ugEHi8bcj4Ww==
+
+"@lmdb/lmdb-linux-arm@2.8.5":
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/@lmdb/lmdb-linux-arm/-/lmdb-linux-arm-2.8.5.tgz#17bd54740779c3e4324e78e8f747c21416a84b3d"
+  integrity sha512-c0TGMbm2M55pwTDIfkDLB6BpIsgxV4PjYck2HiOX+cy/JWiBXz32lYbarPqejKs9Flm7YVAKSILUducU9g2RVg==
+
+"@lmdb/lmdb-linux-x64@2.8.5":
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/@lmdb/lmdb-linux-x64/-/lmdb-linux-x64-2.8.5.tgz#6c61835b6cc58efdf79dbd5e8c72a38300a90302"
+  integrity sha512-Xkc8IUx9aEhP0zvgeKy7IQ3ReX2N8N1L0WPcQwnZweWmOuKfwpS3GRIYqLtK5za/w3E60zhFfNdS+3pBZPytqQ==
 
 "@lmdb/lmdb-win32-x64@2.8.5":
   version "2.8.5"
@@ -2565,6 +1625,31 @@
   dependencies:
     "@monaco-editor/loader" "^1.4.0"
 
+"@msgpackr-extract/msgpackr-extract-darwin-arm64@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@msgpackr-extract/msgpackr-extract-darwin-arm64/-/msgpackr-extract-darwin-arm64-3.0.2.tgz#44d752c1a2dc113f15f781b7cc4f53a307e3fa38"
+  integrity sha512-9bfjwDxIDWmmOKusUcqdS4Rw+SETlp9Dy39Xui9BEGEk19dDwH0jhipwFzEff/pFg95NKymc6TOTbRKcWeRqyQ==
+
+"@msgpackr-extract/msgpackr-extract-darwin-x64@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@msgpackr-extract/msgpackr-extract-darwin-x64/-/msgpackr-extract-darwin-x64-3.0.2.tgz#f954f34355712212a8e06c465bc06c40852c6bb3"
+  integrity sha512-lwriRAHm1Yg4iDf23Oxm9n/t5Zpw1lVnxYU3HnJPTi2lJRkKTrps1KVgvL6m7WvmhYVt/FIsssWay+k45QHeuw==
+
+"@msgpackr-extract/msgpackr-extract-linux-arm64@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@msgpackr-extract/msgpackr-extract-linux-arm64/-/msgpackr-extract-linux-arm64-3.0.2.tgz#45c63037f045c2b15c44f80f0393fa24f9655367"
+  integrity sha512-FU20Bo66/f7He9Fp9sP2zaJ1Q8L9uLPZQDub/WlUip78JlPeMbVL8546HbZfcW9LNciEXc8d+tThSJjSC+tmsg==
+
+"@msgpackr-extract/msgpackr-extract-linux-arm@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@msgpackr-extract/msgpackr-extract-linux-arm/-/msgpackr-extract-linux-arm-3.0.2.tgz#35707efeafe6d22b3f373caf9e8775e8920d1399"
+  integrity sha512-MOI9Dlfrpi2Cuc7i5dXdxPbFIgbDBGgKR5F2yWEa6FVEtSWncfVNKW5AKjImAQ6CZlBK9tympdsZJ2xThBiWWA==
+
+"@msgpackr-extract/msgpackr-extract-linux-x64@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@msgpackr-extract/msgpackr-extract-linux-x64/-/msgpackr-extract-linux-x64-3.0.2.tgz#091b1218b66c341f532611477ef89e83f25fae4f"
+  integrity sha512-gsWNDCklNy7Ajk0vBBf9jEx04RUxuDQfBse918Ww+Qb9HCPoGzS+XJTLe96iN3BVK7grnLiYghP/M4L8VsaHeA==
+
 "@msgpackr-extract/msgpackr-extract-win32-x64@3.0.2":
   version "3.0.2"
   resolved "https://registry.npmjs.org/@msgpackr-extract/msgpackr-extract-win32-x64/-/msgpackr-extract-win32-x64-3.0.2.tgz"
@@ -2595,7 +1680,7 @@
   dependencies:
     "@babel/runtime" "^7.23.9"
 
-"@mui/material@^5.0.0", "@mui/material@^5.15.10":
+"@mui/material@^5.15.10":
   version "5.15.14"
   resolved "https://registry.npmjs.org/@mui/material/-/material-5.15.14.tgz"
   integrity sha512-kEbRw6fASdQ1SQ7LVdWR5OlWV3y7Y54ZxkLzd6LV5tmz+NpO3MJKZXSfgR0LHMP7meKsPiMm4AuzV0pXDpk/BQ==
@@ -2734,7 +1819,7 @@
     "@parcel/transformer-react-refresh-wrap" "2.12.0"
     "@parcel/transformer-svg" "2.12.0"
 
-"@parcel/core@^2.12.0", "@parcel/core@2.12.0":
+"@parcel/core@2.12.0":
   version "2.12.0"
   resolved "https://registry.npmjs.org/@parcel/core/-/core-2.12.0.tgz"
   integrity sha512-s+6pwEj+GfKf7vqGUzN9iSEPueUssCCQrCBUlcAfKrJe0a22hTUCjewpB0I7lNrCIULt8dkndD+sMdOrXsRl6Q==
@@ -3246,6 +2331,61 @@
     "@parcel/source-map" "^2.1.1"
     chalk "^4.1.0"
     nullthrows "^1.1.1"
+
+"@parcel/watcher-android-arm64@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-android-arm64/-/watcher-android-arm64-2.4.1.tgz#c2c19a3c442313ff007d2d7a9c2c1dd3e1c9ca84"
+  integrity sha512-LOi/WTbbh3aTn2RYddrO8pnapixAziFl6SMxHM69r3tvdSm94JtCenaKgk1GRg5FJ5wpMCpHeW+7yqPlvZv7kg==
+
+"@parcel/watcher-darwin-arm64@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-darwin-arm64/-/watcher-darwin-arm64-2.4.1.tgz#c817c7a3b4f3a79c1535bfe54a1c2818d9ffdc34"
+  integrity sha512-ln41eihm5YXIY043vBrrHfn94SIBlqOWmoROhsMVTSXGh0QahKGy77tfEywQ7v3NywyxBBkGIfrWRHm0hsKtzA==
+
+"@parcel/watcher-darwin-x64@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-darwin-x64/-/watcher-darwin-x64-2.4.1.tgz#1a3f69d9323eae4f1c61a5f480a59c478d2cb020"
+  integrity sha512-yrw81BRLjjtHyDu7J61oPuSoeYWR3lDElcPGJyOvIXmor6DEo7/G2u1o7I38cwlcoBHQFULqF6nesIX3tsEXMg==
+
+"@parcel/watcher-freebsd-x64@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-freebsd-x64/-/watcher-freebsd-x64-2.4.1.tgz#0d67fef1609f90ba6a8a662bc76a55fc93706fc8"
+  integrity sha512-TJa3Pex/gX3CWIx/Co8k+ykNdDCLx+TuZj3f3h7eOjgpdKM+Mnix37RYsYU4LHhiYJz3DK5nFCCra81p6g050w==
+
+"@parcel/watcher-linux-arm-glibc@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm-glibc/-/watcher-linux-arm-glibc-2.4.1.tgz#ce5b340da5829b8e546bd00f752ae5292e1c702d"
+  integrity sha512-4rVYDlsMEYfa537BRXxJ5UF4ddNwnr2/1O4MHM5PjI9cvV2qymvhwZSFgXqbS8YoTk5i/JR0L0JDs69BUn45YA==
+
+"@parcel/watcher-linux-arm64-glibc@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm64-glibc/-/watcher-linux-arm64-glibc-2.4.1.tgz#6d7c00dde6d40608f9554e73998db11b2b1ff7c7"
+  integrity sha512-BJ7mH985OADVLpbrzCLgrJ3TOpiZggE9FMblfO65PlOCdG++xJpKUJ0Aol74ZUIYfb8WsRlUdgrZxKkz3zXWYA==
+
+"@parcel/watcher-linux-arm64-musl@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm64-musl/-/watcher-linux-arm64-musl-2.4.1.tgz#bd39bc71015f08a4a31a47cd89c236b9d6a7f635"
+  integrity sha512-p4Xb7JGq3MLgAfYhslU2SjoV9G0kI0Xry0kuxeG/41UfpjHGOhv7UoUDAz/jb1u2elbhazy4rRBL8PegPJFBhA==
+
+"@parcel/watcher-linux-x64-glibc@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-x64-glibc/-/watcher-linux-x64-glibc-2.4.1.tgz#0ce29966b082fb6cdd3de44f2f74057eef2c9e39"
+  integrity sha512-s9O3fByZ/2pyYDPoLM6zt92yu6P4E39a03zvO0qCHOTjxmt3GHRMLuRZEWhWLASTMSrrnVNWdVI/+pUElJBBBg==
+
+"@parcel/watcher-linux-x64-musl@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-x64-musl/-/watcher-linux-x64-musl-2.4.1.tgz#d2ebbf60e407170bb647cd6e447f4f2bab19ad16"
+  integrity sha512-L2nZTYR1myLNST0O632g0Dx9LyMNHrn6TOt76sYxWLdff3cB22/GZX2UPtJnaqQPdCRoszoY5rcOj4oMTtp5fQ==
+
+"@parcel/watcher-win32-arm64@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-win32-arm64/-/watcher-win32-arm64-2.4.1.tgz#eb4deef37e80f0b5e2f215dd6d7a6d40a85f8adc"
+  integrity sha512-Uq2BPp5GWhrq/lcuItCHoqxjULU1QYEcyjSO5jqqOK8RNFDBQnenMMx4gAl3v8GiWa59E9+uDM7yZ6LxwUIfRg==
+
+"@parcel/watcher-win32-ia32@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-win32-ia32/-/watcher-win32-ia32-2.4.1.tgz#94fbd4b497be39fd5c8c71ba05436927842c9df7"
+  integrity sha512-maNRit5QQV2kgHFSYwftmPBxiuK5u4DXjbXx7q6eKjq5dsLXZ4FJiVvlcw35QXzk0KrUecJmuVFbj4uV9oYrcw==
 
 "@parcel/watcher-win32-x64@2.4.1":
   version "2.4.1"
@@ -3843,12 +2983,57 @@
     "@smithy/types" "^2.12.0"
     tslib "^2.6.2"
 
+"@swc/core-darwin-arm64@1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@swc/core-darwin-arm64/-/core-darwin-arm64-1.4.11.tgz#91ef40816e10495a4038a98dc6c8dfcc85d9c59b"
+  integrity sha512-C1j1Qp/IHSelVWdEnT7f0iONWxQz6FAqzjCF2iaL+0vFg4V5f2nlgrueY8vj5pNNzSGhrAlxsMxEIp4dj1MXkg==
+
+"@swc/core-darwin-x64@1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@swc/core-darwin-x64/-/core-darwin-x64-1.4.11.tgz#6f71e3cd4687ef5df226ba0b8a20adc52fa7dc9e"
+  integrity sha512-0TTy3Ni8ncgaMCchSQ7FK8ZXQLlamy0FXmGWbR58c+pVZWYZltYPTmheJUvVcR0H2+gPAymRKyfC0iLszDALjg==
+
+"@swc/core-linux-arm-gnueabihf@1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-arm-gnueabihf/-/core-linux-arm-gnueabihf-1.4.11.tgz#08521822b5510cb506bc49e728f416636ff0306f"
+  integrity sha512-XJLB71uw0rog4DjYAPxFGAuGCBQpgJDlPZZK6MTmZOvI/1t0+DelJ24IjHIxk500YYM26Yv47xPabqFPD7I2zQ==
+
+"@swc/core-linux-arm64-gnu@1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-arm64-gnu/-/core-linux-arm64-gnu-1.4.11.tgz#9485bc591aa573b282d08b168b80a60badb8df9b"
+  integrity sha512-vYQwzJvm/iu052d5Iw27UFALIN5xSrGkPZXxLNMHPySVko2QMNNBv35HLatkEQHbQ3X+VKSW9J9SkdtAvAVRAQ==
+
+"@swc/core-linux-arm64-musl@1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-arm64-musl/-/core-linux-arm64-musl-1.4.11.tgz#85eecad7aaab7e94b1ff15ab9d95e80a1e95f356"
+  integrity sha512-eV+KduiRYUFjPsvbZuJ9aknQH9Tj0U2/G9oIZSzLx/18WsYi+upzHbgxmIIHJ2VJgfd7nN40RI/hMtxNsUzR/g==
+
+"@swc/core-linux-x64-gnu@1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.4.11.tgz#16259de893489b4699045e36bf52b2afe5d10f6d"
+  integrity sha512-WA1iGXZ2HpqM1OR9VCQZJ8sQ1KP2or9O4bO8vWZo6HZJIeoQSo7aa9waaCLRpkZvkng1ct/TF/l6ymqSNFXIzQ==
+
+"@swc/core-linux-x64-musl@1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.4.11.tgz#0f4e644fc2b62c8c966072389d354337a22b4dde"
+  integrity sha512-UkVJToKf0owwQYRnGvjHAeYVDfeimCEcx0VQSbJoN7Iy0ckRZi7YPlmWJU31xtKvikE2bQWCOVe0qbSDqqcWXA==
+
+"@swc/core-win32-arm64-msvc@1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@swc/core-win32-arm64-msvc/-/core-win32-arm64-msvc-1.4.11.tgz#d836b79d8730bf83e6b38a5b888e83944d6fb233"
+  integrity sha512-35khwkyly7lF5NDSyvIrukBMzxPorgc5iTSDfVO/LvnmN5+fm4lTlrDr4tUfTdOhv3Emy7CsKlsNAeFRJ+Pm+w==
+
+"@swc/core-win32-ia32-msvc@1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@swc/core-win32-ia32-msvc/-/core-win32-ia32-msvc-1.4.11.tgz#bc60bbdc65134aaa5b214e2aaf209acfce401d17"
+  integrity sha512-Wx8/6f0ufgQF2pbVPsJ2dAmFLwIOW+xBE5fxnb7VnEbGkTgP1qMDWiiAtD9rtvDSuODG3i1AEmAak/2HAc6i6A==
+
 "@swc/core-win32-x64-msvc@1.4.11":
   version "1.4.11"
   resolved "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.4.11.tgz"
   integrity sha512-0xRFW6K9UZQH2NVC/0pVB0GJXS45lY24f+6XaPBF1YnMHd8A8GoHl7ugyM5yNUTe2AKhSgk5fJV00EJt/XBtdQ==
 
-"@swc/core@^1.3.36", "@swc/core@>=1.2.50":
+"@swc/core@^1.3.36":
   version "1.4.11"
   resolved "https://registry.npmjs.org/@swc/core/-/core-1.4.11.tgz"
   integrity sha512-WKEakMZxkVwRdgMN4AMJ9K5nysY8g8npgQPczmjBeNK5In7QEAZAJwnyccrWwJZU0XjVeHn2uj+XbOKdDW17rg==
@@ -3886,6 +3071,20 @@
   dependencies:
     "@swc/counter" "^0.1.3"
 
+"@testing-library/dom@^10.1.0":
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-10.1.0.tgz#2d073e49771ad614da999ca48f199919e5176fb6"
+  integrity sha512-wdsYKy5zupPyLCW2Je5DLHSxSfbIp6h80WoHOQc+RPtmPGA52O9x5MJEkv92Sjonpq+poOAtUKhh1kBGAXBrNA==
+  dependencies:
+    "@babel/code-frame" "^7.10.4"
+    "@babel/runtime" "^7.12.5"
+    "@types/aria-query" "^5.0.1"
+    aria-query "5.3.0"
+    chalk "^4.1.0"
+    dom-accessibility-api "^0.5.9"
+    lz-string "^1.5.0"
+    pretty-format "^27.0.2"
+
 "@testing-library/jest-dom@^6.1.4":
   version "6.4.2"
   resolved "https://registry.npmjs.org/@testing-library/jest-dom/-/jest-dom-6.4.2.tgz"
@@ -3899,6 +3098,37 @@
     dom-accessibility-api "^0.6.3"
     lodash "^4.17.15"
     redent "^3.0.0"
+
+"@testing-library/jest-dom@^6.4.6":
+  version "6.4.6"
+  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-6.4.6.tgz#ec1df8108651bed5475534955565bed88c6732ce"
+  integrity sha512-8qpnGVincVDLEcQXWaHOf6zmlbwTKc6Us6PPu4CRnPXCzo2OGBS5cwgMMOWdxDpEz1mkbvXHpEy99M5Yvt682w==
+  dependencies:
+    "@adobe/css-tools" "^4.4.0"
+    "@babel/runtime" "^7.9.2"
+    aria-query "^5.0.0"
+    chalk "^3.0.0"
+    css.escape "^1.5.1"
+    dom-accessibility-api "^0.6.3"
+    lodash "^4.17.21"
+    redent "^3.0.0"
+
+"@testing-library/react@^16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-16.0.0.tgz#0a1e0c7a3de25841c3591b8cb7fb0cf0c0a27321"
+  integrity sha512-guuxUKRWQ+FgNX0h0NS0FIq3Q3uLtWVpBzcLOggmfMoUpgBnzBzvLLd4fbm6yS8ydJd94cIfY4yP9qUQjM2KwQ==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+
+"@testing-library/user-event@^14.5.2":
+  version "14.5.2"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.5.2.tgz#db7257d727c891905947bd1c1a99da20e03c2ebd"
+  integrity sha512-YAh82Wh4TIrxYLmfGcixwD18oIjyC1pFQC2Y01F2lzV2HTMiYrI0nze0FD0ocB//CKS/7jIUgae+adPqxK5yCQ==
+
+"@tootallnate/once@2":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
+  integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
 "@tootallnate/quickjs-emscripten@^0.23.0":
   version "0.23.0"
@@ -3929,6 +3159,11 @@
   version "1.0.4"
   resolved "https://registry.npmjs.org/@tsconfig/node16/-/node16-1.0.4.tgz"
   integrity sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==
+
+"@types/aria-query@^5.0.1":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-5.0.4.tgz#1a31c3d378850d2778dabb6374d036dcba4ba708"
+  integrity sha512-rfT93uj5s0PRL7EzccGMs3brplhcrghnDoV26NqKhCAS1hVo+WdNsPvE/yb6ilfr5hi2MEk6d5EWJTKdxg8jVw==
 
 "@types/babel__core@^7.1.14":
   version "7.20.5"
@@ -3970,13 +3205,6 @@
   dependencies:
     "@types/ms" "*"
 
-"@types/dompurify@^3.0.5":
-  version "3.0.5"
-  resolved "https://registry.npmjs.org/@types/dompurify/-/dompurify-3.0.5.tgz"
-  integrity sha512-1Wg0g3BtQF7sSb27fJQAKck1HECM6zV1EB66j8JH9i3LCjYabJa0FSdiSgsD5K/RbrsR0SiraKacLB+T8ZVYAg==
-  dependencies:
-    "@types/trusted-types" "*"
-
 "@types/graceful-fs@^4.1.3":
   version "4.1.9"
   resolved "https://registry.npmjs.org/@types/graceful-fs/-/graceful-fs-4.1.9.tgz"
@@ -4017,13 +3245,22 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^29.0.0", "@types/jest@>= 28":
+"@types/jest@^29.0.0":
   version "29.5.12"
   resolved "https://registry.npmjs.org/@types/jest/-/jest-29.5.12.tgz"
   integrity sha512-eDC8bTvT/QhYdxJAulQikueigY5AsdBRH2yDKW3yveW7svY3+DzN84/2NUgkw10RTiJbWqZrTtoGVdYlvFJdLw==
   dependencies:
     expect "^29.0.0"
     pretty-format "^29.0.0"
+
+"@types/jsdom@^20.0.0":
+  version "20.0.1"
+  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-20.0.1.tgz#07c14bc19bd2f918c1929541cdaacae894744808"
+  integrity sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==
+  dependencies:
+    "@types/node" "*"
+    "@types/tough-cookie" "*"
+    parse5 "^7.0.0"
 
 "@types/long@^4.0.1":
   version "4.0.2"
@@ -4062,17 +3299,17 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-14.18.63.tgz"
   integrity sha512-fAtCfv4jJg+ExtXhvCkCqUKZ+4ok/JQk01qDKhL5BDDoS3AxKXhV5/MAVUZyQnSEd2GT92fkgZl0pz0Q0AzcIQ==
 
-"@types/node@^18.11.18":
-  version "18.19.26"
-  resolved "https://registry.npmjs.org/@types/node/-/node-18.19.26.tgz"
-  integrity sha512-+wiMJsIwLOYCvUqSdKTrfkS8mpTp+MPINe6+Np4TAGFWWRWiBQ5kSq9nZGCSPkzx9mvT+uEukzpX4MOSCydcvw==
-  dependencies:
-    undici-types "~5.26.4"
-
 "@types/node@>=13.7.0":
   version "20.12.7"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.12.7.tgz"
   integrity sha512-wq0cICSkRLVaf3UGLMGItu/PtdY7oaXaI/RVU+xliKVOtRna3PRY57ZDfztpDL0n11vfymMUnXv8QwYCO7L1wg==
+  dependencies:
+    undici-types "~5.26.4"
+
+"@types/node@^18.11.18":
+  version "18.19.26"
+  resolved "https://registry.npmjs.org/@types/node/-/node-18.19.26.tgz"
+  integrity sha512-+wiMJsIwLOYCvUqSdKTrfkS8mpTp+MPINe6+Np4TAGFWWRWiBQ5kSq9nZGCSPkzx9mvT+uEukzpX4MOSCydcvw==
   dependencies:
     undici-types "~5.26.4"
 
@@ -4107,7 +3344,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8.6 || ^17.0.0", "@types/react@^17.0.0 || ^18.0.0", "@types/react@^18.2.56", "@types/react@>=16":
+"@types/react@*", "@types/react@^18.2.56":
   version "18.2.71"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.2.71.tgz"
   integrity sha512-PxEsB9OjmQeYGffoWnYAd/r5FiJuUw2niFQHPc2v2idwh8wGPkkYzOHuinNJJY6NZqfoTCiOIizDOz38gYNsyw==
@@ -4126,10 +3363,10 @@
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.3.tgz"
   integrity sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==
 
-"@types/trusted-types@*":
-  version "2.0.7"
-  resolved "https://registry.npmjs.org/@types/trusted-types/-/trusted-types-2.0.7.tgz"
-  integrity sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==
+"@types/tough-cookie@*":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-4.0.5.tgz#cb6e2a691b70cb177c6e3ae9c1d2e8b2ea8cd304"
+  integrity sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==
 
 "@types/unist@*", "@types/unist@^3.0.0":
   version "3.0.2"
@@ -4169,6 +3406,11 @@
   optionalDependencies:
     onnxruntime-node "1.14.0"
 
+abab@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
+  integrity sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==
+
 abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/abort-controller/-/abort-controller-3.0.0.tgz"
@@ -4189,15 +3431,42 @@ accepts@^1.3.5:
     mime-types "~2.1.34"
     negotiator "0.6.3"
 
+acorn-globals@^7.0.0:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/acorn-globals/-/acorn-globals-7.0.1.tgz#0dbf05c44fa7c94332914c02066d5beff62c40c3"
+  integrity sha512-umOSDSDrfHbTNPuNpC2NSnnA3LUrqpevPb4T9jRx4MagXNS0rs+gwiTcAvqCRmsD6utzsrzNt+ebm00SNWiC3Q==
+  dependencies:
+    acorn "^8.1.0"
+    acorn-walk "^8.0.2"
+
+acorn-walk@^8.0.2:
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.3.3.tgz#9caeac29eefaa0c41e3d4c65137de4d6f34df43e"
+  integrity sha512-MxXdReSRhGO7VlFe1bRG/oI7/mdLV9B9JJT0N8vZOhF7gFRR5l3M8W9G8JxmKV+JC5mGqJ0QvqfSOLsCPa4nUw==
+  dependencies:
+    acorn "^8.11.0"
+
 acorn-walk@^8.1.1:
   version "8.3.2"
   resolved "https://registry.npmjs.org/acorn-walk/-/acorn-walk-8.3.2.tgz"
   integrity sha512-cjkyv4OtNCIeqhHrfS81QWXoCBPExR/J62oyEqepVw8WaQeSqpW2uhuLPh1m9eWhDuOo/jUXVTlifvesOWp/4A==
 
+acorn@^8.1.0, acorn@^8.11.0, acorn@^8.8.1:
+  version "8.12.0"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.12.0.tgz#1627bfa2e058148036133b8d9b51a700663c294c"
+  integrity sha512-RTvkC4w+KNXrM39/lWCUaG0IbRkWdCv7W/IOW9oU6SawyxulvkQy5HQPVTKxEjczcUvapcrw3cFx/60VN/NRNw==
+
 acorn@^8.4.1:
   version "8.11.3"
   resolved "https://registry.npmjs.org/acorn/-/acorn-8.11.3.tgz"
   integrity sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==
+
+agent-base@6:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-6.0.2.tgz#49fff58577cfee3f37176feab4c22e00f86d7f77"
+  integrity sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==
+  dependencies:
+    debug "4"
 
 agent-base@^7.0.2, agent-base@^7.1.0:
   version "7.1.0"
@@ -4269,7 +3538,7 @@ argparse@^2.0.1:
   resolved "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz"
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
-aria-query@^5.0.0:
+aria-query@5.3.0, aria-query@^5.0.0:
   version "5.3.0"
   resolved "https://registry.npmjs.org/aria-query/-/aria-query-5.3.0.tgz"
   integrity sha512-b0P0sZPKtyu8HkeRAfCq0IfURZK+SuwMjY1UXGBU27wpAiTwQAIlq56IbIO+ytk/JjS1fMR14ee5WBBfKi5J6A==
@@ -4341,12 +3610,21 @@ aws-sdk@^2.1604.0:
     uuid "8.0.0"
     xml2js "0.6.2"
 
+axios@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.2.tgz#b625db8a7051fbea61c35a3cbb3a1daa7b9c7621"
+  integrity sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==
+  dependencies:
+    follow-redirects "^1.15.6"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
 b4a@^1.6.4:
   version "1.6.6"
   resolved "https://registry.npmjs.org/b4a/-/b4a-1.6.6.tgz"
   integrity sha512-5Tk1HLk6b6ctmjIkAcU/Ujv/1WqiDl0F0JdRCR80VsOcUlHcu7pWeWRlOqQLHfDEsVx9YH/aif5AG4ehoCtTmg==
 
-babel-jest@^29.0.0, babel-jest@^29.7.0:
+babel-jest@^29.7.0:
   version "29.7.0"
   resolved "https://registry.npmjs.org/babel-jest/-/babel-jest-29.7.0.tgz"
   integrity sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==
@@ -4487,12 +3765,7 @@ bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.11.9:
   resolved "https://registry.npmjs.org/bn.js/-/bn.js-4.12.0.tgz"
   integrity sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==
 
-bn.js@^5.0.0:
-  version "5.2.1"
-  resolved "https://registry.npmjs.org/bn.js/-/bn.js-5.2.1.tgz"
-  integrity sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==
-
-bn.js@^5.2.1:
+bn.js@^5.0.0, bn.js@^5.2.1:
   version "5.2.1"
   resolved "https://registry.npmjs.org/bn.js/-/bn.js-5.2.1.tgz"
   integrity sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==
@@ -4582,7 +3855,7 @@ browserify-sign@^4.0.0:
     readable-stream "^2.3.8"
     safe-buffer "^5.2.1"
 
-browserslist@^4.22.2, browserslist@^4.6.6, "browserslist@>= 4.21.0":
+browserslist@^4.22.2, browserslist@^4.6.6:
   version "4.23.0"
   resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.23.0.tgz"
   integrity sha512-QW8HiM1shhT2GuzkvklfjcKDiWFXHOeFCIA/huJPwHsslwcydgk7X+z2zXpEijP98UCY7HbubZt5J2Zgvf0CaQ==
@@ -4616,6 +3889,15 @@ buffer-xor@^1.0.3:
   resolved "https://registry.npmjs.org/buffer-xor/-/buffer-xor-1.0.3.tgz"
   integrity sha512-571s0T7nZWK6vB67HI5dyUF7wXiNcfaPPPTl6zYCNApANjIvYJTg7hlud/+cJpdAhS7dVzqMLmfhfHR3rAcOjQ==
 
+buffer@4.9.2:
+  version "4.9.2"
+  resolved "https://registry.npmjs.org/buffer/-/buffer-4.9.2.tgz"
+  integrity sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==
+  dependencies:
+    base64-js "^1.0.2"
+    ieee754 "^1.1.4"
+    isarray "^1.0.0"
+
 buffer@^5.5.0:
   version "5.7.1"
   resolved "https://registry.npmjs.org/buffer/-/buffer-5.7.1.tgz"
@@ -4631,15 +3913,6 @@ buffer@^5.5.0||^6.0.0, buffer@^6.0.3:
   dependencies:
     base64-js "^1.3.1"
     ieee754 "^1.2.1"
-
-buffer@4.9.2:
-  version "4.9.2"
-  resolved "https://registry.npmjs.org/buffer/-/buffer-4.9.2.tgz"
-  integrity sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==
-  dependencies:
-    base64-js "^1.0.2"
-    ieee754 "^1.1.4"
-    isarray "^1.0.0"
 
 builtin-status-codes@^3.0.0:
   version "3.0.0"
@@ -4801,15 +4074,15 @@ color-convert@^2.0.1:
   dependencies:
     color-name "~1.1.4"
 
-color-name@^1.0.0, color-name@~1.1.4:
-  version "1.1.4"
-  resolved "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz"
-  integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
-
 color-name@1.1.3:
   version "1.1.3"
   resolved "https://registry.npmjs.org/color-name/-/color-name-1.1.3.tgz"
   integrity sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==
+
+color-name@^1.0.0, color-name@~1.1.4:
+  version "1.1.4"
+  resolved "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz"
+  integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
 color-string@^1.9.0:
   version "1.9.1"
@@ -5051,6 +4324,23 @@ csso@^4.2.0:
   dependencies:
     css-tree "^1.1.2"
 
+cssom@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/cssom/-/cssom-0.5.0.tgz#d254fa92cd8b6fbd83811b9fbaed34663cc17c36"
+  integrity sha512-iKuQcq+NdHqlAcwUY0o/HL69XQrUaQdMjmStJ8JFmUaiiQErlhrmuigkg/CU4E2J0IyUKUrMAgl36TvN67MqTw==
+
+cssom@~0.3.6:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/cssom/-/cssom-0.3.8.tgz#9f1276f5b2b463f2114d3f2c75250af8c1a36f4a"
+  integrity sha512-b0tGHbfegbhPJpxpiBPU2sCkigAqtM9O121le6bbOlgyV+NyGyCmVfJ6QW9eRjz8CpNfWEOYBIMIGRYkLwsIYg==
+
+cssstyle@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/cssstyle/-/cssstyle-2.3.0.tgz#ff665a0ddbdc31864b09647f34163443d90b0852"
+  integrity sha512-AZL67abkUzIuvcHqk7c09cezpGNcxUxU4Ioi/05xHk4DQeTkWmGYftIE6ctU6AEt+Gn4n1lDStOtj7FKycP71A==
+  dependencies:
+    cssom "~0.3.6"
+
 csstype@^2.5.2:
   version "2.6.21"
   resolved "https://registry.npmjs.org/csstype/-/csstype-2.6.21.tgz"
@@ -5071,12 +4361,26 @@ data-uri-to-buffer@^6.0.2:
   resolved "https://registry.npmjs.org/data-uri-to-buffer/-/data-uri-to-buffer-6.0.2.tgz"
   integrity sha512-7hvf7/GW8e86rW0ptuwS3OcBGDjIi6SZva7hCyWC0yYry2cOPmLIjXAUHI6DK2HsnwJd9ifmt57i8eV2n4YNpw==
 
-debug@^4.0.0, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@4:
+data-urls@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/data-urls/-/data-urls-3.0.2.tgz#9cf24a477ae22bcef5cd5f6f0bfbc1d2d3be9143"
+  integrity sha512-Jy/tj3ldjZJo63sVAvg6LHt2mHvl4V6AgRAmNDtLdm7faqtsx+aJG42rsyCo9JCoRVKwPFzKlIPx3DIibwSIaQ==
+  dependencies:
+    abab "^2.0.6"
+    whatwg-mimetype "^3.0.0"
+    whatwg-url "^11.0.0"
+
+debug@4, debug@^4.0.0, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.4"
   resolved "https://registry.npmjs.org/debug/-/debug-4.3.4.tgz"
   integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
   dependencies:
     ms "2.1.2"
+
+decimal.js@^10.4.2:
+  version "10.4.3"
+  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.4.3.tgz#1044092884d245d1b7f65725fa4ad4c6f781cc23"
+  integrity sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==
 
 decode-named-character-reference@^1.0.0:
   version "1.0.2"
@@ -5182,17 +4486,7 @@ detect-libc@^1.0.3:
   resolved "https://registry.npmjs.org/detect-libc/-/detect-libc-1.0.3.tgz"
   integrity sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==
 
-detect-libc@^2.0.0:
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.3.tgz"
-  integrity sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==
-
-detect-libc@^2.0.1:
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.3.tgz"
-  integrity sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==
-
-detect-libc@^2.0.2:
+detect-libc@^2.0.0, detect-libc@^2.0.1, detect-libc@^2.0.2:
   version "2.0.3"
   resolved "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.3.tgz"
   integrity sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==
@@ -5249,6 +4543,11 @@ digest-fetch@^1.3.0:
     base-64 "^0.1.0"
     md5 "^2.3.0"
 
+dom-accessibility-api@^0.5.9:
+  version "0.5.16"
+  resolved "https://registry.yarnpkg.com/dom-accessibility-api/-/dom-accessibility-api-0.5.16.tgz#5a7429e6066eb3664d911e33fb0e45de8eb08453"
+  integrity sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==
+
 dom-accessibility-api@^0.6.3:
   version "0.6.3"
   resolved "https://registry.npmjs.org/dom-accessibility-api/-/dom-accessibility-api-0.6.3.tgz"
@@ -5275,6 +4574,13 @@ domelementtype@^2.0.1, domelementtype@^2.2.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/domelementtype/-/domelementtype-2.3.0.tgz"
   integrity sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==
+
+domexception@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/domexception/-/domexception-4.0.0.tgz#4ad1be56ccadc86fc76d033353999a8037d03673"
+  integrity sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==
+  dependencies:
+    webidl-conversions "^7.0.0"
 
 domhandler@^4.2.0, domhandler@^4.2.2, domhandler@^4.3.1:
   version "4.3.1"
@@ -5411,7 +4717,7 @@ escape-string-regexp@^4.0.0:
   resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz"
   integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
-escodegen@^2.1.0:
+escodegen@^2.0.0, escodegen@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/escodegen/-/escodegen-2.1.0.tgz"
   integrity sha512-2NlIDTwUWJN0mRPQOdtQBzbUHvdGY2P1VXSyU83Q3xKxM7WHX2Ql8dKq782Q9TgQUNOLEzEYu9bzLNj1q88I5w==
@@ -5442,15 +4748,15 @@ event-target-shim@^5.0.0:
   resolved "https://registry.npmjs.org/event-target-shim/-/event-target-shim-5.0.1.tgz"
   integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
 
-events@^3.1.0, events@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.npmjs.org/events/-/events-3.3.0.tgz"
-  integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
-
 events@1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/events/-/events-1.1.1.tgz"
   integrity sha512-kEcvvCBByWXGnZy6JUlgAp2gBIUjfCAV6P6TgT1/aaQKcmuAEC4OZTV1I4EWQLz2gxZw76atuVyvHhTxvi0Flw==
+
+events@^3.1.0, events@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.npmjs.org/events/-/events-3.3.0.tgz"
+  integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
 
 evp_bytestokey@^1.0.0, evp_bytestokey@^1.0.3:
   version "1.0.3"
@@ -5506,7 +4812,7 @@ fast-fifo@^1.1.0, fast-fifo@^1.2.0:
   resolved "https://registry.npmjs.org/fast-fifo/-/fast-fifo-1.3.2.tgz"
   integrity sha512-/d9sfos4yxzpwkDkuN7k2SqFKtYNmCTzgfEpz82x34IM9/zc8KGxQoXg1liNC/izpRM/MBdt44Nmx41ZWqk+FQ==
 
-fast-json-stable-stringify@^2.1.0, fast-json-stable-stringify@2.x:
+fast-json-stable-stringify@2.x, fast-json-stable-stringify@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/fast-json-stable-stringify/-/fast-json-stable-stringify-2.1.0.tgz"
   integrity sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==
@@ -5567,6 +4873,11 @@ flatbuffers@^1.12.0:
   version "1.12.0"
   resolved "https://registry.npmjs.org/flatbuffers/-/flatbuffers-1.12.0.tgz"
   integrity sha512-c7CZADjRcl6j0PlvFy0ZqXQ67qSEZfrVPynmnL+2zPc+NtMvrF8Y0QceMo7QqnSPc7+uWjUIAbvCQ5WIKlMVdQ==
+
+follow-redirects@^1.15.6:
+  version "1.15.6"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
+  integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -5637,6 +4948,11 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
+
+fsevents@^2.3.2:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:
   version "1.1.2"
@@ -5900,6 +5216,13 @@ hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
   dependencies:
     react-is "^16.7.0"
 
+html-encoding-sniffer@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/html-encoding-sniffer/-/html-encoding-sniffer-3.0.0.tgz#2cb1a8cf0db52414776e5b2a7a04d5dd98158de9"
+  integrity sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==
+  dependencies:
+    whatwg-encoding "^2.0.0"
+
 html-escaper@^2.0.0:
   version "2.0.2"
   resolved "https://registry.npmjs.org/html-escaper/-/html-escaper-2.0.2.tgz"
@@ -5955,6 +5278,15 @@ http-errors@^1.6.3, http-errors@~1.8.0:
     statuses ">= 1.5.0 < 2"
     toidentifier "1.0.1"
 
+http-proxy-agent@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/http-proxy-agent/-/http-proxy-agent-5.0.0.tgz#5129800203520d434f142bc78ff3c170800f2b43"
+  integrity sha512-n2hY8YdoRE1i7r6M0w9DIw5GgZN0G25P8zLCRQ8rjXtTU3vsNFBI/vWK/UIeE6g5MUUz6avwAPXmL6Fy9D/90w==
+  dependencies:
+    "@tootallnate/once" "2"
+    agent-base "6"
+    debug "4"
+
 http-proxy-agent@^7.0.0, http-proxy-agent@^7.0.1:
   version "7.0.2"
   resolved "https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-7.0.2.tgz"
@@ -5967,6 +5299,14 @@ https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/https-browserify/-/https-browserify-1.0.0.tgz"
   integrity sha512-J+FkSdyD+0mA0N+81tMotaRMfSL9SGi+xpD3T6YApKsc3bGSXJlfXri3VyFOeYkfLRQisDk1W+jIFFKBeUBbBg==
+
+https-proxy-agent@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-5.0.1.tgz#c59ef224a04fe8b754f3db0063a25ea30d0005d6"
+  integrity sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==
+  dependencies:
+    agent-base "6"
+    debug "4"
 
 https-proxy-agent@^7.0.2, https-proxy-agent@^7.0.3:
   version "7.0.4"
@@ -6000,7 +5340,7 @@ i18next-browser-languagedetector@7.2.0:
   dependencies:
     "@babel/runtime" "^7.23.2"
 
-i18next@^23.10.1, "i18next@>= 23.2.3":
+i18next@^23.10.1:
   version "23.10.1"
   resolved "https://registry.npmjs.org/i18next/-/i18next-23.10.1.tgz"
   integrity sha512-NDiIzFbcs3O9PXpfhkjyf7WdqFn5Vq6mhzhtkXzj51aOcNuPNcTwuYNuXCpHsanZGHlHKL35G7huoFeVic1hng==
@@ -6014,20 +5354,15 @@ iconv-lite@0.6.3:
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
 
-ieee754@^1.1.13, ieee754@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz"
-  integrity sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==
-
-ieee754@^1.1.4:
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz"
-  integrity sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==
-
 ieee754@1.1.13:
   version "1.1.13"
   resolved "https://registry.npmjs.org/ieee754/-/ieee754-1.1.13.tgz"
   integrity sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==
+
+ieee754@^1.1.13, ieee754@^1.1.4, ieee754@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz"
+  integrity sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==
 
 imapflow@1.0.158:
   version "1.0.158"
@@ -6078,7 +5413,7 @@ inflight@^1.0.4:
     once "^1.3.0"
     wrappy "1"
 
-inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, inherits@~2.0.3, inherits@2, inherits@2.0.4:
+inherits@2, inherits@2.0.4, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, inherits@~2.0.3:
   version "2.0.4"
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
@@ -6198,6 +5533,11 @@ is-plain-obj@^4.0.0:
   resolved "https://registry.npmjs.org/is-plain-obj/-/is-plain-obj-4.1.0.tgz"
   integrity sha512-+Pgi+vMuUNkJyExiMBt5IlFoMyKnr5zhJ4Uspz58WOhBF5QoIZkFyNHIbBAtHwzVAgk5RtndVNsDRN61/mmDqg==
 
+is-potential-custom-element-name@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/is-potential-custom-element-name/-/is-potential-custom-element-name-1.0.1.tgz#171ed6f19e3ac554394edf78caa05784a45bebb5"
+  integrity sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==
+
 is-stream@^2.0.0:
   version "2.0.1"
   resolved "https://registry.npmjs.org/is-stream/-/is-stream-2.0.1.tgz"
@@ -6272,31 +5612,6 @@ istanbul-reports@^3.1.3:
   dependencies:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
-
-"itsmworkbench@file:C:\\git\\itsmworkbench\\modules\\cli\\itsmworkbench":
-  version "0.0.65"
-  resolved "file:modules/cli/itsmworkbench"
-  dependencies:
-    "@itsmworkbench/api" "0.0.65"
-    "@itsmworkbench/chatgptai" "0.0.65"
-    "@itsmworkbench/cli" "0.0.65"
-    "@itsmworkbench/commander12" "0.0.65"
-    "@itsmworkbench/config" "0.0.65"
-    "@itsmworkbench/defaultdomains" "0.0.65"
-    "@itsmworkbench/domain" "0.0.65"
-    "@itsmworkbench/events" "0.0.65"
-    "@itsmworkbench/eventstore" "0.0.65"
-    "@itsmworkbench/fileloading" "0.0.65"
-    "@itsmworkbench/imapflowfetchemail" "0.0.65"
-    "@itsmworkbench/jsyaml" "0.0.65"
-    "@itsmworkbench/mistralai" "0.0.65"
-    "@itsmworkbench/nodemailer" "0.0.65"
-    "@itsmworkbench/shellgit" "0.0.65"
-    "@itsmworkbench/utils" "0.0.65"
-    "@laoban/filesops-node" "1.4.51"
-    "@laoban/utils" "1.4.51"
-    debug "^4.3.4"
-    node "^v16.0.0"
 
 jest-changed-files@^29.7.0:
   version "29.7.0"
@@ -6406,6 +5721,20 @@ jest-each@^29.7.0:
     jest-util "^29.7.0"
     pretty-format "^29.7.0"
 
+jest-environment-jsdom@^29.7.0:
+  version "29.7.0"
+  resolved "https://registry.yarnpkg.com/jest-environment-jsdom/-/jest-environment-jsdom-29.7.0.tgz#d206fa3551933c3fd519e5dfdb58a0f5139a837f"
+  integrity sha512-k9iQbsf9OyOfdzWH8HDmrRT0gSIcX+FLNW7IQq94tFX0gynPwqDTW0Ho6iMVNjGz/nb+l/vW3dWM2bbLLpkbXA==
+  dependencies:
+    "@jest/environment" "^29.7.0"
+    "@jest/fake-timers" "^29.7.0"
+    "@jest/types" "^29.6.3"
+    "@types/jsdom" "^20.0.0"
+    "@types/node" "*"
+    jest-mock "^29.7.0"
+    jest-util "^29.7.0"
+    jsdom "^20.0.0"
+
 jest-environment-node@^29.7.0:
   version "29.7.0"
   resolved "https://registry.npmjs.org/jest-environment-node/-/jest-environment-node-29.7.0.tgz"
@@ -6510,7 +5839,7 @@ jest-resolve-dependencies@^29.7.0:
     jest-regex-util "^29.6.3"
     jest-snapshot "^29.7.0"
 
-jest-resolve@*, jest-resolve@^29.7.0:
+jest-resolve@^29.7.0:
   version "29.7.0"
   resolved "https://registry.npmjs.org/jest-resolve/-/jest-resolve-29.7.0.tgz"
   integrity sha512-IOVhZSrg+UvVAshDSDtHyFCCBUl/Q3AAJv8iZ6ZjnZ74xzvwuzLXid9IIIPgTnY62SJjfuupMKZsZQRsCvxEgA==
@@ -6654,7 +5983,7 @@ jest-worker@^29.7.0:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
-jest@^29.0.0, "jest@>= 28":
+jest@^29.0.0:
   version "29.7.0"
   resolved "https://registry.npmjs.org/jest/-/jest-29.7.0.tgz"
   integrity sha512-NIy3oAFp9shda19hy4HK0HRTWKtPJmGdnvywu01nOqNC2vZg+Z+fvJDxpMQA88eb2I9EcafcdjYgsDthnYTvGw==
@@ -6693,6 +6022,38 @@ jsbn@1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/jsbn/-/jsbn-1.1.0.tgz"
   integrity sha512-4bYVV3aAMtDTTu4+xsDYa6sy9GyJ69/amsu9sYF2zqjiEoZA5xJi3BrfX3uY+/IekIu7MwdObdbDWpoZdBv3/A==
+
+jsdom@^20.0.0:
+  version "20.0.3"
+  resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-20.0.3.tgz#886a41ba1d4726f67a8858028c99489fed6ad4db"
+  integrity sha512-SYhBvTh89tTfCD/CRdSOm13mOBa42iTaTyfyEWBdKcGdPxPtLFBXuHR8XHb33YNYaP+lLbmSvBTsnoesCNJEsQ==
+  dependencies:
+    abab "^2.0.6"
+    acorn "^8.8.1"
+    acorn-globals "^7.0.0"
+    cssom "^0.5.0"
+    cssstyle "^2.3.0"
+    data-urls "^3.0.2"
+    decimal.js "^10.4.2"
+    domexception "^4.0.0"
+    escodegen "^2.0.0"
+    form-data "^4.0.0"
+    html-encoding-sniffer "^3.0.0"
+    http-proxy-agent "^5.0.0"
+    https-proxy-agent "^5.0.1"
+    is-potential-custom-element-name "^1.0.1"
+    nwsapi "^2.2.2"
+    parse5 "^7.1.1"
+    saxes "^6.0.0"
+    symbol-tree "^3.2.4"
+    tough-cookie "^4.1.2"
+    w3c-xmlserializer "^4.0.0"
+    webidl-conversions "^7.0.0"
+    whatwg-encoding "^2.0.0"
+    whatwg-mimetype "^3.0.0"
+    whatwg-url "^11.0.0"
+    ws "^8.11.0"
+    xml-name-validator "^4.0.0"
 
 jsesc@^2.5.1:
   version "2.5.2"
@@ -6778,7 +6139,7 @@ jss-plugin-vendor-prefixer@^10.5.1:
     css-vendor "^2.0.8"
     jss "10.10.0"
 
-jss@^10.5.1, jss@10.10.0:
+jss@10.10.0, jss@^10.5.1:
   version "10.10.0"
   resolved "https://registry.npmjs.org/jss/-/jss-10.10.0.tgz"
   integrity sha512-cqsOTS7jqPsPMjtKYDUpdFC0AbhYFLTcuGRqymgmdJIeQ8cH7+AgX7YSgQy79wXloZq2VvATYxUOUQEvS1V/Zw==
@@ -6892,6 +6253,46 @@ libqp@2.1.0:
   resolved "https://registry.npmjs.org/libqp/-/libqp-2.1.0.tgz"
   integrity sha512-O6O6/fsG5jiUVbvdgT7YX3xY3uIadR6wEZ7+vy9u7PKHAlSEB6blvC1o5pHBjgsi95Uo0aiBBdkyFecj6jtb7A==
 
+lightningcss-darwin-arm64@1.24.1:
+  version "1.24.1"
+  resolved "https://registry.yarnpkg.com/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.24.1.tgz#551735defa1e092ecf91244ca081f65f10ebd5f0"
+  integrity sha512-1jQ12jBy+AE/73uGQWGSafK5GoWgmSiIQOGhSEXiFJSZxzV+OXIx+a9h2EYHxdJfX864M+2TAxWPWb0Vv+8y4w==
+
+lightningcss-darwin-x64@1.24.1:
+  version "1.24.1"
+  resolved "https://registry.yarnpkg.com/lightningcss-darwin-x64/-/lightningcss-darwin-x64-1.24.1.tgz#5acb1338ac0aae38e405efd854ed97ba11509eea"
+  integrity sha512-R4R1d7VVdq2mG4igMU+Di8GPf0b64ZLnYVkubYnGG0Qxq1KaXQtAzcLI43EkpnoWvB/kUg8JKCWH4S13NfiLcQ==
+
+lightningcss-freebsd-x64@1.24.1:
+  version "1.24.1"
+  resolved "https://registry.yarnpkg.com/lightningcss-freebsd-x64/-/lightningcss-freebsd-x64-1.24.1.tgz#ff692c41ed0bbf37ab5a239db4c2fc04c11195e6"
+  integrity sha512-z6NberUUw5ALES6Ixn2shmjRRrM1cmEn1ZQPiM5IrZ6xHHL5a1lPin9pRv+w6eWfcrEo+qGG6R9XfJrpuY3e4g==
+
+lightningcss-linux-arm-gnueabihf@1.24.1:
+  version "1.24.1"
+  resolved "https://registry.yarnpkg.com/lightningcss-linux-arm-gnueabihf/-/lightningcss-linux-arm-gnueabihf-1.24.1.tgz#ba41556f4422a6a889553ad897898a314386153e"
+  integrity sha512-NLQLnBQW/0sSg74qLNI8F8QKQXkNg4/ukSTa+XhtkO7v3BnK19TS1MfCbDHt+TTdSgNEBv0tubRuapcKho2EWw==
+
+lightningcss-linux-arm64-gnu@1.24.1:
+  version "1.24.1"
+  resolved "https://registry.yarnpkg.com/lightningcss-linux-arm64-gnu/-/lightningcss-linux-arm64-gnu-1.24.1.tgz#6b569b6078634233bc470c4179dd67e535f22d73"
+  integrity sha512-AQxWU8c9E9JAjAi4Qw9CvX2tDIPjgzCTrZCSXKELfs4mCwzxRkHh2RCxX8sFK19RyJoJAjA/Kw8+LMNRHS5qEg==
+
+lightningcss-linux-arm64-musl@1.24.1:
+  version "1.24.1"
+  resolved "https://registry.yarnpkg.com/lightningcss-linux-arm64-musl/-/lightningcss-linux-arm64-musl-1.24.1.tgz#644abd32c09c87228bfb5dda21e8d3f75da6f731"
+  integrity sha512-JCgH/SrNrhqsguUA0uJUM1PvN5+dVuzPIlXcoWDHSv2OU/BWlj2dUYr3XNzEw748SmNZPfl2NjQrAdzaPOn1lA==
+
+lightningcss-linux-x64-gnu@1.24.1:
+  version "1.24.1"
+  resolved "https://registry.yarnpkg.com/lightningcss-linux-x64-gnu/-/lightningcss-linux-x64-gnu-1.24.1.tgz#0633f2daa2b6a2806abd497337346c2941865eec"
+  integrity sha512-TYdEsC63bHV0h47aNRGN3RiK7aIeco3/keN4NkoSQ5T8xk09KHuBdySltWAvKLgT8JvR+ayzq8ZHnL1wKWY0rw==
+
+lightningcss-linux-x64-musl@1.24.1:
+  version "1.24.1"
+  resolved "https://registry.yarnpkg.com/lightningcss-linux-x64-musl/-/lightningcss-linux-x64-musl-1.24.1.tgz#6ed1714737e4af2249ed10f431bc8137bd6cc4c7"
+  integrity sha512-HLfzVik3RToot6pQ2Rgc3JhfZkGi01hFetHt40HrUMoeKitLoqUUT5owM6yTZPTytTUW9ukLBJ1pc3XNMSvlLw==
+
 lightningcss-win32-x64-msvc@1.24.1:
   version "1.24.1"
   resolved "https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.24.1.tgz"
@@ -6949,7 +6350,7 @@ lodash.memoize@4.x:
   resolved "https://registry.npmjs.org/lodash.memoize/-/lodash.memoize-4.1.2.tgz"
   integrity sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==
 
-lodash@^4.17.15:
+lodash@^4.17.15, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -6985,6 +6386,11 @@ lru-cache@^7.14.1:
   resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-7.18.3.tgz"
   integrity sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==
 
+lz-string@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.5.0.tgz#c1ab50f77887b712621201ba9fd4e3a6ed099941"
+  integrity sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==
+
 mailsplit@5.4.0:
   version "5.4.0"
   resolved "https://registry.npmjs.org/mailsplit/-/mailsplit-5.4.0.tgz"
@@ -7001,7 +6407,7 @@ make-dir@^4.0.0:
   dependencies:
     semver "^7.5.3"
 
-make-error@^1.1.1, make-error@1.x:
+make-error@1.x, make-error@^1.1.1:
   version "1.3.6"
   resolved "https://registry.npmjs.org/make-error/-/make-error-1.3.6.tgz"
   integrity sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==
@@ -7420,15 +6826,15 @@ mri@^1.1.0:
   resolved "https://registry.npmjs.org/mri/-/mri-1.2.0.tgz"
   integrity sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==
 
-ms@^2.0.0:
-  version "2.1.3"
-  resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
-  integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
-
 ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.npmjs.org/ms/-/ms-2.1.2.tgz"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
+
+ms@^2.0.0:
+  version "2.1.3"
+  resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
+  integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
 msgpackr-extract@^3.0.2:
   version "3.0.2"
@@ -7493,10 +6899,22 @@ node-bin-setup@^1.0.0:
   resolved "https://registry.npmjs.org/node-bin-setup/-/node-bin-setup-1.1.3.tgz"
   integrity sha512-opgw9iSCAzT2+6wJOETCpeRYAQxSopqQ2z+N6BXwIMsQQ7Zj5M8MaafQY8JMlolRR6R1UXg2WmhKp0p9lSOivg==
 
-node-domexception@^1.0.0, node-domexception@1.0.0:
+node-domexception@1.0.0, node-domexception@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/node-domexception/-/node-domexception-1.0.0.tgz"
   integrity sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==
+
+node-fetch@2.6.1:
+  version "2.6.1"
+  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.1.tgz"
+  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
+
+node-fetch@2.6.7:
+  version "2.6.7"
+  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
+  dependencies:
+    whatwg-url "^5.0.0"
 
 node-fetch@^2.6.12, node-fetch@^2.6.7:
   version "2.7.0"
@@ -7513,18 +6931,6 @@ node-fetch@^3.3.1:
     data-uri-to-buffer "^4.0.0"
     fetch-blob "^3.1.4"
     formdata-polyfill "^4.0.10"
-
-node-fetch@2.6.1:
-  version "2.6.1"
-  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.1.tgz"
-  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
-
-node-fetch@2.6.7:
-  version "2.6.7"
-  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
-  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
-  dependencies:
-    whatwg-url "^5.0.0"
 
 node-gyp-build-optional-packages@5.0.7:
   version "5.0.7"
@@ -7562,15 +6968,15 @@ node@^v16.0.0:
   dependencies:
     node-bin-setup "^1.0.0"
 
-nodemailer@^6.9.13:
-  version "6.9.13"
-  resolved "https://registry.npmjs.org/nodemailer/-/nodemailer-6.9.13.tgz"
-  integrity sha512-7o38Yogx6krdoBf3jCAqnIN4oSQFx+fMa0I7dK1D+me9kBxx12D+/33wSb+fhOCtIxvYJ+4x4IMEhmhCKfAiOA==
-
 nodemailer@6.9.12:
   version "6.9.12"
   resolved "https://registry.npmjs.org/nodemailer/-/nodemailer-6.9.12.tgz"
   integrity sha512-pnLo7g37Br3jXbF0bl5DekBJihm2q+3bB3l2o/B060sWmb5l+VqeScAQCBqaQ+5ezRZFzW5SciZNGdRDEbq89w==
+
+nodemailer@^6.9.13:
+  version "6.9.13"
+  resolved "https://registry.npmjs.org/nodemailer/-/nodemailer-6.9.13.tgz"
+  integrity sha512-7o38Yogx6krdoBf3jCAqnIN4oSQFx+fMa0I7dK1D+me9kBxx12D+/33wSb+fhOCtIxvYJ+4x4IMEhmhCKfAiOA==
 
 normalize-path@^3.0.0:
   version "3.0.0"
@@ -7595,6 +7001,11 @@ nullthrows@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/nullthrows/-/nullthrows-1.1.1.tgz"
   integrity sha512-2vPPEi+Z7WqML2jZYddDIfy5Dqb0r2fze2zTxNNknZaFpVHU3mFB3R+DWeJWGVx0ecvttSGlJTI+WG+8Z4cDWw==
+
+nwsapi@^2.2.2:
+  version "2.2.10"
+  resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.10.tgz#0b77a68e21a0b483db70b11fad055906e867cda8"
+  integrity sha512-QK0sRs7MKv0tKe1+5uZIQk/C8XGza4DAnztJG8iD+TpJIORARrCxczA738awHrZoHeTjSSoHqao2teO0dC/gFQ==
 
 object-assign@^4.1.1:
   version "4.1.1"
@@ -7813,7 +7224,7 @@ parse-json@^5.0.0, parse-json@^5.2.0:
     json-parse-even-better-errors "^2.3.0"
     lines-and-columns "^1.1.6"
 
-parse5@^7.0.0:
+parse5@^7.0.0, parse5@^7.1.1:
   version "7.1.2"
   resolved "https://registry.npmjs.org/parse5/-/parse5-7.1.2.tgz"
   integrity sha512-Czj1WaSVpaoj0wbhMzLmWD69anp2WH7FXMB9n1Sy8/ZFF9jolSQVMu1Ij5WIyGmcBmhk7EOndpO4mIpihVqAXw==
@@ -7985,6 +7396,15 @@ prebuild-install@^7.1.1:
     tar-fs "^2.0.0"
     tunnel-agent "^0.6.0"
 
+pretty-format@^27.0.2:
+  version "27.5.1"
+  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-27.5.1.tgz#2181879fdea51a7a5851fb39d920faa63f01d88e"
+  integrity sha512-Qb1gy5OrP5+zDf2Bvnzdl3jsTf1qXVMazbvCoKhtKqVs4/YK4ozX4gKQJJVyNe+cajNPn0KoC0MC3FUmaHWEmQ==
+  dependencies:
+    ansi-regex "^5.0.1"
+    ansi-styles "^5.0.0"
+    react-is "^17.0.1"
+
 pretty-format@^29.0.0, pretty-format@^29.7.0:
   version "29.7.0"
   resolved "https://registry.npmjs.org/pretty-format/-/pretty-format-29.7.0.tgz"
@@ -8074,6 +7494,11 @@ proxy-from-env@^1.1.0:
   resolved "https://registry.npmjs.org/proxy-from-env/-/proxy-from-env-1.1.0.tgz"
   integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
+psl@^1.1.33:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/psl/-/psl-1.9.0.tgz#d0df2a137f00794565fcaf3b2c00cd09f8d5a5a7"
+  integrity sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==
+
 public-encrypt@^4.0.0:
   version "4.0.3"
   resolved "https://registry.npmjs.org/public-encrypt/-/public-encrypt-4.0.3.tgz"
@@ -8094,15 +7519,20 @@ pump@^3.0.0:
     end-of-stream "^1.1.0"
     once "^1.3.1"
 
+punycode@1.3.2:
+  version "1.3.2"
+  resolved "https://registry.npmjs.org/punycode/-/punycode-1.3.2.tgz"
+  integrity sha512-RofWgt/7fL5wP1Y7fxE7/EmTLzQVnB0ycyibJ0OOHIlJqTNzglYFxVwETOcIoJqJmpDXJ9xImDv+Fq34F/d4Dw==
+
 punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.npmjs.org/punycode/-/punycode-1.4.1.tgz"
   integrity sha512-jmYNElW7yvO7TV33CjSmvSiE2yco3bV2czu/OzDKdMNVZQWfxCblURLhf+47syQRBntjfLdd/H0egrzIG+oaFQ==
 
-punycode@1.3.2:
-  version "1.3.2"
-  resolved "https://registry.npmjs.org/punycode/-/punycode-1.3.2.tgz"
-  integrity sha512-RofWgt/7fL5wP1Y7fxE7/EmTLzQVnB0ycyibJ0OOHIlJqTNzglYFxVwETOcIoJqJmpDXJ9xImDv+Fq34F/d4Dw==
+punycode@^2.1.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.1.tgz#027422e2faec0b25e1549c3e1bd8309b9133b6e5"
+  integrity sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==
 
 pure-rand@^6.0.0:
   version "6.1.0"
@@ -8120,6 +7550,11 @@ querystring@0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/querystring/-/querystring-0.2.0.tgz"
   integrity sha512-X/xY82scca2tau62i9mDyU9K+I+djTMUsvwf7xnUX5GLvVzgJybOJf4Y6o9Zx3oJK/LSXg5tTZBjwzqVPaPO2g==
+
+querystringify@^2.1.1:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
+  integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
 queue-tick@^1.0.1:
   version "1.0.1"
@@ -8156,9 +7591,9 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-"react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0", "react-dom@^17.0.0 || ^18.0.0", react-dom@^18.2.0, react-dom@>=16.6.0, react-dom@>=16.8.0:
+react-dom@18.2.0, react-dom@^18.2.0:
   version "18.2.0"
-  resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
   dependencies:
     loose-envify "^1.1.0"
@@ -8177,17 +7612,12 @@ react-i18next@^14.1.0:
     "@babel/runtime" "^7.23.9"
     html-parse-stringify "^3.0.1"
 
-react-is@^16.13.1:
+react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-is@^16.7.0:
-  version "16.13.1"
-  resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
-  integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
-
-"react-is@^16.8.0 || ^17.0.0":
+"react-is@^16.8.0 || ^17.0.0", react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
@@ -8233,9 +7663,9 @@ react-transition-group@^4.4.0, react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-"react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^17.0.0 || ^18.0.0", react@^18.2.0, "react@>= 16.8.0", react@>=16, react@>=16.6.0, react@>=16.8.0:
+react@18.2.0, react@^18.2.0:
   version "18.2.0"
-  resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
   dependencies:
     loose-envify "^1.1.0"
@@ -8337,6 +7767,11 @@ require-directory@^2.1.1:
   resolved "https://registry.npmjs.org/require-directory/-/require-directory-2.1.1.tgz"
   integrity sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==
 
+requires-port@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
+  integrity sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==
+
 resolve-cwd@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/resolve-cwd/-/resolve-cwd-3.0.0.tgz"
@@ -8383,17 +7818,12 @@ sade@^1.7.3:
   dependencies:
     mri "^1.1.0"
 
-safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.0, safe-buffer@^5.2.1, safe-buffer@~5.2.0, safe-buffer@5.2.1:
+safe-buffer@5.2.1, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.0, safe-buffer@^5.2.1, safe-buffer@~5.2.0:
   version "5.2.1"
   resolved "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz"
   integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
 
-safe-buffer@~5.1.0:
-  version "5.1.2"
-  resolved "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.2.tgz"
-  integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
-
-safe-buffer@~5.1.1:
+safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.2.tgz"
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
@@ -8408,15 +7838,22 @@ safe-stable-stringify@^2.3.1:
   resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
+sax@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/sax/-/sax-1.2.1.tgz"
+  integrity sha512-8I2a3LovHTOpm7NV5yOyO8IHqgVsfK4+UuySrXU8YXkSRX7k6hCV9b3HrkKCr3nMpgj+0bmocaJJWpvp1oc7ZA==
+
 sax@>=0.6.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/sax/-/sax-1.3.0.tgz"
   integrity sha512-0s+oAmw9zLl1V1cS9BtZN7JAd0cW5e0QH4W3LWEK6a4LaLEA2OTpGYWDY+6XasBLtz6wkm3u1xRw95mRuJ59WA==
 
-sax@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/sax/-/sax-1.2.1.tgz"
-  integrity sha512-8I2a3LovHTOpm7NV5yOyO8IHqgVsfK4+UuySrXU8YXkSRX7k6hCV9b3HrkKCr3nMpgj+0bmocaJJWpvp1oc7ZA==
+saxes@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/saxes/-/saxes-6.0.0.tgz#fe5b4a4768df4f14a201b1ba6a65c1f3d9988cc5"
+  integrity sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==
+  dependencies:
+    xmlchars "^2.2.0"
 
 scheduler@^0.23.0:
   version "0.23.0"
@@ -8425,12 +7862,7 @@ scheduler@^0.23.0:
   dependencies:
     loose-envify "^1.1.0"
 
-semver@^6.3.0:
-  version "6.3.1"
-  resolved "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz"
-  integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
-
-semver@^6.3.1:
+semver@^6.3.0, semver@^6.3.1:
   version "6.3.1"
   resolved "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
@@ -8553,7 +7985,7 @@ socks-proxy-agent@^8.0.2:
     debug "^4.3.4"
     socks "^2.7.1"
 
-socks@^2.7.1, socks@2.8.1:
+socks@2.8.1, socks@^2.7.1:
   version "2.8.1"
   resolved "https://registry.npmjs.org/socks/-/socks-2.8.1.tgz"
   integrity sha512-B6w7tkwNid7ToxjZ08rQMT8M9BJAf8DKx8Ft4NivzH0zBUfd6jldGcisJn/RLgxcX3FPNDdNQCUEMMT79b+oCQ==
@@ -8606,7 +8038,7 @@ sprintf-js@~1.0.2:
   resolved "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz"
   integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
 
-srcset@4, srcset@4.0.0:
+srcset@4:
   version "4.0.0"
   resolved "https://registry.npmjs.org/srcset/-/srcset-4.0.0.tgz"
   integrity sha512-wvLeHgcVHKO8Sc/H/5lkGreJQVeYMm9rlmt8PuR1xE31rIuXhuzznUUqAt8MqLhB3MqJdFzlNAfpcWnxiFUcPw==
@@ -8628,7 +8060,7 @@ state-local@^1.0.6:
   resolved "https://registry.npmjs.org/state-local/-/state-local-1.0.7.tgz"
   integrity sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==
 
-statuses@^1.5.0, "statuses@>= 1.5.0 < 2":
+"statuses@>= 1.5.0 < 2", statuses@^1.5.0:
   version "1.5.0"
   resolved "https://registry.npmjs.org/statuses/-/statuses-1.5.0.tgz"
   integrity sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==
@@ -8653,20 +8085,6 @@ streamx@^2.13.0, streamx@^2.15.0:
   optionalDependencies:
     bare-events "^2.2.0"
 
-string_decoder@^1.1.1, string_decoder@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-1.3.0.tgz"
-  integrity sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==
-  dependencies:
-    safe-buffer "~5.2.0"
-
-string_decoder@~1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-1.1.1.tgz"
-  integrity sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
-  dependencies:
-    safe-buffer "~5.1.0"
-
 string-length@^4.0.1:
   version "4.0.2"
   resolved "https://registry.npmjs.org/string-length/-/string-length-4.0.2.tgz"
@@ -8683,6 +8101,20 @@ string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
     emoji-regex "^8.0.0"
     is-fullwidth-code-point "^3.0.0"
     strip-ansi "^6.0.1"
+
+string_decoder@^1.1.1, string_decoder@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-1.3.0.tgz"
+  integrity sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==
+  dependencies:
+    safe-buffer "~5.2.0"
+
+string_decoder@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-1.1.1.tgz"
+  integrity sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
+  dependencies:
+    safe-buffer "~5.1.0"
 
 strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
@@ -8785,7 +8217,7 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-svgo@^2.4.0, svgo@^3.0.2:
+svgo@^2.4.0:
   version "2.8.0"
   resolved "https://registry.npmjs.org/svgo/-/svgo-2.8.0.tgz"
   integrity sha512-+N/Q9kV1+F+UeWYoSiULYo4xYSDQlTgb+ayMobAXPwMnLvop7oxKMo9OzIrX5x3eS4L4f2UHhc9axXwY8DpChg==
@@ -8797,6 +8229,11 @@ svgo@^2.4.0, svgo@^3.0.2:
     csso "^4.2.0"
     picocolors "^1.0.0"
     stable "^0.1.8"
+
+symbol-tree@^3.2.4:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
+  integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
 tar-fs@^2.0.0:
   version "2.1.1"
@@ -8892,6 +8329,23 @@ toidentifier@1.0.1:
   resolved "https://registry.npmjs.org/toidentifier/-/toidentifier-1.0.1.tgz"
   integrity sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==
 
+tough-cookie@^4.1.2:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-4.1.4.tgz#945f1461b45b5a8c76821c33ea49c3ac192c1b36"
+  integrity sha512-Loo5UUvLD9ScZ6jh8beX1T6sO1w2/MpCRpEP7V280GKMVUQ0Jzar2U3UJPsrdbziLEMMhu3Ujnq//rhiFuIeag==
+  dependencies:
+    psl "^1.1.33"
+    punycode "^2.1.1"
+    universalify "^0.2.0"
+    url-parse "^1.5.3"
+
+tr46@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/tr46/-/tr46-3.0.0.tgz#555c4e297a950617e8eeddef633c87d4d9d6cbf9"
+  integrity sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==
+  dependencies:
+    punycode "^2.1.1"
+
 tr46@~0.0.3:
   version "0.0.3"
   resolved "https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz"
@@ -8921,7 +8375,7 @@ ts-jest@^29.0.0:
     semver "^7.5.3"
     yargs-parser "^21.0.1"
 
-ts-node@^10.9.2, ts-node@>=9.0.0:
+ts-node@^10.9.2:
   version "10.9.2"
   resolved "https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz"
   integrity sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==
@@ -8985,7 +8439,7 @@ type-is@^1.6.16:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
-typescript@^5.2.2, typescript@^5.3.3, typescript@>=2.7, "typescript@>=4.3 <6", typescript@>=4.9.5:
+typescript@^5.2.2, typescript@^5.3.3:
   version "5.4.3"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.4.3.tgz"
   integrity sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg==
@@ -9089,6 +8543,11 @@ unist-util-visit@^5.0.0:
     unist-util-is "^6.0.0"
     unist-util-visit-parents "^6.0.0"
 
+universalify@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.2.0.tgz#6451760566fa857534745ab1dde952d1b1761be0"
+  integrity sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==
+
 universalify@^2.0.0:
   version "2.0.1"
   resolved "https://registry.npmjs.org/universalify/-/universalify-2.0.1.tgz"
@@ -9102,13 +8561,13 @@ update-browserslist-db@^1.0.13:
     escalade "^3.1.1"
     picocolors "^1.0.0"
 
-url@^0.11.0:
-  version "0.11.3"
-  resolved "https://registry.npmjs.org/url/-/url-0.11.3.tgz"
-  integrity sha512-6hxOLGfZASQK/cijlZnZJTq8OXAkt/3YGfQX45vvMYXpZoo8NdWZcY73K108Jf759lS1Bv/8wXnHDTSz17dSRw==
+url-parse@^1.5.3:
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.10.tgz#9d3c2f736c1d75dd3bd2be507dcc111f1e2ea9c1"
+  integrity sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==
   dependencies:
-    punycode "^1.4.1"
-    qs "^6.11.2"
+    querystringify "^2.1.1"
+    requires-port "^1.0.0"
 
 url@0.10.3:
   version "0.10.3"
@@ -9117,6 +8576,14 @@ url@0.10.3:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+url@^0.11.0:
+  version "0.11.3"
+  resolved "https://registry.npmjs.org/url/-/url-0.11.3.tgz"
+  integrity sha512-6hxOLGfZASQK/cijlZnZJTq8OXAkt/3YGfQX45vvMYXpZoo8NdWZcY73K108Jf759lS1Bv/8wXnHDTSz17dSRw==
+  dependencies:
+    punycode "^1.4.1"
+    qs "^6.11.2"
 
 util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
@@ -9139,15 +8606,15 @@ utility-types@^3.10.0:
   resolved "https://registry.npmjs.org/utility-types/-/utility-types-3.11.0.tgz"
   integrity sha512-6Z7Ma2aVEWisaL6TvBCy7P8rm2LQoPv6dJ7ecIaIixHcwfbJ0x7mWdbcwlIM5IGQxPZSFYeqRCqlOOeKoJYMkw==
 
-uuid@^9.0.1:
-  version "9.0.1"
-  resolved "https://registry.npmjs.org/uuid/-/uuid-9.0.1.tgz"
-  integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
-
 uuid@8.0.0:
   version "8.0.0"
   resolved "https://registry.npmjs.org/uuid/-/uuid-8.0.0.tgz"
   integrity sha512-jOXGuXZAWdsTH7eZLtyXMqUb9EcWMGZNbL9YcGBJl4MH4nrxHmZJhEHvyLFrkxo+28uLb/NYRcStH48fnD0Vzw==
+
+uuid@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.npmjs.org/uuid/-/uuid-9.0.1.tgz"
+  integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
 
 uvu@^0.5.0:
   version "0.5.6"
@@ -9226,6 +8693,13 @@ void-elements@3.1.0:
   resolved "https://registry.npmjs.org/void-elements/-/void-elements-3.1.0.tgz"
   integrity sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==
 
+w3c-xmlserializer@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/w3c-xmlserializer/-/w3c-xmlserializer-4.0.0.tgz#aebdc84920d806222936e3cdce408e32488a3073"
+  integrity sha512-d+BFHzbiCx6zGfz0HyQ6Rg69w9k19nviJspaj4yNscGjrHu94sVP+aRm75yEbCh+r2/yR+7q6hux9LVtbuTGBw==
+  dependencies:
+    xml-name-validator "^4.0.0"
+
 walker@^1.0.8:
   version "1.0.8"
   resolved "https://registry.npmjs.org/walker/-/walker-1.0.8.tgz"
@@ -9243,20 +8717,45 @@ web-namespaces@^2.0.0:
   resolved "https://registry.npmjs.org/web-namespaces/-/web-namespaces-2.0.1.tgz"
   integrity sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==
 
-web-streams-polyfill@^3.0.3, web-streams-polyfill@^3.2.1:
-  version "3.3.3"
-  resolved "https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-3.3.3.tgz"
-  integrity sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==
-
 web-streams-polyfill@4.0.0-beta.3:
   version "4.0.0-beta.3"
   resolved "https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-4.0.0-beta.3.tgz"
   integrity sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==
 
+web-streams-polyfill@^3.0.3, web-streams-polyfill@^3.2.1:
+  version "3.3.3"
+  resolved "https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-3.3.3.tgz"
+  integrity sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==
+
 webidl-conversions@^3.0.0:
   version "3.0.1"
   resolved "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-3.0.1.tgz"
   integrity sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==
+
+webidl-conversions@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-7.0.0.tgz#256b4e1882be7debbf01d05f0aa2039778ea080a"
+  integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
+
+whatwg-encoding@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/whatwg-encoding/-/whatwg-encoding-2.0.0.tgz#e7635f597fd87020858626805a2729fa7698ac53"
+  integrity sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==
+  dependencies:
+    iconv-lite "0.6.3"
+
+whatwg-mimetype@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/whatwg-mimetype/-/whatwg-mimetype-3.0.0.tgz#5fa1a7623867ff1af6ca3dc72ad6b8a4208beba7"
+  integrity sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==
+
+whatwg-url@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-11.0.0.tgz#0a849eebb5faf2119b901bb76fd795c2848d4018"
+  integrity sha512-RKT8HExMpoYx4igMiVMY83lN6UeITKJlBQ+vR/8ZJ8OCdSiN3RwCq+9gH0+Xzj0+5IrM6i4j/6LuvzbZIQgEcQ==
+  dependencies:
+    tr46 "^3.0.0"
+    webidl-conversions "^7.0.0"
 
 whatwg-url@^5.0.0:
   version "5.0.0"
@@ -9306,6 +8805,16 @@ write-file-atomic@^4.0.2:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.7"
 
+ws@^8.11.0:
+  version "8.17.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.17.0.tgz#d145d18eca2ed25aaf791a183903f7be5e295fea"
+  integrity sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==
+
+xml-name-validator@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-4.0.0.tgz#79a006e2e63149a8600f15430f0a4725d1524835"
+  integrity sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==
+
 xml2js@0.6.2:
   version "0.6.2"
   resolved "https://registry.npmjs.org/xml2js/-/xml2js-0.6.2.tgz"
@@ -9318,6 +8827,11 @@ xmlbuilder@~11.0.0:
   version "11.0.1"
   resolved "https://registry.npmjs.org/xmlbuilder/-/xmlbuilder-11.0.1.tgz"
   integrity sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==
+
+xmlchars@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
+  integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
 
 xtend@^4.0.2:
   version "4.0.2"

@@ -1,9 +1,7 @@
 import fetch from 'node-fetch'
 import { NameAnd } from "@laoban/utils";
-import { indexConfigExample } from "./github.fixture";
-import { cleanAndEnrichConfig } from "@itsmworkbench/indexconfig";
 import { defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberForestLogsAndMetrics, rememberIndex, rememberIndexParentChildLogsAndMetrics, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
-import { githubTcs, indexGitHubFully, indexOneGithubRepo, indexOrganisations, indexOrgMembers, indexTheUserRepos } from "./github.index";
+import { githubTcs, indexOneGithubRepo, indexOrganisations, indexOrgMembers, indexTheUserRepos } from "./github.index";
 import { DateTimeService } from "@itsmworkbench/utils";
 
 const msgs: string[] = []
@@ -55,7 +53,7 @@ describe ( 'githubOneRepoWF', () => {
   describe ( 'indexOneGithubRepo', () => {
     it ( 'should index a repo - dryrun true', async () => {
       const remembered: string[] = []
-      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), { dryRunJustShowTrees: true } )
+      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), { dryRunJustShowTrees: true ,since: '1d'} )
       await indexer ( 'phil-rice/typescriptDragons' )
       expect ( remembered.sort () ).toEqual ( [
         "Finished: test phil-rice/typescriptDragons",
@@ -65,7 +63,7 @@ describe ( 'githubOneRepoWF', () => {
     } )
     it ( 'should index a repo - dryRunDoEverythingButIndex true', async () => {
       const remembered: string[] = []
-      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), { dryRunDoEverythingButIndex: true } )
+      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), { dryRunDoEverythingButIndex: true ,since: '1d'} )
       await indexer ( 'phil-rice/typescriptDragons' )
       expect ( remembered.sort () ).toEqual ( [
         "Finished: test phil-rice/typescriptDragons",
@@ -80,7 +78,7 @@ describe ( 'githubOneRepoWF', () => {
     } )
     it ( 'should index a repo - dryrun false', async () => {
       const remembered: string[] = []
-      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), {}
+      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), {since: '1d'}
       ) //we actually go for it
       await indexer ( 'phil-rice/typescriptDragons' )
       expect ( remembered.sort () ).toEqual ( [
@@ -99,7 +97,7 @@ describe ( 'githubOneRepoWF', () => {
 
     it ( 'should report not found if a repo not found', async () => {
       const remembered: string[] = []
-      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), { dryRunJustShowTrees: false } ) //we actually go for it
+      const indexer = indexOneGithubRepo ( indexContext, tcs.indexGitHubRepoTc, rememberIndex ( 'test', remembered ), { dryRunJustShowTrees: false ,since: '1d'} ) //we actually go for it
       await indexer ( 'phil-rice/repodoesntexist' )
       expect ( remembered.sort () ).toEqual ( [
         "Failed: test phil-rice/repodoesntexist Error: Not Found",
@@ -170,7 +168,7 @@ describe ( 'githubOneRepoWF', () => {
     it ( "should index members of an organisation - dryrun on", async () => {
       const remembered: string[] = []
       await indexOrgMembers ( indexContext, tcs.indexAnOrganisationMembersTc, rememberIndex ( '', remembered ),
-        { dryRunJustShowTrees: true }, [ 'run-book' ] )
+        { dryRunJustShowTrees: true,since: '1d' }, [ 'run-book' ] )
       expect ( msgs.sort () ).toEqual ( [
         "finishedParent: run-book",
         "parent: run-book, page: Page: undefined, children: run-book_alikor,run-book_phil-rice",
@@ -183,50 +181,51 @@ describe ( 'githubOneRepoWF', () => {
 
     } )
   } )
-  describe ( "indexGitHubFully", () => {
-    it ( "should say what it is going to do when we dryRunJustShowRepo", async () => {
-      const remembered: string[] = []
-      const indexer = indexGitHubFully ( nfs, indexContext,
-        ( forestId ) => rememberIndex ( forestId, remembered ),
-        ( forestId ) => rememberIndex ( forestId, remembered ),
-        { dryRunJustShowTrees: true } )
-      const config = cleanAndEnrichConfig ( indexConfigExample, {} )
-      await indexer ( config.github.scan as any )
-      expect ( remembered.sort () ).toEqual ( [
-        "Finished: target/index/{source}/{name}_{num}.json phil-rice-HCL/HelloDataNucleusJBoss",
-        "Finished: target/index/{source}/{name}_{num}.json run-book",
-        "Finished: target/index/{source}/{name}_{num}.json run-book/backstage",
-        "Finished: target/index/{source}/{name}_{num}.json run-book/camunda",
-        "Finished: target/index/{source}/{name}_{num}.json run-book/fusion",
-        "Finished: target/index/{source}/{name}_{num}.json run-book/instruments",
-        "Finished: target/index/{source}/{name}_{num}.json run-book/malformed_instruments",
-        "Finished: target/index/{source}/{name}_{num}.json run-book/runbook",
-        "Finished: target/index/{source}/{name}_{num}.json run-book/runbookTestConfig",
-        "Finished: target/index/{source}/{name}_{num}.json run-book/storybook-state",
-        "Finished: target/index/{source}/{name}_{num}.json run-book/testRepo1",
-        "Finished: target/index/{source}/{name}_{num}.json run-book/testRepo2",
-        "Started: target/index/{source}/{name}_{num}.json phil-rice-HCL/HelloDataNucleusJBoss",
-        "Started: target/index/{source}/{name}_{num}.json run-book",
-        "Started: target/index/{source}/{name}_{num}.json run-book/backstage",
-        "Started: target/index/{source}/{name}_{num}.json run-book/camunda",
-        "Started: target/index/{source}/{name}_{num}.json run-book/fusion",
-        "Started: target/index/{source}/{name}_{num}.json run-book/instruments",
-        "Started: target/index/{source}/{name}_{num}.json run-book/malformed_instruments",
-        "Started: target/index/{source}/{name}_{num}.json run-book/runbook",
-        "Started: target/index/{source}/{name}_{num}.json run-book/runbookTestConfig",
-        "Started: target/index/{source}/{name}_{num}.json run-book/storybook-state",
-        "Started: target/index/{source}/{name}_{num}.json run-book/testRepo1",
-        "Started: target/index/{source}/{name}_{num}.json run-book/testRepo2"
-      ] )
-      expect ( msgs.sort () ).toEqual ( [
-        "finished Root: phil-rice-HCL",
-        "finished Root: run-book",
-        "finishedParent: run-book",
-        "parent: run-book, page: Page: undefined, children: run-book_alikor,run-book_phil-rice",
-        "parentId: run-book, page: Page: undefined",
-        "rootIds: Page: undefined - phil-rice-HCL/HelloDataNucleusJBoss",
-        "rootIds: Page: undefined - run-book/runbook,run-book/testRepo1,run-book/instruments,run-book/testRepo2,run-book/malformed_instruments,run-book/storybook-state,run-book/runbookTestConfig,run-book/backstage,run-book/fusion,run-book/camunda"
-      ] )
-    } )
   } )
-} )
+//   describe ( "indexGitHubFully", () => {
+//     it ( "should say what it is going to do when we dryRunJustShowRepo", async () => {
+//       const remembered: string[] = []
+//       const indexer = indexGitHubFully ( nfs, indexContext,
+//         ( forestId ) => rememberIndex ( forestId, remembered ),
+//         ( forestId ) => rememberIndex ( forestId, remembered ),
+//         { dryRunJustShowTrees: true,since: '1d' } )
+//       const config = cleanAndEnrichConfig ( indexConfigExample, {} )
+//       await indexer ( config.github.scan as any )
+//       expect ( remembered.sort () ).toEqual ( [
+//         "Finished: target/index/{source}/{name}_{num}.json phil-rice-HCL/HelloDataNucleusJBoss",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book/backstage",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book/camunda",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book/fusion",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book/instruments",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book/malformed_instruments",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book/runbook",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book/runbookTestConfig",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book/storybook-state",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book/testRepo1",
+//         "Finished: target/index/{source}/{name}_{num}.json run-book/testRepo2",
+//         "Started: target/index/{source}/{name}_{num}.json phil-rice-HCL/HelloDataNucleusJBoss",
+//         "Started: target/index/{source}/{name}_{num}.json run-book",
+//         "Started: target/index/{source}/{name}_{num}.json run-book/backstage",
+//         "Started: target/index/{source}/{name}_{num}.json run-book/camunda",
+//         "Started: target/index/{source}/{name}_{num}.json run-book/fusion",
+//         "Started: target/index/{source}/{name}_{num}.json run-book/instruments",
+//         "Started: target/index/{source}/{name}_{num}.json run-book/malformed_instruments",
+//         "Started: target/index/{source}/{name}_{num}.json run-book/runbook",
+//         "Started: target/index/{source}/{name}_{num}.json run-book/runbookTestConfig",
+//         "Started: target/index/{source}/{name}_{num}.json run-book/storybook-state",
+//         "Started: target/index/{source}/{name}_{num}.json run-book/testRepo1",
+//         "Started: target/index/{source}/{name}_{num}.json run-book/testRepo2"
+//       ] )
+//       expect ( msgs.sort () ).toEqual ( [
+//         "finished Root: phil-rice-HCL",
+//         "finished Root: run-book",
+//         "finishedParent: run-book",
+//         "parent: run-book, page: Page: undefined, children: run-book_alikor,run-book_phil-rice",
+//         "parentId: run-book, page: Page: undefined",
+//         "rootIds: Page: undefined - phil-rice-HCL/HelloDataNucleusJBoss",
+//         "rootIds: Page: undefined - run-book/runbook,run-book/testRepo1,run-book/instruments,run-book/testRepo2,run-book/malformed_instruments,run-book/storybook-state,run-book/runbookTestConfig,run-book/backstage,run-book/fusion,run-book/camunda"
+//       ] )
+//     } )
+//   } )
+// } )

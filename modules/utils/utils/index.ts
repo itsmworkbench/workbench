@@ -1,4 +1,5 @@
 export * from './src/columns.to.json'
+export * from './src/debounce'
 export * from './src/extract.variables'
 export * from './src/future.cache'
 export * from './src/hack'

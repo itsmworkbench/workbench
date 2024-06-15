@@ -56,7 +56,7 @@ describe ( "jira integration spec for jira3 (validox.atlassian.net)", () => {
   } );
   it ( "should index a single project", async () => {
     const tc = JiraProjectToIssueTc ( indexContext, jiraDetails, undefined )
-    const indexer = indexJiraProject ( indexContext, tc, rememberIndex ( '', remember ), {} )
+    const indexer = indexJiraProject ( indexContext, tc, rememberIndex ( '', remember ), { since: '1d' } )
     await indexer ( 'KAN' )
     expect ( remember ).toEqual ( [
       "Started:  KAN",
@@ -76,7 +76,7 @@ describe ( "jira integration spec for jira3 (validox.atlassian.net)", () => {
   it ( "should index jira fully", async () => {
     const indexer = indexJiraFully ( nfs, indexContext,
       ( fileTemplate: string, indexId: string ) => rememberIndex ( 'file', remember ),
-      {} )
+      { since: '1d' } )
     await indexer ( jiraDetails )
     expect ( remember ).toEqual ( [
       "Started: file KAN",

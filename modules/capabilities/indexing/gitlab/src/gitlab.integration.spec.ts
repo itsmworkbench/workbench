@@ -1,4 +1,4 @@
-import { addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberForestLogsAndMetrics, rememberIndex, rememberIndexParentChildLogsAndMetrics, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
+import { defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberForestLogsAndMetrics, rememberIndex, rememberIndexParentChildLogsAndMetrics, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
 import fetch from "node-fetch";
 import { NameAnd } from "@laoban/utils";
 import { DateTimeService } from "@itsmworkbench/utils";
@@ -62,7 +62,8 @@ const gitlabAclDetails: GitlabAclDetails = {
 const project: GitlabProject = {
   "id": 57819826,
   "default_branch": "main",
-  namespace:{
+  path_with_namespace: 'somePath',
+  namespace: {
     kind: 'group',
     parent_id: 21235180
   }
@@ -94,25 +95,25 @@ describe ( "gitlab integration spec", () => {
 
   it ( "should index one repo", async () => {
     const tc = gitlabRepoTc ( indexContext, gitlabDetails )
-    const indexer = indexGitlabRepo ( indexContext, gitlabDetails, tc, rememberIndex ( '', remember ), {} )
+    const indexer = indexGitlabRepo ( indexContext, gitlabDetails, tc, rememberIndex ( '', remember ), { since: '1d' } )
     await indexer ( project )
     expect ( remember ).toEqual ( [
       "Started:  api/v4/projects/57819826/repository/tree?ref=main&recursive=true",
       "Processing:  api/v4/projects/57819826/repository/tree?ref=main&recursive=true - 57819826/README.md - {\"projectId\":57819826,\"id\":\"0a6a749b5f94e63594d43528ac2abce52d15f981\",\"path\":\"README.md\",\"content\":\"Example readme file\"}",
       "Finished:  api/v4/projects/57819826/repository/tree?ref=main&recursive=true"
-    ])
+    ] )
     expect ( msgs ).toEqual ( [
       "parentId: api/v4/projects/57819826/repository/tree?ref=main&recursive=true, page: No more pages available",
       "parent: api/v4/projects/57819826/repository/tree?ref=main&recursive=true, page: No more pages available, children: 57819826/README.md",
       "finishedParent: api/v4/projects/57819826/repository/tree?ref=main&recursive=true"
-    ])
+    ] )
   } )
 
   it ( "should index the members", async () => {
     const indexUsersTc = indexGitLabRepoToMembersTc ( indexContext, gitlabAclDetails )
     const indexMembersTc = indexGitLabUserToGitLabMemberDetails ( indexContext, gitlabAclDetails )
 
-    await indexGitLabMembers ( indexContext, indexUsersTc, indexMembersTc, rememberIndex ( '', remember ), {} ) ( "57819826" )
+    await indexGitLabMembers ( indexContext, indexUsersTc, indexMembersTc, rememberIndex ( '', remember ), { since: '1d' } ) ( "57819826" )
     expect ( remember ).toEqual ( [
       "Started:  21235180",
       "Processing:  21235180 - 21235180 - {\"id\":21235180,\"username\":\"phil.rice\",\"public_email\":null}",
@@ -124,25 +125,25 @@ describe ( "gitlab integration spec", () => {
       "parent: 21235180, page: No more pages available, children: 21235180",
       "finishedParent: 21235180",
       "finished Root: 57819826"
-    ])
+    ] )
   } )
 
   it ( "should indexGitlabFully", async () => {
     const indexer = indexGitlabFully ( nfs, indexContext,
       ( file, index ) => rememberIndex ( `File ${file}/${index}: `, remember ),
       ( file, index ) => rememberIndex ( `Member ${file}/${index}: `, remember ),
-      {} )
+      { since: '1d' } )
     await indexer ( gitlabDetails )
 
-    expect ( remember .sort()).toEqual ( [
+    expect ( remember.sort () ).toEqual ( [
       "Started: File gitlab-file/gitlab:  api/v4/projects/57819826/repository/tree?ref=main&recursive=true",
       "Started: Member gitlab-file/gitlab-acl:  21235180",
       "Processing: File gitlab-file/gitlab:  api/v4/projects/57819826/repository/tree?ref=main&recursive=true - 57819826/README.md - {\"projectId\":57819826,\"id\":\"0a6a749b5f94e63594d43528ac2abce52d15f981\",\"path\":\"README.md\",\"content\":\"Example readme file\"}",
       "Finished: File gitlab-file/gitlab:  api/v4/projects/57819826/repository/tree?ref=main&recursive=true",
       "Processing: Member gitlab-file/gitlab-acl:  21235180 - 21235180 - {\"id\":21235180,\"username\":\"phil.rice\",\"public_email\":null}",
       "Finished: Member gitlab-file/gitlab-acl:  21235180"
-    ].sort())
-    expect ( msgs .sort()).toEqual ( [
+    ].sort () )
+    expect ( msgs.sort () ).toEqual ( [
       "rootIds: No more pages available - 57819826/main",
       "parentId: api/v4/projects/57819826/repository/tree?ref=main&recursive=true, page: No more pages available",
       "parent: api/v4/projects/57819826/repository/tree?ref=main&recursive=true, page: No more pages available, children: 57819826/README.md",
@@ -153,6 +154,6 @@ describe ( "gitlab integration spec", () => {
       "finishedParent: 21235180",
       "finished Root: 57819826",
       "finished Root: validoc"
-    ].sort())
+    ].sort () )
   } )
 } )

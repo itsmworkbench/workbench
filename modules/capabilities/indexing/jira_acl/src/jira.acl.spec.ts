@@ -238,18 +238,43 @@ describe ( 'convertMemberAndGroupsToAclStructure', () => {
       'Alice': [ 'JIRA_ME8_TESTERS' ]
     };
 
-    const expectedOutput: AclStructure[] = [
-      //fill in from failure. Check first
-    ];
-
-    const result = convertMemberAndGroupsToAclStructure ( mag );
-    expect ( result ).toEqual ( expectedOutput );
+    const result = convertMemberAndGroupsToAclStructure ('someIndex', mag );
+    expect ( result ).toEqual ([
+      {
+        "_id": "John Doe",
+        "body": {
+          "allowed_keys": [
+            "JIRA_ME8_DEVELOPERS",
+            "JIRA_ME8_TESTERS"
+          ],
+          "query": "{\"bool\":{\"filter\":[{\"term\":{\"_index\":\"someIndex\"}},{\"terms\":{\"key.keyword\":[\"ME8\",\"ME8\"]}}]}}"
+        }
+      },
+      {
+        "_id": "Jane Doe",
+        "body": {
+          "allowed_keys": [
+            "JIRA_ME8_DEVELOPERS"
+          ],
+          "query": "{\"bool\":{\"filter\":[{\"term\":{\"_index\":\"someIndex\"}},{\"terms\":{\"key.keyword\":[\"ME8\"]}}]}}"
+        }
+      },
+      {
+        "_id": "Alice",
+        "body": {
+          "allowed_keys": [
+            "JIRA_ME8_TESTERS"
+          ],
+          "query": "{\"bool\":{\"filter\":[{\"term\":{\"_index\":\"someIndex\"}},{\"terms\":{\"key.keyword\":[\"ME8\"]}}]}}"
+        }
+      }
+    ] );
   } );
 
   test ( 'should handle an empty MemberAndGroups object', () => {
     const mag: MemberAndGroups = {};
     const expectedOutput: AclStructure[] = [];
-    const result = convertMemberAndGroupsToAclStructure ( mag );
+    const result = convertMemberAndGroupsToAclStructure ('someIndex', mag );
     expect ( result ).toEqual ( expectedOutput );
   } );
 } );

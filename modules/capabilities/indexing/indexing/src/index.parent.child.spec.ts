@@ -12,7 +12,7 @@ describe ( "Index parent child", () => {
       TestPageQueryPC,
       async t => t + "_indexed",
       ( p, c ) => `${p}${c}`,
-      {}
+      {since: '1d'}
     ) ( rememberIndex ( "test", remembered ) )
 
     await indexer ( '/' )
@@ -44,7 +44,7 @@ describe ( "Index parent child", () => {
       TestPageQueryPC,
       async t => t + "_indexed",
       ( p, c ) => `${p}/${c}`,
-      {}
+      {since: '1d'}
     ) ( rememberIndex ( "test", remembered ) )
 
     await indexer ( '/a/aa' )
