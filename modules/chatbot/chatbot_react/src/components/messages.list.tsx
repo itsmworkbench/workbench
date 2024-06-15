@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { List, ListItem, ListItemText } from '@mui/material';
 
 export type Message = {
-  text: string;
-  sender: 'user' | 'bot';
+  content: string;
+  role: 'user' | 'system' | 'assistant';
 };
 
 export type MessagesListProps = {
@@ -11,7 +11,7 @@ export type MessagesListProps = {
 };
 
 const listStyle = {
-  height: '300px',
+  height: '60%',
   overflowY: 'auto' as const,
   marginBottom: '20px',
   border: '1px solid #ccc',
@@ -20,20 +20,21 @@ const listStyle = {
 export type MessageListItemProps = {
   message: Message;
 }
-export const getStyleForMessage = ( { sender }: Message ) => {
+export const getStyleForMessage = ( { role }: Message ) => {
   return {
-    justifyContent: sender === 'user' ? 'flex-start' : 'flex-end',
-    backgroundColor: sender === 'user' ? '#DCF8C6' : '#91d7df',
+    justifyContent: role === 'user' ? 'flex-start' : 'flex-end',
+    backgroundColor: role === 'user' ? '#DCF8C6' : '#91d7df',
     padding: '10px',
     borderRadius: '10px',
-    maxWidth: '60%',
+    maxWidth: '80%',
+    whiteSpace: 'pre-line',
   };
 };
 export function MessageListItem ( { message }: MessageListItemProps ) {
   let { justifyContent, ...style } = getStyleForMessage ( message );
   return <ListItem sx={{ justifyContent }}>
     <ListItemText
-      primary={message.text}
+      primary={message.content}
       sx={style}
     />
   </ListItem>;
