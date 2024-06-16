@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { List, ListItem, ListItemText } from '@mui/material';
+import Markdown from "react-markdown";
 
 export type Message = {
   content: string;
@@ -10,13 +11,7 @@ export type MessagesListProps = {
   messages: Message[];
 };
 
-const listStyle = {
-  height: '60%',
-  overflowY: 'auto' as const,
-  marginBottom: '20px',
-  border: '1px solid #ccc',
-  borderRadius: '8px',
-};
+
 export type MessageListItemProps = {
   message: Message;
 }
@@ -33,12 +28,17 @@ export const getStyleForMessage = ( { role }: Message ) => {
 export function MessageListItem ( { message }: MessageListItemProps ) {
   let { justifyContent, ...style } = getStyleForMessage ( message );
   return <ListItem sx={{ justifyContent }}>
-    <ListItemText
-      primary={message.content}
-      sx={style}
-    />
+    <div style={style}>
+      <Markdown>{message.content||'No content'}</Markdown>
+    </div>
   </ListItem>;
 }
+
+const listStyle = {
+  overflowY: 'auto',
+  maxHeight: 'calc(100vh - 200px)', // Adjust based on your layout
+  marginBottom: '10px'
+};
 export function MessagesList ( { messages }: MessagesListProps ) {
   const endOfListRef = useRef ( null );
   useEffect ( () => {
@@ -52,6 +52,7 @@ export function MessagesList ( { messages }: MessagesListProps ) {
       listElement.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
     }
   }, [ messages ] );
+  if (messages.length===0) return <></>
   return (
     <List sx={listStyle} aria-live="polite">
       {messages.map ( ( message, index ) =>

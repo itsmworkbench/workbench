@@ -24,7 +24,7 @@ export const elasticSearchClient = ( { baseURL, index, Authorization, queryFn }:
       'Content-Type': 'application/json',
     },
   } );
-  return async ( query: string ): Promise<HtmlContentAndAnswer[]> => {
+  return async ( query: string ): Promise<HtmlContentUrlAndAnswer[]> => {
     try {
       const response = await axiosInstance.post ( `/${INDEX_NAME}/_search`, queryFn ( query ) );
       return contentAndAnswer ( response.data );
@@ -56,11 +56,12 @@ export const fullElasticSearchClient = elasticSearchClient ( {
   })
 } );
 
-export type HtmlContentAndAnswer = {
+export type HtmlContentUrlAndAnswer = {
   htmlContent: string
+  url: string
   answer: string
 }
-export function contentAndAnswer ( response: any ): HtmlContentAndAnswer[] {
+export function contentAndAnswer ( response: any ): HtmlContentUrlAndAnswer[] {
   const parser = new DOMParser ();
   return response.hits.hits.map ( ( res: any ) => {
     const source = res._source

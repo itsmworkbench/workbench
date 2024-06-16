@@ -1,4 +1,4 @@
-import { HtmlContentAndAnswer } from "./elastic.search";
+import { HtmlContentUrlAndAnswer } from "./elastic.search";
 import axios from "axios";
 import { Message } from "../components/messages.list";
 
@@ -7,13 +7,13 @@ export type OpenAiConfig = {
   baseURL?: string
   Authorization: string,
   model?: string,
-  promptFn: ( req: OpenAiRequest ) => string
+  promptFn: ( req: OpenAiRequest ) => string[]
 }
 
 export type OpenAiRequest = {
   messages: Message[]
   query: string
-  source: HtmlContentAndAnswer[]
+  source: HtmlContentUrlAndAnswer[]
 }
 export type OpenAiResponse = Message
 export const aiClient = ( { baseURL, Authorization, model, promptFn }: OpenAiConfig ) => {
@@ -27,17 +27,19 @@ export const aiClient = ( { baseURL, Authorization, model, promptFn }: OpenAiCon
     },
   } );
   return async ( request: OpenAiRequest ): Promise<Message> => {
+    const assistantMessages: Message[] = promptFn ( request ).map ( ( m, i ) => ({ role: 'assistant', content: m }) )
     const messages: Message[] = [
       { role: 'system', content: basePrompt },
       ...request.messages,
-      { role: 'user', content: promptFn ( request ) }
+      ...assistantMessages,
+      { role: 'user', content: request.query }
     ]
     try {
       const response = await axiosInstance.post ( `/v1/chat/completions`, {
         model,
         messages
       } );
-      return response.data.choices[0]?.message;
+      return response.data.choices[ 0 ]?.message;
     } catch ( error ) {
       console.error ( 'Error calling openai:', request, error );
       throw error;
@@ -48,7 +50,7 @@ export const aiClient = ( { baseURL, Authorization, model, promptFn }: OpenAiCon
 export const fullAOpenAi = aiClient ( {
   baseURL: process.env.REACT_APP_OPENAI_URL,
   Authorization: `Bearer ${process.env.REACT_APP_OPENAI_TOKEN}`,
-  promptFn: makePrompt,
+  promptFn: makePrompts,
   model: 'gpt-3.5-turbo'
 } );
 
@@ -60,9 +62,10 @@ always answer in natural human way.
 If you don't know the answer, just say that you don't know, don't try to make up an answer.
 Aim to answer queries using existing conversational context.
 DO NOT IGNORE URLs in response. 
-DO NOT use vulgar or insensitive language."`
+DO NOT use vulgar or insensitive language.
+The output should be in markdown"`
 
-export function makePrompt ( { source }: OpenAiRequest ): string {
+export function makePrompts ( { source }: OpenAiRequest ): string[] {
   const best = source[ 0 ]
-  return `Answer: ${best.answer} Source:  ${best.htmlContent} }`
+  return [ `Source URL: ${best.url}, 'Source content:  ${best.htmlContent} }` ]
 }
