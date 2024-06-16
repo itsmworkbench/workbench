@@ -1,19 +1,32 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { ChatBot } from "./components/ChatBot";
-import { SendMessageConfig } from "./clients/sendMessage";
-import { fullElasticSearchClient } from "./clients/elastic.search";
-import { fullAOpenAi } from "./clients/openai";
+import { sendMessage, SendMessageConfig, SendMessageFn } from "./clients/sendMessage";
+import { defaultElasticSearchConfig, elasticSearchClient } from "./clients/elastic.search";
+import { aiClient, defaultOpenAiConfig } from "./clients/openai";
+import { debounceK } from "@itsmworkbench/utils";
 
 
 const sendMessageConfig: SendMessageConfig = {
-  elasticSearch : fullElasticSearchClient,
-  openAi: fullAOpenAi
+  elasticSearch: elasticSearchClient ( defaultElasticSearchConfig () ),
+  openAi: aiClient ( defaultOpenAiConfig ),
+  newMessages: ( { messages, query }, newMessage ) => [
+    ...messages,
+    { content: query, role: 'user' },
+    ...newMessage
+  ] //TODO handle no messages better
 }
 
-ReactDOM.render (
+const send: SendMessageFn = debounceK ( sendMessage ( sendMessageConfig ), 500 );
+
+
+const rootElement = document.getElementById('root')!;
+const root = ReactDOM.createRoot(rootElement);
+root.render(
   <React.StrictMode>
-    <ChatBot sendMessageConfig={sendMessageConfig}/>
-  </React.StrictMode>,
-  document.getElementById ( 'root' )
+    <ChatBot sendMessage={send} dispMessage={message => {
+      console.log(message);
+      return <span>{message.content}</span>;
+    }} />
+  </React.StrictMode>
 );
