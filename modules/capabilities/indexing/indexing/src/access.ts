@@ -16,6 +16,7 @@ export type SourceSinkDetails = {
 }
 
 export type AuthFn = ( auth: Authentication ) => Promise<NameAnd<string>>
+
 function authForApiToken ( env: NameAnd<string>, auth: ApiKeyAuthentication ) {
   const apiKey = auth.credentials?.apiKey;
   if ( !apiKey ) throw Error ( 'No apiKey in ' + JSON.stringify ( auth ) )
@@ -23,6 +24,7 @@ function authForApiToken ( env: NameAnd<string>, auth: ApiKeyAuthentication ) {
   if ( !token ) throw Error ( 'No token for apiKey ' + apiKey )
   return { Authorization: `Bearer ${token}` }
 }
+
 function authForBasic ( env: NameAnd<string>, auth: BasicAuthentication ) {
   if ( !auth.credentials.username ) throw Error ( 'No username in ' + JSON.stringify ( auth ) )
   if ( !auth.credentials.password ) throw Error ( 'No password in ' + JSON.stringify ( auth ) )

@@ -63,16 +63,26 @@ index:
         method: PrivateToken
         credentials:
           token: GITLAB_TOKEN
-  jiraPlay:
-    type: jira # actually Jiraplay
-    scan:
-      auth:
-        method: EntraId
-        credentials:
-          tenantId: 03e6c03e-074e-474c-8d40-3eac96d82a77            # From entraid/overview
-          clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8            # From Application Id in entra ID
-          clientSecret: ENTRA_CLIENT_SECRET
-          scope:  "https://graph.microsoft.com/.default"
+#  jiraPlay:
+#    type: jira # actually Jiraplay
+#    scan:
+#      auth:
+#        method: EntraId
+#        credentials:
+#          tenantId: 03e6c03e-074e-474c-8d40-3eac96d82a77            # From entraid/overview
+#          clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8            # From Application Id in entra ID
+#          clientSecret: ENTRA_CLIENT_SECRET
+#          scope:  "https://graph.microsoft.com/.default"
+#  questionator:
+#    sourceFile: # a csv or yaml file of the url of  original documents
+#    credentials:
+#  questionsAndAnswers:
+#    sourceFile: # the url of a excel spreadsheet
+#    questionColumnName:
+#    answerColumnName:
+#    enabledColumnName:
+#    credentials:
+
 
 #  confluence:
 #    query:

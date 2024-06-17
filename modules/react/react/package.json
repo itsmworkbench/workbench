@@ -48,7 +48,8 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-react": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
     "parcel": "^2.11.0",

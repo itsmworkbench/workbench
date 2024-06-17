@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { doTwoThings } from "../utils";
-import { debounce } from "@itsmworkbench/utils";
 
 export type ChatTextInputProps = {
   input: string
