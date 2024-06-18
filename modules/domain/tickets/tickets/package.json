@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/tickets",
   "description": "The tickets plugin. Everything except react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -20,8 +20,8 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/domain": "0.1.0",
-    "@itsmworkbench/yaml": "0.1.0",
+    "@itsmworkbench/domain": "0.1.1",
+    "@itsmworkbench/yaml": "0.1.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {

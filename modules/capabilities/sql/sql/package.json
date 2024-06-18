@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/sql",
   "description": "interacting with sql: the interfaces",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,7 +22,7 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.1.0",
+    "@itsmworkbench/utils": "0.1.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {

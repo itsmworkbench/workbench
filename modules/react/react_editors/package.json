@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/react_editors",
   "description": "The react chat area",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -16,10 +16,10 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
-    "@itsmworkbench/components": "0.1.0",
-    "@itsmworkbench/events": "0.1.0",
-    "@itsmworkbench/urlstore": "0.1.0",
-    "@itsmworkbench/yaml": "0.1.0",
+    "@itsmworkbench/components": "0.1.1",
+    "@itsmworkbench/events": "0.1.1",
+    "@itsmworkbench/urlstore": "0.1.1",
+    "@itsmworkbench/yaml": "0.1.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
