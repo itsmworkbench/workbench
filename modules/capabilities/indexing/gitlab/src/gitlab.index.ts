@@ -1,4 +1,4 @@
-import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, PagingTc, SourceSinkDetails } from "@itsmworkbench/indexing";
+import { access, AccessConfig, addNonFunctionalsToIndexForestTc, addNonFunctionalsToIndexParentChildTc, ExecuteIndexOptions, Indexer, indexForestOfTrees, IndexForestTc, IndexingContext, indexParentChild, IndexParentChildTc, IndexTreeNonFunctionals, PagingTc, SourceSinkDetails, WithPaging } from "@itsmworkbench/indexing";
 import { mapK, safeArray } from "@laoban/utils";
 import { K1, } from "@itsmworkbench/kleislis";
 import { GitLabMemberDetails } from "./gitlab.dls";
@@ -28,10 +28,10 @@ export type GitlabPaging = {
 }
 export const GitlabPagingTc: PagingTc<GitlabPaging> = {
   zero: () => ({ next: undefined }),  // Initialize without a next page
-  hasMore: ( p: GitlabPaging ) => !!p.next,  // Check if the next page URL exists
-  logMsg: ( p: GitlabPaging ) => p.next ? `Next page available at: ${p.next}` : "No more pages available",
-  url: () => {throw new Error ( 'Not implemented' )},
-  fromResponse: ( json, linkHeader ) => {throw new Error ( 'Not implemented' ) }
+  hasMore: ( p: GitlabPaging ) => p?.next !== undefined,  // Check if the next page URL exists
+  logMsg: ( p: GitlabPaging ) => p?.next ? `Next page available at: ${p.next}` : "No more pages available",
+  url: ( baseUrl, p ) => p?.next ?? baseUrl,
+  fromResponse: ( data, linkHeader ) => ({ data, page: parseLinkHeader ( linkHeader ) })
 };
 export function parseLinkHeader ( linkHeader: string | null ): GitlabPaging {
   if ( linkHeader ) {
@@ -87,7 +87,7 @@ export const gitLabFileToIndexedFile = ( ic: IndexingContext, gitlabDetails: Git
     projectId: project.id,
     id: f.id,
     path: f.path,
-    fullPath: `${withoutFirstSegment(project.path_with_namespace)}/${f.path}`,
+    fullPath: `${withoutFirstSegment ( project.path_with_namespace )}/${f.path}`,
     url: `${gitlabDetails.baseurl}/${project.path_with_namespace}/-/blob/${project.default_branch}/${f.path}`,
     content: gitlabFileDetails.encoding === 'base64' ? Buffer.from ( gitlabFileDetails.content, 'base64' ).toString ( 'utf-8' ) : gitlabFileDetails.content
   }

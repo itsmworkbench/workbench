@@ -2,7 +2,6 @@ import { access, ExecuteIndexOptions, fetchArrayWithPaging, FetchArrayWithPaging
 import { gitlabAccessOptions, GitlabPaging, GitlabPagingTc, GitlabProject } from "./gitlab.index";
 import { NameAnd } from "@laoban/utils";
 import { withRetry, withThrottle } from "@itsmworkbench/kleislis";
-import { ConfluencePagingTC } from "@itsmworkbench/indexing_confluence";
 import { simpleTemplate } from "@itsmworkbench/utils";
 import { removeSearchAclPrefix } from "@itsmworkbench/indexconfig";
 
@@ -65,16 +64,17 @@ export async function projectToName ( fetchArray: FetchArrayWithPagingType, fetc
     const projectId = project.id
     result[ projectId ] = []
     async function addGroupMembers ( groupId: number ) {
-      if ( groupId ) {
-        for await ( const members of fetchArray<GitLabUser> ( `${details.baseurl}api/v4/groups/${groupId}/members/all`, { headers } ) ) {
+      if ( groupId  && result[ groupId ] === undefined) {
+        for await ( const members of fetchArray<GitLabUser> ( `${details.baseurl}api/v4/groups/${groupId}/members/all&per_page=100`, { headers } ) ) {
           result[ projectId ].push ( members.username )
         }
         const group = await fetchOne<GitLabGroup> ( `${details.baseurl}api/v4/groups/${groupId}`, { headers } )
-        if ( group.parent_id !== undefined )
-          await addGroupMembers ( group.parent_id )
+        const parentId = group.parent_id;
+        if ( parentId !== undefined )
+          await addGroupMembers ( parentId )
       }
     }
-    for await ( const members of fetchArray<GitLabUser> ( `${details.baseurl}api/v4/projects/${project.id}/members/all`, { headers } ) )
+    for await ( const members of fetchArray<GitLabUser> ( `${details.baseurl}api/v4/projects/${project.id}/members/all&per_page=100`, { headers } ) )
       result[ projectId ].push ( members.username )
     if ( project.namespace.kind === 'group' ) await addGroupMembers ( project.namespace.parent_id )
   }
@@ -85,7 +85,7 @@ function invertAndLowercaseNames ( p2name: Record<number, string[]> ): NameAnd<n
   const result: NameAnd<number[]> = {}
   for ( const [ projectId, names ] of Object.entries ( p2name ) )
     for ( const name of names ) {
-      const lc = name.toLowerCase()
+      const lc = name.toLowerCase ()
       if ( !result[ lc ] ) result[ lc ] = []
       result[ lc ].push ( Number.parseInt ( projectId.toString () ) )
     }
@@ -112,7 +112,7 @@ function toIndexData ( index: string, template: string, name: string, projects: 
 export const indexGitlabAcl = ( nfs: IndexTreeNonFunctionals, ic: IndexingContext, indexerFn: ( fileTemplate: string, indexId: string ) => Indexer<any>, option: ExecuteIndexOptions ) => {
   const nfcFetch: FetchFn = withRetry ( nfs.queryRetryPolicy, withThrottle ( nfs.queryThrottle, ic.fetch ) )
   // const nfcFetch: FetchFn = withThrottle ( nfs.indexThrottle, ic.fetch )
-  const fArray: FetchArrayWithPagingType = fetchArrayWithPaging ( nfcFetch, ic.parentChildLogAndMetrics, ConfluencePagingTC, nfs.queryRetryPolicy );
+  const fArray: FetchArrayWithPagingType = fetchArrayWithPaging ( nfcFetch, ic.parentChildLogAndMetrics, GitlabPagingTc, nfs.queryRetryPolicy );
   const fOne = withRetry ( nfs.queryRetryPolicy, fetchOneItem ( nfcFetch ) )
 
   return async ( details: GitlabAclDetails ) => {
@@ -123,7 +123,7 @@ export const indexGitlabAcl = ( nfs: IndexTreeNonFunctionals, ic: IndexingContex
       const p2name = await projectToName ( fArray, fOne, headers, details )
       const name2Projects = invertAndLowercaseNames ( p2name )
       for ( const [ name, projects ] of Object.entries ( name2Projects ) ) {
-        const result = toIndexData ( removeSearchAclPrefix(details.index), details.idPattern, name, projects )
+        const result = toIndexData ( removeSearchAclPrefix ( details.index ), details.idPattern, name, projects )
         await indexer.processLeaf ( details.index, result._id ) ( result.data )
       }
       await indexer.finished ( details.index )
