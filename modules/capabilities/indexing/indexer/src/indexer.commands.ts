@@ -189,6 +189,26 @@ export function addConfigCommand<Commander, Config, CleanConfig> ( tc: ContextCo
     }
   }
 }
+export function addIndiciesCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
+  return {
+    cmd: 'indicies',
+    description: 'lists the indicies',
+    options: {
+      '-f, --file <file>': { description: 'The config file', default: 'indexer.yaml' },
+    },
+    action: async ( _, opts ) => {
+      const { file } = opts
+      const config = await getIndexerFile ( tc, file.toString () );
+      const maxName = Math.max ( ...Object.keys ( config ).map ( k => k.length ) )
+      const maxIndex = Math.max ( ...Object.values ( config ).map ( v => v.index.length ) )
+      const maxType = Math.max ( ...Object.values ( config ).map ( v => v.type.length ) )
+      console.log ( 'Name'.padEnd ( maxName ), 'Type'.padEnd ( maxType ), 'Index'.padEnd ( maxIndex ), 'Base Url' )
+      for ( const [ index, value ] of Object.entries ( config ) ) {
+        console.log ( index.padEnd ( maxName ), value.type.padEnd ( maxType ), value.index.padEnd ( maxIndex ), value.scan.baseurl )
+      }
+    }
+  }
+}
 
 export function indexerCommands<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>,
                                                                   cliTc: CliTc<Commander, IndexerContext, Config, CleanConfig>
@@ -198,6 +218,7 @@ export function indexerCommands<Commander, Config, CleanConfig> ( tc: ContextCon
     removeApiKeyCommand<Commander, Config, CleanConfig> ( tc ),
     addConfigCommand<Commander, Config, CleanConfig> ( tc ),
     addIndexCommand<Commander, Config, CleanConfig> ( tc ),
+    addIndiciesCommand<Commander, Config, CleanConfig> ( tc ),
     addApiKeyCommand<Commander, Config, CleanConfig> ( tc ),
   ] )
 }
