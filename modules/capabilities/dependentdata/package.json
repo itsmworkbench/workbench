@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/dependentdata",
   "description": "Often some data is dependendent on other data. Needs nuking or reloading when earlier changes",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {

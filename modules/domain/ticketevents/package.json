@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/ticketevents",
   "description": "Ticket events are the events that occur while we process a ticket",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -20,8 +20,8 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/domain": "0.1.1",
-    "@itsmworkbench/events": "0.1.1",
+    "@itsmworkbench/domain": "0.2.0",
+    "@itsmworkbench/events": "0.2.0",
     "debug": "^4.3.4"
   },
   "devDependencies": {
