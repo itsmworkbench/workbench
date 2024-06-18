@@ -5,8 +5,8 @@ import { PopulatedIndexItem } from "@itsmworkbench/indexconfig";
 import { NameAnd } from "@laoban/utils";
 import { indexGitlabAcl, indexGitlabFully } from "@itsmworkbench/indexing_gitlab";
 import { indexConfluenceSpaces } from "@itsmworkbench/indexing_confluence";
-import { indexJiraAcl } from "@itsmworkbench/indexing_jira_acl";
 import { indexConfluenceAcl } from "@itsmworkbench/indexing_confluence_acl";
+import { indexCsvAcl } from "@itsmworkbench/indexing_csv_acl";
 
 export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
   return {
@@ -16,7 +16,7 @@ export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext,
     confluence: indexConfluenceSpaces ( ic, nfc, indexer ( nfc ), executeOptions ),
     confluenceAcl: indexConfluenceAcl ( ic, nfc, indexer ( nfc ) ), //not working yet
     jira: indexJiraFully ( nfc, ic, indexer ( nfc ), executeOptions ),
-    jiraAcl: indexJiraAcl ( indexer ( nfc ) ),
+    csvAcl: indexCsvAcl ( indexer ( nfc ) ),
   };
 }
 //export type IndexTreeNonFunctionals = {

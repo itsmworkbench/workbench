@@ -1,4 +1,5 @@
-import { K0, K1, K2, K3, Kleisli } from "@itsmworkbench/kleislis";
+import { K0, K1, K2, K3, Kleisli } from "./kleisli";
+
 
 export function debounce<T extends ( ...args: any[] ) => any> ( func: T, delay: number = 500 ): ( ...args: Parameters<T> ) => Promise<ReturnType<T>> {
   let timeoutId: ReturnType<typeof setTimeout>;

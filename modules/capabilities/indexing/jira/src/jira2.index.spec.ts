@@ -1,4 +1,4 @@
-import { indexJiraFully, indexJiraProject, JiraDetails, JiraProjectToIssueTc, jiraProjectToMembersTc } from "./jira.index";
+import { indexJiraFully, indexJiraProject, JiraDetails, JiraProjectToIssueTc } from "./jira.index";
 import { defaultAuthFn, defaultIndexTreeNfs, FetchFnResponse, IndexingContext, rememberForestLogsAndMetrics, rememberIndex, rememberIndexParentChildLogsAndMetrics, rememberIndexTreeLogAndMetrics, stopNonFunctionals } from "@itsmworkbench/indexing";
 import fetch from "node-fetch";
 import { NameAnd } from "@laoban/utils";
@@ -56,7 +56,7 @@ describe ( "jira integration spec for jira 2 (localhost)", () => {
   } );
   it ( "should index a single project", async () => {
     const tc = JiraProjectToIssueTc ( indexContext, jiraDetails, undefined )
-    const indexer = indexJiraProject ( indexContext, tc, rememberIndex ( '', remember ), {} )
+    const indexer = indexJiraProject ( indexContext, tc, rememberIndex ( '', remember ), {since: '1h'} )
     await indexer ( 'KAN' )
     expect ( remember ).toEqual ( [
       "Started:  KAN",
@@ -72,7 +72,7 @@ describe ( "jira integration spec for jira 2 (localhost)", () => {
   it ( "should index jira fully", async () => {
     const indexer = indexJiraFully ( nfs, indexContext,
       ( fileTemplate: string, indexId: string ) => rememberIndex ( 'file', remember ),
-       {} )
+       {since: '1h'} )
     await indexer ( jiraDetails )
     expect ( remember ).toEqual ( [
       "Started: file KAN",

@@ -14,7 +14,7 @@ describe ( 'TreeIndexer Integration Test', () => {
   } );
 
   it ( 'should process a simple folder structure correctly', async () => {
-    const indexer = processTreeRoot ( logAndMetrics, treeIndexForTestTc, TestPageQueryPC, rememberIndexer, {} );
+    const indexer = processTreeRoot ( logAndMetrics, treeIndexForTestTc, TestPageQueryPC, rememberIndexer, {since:'1d'} );
     await indexer ( '/' );
 
     expect ( logs ).toEqual ( [

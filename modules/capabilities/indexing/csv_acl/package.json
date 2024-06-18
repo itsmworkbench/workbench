@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/indexing_jira_acl",
-  "description": "indexing jira",
+  "name": "@itsmworkbench/indexing_csv_acl",
+  "description": "indexing an acl from a csv file",
   "version": "0.1.1",
   "main": "dist/index",
   "types": "dist/index",

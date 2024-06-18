@@ -25,9 +25,15 @@ defaults:
 
 index:
   jiraAcl:
+    type: csvAcl
     scan:
       groupMembersFile: group.members.csv
       index: .search-acl-filter-jira-prod
+      headers: 1
+      groupColumn: 1
+      memberColumn: 2
+      extractGroup: "^JIRA_(.*?)_"
+
   jira:
     type: jira
     scan:

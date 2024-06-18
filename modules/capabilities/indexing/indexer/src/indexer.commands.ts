@@ -203,9 +203,8 @@ export function addIndiciesCommand<Commander, Config, CleanConfig> ( tc: Context
       const maxIndex = Math.max ( ...Object.values ( config ).map ( v => v.index.length ) )
       const maxType = Math.max ( ...Object.values ( config ).map ( v => v.type.length ) )
       console.log ( 'Name'.padEnd ( maxName ), 'Type'.padEnd ( maxType ), 'Index'.padEnd ( maxIndex ), 'Base Url' )
-      for ( const [ index, value ] of Object.entries ( config ) ) {
+      for ( const [ index, value ] of Object.entries ( config ) )
         console.log ( index.padEnd ( maxName ), value.type.padEnd ( maxType ), value.index.padEnd ( maxIndex ), value.scan.baseurl )
-      }
     }
   }
 }

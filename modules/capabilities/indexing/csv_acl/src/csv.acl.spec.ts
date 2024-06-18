@@ -1,5 +1,16 @@
-import { AclStructure, convertFileToGroupAndMembers, convertGroupAndMembersToMemberAndGroups, convertMemberAndGroupsToAclStructure, GroupAndMembers, MemberAndGroups } from "./jira.acl";
+import { AclStructure, convertFileToGroupAndMembers, convertGroupAndMembersToMemberAndGroups, convertMemberAndGroupsToAclStructure, CsvAclDetails, GroupAndMembers, MemberAndGroups } from "./csv.acl";
 
+const details: CsvAclDetails = {
+  groupMembersFile: 'someFile',
+  memberColumn: 2,
+  groupColumn: 1,
+  extractGroup: 'JIRA_(.*?)_',
+  file: 'someFile',
+  index: 'someIndex',
+  baseurl: 'someUrl',
+  auth: undefined as any
+
+}
 describe ( 'convertFileToGroupAndMembers', () => {
   test ( 'should convert a valid file string to GroupAndMembers array', () => {
     const file = 'groupId,groupname,member1,member2\n' + `0a3324-234345-12312312,JIRA_ME8_DEVELOPERS,John Doe,Jane Doe\n` +
@@ -7,25 +18,23 @@ describe ( 'convertFileToGroupAndMembers', () => {
 
     const expectedOutput: GroupAndMembers = [
       {
-        groupId: '0a3324-234345-12312312',
         groupName: 'JIRA_ME8_DEVELOPERS',
         members: [ 'John Doe', 'Jane Doe' ]
       },
       {
-        groupId: '1b4325-345456-23423423',
         groupName: 'JIRA_ME8_TESTERS',
         members: [ 'Alice', 'Bob' ]
       }
     ];
 
-    const result = convertFileToGroupAndMembers ( file );
+    const result = convertFileToGroupAndMembers ( details, file );
     expect ( result ).toEqual ( expectedOutput );
   } );
 
   test ( 'should handle an empty file string', () => {
     const file = '';
     const expectedOutput: GroupAndMembers = [];
-    const result = convertFileToGroupAndMembers ( file );
+    const result = convertFileToGroupAndMembers ( details, file );
     expect ( result ).toEqual ( expectedOutput );
   } );
 
@@ -34,7 +43,7 @@ describe ( 'convertFileToGroupAndMembers', () => {
       `0a3324-234345-12312312,JIRA_ME8_DEVELOPERS\n` + // Invalid line format
       `1b4325-345456-23423423,JIRA_ME8_TESTERS,Alice,Bob`;
 
-    expect ( () => convertFileToGroupAndMembers ( file ) ).toThrow ( 'Invalid line format on line 0: 0a3324-234345-12312312,JIRA_ME8_DEVELOPERS' );
+    expect ( () => convertFileToGroupAndMembers ( details, file ) ).toThrow ( 'Invalid line format on line 0: 0a3324-234345-12312312,JIRA_ME8_DEVELOPERS' );
   } );
 
   test ( 'should handle file with extra commas in member names', () => {
@@ -44,18 +53,16 @@ describe ( 'convertFileToGroupAndMembers', () => {
 
     const expectedOutput: GroupAndMembers = [
       {
-        groupId: '0a3324-234345-12312312',
         groupName: 'JIRA_ME8_DEVELOPERS',
         members: [ 'John Doe', 'Jane Doe' ]
       },
       {
-        groupId: '1b4325-345456-23423423',
         groupName: 'JIRA_ME8_TESTERS',
         members: [ 'Alice', 'Bob', 'Bob Jr.' ]
       }
     ];
 
-    const result = convertFileToGroupAndMembers ( file );
+    const result = convertFileToGroupAndMembers ( details, file );
     expect ( result ).toEqual ( expectedOutput );
   } );
 } );
@@ -65,12 +72,10 @@ describe ( 'convertGroupAndMembersToMemberAndGroups', () => {
   test ( 'should convert GroupAndMembers to MemberAndGroups correctly', () => {
     const gms: GroupAndMembers = [
       {
-        groupId: '0a3324-234345-12312312',
         groupName: 'JIRA_ME8_DEVELOPERS',
         members: [ 'John Doe', 'Jane Doe' ]
       },
       {
-        groupId: '1b4325-345456-23423423',
         groupName: 'JIRA_ME8_TESTERS',
         members: [ 'Alice', 'John Doe' ]
       }
@@ -96,7 +101,6 @@ describe ( 'convertGroupAndMembersToMemberAndGroups', () => {
   test ( 'should handle groups with no members', () => {
     const gms: GroupAndMembers = [
       {
-        groupId: '0a3324-234345-12312312',
         groupName: 'JIRA_ME8_DEVELOPERS',
         members: []
       }
@@ -110,12 +114,10 @@ describe ( 'convertGroupAndMembersToMemberAndGroups', () => {
   test ( 'should handle members with multiple group memberships', () => {
     const gms: GroupAndMembers = [
       {
-        groupId: '0a3324-234345-12312312',
         groupName: 'JIRA_ME8_DEVELOPERS',
         members: [ 'John Doe' ]
       },
       {
-        groupId: '1b4325-345456-23423423',
         groupName: 'JIRA_ME8_TESTERS',
         members: [ 'John Doe' ]
       }
@@ -132,17 +134,14 @@ describe ( 'convertGroupAndMembersToMemberAndGroups', () => {
   test ( 'should handle multiple groups with multiple members', () => {
     const gms: GroupAndMembers = [
       {
-        groupId: '0a3324-234345-12312312',
         groupName: 'JIRA_ME8_DEVELOPERS',
         members: [ 'John Doe', 'Jane Doe', 'Alice' ]
       },
       {
-        groupId: '1b4325-345456-23423423',
         groupName: 'JIRA_ME8_TESTERS',
         members: [ 'John Doe', 'Alice', 'Bob' ]
       },
       {
-        groupId: '2c5436-456567-34534534',
         groupName: 'JIRA_ME8_MANAGERS',
         members: [ 'Alice', 'Bob', 'Charlie' ]
       }
@@ -165,12 +164,10 @@ describe ( 'convertGroupAndMembersToMemberAndGroups', () => {
   test ( 'should convert GroupAndMembers to MemberAndGroups correctly', () => {
     const gms: GroupAndMembers = [
       {
-        groupId: '0a3324-234345-12312312',
         groupName: 'JIRA_ME8_DEVELOPERS',
         members: [ 'John Doe', 'Jane Doe' ]
       },
       {
-        groupId: '1b4325-345456-23423423',
         groupName: 'JIRA_ME8_TESTERS',
         members: [ 'Alice', 'John Doe' ]
       }
@@ -196,7 +193,6 @@ describe ( 'convertGroupAndMembersToMemberAndGroups', () => {
   test ( 'should handle groups with no members', () => {
     const gms: GroupAndMembers = [
       {
-        groupId: '0a3324-234345-12312312',
         groupName: 'JIRA_ME8_DEVELOPERS',
         members: []
       }
@@ -210,12 +206,10 @@ describe ( 'convertGroupAndMembersToMemberAndGroups', () => {
   test ( 'should handle members with multiple group memberships', () => {
     const gms: GroupAndMembers = [
       {
-        groupId: '0a3324-234345-12312312',
         groupName: 'JIRA_ME8_DEVELOPERS',
         members: [ 'John Doe' ]
       },
       {
-        groupId: '1b4325-345456-23423423',
         groupName: 'JIRA_ME8_TESTERS',
         members: [ 'John Doe' ]
       }
@@ -238,8 +232,8 @@ describe ( 'convertMemberAndGroupsToAclStructure', () => {
       'Alice': [ 'JIRA_ME8_TESTERS' ]
     };
 
-    const result = convertMemberAndGroupsToAclStructure ('someIndex', mag );
-    expect ( result ).toEqual ([
+    const result = convertMemberAndGroupsToAclStructure ( 'someIndex', new RegExp ( details.extractGroup ), mag );
+    expect ( result ).toEqual ( [
       {
         "_id": "John Doe",
         "body": {
@@ -274,7 +268,7 @@ describe ( 'convertMemberAndGroupsToAclStructure', () => {
   test ( 'should handle an empty MemberAndGroups object', () => {
     const mag: MemberAndGroups = {};
     const expectedOutput: AclStructure[] = [];
-    const result = convertMemberAndGroupsToAclStructure ('someIndex', mag );
+    const result = convertMemberAndGroupsToAclStructure ( 'someIndex', new RegExp ( details.extractGroup ), mag );
     expect ( result ).toEqual ( expectedOutput );
   } );
 } );

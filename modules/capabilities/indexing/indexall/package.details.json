@@ -21,7 +21,7 @@
     "@itsmworkbench/indexing_gitlab",
     "@itsmworkbench/indexing_github",
     "@itsmworkbench/indexing_jira",
-    "@itsmworkbench/indexing_jira_acl"
+    "@itsmworkbench/indexing_csv_acl"
   ],
   "guards":      {
     "compile": true,
