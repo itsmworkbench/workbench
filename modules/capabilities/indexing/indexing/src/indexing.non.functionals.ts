@@ -6,6 +6,7 @@ export type IndexTreeNonFunctionals = {
   queryConcurrencyLimit: number;
   queryThrottle: Throttling;
   queryRetryPolicy: RetryPolicyConfig;
+
   indexQueue: Task<any>[];
   indexThrottle: Throttling;
   prepareLeafRetryPolicy: RetryPolicyConfig;

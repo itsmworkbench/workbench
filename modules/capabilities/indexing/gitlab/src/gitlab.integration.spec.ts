@@ -57,6 +57,7 @@ const gitlabAclDetails: GitlabAclDetails = {
       token: 'GITLAB_TOKEN'
     }
   },
+
 }
 
 const project: GitlabProject = {

@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="indexer members" type="NodeJSConfigurationType" application-parameters=" members &quot;displayName eq 'JIRA_ME8_DEVELOPER'&quot; " node-parameters="-r ts-node/register " path-to-js-file="index.ts" working-dir="$PROJECT_DIR$/modules/capabilities/indexing/indexer">
+    <method v="2" />
+  </configuration>
+</component>

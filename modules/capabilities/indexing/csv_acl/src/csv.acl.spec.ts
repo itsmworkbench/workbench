@@ -232,7 +232,7 @@ describe ( 'convertMemberAndGroupsToAclStructure', () => {
       'Alice': [ 'JIRA_ME8_TESTERS' ]
     };
 
-    const result = convertMemberAndGroupsToAclStructure ( 'someIndex', new RegExp ( details.extractGroup ), mag );
+    const result = convertMemberAndGroupsToAclStructure ( 'someIndex','key.keyword', new RegExp ( details.extractGroup ), mag );
     expect ( result ).toEqual ( [
       {
         "_id": "John Doe",
@@ -268,7 +268,7 @@ describe ( 'convertMemberAndGroupsToAclStructure', () => {
   test ( 'should handle an empty MemberAndGroups object', () => {
     const mag: MemberAndGroups = {};
     const expectedOutput: AclStructure[] = [];
-    const result = convertMemberAndGroupsToAclStructure ( 'someIndex', new RegExp ( details.extractGroup ), mag );
+    const result = convertMemberAndGroupsToAclStructure ( 'someIndex', 'key.keyword',new RegExp ( details.extractGroup ), mag );
     expect ( result ).toEqual ( expectedOutput );
   } );
 } );

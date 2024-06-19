@@ -24,51 +24,68 @@ defaults:
     aclIndex: .search-acl-filter-{index}
 
 index:
+  #  jiraAcl:
+  #    type: csvAcl
+  #    scan:
+  #      groupMembersFile: group.members.csv
+  #      index: .search-acl-filter-jira-prod
+  #      headers: 1
+  #      groupColumn: 1
+  #      memberColumn: 2
+  #      extractGroup: "^JIRA_(.*?)_"
   jiraAcl:
-    type: csvAcl
+    type: jiraAcl
     scan:
-      groupMembersFile: group.members.csv
       index: .search-acl-filter-jira-prod
-      headers: 1
-      groupColumn: 1
-      memberColumn: 2
-      extractGroup: "^JIRA_(.*?)_"
-
-  jira:
-    type: jira
-    scan:
+      baseurl: https://jira.eon.com/
+      projects:
+        - 42030
       auth:
         method: ApiKey
         credentials:
           apiKey: JIRA_PROD
-      index: jira-prod
-      projects: "*"
-      indexPeople: false
-      baseurl: https://jira.eon.com/
-      apiVersion: "2"
-
-  gitlab:
-    target:
-      file: "{rootDir}/index/{index}/Project_{id_3}_{num}.json"
-    scan:
-      baseurl: https://git.eon-cds.de/
-      index: gitlab-prod
-      auth:
-        method: PrivateToken
+      entraId:
+        method: EntraId
         credentials:
-          token: GITLAB_TOKEN
-      projects:
-        - 33519
-  gitlabAcl:
-    type: gitlabAcl
-    scan:
-      baseurl: https://git.eon-cds.de/
-      idPattern: "{id}@eon.com"
-      index: .search-acl-filter-gitlab-prod
-      auth:
-        method: PrivateToken
-        credentials:
-          token: GITLAB_TOKEN
+          tenantId: 03e6c03e-074e-474c-8d40-3eac96d82a77
+          clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8
+          clientSecret: ENTRA_CLIENT_SECRET
+          scope: "https://graph.microsoft.com/.default"
+#  #  jira:
+  #    type: jira
+  #    scan:
+  #      auth:
+  #        method: ApiKey
+  #        credentials:
+  #          apiKey: JIRA_PROD
+  #      index: jira-prod
+  #      projects: "*"
+  #      indexPeople: false
+  #      baseurl: https://jira.eon.com/
+  #      apiVersion: "2"
+  #
+  #  gitlab:
+  #    target:
+  #      file: "{rootDir}/index/{index}/Project_{id_3}_{num}.json"
+  #    scan:
+  #      baseurl: https://git.eon-cds.de/
+  #      index: gitlab-prod
+  #      auth:
+  #        method: PrivateToken
+  #        credentials:
+  #          token: GITLAB_TOKEN
+  #      projects:
+  #        - 33519
+#  gitlabAcl:
+#    type: gitlabAcl
+#    scan:
+#      baseurl: https://git.eon-cds.de/
+#      idPattern: "{id}@eon.com"
+#      index: .search-acl-filter-gitlab-prod
+#      auth:
+#        method: PrivateToken
+#        credentials:
+#          token: GITLAB_TOKEN
 #  jiraPlay:
 #    type: jira # actually Jiraplay
 #    scan:
@@ -79,6 +96,8 @@ index:
 #          clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8            # From Application Id in entra ID
 #          clientSecret: ENTRA_CLIENT_SECRET
 #          scope:  "https://graph.microsoft.com/.default"
+
+
 #  questionator:
 #    sourceFile: # a csv or yaml file of the url of  original documents
 #    credentials:

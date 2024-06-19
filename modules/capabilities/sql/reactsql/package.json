@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/reactsql",
   "description": "How to display sql in react",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,8 +15,8 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/reactevents": "0.2.0",
-    "@itsmworkbench/components": "0.2.0",
+    "@itsmworkbench/reactevents": "0.2.2",
+    "@itsmworkbench/components": "0.2.2",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

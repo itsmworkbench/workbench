@@ -11,4 +11,5 @@ export function pathToLens<S> (): PathToLensFn<S> {
     }
     return lens
   }
+
 }

@@ -12,6 +12,7 @@ import { elasticSearchCommands } from "./src/elastic.search.commands";
 import { addJiraUsersCommand, jiraCommands } from "./src/jira.commands";
 import { authCommands } from "./src/auth.commands";
 import { questionatorCommands } from "./src/questions.commands";
+import { entraIdCommands } from "./src/entra.id.commands";
 
 export function findVersion () {
   let packageJsonFileName = "../package.json";
@@ -35,8 +36,13 @@ const makeContext = (): IndexerContext => ({
     res.headers.forEach ( ( value, name ) => {
       headers[ name ] = value
     } )
+    if ( res.status === 401 ) {
+      console.log ( url, ' 401' )
+      console.log ( await res.text () )
+
+    }
     if ( res.status === 403 ) {
-      console.log ( '403' )
+      console.log ( url, '403' )
       console.log ( await res.text () )
     }
     const result: FetchFnResponse = {
@@ -62,6 +68,7 @@ makeCli<Commander12, IndexerContext, NoConfig, NoConfig> ( makeContext (), confi
   jiraCommands ( commander, cliTc )
   authCommands ( commander, cliTc )
   questionatorCommands ( commander, cliTc )
+  entraIdCommands ( commander, cliTc )
 
   return await cliTc.execute ( commander.commander, process.argv )
 } ).catch ( e => {

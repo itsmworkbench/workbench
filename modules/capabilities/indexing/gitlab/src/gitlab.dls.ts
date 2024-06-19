@@ -3,7 +3,7 @@ import { gitlabAccessOptions, GitlabPaging, GitlabPagingTc, GitlabProject } from
 import { NameAnd } from "@laoban/utils";
 import { withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { simpleTemplate } from "@itsmworkbench/utils";
-import { removeSearchAclPrefix } from "@itsmworkbench/indexconfig";
+import { EntraIdAuthentication, removeSearchAclPrefix } from "@itsmworkbench/indexconfig";
 
 export type GitLabUser = {
   id: string
@@ -65,7 +65,7 @@ export async function projectToName ( fetchArray: FetchArrayWithPagingType, fetc
     result[ projectId ] = []
     async function addGroupMembers ( groupId: number ) {
       if ( groupId  && result[ groupId ] === undefined) {
-        for await ( const members of fetchArray<GitLabUser> ( `${details.baseurl}api/v4/groups/${groupId}/members/all&per_page=100`, { headers } ) ) {
+        for await ( const members of fetchArray<GitLabUser> ( `${details.baseurl}api/v4/groups/${groupId}/members/all?per_page=100`, { headers } ) ) {
           result[ projectId ].push ( members.username )
         }
         const group = await fetchOne<GitLabGroup> ( `${details.baseurl}api/v4/groups/${groupId}`, { headers } )
@@ -74,7 +74,7 @@ export async function projectToName ( fetchArray: FetchArrayWithPagingType, fetc
           await addGroupMembers ( parentId )
       }
     }
-    for await ( const members of fetchArray<GitLabUser> ( `${details.baseurl}api/v4/projects/${project.id}/members/all&per_page=100`, { headers } ) )
+    for await ( const members of fetchArray<GitLabUser> ( `${details.baseurl}api/v4/projects/${project.id}/members/all?per_page=100`, { headers } ) )
       result[ projectId ].push ( members.username )
     if ( project.namespace.kind === 'group' ) await addGroupMembers ( project.namespace.parent_id )
   }

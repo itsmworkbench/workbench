@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="index push" type="NodeJSConfigurationType" application-parameters="push" node-parameters="-r ts-node/register " path-to-js-file="index.ts" working-dir="$PROJECT_DIR$/modules/capabilities/indexing/indexer">
+    <method v="2" />
+  </configuration>
+</component>

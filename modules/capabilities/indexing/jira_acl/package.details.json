@@ -1,0 +1,27 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/indexing_jira_acl",
+  "description": "indexing an acl from jira and also entra id",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":     "1.4.51",
+      "@laoban/variables": "1.4.51"
+    },
+    "devDependencies": {},
+    "browser":         {
+      "child_process": false
+    }
+  },
+  "links":       [
+    "@itsmworkbench/utils",
+    "@itsmworkbench/indexing",
+    "@itsmworkbench/indexconfig",
+    "@itsmworkbench/indexing_jira",
+    "@itsmworkbench/indexing_entraid"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    true
+  }
+}

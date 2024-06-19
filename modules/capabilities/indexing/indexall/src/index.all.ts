@@ -7,16 +7,18 @@ import { indexGitlabAcl, indexGitlabFully } from "@itsmworkbench/indexing_gitlab
 import { indexConfluenceSpaces } from "@itsmworkbench/indexing_confluence";
 import { indexConfluenceAcl } from "@itsmworkbench/indexing_confluence_acl";
 import { indexCsvAcl } from "@itsmworkbench/indexing_csv_acl";
+import { indexJiraAcl } from "@itsmworkbench/indexing_jira_acl";
 
 export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
   return {
+    csvAcl: indexCsvAcl ( indexer ( nfc ) ),
     github: indexGitHubFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
     gitlab: indexGitlabFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
     gitlabAcl: indexGitlabAcl ( nfc, ic, indexer ( nfc ), executeOptions ),
     confluence: indexConfluenceSpaces ( ic, nfc, indexer ( nfc ), executeOptions ),
     confluenceAcl: indexConfluenceAcl ( ic, nfc, indexer ( nfc ) ), //not working yet
     jira: indexJiraFully ( nfc, ic, indexer ( nfc ), executeOptions ),
-    csvAcl: indexCsvAcl ( indexer ( nfc ) ),
+    jiraAcl: indexJiraAcl ( nfc, ic, indexer ( nfc ), executeOptions ),
   };
 }
 //export type IndexTreeNonFunctionals = {

@@ -12,6 +12,7 @@ export type GroupAndMember = {
 
 export interface CsvAclDetails extends SourceSinkDetails {
   groupMembersFile: string
+  keyword?: string
   file: string
   index: string
   headers?: number
@@ -57,7 +58,7 @@ const extractKey = ( regex: RegExp ) => ( input: string ): string[] => {
   const match = input.match ( regex );
   return match ? [ match[ 1 ] ] : [];
 };
-export function convertMemberAndGroupsToAclStructure ( index: string, extractGroup: RegExp, mag: MemberAndGroups ): AclStructure[] {
+export function convertMemberAndGroupsToAclStructure ( index: string, keyword: string, extractGroup: RegExp, mag: MemberAndGroups ): AclStructure[] {
   return Object.keys ( mag ).map ( member => {
     const result = {
       _id: member,
@@ -68,7 +69,7 @@ export function convertMemberAndGroupsToAclStructure ( index: string, extractGro
             "bool": {
               "filter": [
                 { "term": { "_index": index } },
-                { "terms": { "key.keyword": flatMap ( mag[ member ], extractKey ( extractGroup ) ) } }
+                { "terms": { [ keyword ]: flatMap ( mag[ member ], extractKey ( extractGroup ) ) } }
               ]
             }
           } )
@@ -81,11 +82,12 @@ export function convertMemberAndGroupsToAclStructure ( index: string, extractGro
 export const indexCsvAcl = ( indexerFn: ( fileTemplate: string, indexId: string ) => Indexer<any> ) => async ( details: CsvAclDetails ) => {
   const indexer: Indexer<any> = indexerFn ( details.file, details.index )
   await indexer.start ( details.index )
+  const keyword = details.keyword ?? "key.keyword"
   try {
     const groupAndMembers = await loadGroupAndMembers ( details )
     const membersAndGroups = convertGroupAndMembersToMemberAndGroups ( groupAndMembers )
     const extractGroup = new RegExp ( details.extractGroup || '(.*)' )
-    const aclStructures = convertMemberAndGroupsToAclStructure ( removeSearchAclPrefix ( details.index ), extractGroup, membersAndGroups )
+    const aclStructures = convertMemberAndGroupsToAclStructure ( removeSearchAclPrefix ( details.index ), keyword, extractGroup, membersAndGroups )
     console.log ( JSON.stringify ( aclStructures, null, 2 ) )
     for ( const a of aclStructures )
       await indexer.processLeaf ( details.index, a._id.toLowerCase () ) ( a.body )
