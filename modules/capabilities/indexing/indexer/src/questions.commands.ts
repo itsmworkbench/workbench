@@ -15,11 +15,11 @@ type QandA = {
 export function addQuestionCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
   return {
     cmd: 'questionator',
-    description: 'finds the jira users in the project',
+    description: 'Produces the JSON file for the questionator index',
     options: {
       '-i, --index <index>': { description: 'the name of the index', default: 'questionator' },
       '-j, --json <json>': { description: 'json directory created by apache tika', default: 'json_directory' },
-      '-o, --output <output>': { description: 'output directory', default: 'target/indexer/index/questions/questions.json' },
+      '-o, --output <output>': { description: 'output file', default: 'target/indexer/index/questions/questions.json' },
       '-q, --questions <questions>': { description: 'question directory created by Kamil', default: 'question_directory' },
       '--debug': { description: 'Show debug information' },
     },

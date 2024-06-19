@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/events",
   "description": "The events that will go in our event store",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,9 +23,9 @@
     "node": "^v14.4.0",
     "@laoban/utils": "1.4.51",
     "@focuson/lens": "1.44.3",
-    "@itsmworkbench/utils": "0.2.2",
-    "@itsmworkbench/optics": "0.2.2",
-    "@itsmworkbench/urlstore": "0.2.2",
+    "@itsmworkbench/utils": "0.2.4",
+    "@itsmworkbench/optics": "0.2.4",
+    "@itsmworkbench/urlstore": "0.2.4",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -33,24 +33,24 @@ index:
   #      groupColumn: 1
   #      memberColumn: 2
   #      extractGroup: "^JIRA_(.*?)_"
-  jiraAcl:
-    type: jiraAcl
-    scan:
-      index: .search-acl-filter-jira-prod
-      baseurl: https://jira.eon.com/
-      projects:
-        - 42030
-      auth:
-        method: ApiKey
-        credentials:
-          apiKey: JIRA_PROD
-      entraId:
-        method: EntraId
-        credentials:
-          tenantId: 03e6c03e-074e-474c-8d40-3eac96d82a77
-          clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8
-          clientSecret: ENTRA_CLIENT_SECRET
-          scope: "https://graph.microsoft.com/.default"
+#  jiraAcl:
+#    type: jiraAcl
+#    scan:
+#      index: .search-acl-filter-jira-prod
+#      baseurl: https://jira.eon.com/
+#      projects:
+#        - 42030
+#      auth:
+#        method: ApiKey
+#        credentials:
+#          apiKey: JIRA_PROD
+#      entraId:
+#        method: EntraId
+#        credentials:
+#          tenantId: 03e6c03e-074e-474c-8d40-3eac96d82a77
+#          clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8
+#          clientSecret: ENTRA_CLIENT_SECRET
+#          scope: "https://graph.microsoft.com/.default"
 #  #  jira:
   #    type: jira
   #    scan:
@@ -76,6 +76,22 @@ index:
   #          token: GITLAB_TOKEN
   #      projects:
   #        - 33519
+  q_and_a:
+    type: q_and_a
+    scan:
+      index: "q_and_a"
+      fileName: "test.xlsx"
+      id_column: Intent Code
+      questionsColumn: "Question"
+      answersColumn: "Answer"
+      enabledColumn: "Enabled"
+      headers: 1
+  questionator:
+    type: questionator
+    scan:
+      index: "questionator"
+      jsonDirectory: "json_directory"
+      questionDirectory: 'question_directory'
 #  gitlabAcl:
 #    type: gitlabAcl
 #    scan:
@@ -109,6 +125,26 @@ index:
 #    credentials:
 
 
+  # gitlabAcl:
+  #   type: gitlabAcl
+  #   scan:
+  #     baseurl: https://git.eon-cds.de/
+  #     idPattern: "{id}@eon.com"
+  #     index: .search-acl-filter-gitlab-prod
+  #     auth:
+  #       method: PrivateToken
+  #       credentials:
+  #         token: GITLAB_TOKEN
+  # jiraPlay:
+  #   type: jira # actually Jiraplay
+  #   scan:
+  #     auth:
+  #       method: EntraId
+  #       credentials:
+  #         tenantId: 03e6c03e-074e-474c-8d40-3eac96d82a77            # From entraid/overview
+  #         clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8            # From Application Id in entra ID
+  #         clientSecret: ENTRA_CLIENT_SECRET
+  #         scope:  "https://graph.microsoft.com/.default"
 #  confluence:
 #    query:
 #      throttle:

@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/kleislis",
   "description": "functions that have inputs, returns promises, and non functionals around them",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {

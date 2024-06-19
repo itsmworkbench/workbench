@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/defaultdomains",
   "description": "Code that extras variables from the domain objects",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,14 +23,14 @@
     "node": "^v14.4.0",
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/domain": "0.2.2",
-    "@itsmworkbench/git": "0.2.2",
-    "@itsmworkbench/operator": "0.2.2",
-    "@itsmworkbench/tickets": "0.2.2",
-    "@itsmworkbench/tickettype": "0.2.2",
-    "@itsmworkbench/ticketevents": "0.2.2",
-    "@itsmworkbench/utils": "0.2.2",
-    "@itsmworkbench/yaml": "0.2.2",
+    "@itsmworkbench/domain": "0.2.4",
+    "@itsmworkbench/git": "0.2.4",
+    "@itsmworkbench/operator": "0.2.4",
+    "@itsmworkbench/tickets": "0.2.4",
+    "@itsmworkbench/tickettype": "0.2.4",
+    "@itsmworkbench/ticketevents": "0.2.4",
+    "@itsmworkbench/utils": "0.2.4",
+    "@itsmworkbench/yaml": "0.2.4",
     "debug": "^4.3.4"
   },
   "devDependencies": {

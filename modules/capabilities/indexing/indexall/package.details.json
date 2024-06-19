@@ -13,9 +13,6 @@
     }
   },
   "links":       [
-    "@itsmworkbench/utils",
-    "@itsmworkbench/kleislis",
-    "@itsmworkbench/nodetemporal",
     "@itsmworkbench/indexing_confluence",
     "@itsmworkbench/indexing_confluence_acl",
     "@itsmworkbench/indexing_csv_acl",
@@ -23,7 +20,11 @@
     "@itsmworkbench/indexing_gitlab",
     "@itsmworkbench/indexing_github",
     "@itsmworkbench/indexing_jira",
-    "@itsmworkbench/indexing_jira_acl"
+    "@itsmworkbench/indexing_jira_acl",
+    "@itsmworkbench/kleislis",
+    "@itsmworkbench/nodetemporal",
+    "@itsmworkbench/indexing_q_and_a",
+    "@itsmworkbench/utils"
   ],
   "guards":      {
     "compile": true,

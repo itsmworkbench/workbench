@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/nodeshell",
   "description": "executing commands in a shell using node",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,9 +22,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/shell": "0.2.2",
-    "@itsmworkbench/utils": "0.2.2",
-    "@itsmworkbench/urlstore": "0.2.2",
+    "@itsmworkbench/shell": "0.2.4",
+    "@itsmworkbench/utils": "0.2.4",
+    "@itsmworkbench/urlstore": "0.2.4",
     "debug": "^4.3.4"
   },
   "devDependencies": {

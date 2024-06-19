@@ -8,6 +8,7 @@ import { indexConfluenceSpaces } from "@itsmworkbench/indexing_confluence";
 import { indexConfluenceAcl } from "@itsmworkbench/indexing_confluence_acl";
 import { indexCsvAcl } from "@itsmworkbench/indexing_csv_acl";
 import { indexJiraAcl } from "@itsmworkbench/indexing_jira_acl";
+import { indexQandA } from "@itsmworkbench/indexing_q_and_a";
 
 export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
   return {
@@ -19,7 +20,8 @@ export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext,
     confluenceAcl: indexConfluenceAcl ( ic, nfc, indexer ( nfc ) ), //not working yet
     jira: indexJiraFully ( nfc, ic, indexer ( nfc ), executeOptions ),
     jiraAcl: indexJiraAcl ( nfc, ic, indexer ( nfc ), executeOptions ),
-  };
+    q_and_a: indexQandA ( indexer ( nfc ) )
+  }
 }
 //export type IndexTreeNonFunctionals = {
 //   queryConcurrencyLimit: number;

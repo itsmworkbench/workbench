@@ -10,6 +10,10 @@ questionator-pipeline:
   index: questionator
   fields:
     - question
+q_and_a-pipeline:
+  index: q_and_a
+  fields:
+    - question
 confluence-prod-pipeline:
   index: confluence-prod
   fields:
