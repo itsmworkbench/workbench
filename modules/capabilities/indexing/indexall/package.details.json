@@ -24,6 +24,7 @@
     "@itsmworkbench/kleislis",
     "@itsmworkbench/nodetemporal",
     "@itsmworkbench/indexing_q_and_a",
+    "@itsmworkbench/indexing_questionator",
     "@itsmworkbench/utils"
   ],
   "guards":      {

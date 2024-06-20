@@ -12,6 +12,7 @@ type QandA = {
   question: string
   answer: string
 }
+
 export function addQuestionCommand<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig> ): CommandDetails<Commander> {
   return {
     cmd: 'questionator',
@@ -53,6 +54,7 @@ export function addQuestionCommand<Commander, Config, CleanConfig> ( tc: Context
   }
 }
 
+//removing. Just leaving for a few days in case want
 export function questionatorCommands<Commander, Config, CleanConfig> ( tc: ContextConfigAndCommander<Commander, IndexerContext, Config, CleanConfig>,
                                                                        cliTc: CliTc<Commander, IndexerContext, Config, CleanConfig> ) {
   cliTc.addCommands ( tc, [

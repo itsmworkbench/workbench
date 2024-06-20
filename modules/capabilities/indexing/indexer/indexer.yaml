@@ -76,16 +76,16 @@ index:
   #          token: GITLAB_TOKEN
   #      projects:
   #        - 33519
-  q_and_a:
-    type: q_and_a
-    scan:
-      index: "q_and_a"
-      fileName: "test.xlsx"
-      id_column: Intent Code
-      questionsColumn: "Question"
-      answersColumn: "Answer"
-      enabledColumn: "Enabled"
-      headers: 1
+#  q_and_a:
+#    type: q_and_a
+#    scan:
+#      index: "q_and_a"
+#      fileName: "test.xlsx"
+#      id_column: Intent Code
+#      questionsColumn: "Question"
+#      answersColumn: "Answer"
+#      enabledColumn: "Enabled"
+#      headers: 1
   questionator:
     type: questionator
     scan:

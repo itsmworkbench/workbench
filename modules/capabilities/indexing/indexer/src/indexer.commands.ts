@@ -22,8 +22,9 @@ export async function getIndexerFile<Commander, Config, CleanConfig> ( tc: Conte
 }
 function findExecuteOptions ( opts: NameAnd<string | boolean | string[]> ): ExecuteIndexOptions {
   let since = opts.since?.toString ();
-  let index = opts.index ? new RegExp ( opts.index.toString () ) : undefined
-  const base = { since, index }
+  const indicies = opts.index as string[] | undefined
+
+  const base = { since, indicies }
   validateSince ( since )
   if ( opts.detailedDryRun ) return { ...base, dryRunDoEverythingButIndex: true }
   if ( opts.dryrun ) return { ...base, dryRunJustShowTrees: true }
@@ -44,7 +45,7 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
     options: {
       '-f, --file <file>': { description: 'The config file', default: 'indexer.yaml' },
       '-t,--target <target>': { description: 'where we put the indexed data', default: 'target/indexer' },
-      '-i, --index <index>': { description: 'A reg ex for which indicies will be indexed' },
+      '-i, --index <index...>': { description: 'which indicies will be indexed' },
       '--debug': { description: 'Show debug information' },
       '--api': { description: 'Start the api' },
       '--since <time>': { description: 'Index only issues updated since the specified time (e.g., 1d for last day, 2h for last 2 hours, 30m for last 30 minutes)', default: '3600d' },
@@ -55,7 +56,7 @@ export function addIndexCommand<Commander, Config, CleanConfig> ( tc: ContextCon
     },
     action: async ( _, opts ) => {
       console.log ( `Indexing `, opts )
-      const { file, debug, target, api, keep, port } = opts
+      const { file, debug, target, api, keep, port, index } = opts
       const config = await getIndexerFile ( tc, file.toString () );
 
       const metrics: NameAnd<number> = {}

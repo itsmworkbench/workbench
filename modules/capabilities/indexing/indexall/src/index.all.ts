@@ -9,6 +9,7 @@ import { indexConfluenceAcl } from "@itsmworkbench/indexing_confluence_acl";
 import { indexCsvAcl } from "@itsmworkbench/indexing_csv_acl";
 import { indexJiraAcl } from "@itsmworkbench/indexing_jira_acl";
 import { indexQandA } from "@itsmworkbench/indexing_q_and_a";
+import { indexQuestionator } from "@itsmworkbench/indexing_questionator";
 
 export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
   return {
@@ -20,7 +21,8 @@ export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext,
     confluenceAcl: indexConfluenceAcl ( ic, nfc, indexer ( nfc ) ), //not working yet
     jira: indexJiraFully ( nfc, ic, indexer ( nfc ), executeOptions ),
     jiraAcl: indexJiraAcl ( nfc, ic, indexer ( nfc ), executeOptions ),
-    q_and_a: indexQandA ( indexer ( nfc ) )
+    q_and_a: indexQandA ( indexer ( nfc ) ),
+    questionator: indexQuestionator ( indexer ( nfc ) )
   }
 }
 //export type IndexTreeNonFunctionals = {
@@ -38,12 +40,7 @@ export type ResultAndNfc = {
 
 }
 export const indexOneSource = ( context: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) => ( item: PopulatedIndexItem, ): ResultAndNfc => {
-  const { index, query, target, auth, scan, type } = item
-  if ( executeOptions.index && !index.match ( executeOptions.index ) ) {
-    if ( executeOptions.dryRunDoEverythingButIndex || executeOptions.dryRunJustShowTrees )
-      console.log ( `Skipping ${index} because it does not match ${executeOptions.index}` )
-    return
-  }
+  const { type } = item
   const nfc: IndexTreeNonFunctionals = {
     queryQueue: [],
     queryConcurrencyLimit: item.query.concurrencyLimit || 1000,
@@ -63,6 +60,11 @@ export const indexOneSource = ( context: IndexingContext, indexer: ( nfc: IndexT
 };
 
 export const indexAll = ( context: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, indexId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ) =>
-  ( items: NameAnd<PopulatedIndexItem> ): ResultAndNfc[] =>
-    Object.values ( items ).map ( item =>
-      indexOneSource ( context, indexer, executeOptions ) ( item ) )
+  ( items: NameAnd<PopulatedIndexItem> ): ResultAndNfc[] => {
+    const indicies = executeOptions.indicies || Object.keys ( items )
+    console.log ( 'Processesing indicies', indicies )
+    for ( const index of indicies )
+      if ( !items[ index ] ) throw new Error ( `Index ${index} not found in items` )
+    return indicies.map ( index =>
+      indexOneSource ( context, indexer, executeOptions ) ( items[ index ] ) );
+  }

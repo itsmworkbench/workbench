@@ -24,7 +24,6 @@
     "@itsmworkbench/cli",
     "@itsmworkbench/jsyaml",
     "@itsmworkbench/koa"
-
   ],
   "guards":      {
     "compile": true,

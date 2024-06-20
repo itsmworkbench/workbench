@@ -1,0 +1,96 @@
+{
+  "name": "@itsmworkbench/intent_react",
+  "description": "A react workbench for looking at intents and agents",
+  "version": "0.3.0",
+  "browserslist": {
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ]
+  },
+  "dependencies": {
+    "@itsmworkbench/browserai": "0.3.0",
+    "@itsmworkbench/browsermailer": "0.3.0",
+    "@itsmworkbench/components": "0.3.0",
+    "@itsmworkbench/dependentdata": "0.3.0",
+    "@itsmworkbench/domain": "0.3.0",
+    "@itsmworkbench/events": "0.3.0",
+    "@itsmworkbench/eventstore": "0.3.0",
+    "@itsmworkbench/jsyaml": "0.3.0",
+    "@itsmworkbench/react_core": "0.3.0",
+    "@itsmworkbench/react_conversation": "0.3.0",
+    "@itsmworkbench/react_devmode": "0.3.0",
+    "@itsmworkbench/react_displayinfo": "0.3.0",
+    "@itsmworkbench/reactevents": "0.3.0",
+    "@itsmworkbench/react_capabilities": "0.3.0",
+    "@itsmworkbench/reactmailer": "0.3.0",
+    "@itsmworkbench/reactfetchemail": "0.3.0",
+    "@itsmworkbench/reactsql": "0.3.0",
+    "@itsmworkbench/reactticket": "0.3.0",
+    "@itsmworkbench/react_variables": "0.3.0",
+    "@itsmworkbench/browsersql": "0.3.0",
+    "@itsmworkbench/variables": "0.3.0",
+    "debug": "^4.3.4",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@focuson/lens": "1.44.3",
+    "@focuson/state": "1.44.3",
+    "@laoban/utils": "1.4.45",
+    "@mui/material": "^5.15.10",
+    "@mui/icons-material": "^5.15.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "@types/react": "^18.2.56",
+    "@types/react-dom": "^18.2.19",
+    "parcel": "^2.11.0",
+    "typescript": "^5.3.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
+  },
+  "files": [
+    "build/",
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/src/",
+    "build/"
+  ],
+  "keywords": [
+    "react",
+    "runbook"
+  ],
+  "license": "MIT",
+  "peerDependencies": {},
+  "repository": "git@github.com:intellimaintain/intellimaintain.git",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "test": "jest --config jest.config.json",
+    "test:watch": "npm run test -- --watch",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  }
+}

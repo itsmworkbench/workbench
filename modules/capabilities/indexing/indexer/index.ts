@@ -67,7 +67,7 @@ makeCli<Commander12, IndexerContext, NoConfig, NoConfig> ( makeContext (), confi
   indexerCommands ( commander, cliTc )
   jiraCommands ( commander, cliTc )
   authCommands ( commander, cliTc )
-  questionatorCommands ( commander, cliTc )
+  // questionatorCommands ( commander, cliTc )
   entraIdCommands ( commander, cliTc )
 
   return await cliTc.execute ( commander.commander, process.argv )

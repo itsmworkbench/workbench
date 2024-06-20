@@ -1,0 +1,25 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/indexing_questionator",
+  "description": "indexing an acl from a csv file",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":     "1.4.51",
+      "@laoban/variables": "1.4.51"
+    },
+    "devDependencies": {},
+    "browser":         {
+      "child_process": false
+    }
+  },
+  "links":       [
+    "@itsmworkbench/utils",
+    "@itsmworkbench/indexing",
+    "@itsmworkbench/indexconfig"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    true
+  }
+}
