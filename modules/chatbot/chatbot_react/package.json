@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/chatbot_react",
   "description": "A simple chatbot",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",

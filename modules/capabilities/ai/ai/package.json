@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/ai",
   "description": "Code that extras variables from the ticket using AI",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -19,7 +19,7 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.3.0",
+    "@itsmworkbench/utils": "0.3.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {

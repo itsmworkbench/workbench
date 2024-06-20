@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/git",
   "description": "git operations. This is just the interface. We have implementations elsewhere",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.51",
-    "@itsmworkbench/domain": "0.3.0",
-    "@itsmworkbench/shell": "0.3.0",
+    "@itsmworkbench/domain": "0.3.1",
+    "@itsmworkbench/shell": "0.3.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {

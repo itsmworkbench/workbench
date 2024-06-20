@@ -10,17 +10,19 @@ import { indexCsvAcl } from "@itsmworkbench/indexing_csv_acl";
 import { indexJiraAcl } from "@itsmworkbench/indexing_jira_acl";
 import { indexQandA } from "@itsmworkbench/indexing_q_and_a";
 import { indexQuestionator } from "@itsmworkbench/indexing_questionator";
+import { indexMysql } from "@itsmworkbench/indexing_mysql";
 
 export function allIndexers ( nfc: IndexTreeNonFunctionals, ic: IndexingContext, indexer: ( nfc: IndexTreeNonFunctionals ) => ( fileTemplate: string, forestId: string ) => Indexer<any>, executeOptions: ExecuteIndexOptions ): NameAnd<any> {
   return {
+    confluence: indexConfluenceSpaces ( ic, nfc, indexer ( nfc ), executeOptions ),
+    confluenceAcl: indexConfluenceAcl ( ic, nfc, indexer ( nfc ) ), //not working yet
     csvAcl: indexCsvAcl ( indexer ( nfc ) ),
     github: indexGitHubFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
     gitlab: indexGitlabFully ( nfc, ic, indexer ( nfc ), indexer ( nfc ), executeOptions ),
     gitlabAcl: indexGitlabAcl ( nfc, ic, indexer ( nfc ), executeOptions ),
-    confluence: indexConfluenceSpaces ( ic, nfc, indexer ( nfc ), executeOptions ),
-    confluenceAcl: indexConfluenceAcl ( ic, nfc, indexer ( nfc ) ), //not working yet
     jira: indexJiraFully ( nfc, ic, indexer ( nfc ), executeOptions ),
     jiraAcl: indexJiraAcl ( nfc, ic, indexer ( nfc ), executeOptions ),
+    mysql: indexMysql ( ic, indexer ( nfc ), executeOptions ),
     q_and_a: indexQandA ( indexer ( nfc ) ),
     questionator: indexQuestionator ( indexer ( nfc ) )
   }

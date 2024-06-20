@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/nodekleislis",
   "description": "higher order functions for kleislis that only work on node (use async-hooks)",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -20,8 +20,8 @@
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
     "node": "^v14.4.0",
-    "@itsmworkbench/kleislis": "0.3.0",
-    "@itsmworkbench/workflow": "0.3.0",
+    "@itsmworkbench/kleislis": "0.3.1",
+    "@itsmworkbench/workflow": "0.3.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@ export type Timeservice = () => number
 
 export const DateTimeService = () => Date.now ();
 
-export const calculateSinceDate = ( relativeTime: string, timeService: () => number ): Date => {
+export const calculateSinceDate = ( timeService: () => number ) => ( relativeTime: string ): Date => {
   const now = new Date ( timeService () );
   const value = parseInt ( relativeTime.slice ( 1, -1 ) );
   const unit = relativeTime.slice ( -1 );

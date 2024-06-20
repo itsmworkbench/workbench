@@ -23,6 +23,17 @@ defaults:
     aclIndex: .search-acl-filter-{index}
 
 index:
+  mysql:
+    type: mysql
+    scan:
+      sql: "SELECT * FROM person where last_updated>'{since}'"
+      id: id
+      connection:
+        host: localhost
+        database: test
+        user: root
+        password: MYSQL_PASSWORD
+
   q_and_a:
     type: q_and_a
     scan:

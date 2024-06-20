@@ -25,6 +25,7 @@
     "@itsmworkbench/nodetemporal",
     "@itsmworkbench/indexing_q_and_a",
     "@itsmworkbench/indexing_questionator",
+    "@itsmworkbench/indexing_mysql",
     "@itsmworkbench/utils"
   ],
   "guards":      {
