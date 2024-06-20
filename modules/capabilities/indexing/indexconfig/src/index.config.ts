@@ -31,7 +31,7 @@ export interface IndexDefaults {
 
 export interface IndexItem {
   type?: string
-  index?: string //defaults to the name of the IndexItem
+  index?: string //this is the name of the IndexItem
   query?: NonFunctionals
   target?: TargetDetails
   auth?: Authentication
@@ -65,7 +65,6 @@ export function cleanAndEnrichConfig ( config: RawIndexConfig, defaults: NameAnd
     result[ key ] = three
   }
   for ( const [ key, thisItem ] of Object.entries ( result ) ) {
-
     if ( thisItem.query?.throttle ) thisItem.query.throttle = { current: thisItem.query.throttle.max || 0, ...thisItem.query.throttle }
     if ( thisItem.query?.concurrencyLimit === undefined ) thisItem.query.concurrencyLimit = 1000
     if ( thisItem.target?.throttle ) thisItem.target.throttle = { current: thisItem.target.throttle.max || 0, ...thisItem.target.throttle }

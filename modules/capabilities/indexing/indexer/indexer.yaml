@@ -1,4 +1,3 @@
----
 defaults:
   query:
     retry:
@@ -24,148 +23,102 @@ defaults:
     aclIndex: .search-acl-filter-{index}
 
 index:
-  #  jiraAcl:
-  #    type: csvAcl
-  #    scan:
-  #      groupMembersFile: group.members.csv
-  #      index: .search-acl-filter-jira-prod
-  #      headers: 1
-  #      groupColumn: 1
-  #      memberColumn: 2
-  #      extractGroup: "^JIRA_(.*?)_"
-#  jiraAcl:
-#    type: jiraAcl
-#    scan:
-#      index: .search-acl-filter-jira-prod
-#      baseurl: https://jira.eon.com/
-#      projects:
-#        - 42030
-#      auth:
-#        method: ApiKey
-#        credentials:
-#          apiKey: JIRA_PROD
-#      entraId:
-#        method: EntraId
-#        credentials:
-#          tenantId: 03e6c03e-074e-474c-8d40-3eac96d82a77
-#          clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8
-#          clientSecret: ENTRA_CLIENT_SECRET
-#          scope: "https://graph.microsoft.com/.default"
-#  #  jira:
-  #    type: jira
-  #    scan:
-  #      auth:
-  #        method: ApiKey
-  #        credentials:
-  #          apiKey: JIRA_PROD
-  #      index: jira-prod
-  #      projects: "*"
-  #      indexPeople: false
-  #      baseurl: https://jira.eon.com/
-  #      apiVersion: "2"
-  #
-  #  gitlab:
-  #    target:
-  #      file: "{rootDir}/index/{index}/Project_{id_3}_{num}.json"
-  #    scan:
-  #      baseurl: https://git.eon-cds.de/
-  #      index: gitlab-prod
-  #      auth:
-  #        method: PrivateToken
-  #        credentials:
-  #          token: GITLAB_TOKEN
-  #      projects:
-  #        - 33519
-#  q_and_a:
-#    type: q_and_a
-#    scan:
-#      index: "q_and_a"
-#      fileName: "test.xlsx"
-#      id_column: Intent Code
-#      questionsColumn: "Question"
-#      answersColumn: "Answer"
-#      enabledColumn: "Enabled"
-#      headers: 1
+  q_and_a:
+    type: q_and_a
+    scan:
+      index: "q_and_a"
+      fileName: "test.xlsx"
+      id_column: Intent Code
+      questionsColumn: "Question"
+      answersColumn: "Answer"
+      enabledColumn: "Enabled"
+      headers: 1
   questionator:
     type: questionator
     scan:
       index: "questionator"
       jsonDirectory: "json_directory"
       questionDirectory: 'question_directory'
-#  gitlabAcl:
-#    type: gitlabAcl
-#    scan:
-#      baseurl: https://git.eon-cds.de/
-#      idPattern: "{id}@eon.com"
-#      index: .search-acl-filter-gitlab-prod
-#      auth:
-#        method: PrivateToken
-#        credentials:
-#          token: GITLAB_TOKEN
-#  jiraPlay:
-#    type: jira # actually Jiraplay
-#    scan:
-#      auth:
-#        method: EntraId
-#        credentials:
-#          tenantId: 03e6c03e-074e-474c-8d40-3eac96d82a77            # From entraid/overview
-#          clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8            # From Application Id in entra ID
-#          clientSecret: ENTRA_CLIENT_SECRET
-#          scope:  "https://graph.microsoft.com/.default"
-
-
-#  questionator:
-#    sourceFile: # a csv or yaml file of the url of  original documents
-#    credentials:
-#  questionsAndAnswers:
-#    sourceFile: # the url of a excel spreadsheet
-#    questionColumnName:
-#    answerColumnName:
-#    enabledColumnName:
-#    credentials:
-
-
-  # gitlabAcl:
-  #   type: gitlabAcl
+  .search-acl-filter-jira-prod:
+    type: jiraAcl
+    scan:
+      baseurl: https://jira.eon.com/
+      projects:
+        - 42030
+      auth:
+        method: ApiKey
+        credentials:
+          apiKey: JIRA_PROD
+      entraId:
+        method: EntraId
+        credentials:
+          tenantId: 03e6c03e-074e-474c-8d40-3eac96d82a77
+          clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8
+          clientSecret: ENTRA_CLIENT_SECRET
+          scope: "https://graph.microsoft.com/.default"
+  # .search-acl-filter-jira-prod:
+  #   type: csvAcl
   #   scan:
-  #     baseurl: https://git.eon-cds.de/
-  #     idPattern: "{id}@eon.com"
-  #     index: .search-acl-filter-gitlab-prod
-  #     auth:
-  #       method: PrivateToken
-  #       credentials:
-  #         token: GITLAB_TOKEN
-  # jiraPlay:
-  #   type: jira # actually Jiraplay
-  #   scan:
-  #     auth:
-  #       method: EntraId
-  #       credentials:
-  #         tenantId: 03e6c03e-074e-474c-8d40-3eac96d82a77            # From entraid/overview
-  #         clientId: 2e809693-f124-4729-bfea-086d5a9a8ce8            # From Application Id in entra ID
-  #         clientSecret: ENTRA_CLIENT_SECRET
-  #         scope:  "https://graph.microsoft.com/.default"
-#  confluence:
-#    query:
-#      throttle:
-#        max: 100
-#        tokensPer100ms: 0.1
-#    scan:
-#      baseurl: https://confluence.eon.com/
-#      auth:
-#        method: ApiKey
-#        credentials:
-#          apiKey: CONFLUENCE_TOKEN
-#      index: confluence-prod
-#  confluenceAcl:
-#    type: confluenceAcl
-#    scan:
-#      baseurl: https://confluence.eon.com/
-#      spaces:
-#        - m8nmvp1
-#      auth:
-#        method: ApiKey
-#        credentials:
-#          apiKey: CONFLUENCE_TOKEN
-#      index: .search-acl-filter-confluence-prod
-#      emailSuffix: "@eon.com"
+  #     groupMembersFile: group.members.csv
+  #     index: .search-acl-filter-jira-prod
+  #     headers: 1
+  #     groupColumn: 1
+  #     memberColumn: 2
+  #     extractGroup: "^JIRA_(.*?)_"
+  jira-prod:
+    type: jira
+    scan:
+      auth:
+        method: ApiKey
+        credentials:
+          apiKey: JIRA_PROD
+      projects: "*"
+      indexPeople: false
+      baseurl: https://jira.eon.com/
+      apiVersion: "2"
+
+  gitlab-prod:
+    type: gitlab
+    target:
+      file: "{rootDir}/index/{index}/Project_{id_3}_{num}.json"
+    scan:
+      baseurl: https://git.eon-cds.de/
+      auth:
+        method: PrivateToken
+        credentials:
+          token: GITLAB_TOKEN
+      projects:
+        - 33519
+  .search-acl-filter-gitlab-prod:
+    type: gitlabAcl
+    scan:
+      baseurl: https://git.eon-cds.de/
+      idPattern: "{id}@eon.com"
+      auth:
+        method: PrivateToken
+        credentials:
+          token: GITLAB_TOKEN
+
+  confluence-prod:
+    type: confluence
+    query:
+      throttle:
+        max: 100
+        tokensPer100ms: 0.1
+    scan:
+      baseurl: https://confluence.eon.com/
+      auth:
+        method: ApiKey
+        credentials:
+          apiKey: CONFLUENCE_TOKEN
+  .search-acl-filter-confluence-prod:
+    type: confluenceAcl
+    scan:
+      baseurl: https://confluence.eon.com/
+      spaces:
+        - m8nmvp1
+      auth:
+        method: ApiKey
+        credentials:
+          apiKey: CONFLUENCE_TOKEN
+      emailSuffix: "@eon.com"
