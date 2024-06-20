@@ -13,6 +13,7 @@ import { addJiraUsersCommand, jiraCommands } from "./src/jira.commands";
 import { authCommands } from "./src/auth.commands";
 import { questionatorCommands } from "./src/questions.commands";
 import { entraIdCommands } from "./src/entra.id.commands";
+import { titanAndPineconeCommands } from "./src/titan.and.pinecone.commands";
 
 export function findVersion () {
   let packageJsonFileName = "../package.json";
@@ -67,6 +68,7 @@ makeCli<Commander12, IndexerContext, NoConfig, NoConfig> ( makeContext (), confi
   indexerCommands ( commander, cliTc )
   jiraCommands ( commander, cliTc )
   authCommands ( commander, cliTc )
+  titanAndPineconeCommands ( commander, cliTc )
   // questionatorCommands ( commander, cliTc )
   entraIdCommands ( commander, cliTc )
 

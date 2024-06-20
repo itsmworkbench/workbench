@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/react_conversation",
   "description": "The react code for the conversation",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/components": "0.3.4",
-    "@itsmworkbench/react_core": "0.3.4",
+    "@itsmworkbench/components": "0.3.5",
+    "@itsmworkbench/react_core": "0.3.5",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

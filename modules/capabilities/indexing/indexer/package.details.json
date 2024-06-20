@@ -23,7 +23,8 @@
     "@itsmworkbench/commander12",
     "@itsmworkbench/cli",
     "@itsmworkbench/jsyaml",
-    "@itsmworkbench/koa"
+    "@itsmworkbench/koa",
+    "@itsmworkbench/indexing_pinecone_and_titan"
   ],
   "guards":      {
     "compile": true,

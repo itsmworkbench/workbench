@@ -6,9 +6,8 @@ import { getElasticSearchAuthHeaderWithApiToken } from "./apikey.for.dls";
 import { defaultVectorisationModel, loadAndValidatePipelines, pipelineBody, usePipelineBody } from "./pipelines";
 import { RetryPolicyConfig, stopThrottling, withRetry, withThrottle } from "@itsmworkbench/kleislis";
 import { callElasticSearch } from "./callElasticSearch";
-import { FetchFn, FetchFnOptions, FetchFnResponse } from "@itsmworkbench/indexing";
 
-async function processFilesRecursively ( rootDir: string, processFile: ( filePath: string ) => Promise<void> ) {
+export async function processFilesRecursively ( rootDir: string, processFile: ( filePath: string ) => Promise<void> ) {
   async function processDirectory ( directory: string ) {
     const entries = await fs.readdir ( directory, { withFileTypes: true } );
 
