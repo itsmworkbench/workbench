@@ -1,7 +1,7 @@
 import { ExecuteIndexOptions, Indexer, IndexingContext } from "@itsmworkbench/indexing";
 import { NameAnd } from "@laoban/utils";
 import { calculateSinceDate, simpleTemplate } from "@itsmworkbench/utils";
-import { formatDate } from "@itsmworkbench/utils/src/date";
+import { formatDate } from "@itsmworkbench/utils";
 import * as mysql from 'mysql2/promise';
 
 export type MysqlConnection = {

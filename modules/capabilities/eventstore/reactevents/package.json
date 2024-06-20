@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/reactevents",
   "description": "The react gui about displaying events",
-  "version": "0.3.1",
+  "version": "0.3.4",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,9 +15,9 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/components": "0.3.1",
-    "@itsmworkbench/events": "0.3.1",
-    "@itsmworkbench/urlstore": "0.3.1",
+    "@itsmworkbench/components": "0.3.4",
+    "@itsmworkbench/events": "0.3.4",
+    "@itsmworkbench/urlstore": "0.3.4",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

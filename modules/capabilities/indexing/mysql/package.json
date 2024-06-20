@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/sql",
-  "description": "interacting with sql: the interfaces",
+  "name": "@itsmworkbench/indexing_mysql",
+  "description": "indexing data in mysql",
   "version": "0.3.4",
   "main": "dist/index",
   "types": "dist/index",
@@ -22,7 +22,12 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
+    "mysql2": "^3.10.1",
     "@itsmworkbench/utils": "0.3.4",
+    "@itsmworkbench/indexing": "0.3.4",
+    "@itsmworkbench/indexconfig": "0.3.4",
+    "@itsmworkbench/indexing_jira": "0.3.4",
+    "@itsmworkbench/indexing_entraid": "0.3.4",
     "debug": "^4.3.4"
   },
   "devDependencies": {
