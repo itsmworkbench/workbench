@@ -11,11 +11,11 @@ import { SvgIconComponent } from "@mui/icons-material";
 
 export type AgentStageAnd<T> = {
   dataIn: T
-  contextProcessing: T
-  promptCreation: T
-  sendToAgent: T
-  resultReturned: T
-  updateContext: T
+  context: T
+  prompt: T
+  sentToAgent: T
+  result: T
+  contextChanges: T
   returnResult: T
 }
 export type AgentStages = keyof AgentStageAnd<any>
@@ -30,22 +30,22 @@ export interface IconAndTitle {
 export function emptyAgentStateAnd<T> ( t: T ): AgentStageAnd<T> {
   return {
     dataIn: t,
-    contextProcessing: t,
-    promptCreation: t,
-    sendToAgent: t,
-    resultReturned: t,
-    updateContext: t,
+    context: t,
+    prompt: t,
+    sentToAgent: t,
+    result: t,
+    contextChanges: t,
     returnResult: t,
   };
 }
 export const defaultIconAndTitles: AgentStageAnd<IconAndTitle> = {
   dataIn: { icon: DataIcon, title: 'Data In' },
-  contextProcessing: { icon: ContextIcon, title: 'Context Processing' },
-  promptCreation: { icon: PromptIcon, title: 'Prompt Creation' },
-  sendToAgent: { icon: AgentIcon, title: 'Send to Agent' },
-  resultReturned: { icon: ResultIcon, title: 'Result Returned' },
-  updateContext: { icon: UpdateContextIcon, title: 'Update Context' },
-  returnResult: { icon: ReturnIcon, title: 'Return Result' },
+  context: { icon: ContextIcon, title: 'Context' },
+  prompt: { icon: PromptIcon, title: 'Prompt' },
+  sentToAgent: { icon: AgentIcon, title: 'Sent to Agent' },
+  result: { icon: ResultIcon, title: 'Result' },
+  contextChanges: { icon: UpdateContextIcon, title: 'Context changes' },
+  returnResult: { icon: ReturnIcon, title: 'Return' },
 };
 export type QuestionSearch = 'Question' | 'Search';
 

@@ -14,11 +14,11 @@ const rootElement = document.getElementById ( 'root' )!;
 const root = ReactDOM.createRoot ( rootElement );
 const data: AgentStageAnd<string> = {
   dataIn: 'some data in',
-  contextProcessing: 'some context processing',
-  promptCreation: 'some prompt creation',
-  sendToAgent: 'some send to agent',
-  resultReturned: 'some result returned',
-  updateContext: 'some update context',
+  context: 'some context processing',
+  prompt: 'some prompt creation',
+  sentToAgent: 'some send to agent',
+  result: 'some result returned',
+  contextChanges: 'some update context',
   returnResult: 'some return result',
 };
 export function Intent<S> ( { state }: LensProps<S, Query, any> ) {
@@ -33,10 +33,10 @@ export function Intent<S> ( { state }: LensProps<S, Query, any> ) {
       <ThreeColumnGrid children={[
         <Pipeline iconsAndTitle={defaultIconAndTitles} title='Intent' state={rootAgentState.focus1On ( 'intent' )}/>,
         <QuestionOrSearch state={state.focusOn ( 'questionOrSearch' )}/>,
-        <Pipeline iconsAndTitle={defaultIconAndTitles} title='Response' state={rootAgentState.focus1On ( 'Response' )}/>,
+        <Pipeline iconsAndTitle={defaultIconAndTitles} title='Compose Response' state={rootAgentState.focus1On ( 'compose' )}/>,
         ...Object.entries ( sample.agents ).map ( ( [ name, agent ] ) => (
           <Grid item key={name} xs={12} sm={6} md={4}>
-            <Pipeline iconsAndTitle={defaultIconAndTitles} title={name} state={rootAgentState.focus1On ( name as any )}/>
+            <Pipeline iconsAndTitle={defaultIconAndTitles} title={name} state={rootAgentState.focus1On ( name as any )} checkbox={true}/>
           </Grid>
         ) ) ]}/>
     </Stack>

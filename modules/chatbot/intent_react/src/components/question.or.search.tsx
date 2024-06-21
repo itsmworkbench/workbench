@@ -9,7 +9,7 @@ export interface QuestionOrSearchProps<S> extends LensProps<S, QuestionSearch, a
 
 export function QuestionOrSearch<S> ( { state }: QuestionOrSearchProps<S> ) {
   const select = ( question: QuestionSearch ) => () => state.setJson ( question, 'QuestionOrSearch' );
-  return <Paper elevation={3} style={{ borderRadius: '8px', display: 'flex', flexDirection: 'column', width: '350px' }}>
+  return <Paper elevation={3} style={{ borderRadius: '8px', display: 'flex', flexDirection: 'column', width: '300px' }}>
     <FormControl component="fieldset">
       <FormLabel component="legend">Input Type</FormLabel>
       <RadioGroup

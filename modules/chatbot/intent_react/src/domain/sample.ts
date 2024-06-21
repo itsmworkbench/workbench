@@ -1,17 +1,18 @@
-import { Query } from "./domain";
+import { AgentStageAnd, Query } from "./domain";
 
-const agentData = {
+const agentData: AgentStageAnd<string> = {
   dataIn: 'Data In',
-  contextProcessing: 'Context Processing',
-  promptCreation: 'Prompt Creation',
-  sendToAgent: 'Send to Agent',
-  resultReturned: 'Result Returned',
-  updateContext: 'Update Context',
+  context: 'Context Processing',
+  prompt: 'Prompt Creation',
+  sentToAgent: 'Send to Agent',
+  result: 'Result Returned',
+  contextChanges: 'Update Context',
   returnResult: 'Return Result',
 };
 export const sample: Query = {
   query: 'What is the weather today?',
   intent: agentData,
+  selectedAgents: [],
   questionOrSearch: 'Question',
   agents: {
     jira: agentData,
