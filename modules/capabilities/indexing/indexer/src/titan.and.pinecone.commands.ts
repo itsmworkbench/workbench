@@ -18,7 +18,6 @@ export function addTitanAndPineConeCommands<Commander, Config, CleanConfig> ( tc
       '-m, --model <model>': { description: 'the model to use', default: 'someTitanModelId' },
       '--debug': { description: 'Show debug information' },
       '--dryRun': { description: `Just do a dry run instead of actually pushing the data` }
-
     },
     action: async ( _, opts ) => {
       console.log ( 'pushing to titan and pinecone', opts )

@@ -1,6 +1,6 @@
 {
   "name": "@itsmworkbench/intent_react",
-  "description": "A react workbench for looking at intents and agents",
+  "description": "A simple chatbot",
   "version": "0.3.5",
   "browserslist": {
     "development": [
@@ -15,27 +15,9 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/browserai": "0.3.5",
-    "@itsmworkbench/browsermailer": "0.3.5",
-    "@itsmworkbench/components": "0.3.5",
-    "@itsmworkbench/dependentdata": "0.3.5",
-    "@itsmworkbench/domain": "0.3.5",
-    "@itsmworkbench/events": "0.3.5",
-    "@itsmworkbench/eventstore": "0.3.5",
-    "@itsmworkbench/jsyaml": "0.3.5",
-    "@itsmworkbench/react_core": "0.3.5",
-    "@itsmworkbench/react_conversation": "0.3.5",
-    "@itsmworkbench/react_devmode": "0.3.5",
-    "@itsmworkbench/react_displayinfo": "0.3.5",
-    "@itsmworkbench/reactevents": "0.3.5",
-    "@itsmworkbench/react_capabilities": "0.3.5",
-    "@itsmworkbench/reactmailer": "0.3.5",
-    "@itsmworkbench/reactfetchemail": "0.3.5",
-    "@itsmworkbench/reactsql": "0.3.5",
-    "@itsmworkbench/reactticket": "0.3.5",
-    "@itsmworkbench/react_variables": "0.3.5",
-    "@itsmworkbench/browsersql": "0.3.5",
-    "@itsmworkbench/variables": "0.3.5",
+    "axios": "^1.7.2",
+    "openai": "^4.28.4",
+    "react-markdown": "^8.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
@@ -48,6 +30,11 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/dom": "^10.1.0",
+    "@testing-library/jest-dom": "^6.4.6",
+    "jest-environment-jsdom": "^29.7.0",
+    "@testing-library/user-event": "^14.5.2",
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-env": "^7.24.7",
     "@types/react": "^18.2.56",
@@ -78,11 +65,20 @@
     "dist/src/",
     "build/"
   ],
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": false,
+    "react": false
+  },
   "keywords": [
     "react",
     "runbook"
   ],
   "license": "MIT",
+  "links": [
+    "@itsmworkbench/kleislis"
+  ],
   "peerDependencies": {},
   "repository": "git@github.com:intellimaintain/intellimaintain.git",
   "scripts": {
