@@ -3,7 +3,8 @@ import { Box, Checkbox, Paper, Typography } from '@mui/material';
 import React, { useState } from "react";
 import { NameAnd } from "@laoban/utils";
 import { doTwoThings } from "../utils";
-import { AgentStageAnd, AgentStages, IconAndTitle } from "../domain/domain";
+import { AgentData, AgentStageAnd, AgentStages, emptyAgentStateAnd, IconAndTitle, SelectedAgentList } from "../domain/domain";
+import { LensProps, LensProps2 } from "@focuson/state";
 
 
 export interface PipelineIconProps {
@@ -34,12 +35,9 @@ function PipelineIcons ( { iconsAndTitle, data, selected, stageClicked }: Pipeli
   </Box>;
 }
 
-export interface PipelineProps {
+export interface PipelineProps<S> extends LensProps2<S, AgentData, SelectedAgentList, any> {
   iconsAndTitle: AgentStageAnd<IconAndTitle>;
-  data: AgentStageAnd<string>;
   title: string;
-  checkbox?: boolean
-  checkboxChanged?: ( b: boolean ) => void
 }
 
 export type TitleAndCheckboxProps = {
@@ -63,7 +61,16 @@ export function TitleAndCheckbox ( { title, value, valueChanged }: TitleAndCheck
   </Box>
 }
 
-export const Pipeline = ( { data, iconsAndTitle, title, checkbox, checkboxChanged }: PipelineProps ) => {
+export function Pipeline<S> ( { iconsAndTitle, title, state }: PipelineProps<S> ) {
+  const data = state.optJson1 () || emptyAgentStateAnd ( '' )
+  const selectedAgentsList = state.optJson2 () || []
+  const checkbox = selectedAgentsList.indexOf ( title ) >= 0
+  function checkboxChanged ( value: boolean ) {
+    const newSelectedAgentsList = value
+      ? [ ...selectedAgentsList, title ]
+      : selectedAgentsList.filter ( t => t !== title );
+    state.state2 ().setJson ( newSelectedAgentsList, 'Pipeline' + title );
+  }
   const [ selected, setSelected ] = useState<AgentStages | undefined> ( undefined );
   const [ text, setText ] = useState<string> ( '' );
   const stageClicked = doTwoThings<AgentStages> ( setSelected, key => setText ( data[ key ] ) );
@@ -76,4 +83,4 @@ export const Pipeline = ( { data, iconsAndTitle, title, checkbox, checkboxChange
       </Box>
     </Paper>
   );
-};
+}
