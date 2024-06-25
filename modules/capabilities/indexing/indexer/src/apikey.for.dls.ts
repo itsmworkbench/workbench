@@ -43,17 +43,27 @@ export type IndexAndQuery = { index: string, query?: any }
 export async function loadQueriesForEmail ( fetchFn: FetchFn, apiKeyDetails: ApiKeyDetails, email: string ): Promise<IndexAndQuery> {
   const { elasticSearchUrl, index, headers } = apiKeyDetails
   const indexAndQueries = await mapK ( index, async i => {
-    const esUrl = `${elasticSearchUrl}.search-acl-filter-${i}/_doc/${encodeURIComponent ( email )}`;
-    const response = await fetchFn ( esUrl, { headers } )
-    if ( response.ok ) {
-      let json = await response.json ();
-      if ( json._source.query === undefined ) throw new Error ( `No query found for ${email} in ${i}\n${JSON.stringify ( json )}` )
-      return { index: i, query: JSON.parse ( json._source.query ) }
+      const esUrl = `${elasticSearchUrl}.search-acl-filter-${i}/_doc/${encodeURIComponent ( email )}`;
+      const response = await fetchFn ( esUrl, { headers } )
+      function parse ( json: any ): any {
+        try {
+          if (typeof json === 'object') return json
+          return JSON.parse ( json );
+        } catch ( e: any ) {
+          console.error ( `Error parsing json for ${email} in ${i}\n${JSON.stringify ( json )}`, e )
+          throw e
+        }
+      }
+      if ( response.ok ) {
+        let json = await response.json ();
+        if ( json._source.query === undefined ) throw new Error ( `No query found for ${email} in ${i}\n${JSON.stringify ( json )}` )
+        return { index: i, query: parse ( json._source.query ) }
+      }
+      if ( response.status === 404 )
+        return { index: i }
+      throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
     }
-    if ( response.status === 404 )
-      return { index: i }
-    throw new Error ( `Error ${response.status} ${response.statusText} ${await response.text ()}` )
-  } )
+  )
   const allQueries = indexAndQueries.filter ( q => q.query !== undefined ).map ( i => i.query )
   const allIndexes = indexAndQueries.filter ( q => q.query !== undefined ).map ( i => i.index )
   let query = { bool: { should: [ ...allQueries, ...makeQueriesForUncontrolled ( apiKeyDetails.uncontrolled ) ].filter ( q => q !== undefined ) } };

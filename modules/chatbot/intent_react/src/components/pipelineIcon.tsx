@@ -18,7 +18,6 @@ const squareStyle = ( selected: boolean ): CSSProperties => ({
   backgroundColor: selected ? 'lightblue' : 'initial'
 });
 export const PipelineIcon: React.FC<PipelineStageProps> = ( { icon: Icon, selected, title, data, stageClicked } ) => {
-  console.log ( 'in pipeline stage', selected, title, data );
   return <Tooltip title={`${title}: ${data}`}>
     <IconButton onClick={stageClicked} style={squareStyle ( selected )}>
       <Icon/>

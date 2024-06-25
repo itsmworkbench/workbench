@@ -13,7 +13,6 @@ export type OpenAiConfig = {
 }
 
 export type OpenAiRequest = {
-
   messages: Message[]
   query: string
   source: HtmlContentUrlAndAnswer[]

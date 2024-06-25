@@ -66,7 +66,7 @@ export const getapiKey = ( fetch: FetchFn, allDetails: NameAnd<ApiKeyDetails>, s
         return
       }
       // const { elasticSearchUrl, index, headers } = details
-      const email = decodeURIComponent ( ctx.context.request.path.substring ( 8 ) )?.toLowerCase()
+      const email = decodeURIComponent ( ctx.context.request.path.substring ( 8 ) )
       const auth = ctx.context.request.headers.authorization
       if ( secretToUseApi && auth !== `Bearer ${secretToUseApi}` ) {
         ctx.context.status = 401;

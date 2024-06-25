@@ -8,6 +8,10 @@ import UpdateContextIcon from "@mui/icons-material/Update";
 import ReturnIcon from "@mui/icons-material/Reply";
 import { SvgIconComponent } from "@mui/icons-material";
 
+export type HtmlContentUrlAndAnswer = {
+  htmlContent?: string
+  answer?: string
+}
 
 export type AgentStageAnd<T> = {
   dataIn: T

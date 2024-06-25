@@ -15,7 +15,6 @@ export interface PipelineIconProps {
 }
 function PipelineIcons ( { iconsAndTitle, data, selected, stageClicked }: PipelineIconProps ) {
   function isSelected ( key: AgentStages ) {
-    console.log ( 'isSelected', selected, key, selected === key )
     return selected === key;
   }
   function Icon ( { stage }: { stage: AgentStages } ) {
@@ -29,16 +28,16 @@ function PipelineIcons ( { iconsAndTitle, data, selected, stageClicked }: Pipeli
   }
   return <Box display="flex" gap={2}>
     <Box display="flex" flexDirection="column" gap={0}>
-      <Icon stage="context"/>
       <Icon stage="dataIn"/>
+      <Icon stage="context"/>
     </Box>
     <Box display="flex" gap={2} alignItems='center'>
       <Icon stage="prompt"/>
       <Icon stage="sentToAgent"/>
       <Icon stage="result"/>
       <Box display="flex" flexDirection="column" gap={0}>
-        <Icon stage="contextChanges"/>
         <Icon stage="returnResult"/>
+        <Icon stage="contextChanges"/>
       </Box>
     </Box>
   </Box>
@@ -82,15 +81,14 @@ export function Pipeline<S> ( { iconsAndTitle, title, state, checkbox }: Pipelin
       : selectedAgentsList.filter ( t => t !== title );
     state.state2 ().setJson ( newSelectedAgentsList, 'Pipeline' + title );
   }
-  const [ selected, setSelected ] = useState<AgentStages | undefined> ( undefined );
-  const [ text, setText ] = useState<string> ( '' );
-  const stageClicked = doTwoThings<AgentStages> ( setSelected, key => setText ( data[ key ] ) );
+  const [ selected, setSelected ] = useState<AgentStages | undefined> ( 'returnResult' );
+
   return (
     <Paper elevation={3} style={{ padding: '16px', borderRadius: '8px', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', width: '300px' }}>
       <TitleAndCheckbox title={title} value={inSelected} valueChanged={checkboxChanged}/>
-      <PipelineIcons iconsAndTitle={iconsAndTitle} data={data} selected={selected} stageClicked={stageClicked}/>
+      <PipelineIcons iconsAndTitle={iconsAndTitle} data={data} selected={selected} stageClicked={setSelected}/>
       <Box marginTop={2} width="100%" height="6rem" overflow="auto" padding="8px" border="1px solid #ccc" borderRadius="4px">
-        <Typography variant="body1">{text}</Typography>
+        <Typography style={{ whiteSpace: 'pre-line' }} variant="body1">{selected && data?.[ selected ]}</Typography>
       </Box>
     </Paper>
   );
