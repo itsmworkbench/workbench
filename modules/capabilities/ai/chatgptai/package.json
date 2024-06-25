@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/chatgptai",
   "description": "Code that extras variables from the ticket using AI ... uses chatgpt",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -20,8 +20,8 @@
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
     "openai": "^4.28.4",
-    "@itsmworkbench/ai": "0.3.5",
-    "@itsmworkbench/utils": "0.3.5",
+    "@itsmworkbench/ai": "0.3.6",
+    "@itsmworkbench/utils": "0.3.6",
     "debug": "^4.3.4"
   },
   "devDependencies": {

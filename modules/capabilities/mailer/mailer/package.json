@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/mailer",
   "description": "interacting with email: the interfaces",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,8 +22,8 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.3.5",
-    "@itsmworkbench/urlstore": "0.3.5",
+    "@itsmworkbench/utils": "0.3.6",
+    "@itsmworkbench/urlstore": "0.3.6",
     "debug": "^4.3.4"
   },
   "devDependencies": {

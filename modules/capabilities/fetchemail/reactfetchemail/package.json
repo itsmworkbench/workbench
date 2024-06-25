@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/reactfetchemail",
   "description": "How to receive emails in react",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,11 +15,11 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/ai": "0.3.5",
-    "@itsmworkbench/actions": "0.3.5",
-    "@itsmworkbench/components": "0.3.5",
-    "@itsmworkbench/reactevents": "0.3.5",
-    "@itsmworkbench/tickets": "0.3.5",
+    "@itsmworkbench/ai": "0.3.6",
+    "@itsmworkbench/actions": "0.3.6",
+    "@itsmworkbench/components": "0.3.6",
+    "@itsmworkbench/reactevents": "0.3.6",
+    "@itsmworkbench/tickets": "0.3.6",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

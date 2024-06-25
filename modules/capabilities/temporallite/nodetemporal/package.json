@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/nodetemporal",
   "description": "Code that only runs on node for temporallite",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -19,8 +19,8 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "node": "^v14.4.0",
-    "@itsmworkbench/activities": "0.3.5",
-    "@itsmworkbench/nodekleislis": "0.3.5",
+    "@itsmworkbench/activities": "0.3.6",
+    "@itsmworkbench/nodekleislis": "0.3.6",
     "debug": "^4.3.4"
   },
   "devDependencies": {

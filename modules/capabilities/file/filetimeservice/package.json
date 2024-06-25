@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/timeservice",
   "description": "a timeservice for synchronising multiple services based on file system timestamps. Granularity will be around 1 second",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {

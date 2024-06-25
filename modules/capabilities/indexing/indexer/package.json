@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/indexer",
   "description": "cli for indexer",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "main": "dist/index",
   "types": "dist/index",
   "bin": {
@@ -26,14 +26,14 @@
     "@laoban/utils": "1.4.51",
     "@laoban/filesops-node": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/indexall": "0.3.5",
-    "@itsmworkbench/utils": "0.3.5",
-    "@itsmworkbench/kleislis": "0.3.5",
-    "@itsmworkbench/commander12": "0.3.5",
-    "@itsmworkbench/cli": "0.3.5",
-    "@itsmworkbench/jsyaml": "0.3.5",
-    "@itsmworkbench/koa": "0.3.5",
-    "@itsmworkbench/indexing_pinecone_and_titan": "0.3.5",
+    "@itsmworkbench/indexall": "0.3.6",
+    "@itsmworkbench/utils": "0.3.6",
+    "@itsmworkbench/kleislis": "0.3.6",
+    "@itsmworkbench/commander12": "0.3.6",
+    "@itsmworkbench/cli": "0.3.6",
+    "@itsmworkbench/jsyaml": "0.3.6",
+    "@itsmworkbench/koa": "0.3.6",
+    "@itsmworkbench/indexing_pinecone_and_titan": "0.3.6",
     "debug": "^4.3.4"
   },
   "devDependencies": {
