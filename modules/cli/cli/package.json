@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/cli",
   "description": "How to do a cli",
-  "version": "0.3.6",
+  "version": "0.3.10",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,13 +22,13 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/fileops": "1.4.51",
-    "@itsmworkbench/utils": "0.3.6",
+    "@itsmworkbench/utils": "0.3.10",
     "debug": "^4.3.4"
   },
   "devDependencies": {
     "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
-    "@types/jest": "^29.0.0",
+    "@types/jest": "",
     "@types/node": "^14.0.0",
     "jest": "^29.0.0",
     "ts-jest": "^29.0.0"

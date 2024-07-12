@@ -1,6 +1,10 @@
 import cp from "child_process";
 import { ShellResult, ExecuteInShellFn } from "@itsmworkbench/shell"  ;
 
+//command line needs two options
+//since....  HEAD~1
+//all...
+
 export const executeScriptInShell: ExecuteInShellFn = ( cwd: string, cmd: string, encoding: BufferEncoding | undefined, debug?: boolean ): Promise<ShellResult> => {
   if ( encoding === undefined ) encoding = 'utf8'
   if ( debug ) console.log ( 'executeScriptInShell', cwd, cmd.trim () )

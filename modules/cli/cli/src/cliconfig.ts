@@ -50,16 +50,18 @@ export function notFoundError<Config, CleanConfig> ( name: string ): Promise<Err
   return Promise.resolve ( [ `File ${name} not found in current directory or any parent directory` ] )
 }
 export const defaultTo = <Config> ( config: Config, fileName?: string ) => async <CleanConfig> ( name: string ): Promise<ErrorsAnd<FileNameAndCliConfigTc<Config, CleanConfig>>> =>
-  ({ tc: fixedCliTc<Config> ( config ) , fileName})
+  ({ tc: fixedCliTc<Config> ( config ), fileName })
+
 export function fileConfig<Context extends CliContext, Config, CleanConfig> ( name: string, validate: ValidateFn<Config, CleanConfig>,
-                                                                              onNotFound: ( name: string ) => Promise<ErrorsAnd<FileNameAndCliConfigTc<Config, CleanConfig>>> ): CliTcFinder<Config, CleanConfig> {
+                                                                              onNotFound: ( name: string ) => Promise<ErrorsAnd<FileNameAndCliConfigTc<Config, CleanConfig>>>,
+                                                                              parseFile: ( context: string ) => ( value: string ) => any = parseJson ): CliTcFinder<Config, CleanConfig> {
   return async ( fileOps: FileOps, currentDirectory: string ): Promise<ErrorsAnd<FileNameAndCliConfigTc<Config, CleanConfig>>> => {
     const fileName = await findFileUp ( currentDirectory, dir => fileOps.isFile ( fileOps.join ( dir, name ) ) )
     if ( fileName === undefined ) return onNotFound ( name )
     const tc: CliConfigTC<Config, CleanConfig> = {
       load: ( fileOps: FileOps ) => async ( dir: string ) => {
         let fileOrUrl = fileOps.join ( dir, name );
-        return fileOps.loadFileOrUrl ( fileOrUrl ).then ( parseJson ( `Loading file ${fileOrUrl} for Config` ) );
+        return fileOps.loadFileOrUrl ( fileOrUrl ).then ( parseFile ( `Loading file ${fileOrUrl} for Config` ) );
       },
       displayErrors: ( errors: string[] ) => reportError ( errors ),
       validate,

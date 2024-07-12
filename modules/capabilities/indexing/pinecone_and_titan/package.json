@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/indexing_pinecone_and_titan",
   "description": "pushes data in the data lake to pinecone/titan",
-  "version": "0.3.6",
+  "version": "0.3.10",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,13 +23,13 @@
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
     "mysql2": "^3.10.1",
-    "@itsmworkbench/utils": "0.3.6",
+    "@itsmworkbench/utils": "0.3.10",
     "debug": "^4.3.4"
   },
   "devDependencies": {
     "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
-    "@types/jest": "^29.0.0",
+    "@types/jest": "",
     "@types/node": "^14.0.0",
     "jest": "^29.0.0",
     "ts-jest": "^29.0.0"

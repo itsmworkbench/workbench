@@ -1,5 +1,4 @@
-import { ReplayConfig, ReplayEngine } from "./replay.events";
-import { InjectedK0, K0, K1, K2, K3, K4, K5 } from "./kleisli";
+import { K0, K1, K2, K3, K4, K5 } from "./kleisli";
 
 export type Throttling = {
   current?: number;
@@ -12,32 +11,32 @@ export type Throttling = {
 };
 
 export function withThrottle<T> ( throttle: Throttling, fn: K0<T> ): K0<T>;
-export function withThrottle<P1, T> (throttle: Throttling, fn: K1<P1, T> ): K1<P1, T>;
-export function withThrottle<P1, P2, T> (throttle: Throttling, fn: K2<P1, P2, T> ): K2<P1, P2, T>;
-export function withThrottle<P1, P2, P3, T> (throttle: Throttling, fn: K3<P1, P2, P3, T> ): K3<P1, P2, P3, T>;
+export function withThrottle<P1, T> ( throttle: Throttling, fn: K1<P1, T> ): K1<P1, T>;
+export function withThrottle<P1, P2, T> ( throttle: Throttling, fn: K2<P1, P2, T> ): K2<P1, P2, T>;
+export function withThrottle<P1, P2, P3, T> ( throttle: Throttling, fn: K3<P1, P2, P3, T> ): K3<P1, P2, P3, T>;
 export function withThrottle<P1, P2, P3, P4, T> ( throttle: Throttling, fn: K4<P1, P2, P3, P4, T> ): K4<P1, P2, P3, P4, T>;
 export function withThrottle<P1, P2, P3, P4, P5, T> ( throttle: Throttling, fn: K5<P1, P2, P3, P4, P5, T> ): K5<P1, P2, P3, P4, P5, T>;
 
 export function withThrottle<T> ( throttle: Throttling, fn: ( ...args: any[] ) => Promise<T> ): ( ...args: any ) => Promise<T> {
   return async ( ...args: any[] ) => {
-    const attemptInvoke = async () => {
+    const attemptInvoke = async (): Promise<T> => {
       const { current = 0, max, throttlingDelay = 50 } = throttle;
       if ( current > 0 ) {
-        throttle.current--;
+        throttle.current = current - 1;
         try {
-          return fn ( ...args );
-        } catch ( e ) {
+          // console.log('executing in throttle', throttle.current, throttle.tokensPer100ms)
+          return await fn ( ...args );
+        } catch ( e: any ) {
           if ( e.message === 'Too many requests' ) {
             if ( throttle.current > -10 ) {
-              throttle.tokensPer100ms = throttle.tokensPer100ms * .9
+              throttle.tokensPer100ms = (throttle.tokensPer100ms || 1) * .9
               console.log ( 'Too many requests - throttling back', throttle.tokensPer100ms )
             }
-            throttle.current === (throttle.countOnTooManyErrors || -500)
+            throttle.current = (throttle.countOnTooManyErrors || -10)
           }
           throw e // hopefully the retry logic will kick in
         }
       } else {
-        if ( throttle.intervalId === undefined ) return;
         const delay = Math.random () * throttlingDelay;
         await new Promise ( resolve => setTimeout ( resolve, delay ) );
         return attemptInvoke ();  // Retry the invocation

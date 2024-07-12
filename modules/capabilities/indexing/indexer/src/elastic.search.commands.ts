@@ -178,9 +178,14 @@ export function addPushCommand<Commander, Config, CleanConfig> ( tc: ContextConf
               if ( dryRun )
                 console.log ( f );
               else {
-                const fileContents = await fs.readFile ( f )
-                let body = fileContents.toString ( 'utf8' );
-                await sendLines ( f, body )
+                try {
+                  const fileContents = await fs.readFile ( f )
+                  let body = fileContents.toString ( 'utf8' );
+                  await sendLines ( f, body )
+                }catch (e: any){
+                  console.error(`Failed to push ${f}`)
+                  throw e
+                }
               }
             }
           )

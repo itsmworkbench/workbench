@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/jsyaml",
   "description": "",
-  "version": "0.3.6",
+  "version": "0.3.10",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -18,13 +18,13 @@
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
-    "@itsmworkbench/yaml": "0.3.6",
+    "@itsmworkbench/yaml": "0.3.10",
     "debug": "^4.3.4"
   },
   "devDependencies": {
     "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
-    "@types/jest": "^29.0.0",
+    "@types/jest": "",
     "@types/node": "^14.0.0",
     "jest": "^29.0.0",
     "ts-jest": "^29.0.0"
