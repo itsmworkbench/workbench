@@ -15,7 +15,7 @@ export function addCommandDetails12<Context, Config, CleanConfig> ( cc: ContextC
   for ( let [ k, v ] of Object.entries ( cmd.options ) ) {
     command = command.option ( k, v.description, v.default );
   }
-  command = command.action ( args => cmd.action ( command, { ...command.optsWithGlobals (), ...command.opts () }, args ) );
+  command = command.action ( (...args: any[]) => cmd.action ( command, { ...command.optsWithGlobals (), ...command.opts () }, ...args ) );
   return { ...cc, command }
 }
 export function addCommands12<Context, Config, CleanConfig> ( cc: ContextConfigAndCommander<Commander12, Context, Config, CleanConfig>, cmds: ListOfCommandDetails<Commander12, Context, CleanConfig> ):ContextConfigAndCommander<Commander12, Context, Config, CleanConfig> {

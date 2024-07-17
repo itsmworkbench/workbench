@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/indexing_pinecone_and_titan",
   "description": "pushes data in the data lake to pinecone/titan",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -23,7 +23,7 @@
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
     "mysql2": "^3.10.1",
-    "@itsmworkbench/utils": "0.3.10",
+    "@itsmworkbench/utils": "0.3.11",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/reacttickettype",
   "description": "The react gui around tickettypes",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,8 +15,8 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/components": "0.3.10",
-    "@itsmworkbench/tickettype": "0.3.10",
+    "@itsmworkbench/components": "0.3.11",
+    "@itsmworkbench/tickettype": "0.3.11",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
