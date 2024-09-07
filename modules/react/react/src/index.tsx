@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { lensState } from "@focuson/state";
+import { LensState, lensState } from "@focuson/state";
 
 import { addEventStoreListener, addEventStoreModifier, eventStore, polling, setEventStoreValue, startPolling } from "@itsmworkbench/eventstore";
 import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent, Event, processEvents } from "@itsmworkbench/events";
@@ -8,7 +8,7 @@ import { defaultEventEnricher, defaultEventProcessor, EnrichedEvent, enrichEvent
 import { ActionPluginDetails, eventSideeffectProcessor, processSideEffect, processSideEffectsInState } from '@itsmworkbench/react_core';
 import { App } from './gui/app';
 import { defaultNameSpaceDetails } from "@itsmworkbench/defaultdomains";
-import { actionO, conversationL, emailDataL, enrichedEventsO, eventsL, eventsO, forTicketO, ItsmState, kaListO, kaO, logsL, newTicketL, operatorL, sideEffectsL, startAppState, tabO, tabsL, ticketIdL, ticketL, ticketListO, ticketTypeO, ticketVariablesL } from "./state/itsm.state";
+import { actionO, conversationL, emailDataL, enrichedEventsO, eventsL, eventsO, forTicketO, ItsmState, kaListO, kaO, logsL, newTicketL, operatorL, sideEffectsL, startAppState, tabO, tabsL, ticketIdL, ticketL, ticketListO, ticketTypeO, ticketVariablesL, workspaceTabO } from "./state/itsm.state";
 import { YamlCapability } from '@itsmworkbench/yaml';
 import { jsYaml } from '@itsmworkbench/jsyaml';
 import { UrlStoreApiClientConfig, urlStoreFromApi } from "@itsmworkbench/browserurlstore";
@@ -19,7 +19,7 @@ import { addSaveKnowledgeArticleSideEffect, displayCreateKnowledgeArticlePlugin,
 import { displayVariablesEventPlugin } from "@itsmworkbench/react_variables";
 import { AiClientConfig, apiClientForAi } from "@itsmworkbench/browserai";
 import { displayLdapEventPlugin, displayLdapPlugin } from '@itsmworkbench/react_capabilities';
-import { AIProvider, FetchEmailerProvider, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
+import { AIProvider, FetchEmailerProvider, IProcessEventSideEffectFn, MailerProvider, SqlerProvider, UrlStoreProvider, YamlProvider } from '@itsmworkbench/components';
 import { apiClientMailer } from "@itsmworkbench/browsermailer";
 import { apiClientSqler } from "@itsmworkbench/browsersql";
 import { displaySqlEventPlugin, displaySqlPlugin } from '@itsmworkbench/reactsql';
@@ -31,6 +31,7 @@ import { DD, depDataK, dependentDataEngine, setJsonForDepData } from "@itsmworkb
 import { Operator } from "@itsmworkbench/operator";
 import { parseNamedUrlOrThrow } from "@itsmworkbench/urlstore";
 import { FCLogRecord, futureCacheConsoleLog, futureCacheLog } from "@itsmworkbench/utils";
+import { Transform } from "@focuson/lens";
 
 
 const rootElement = document.getElementById ( 'root' );
@@ -51,25 +52,25 @@ const operatorDi = depDataK ( 'operator', operatorL, async () => {
   const res = await urlStore.loadNamed<Operator> ( parseNamedUrlOrThrow ( 'itsm/me/operator/me' ) )
   if ( hasErrors ( res ) ) throw new Error ( 'Failed to load operator\n' + res.join ( '\n' ) )
   return res.result
-}, {recover: () => undefined as any} )
+}, { recover: () => undefined as any } )
 
 const ticketListDi = depDataK ( 'ticketList', ticketListO, async () => {
   const ticketList = await urlStore.list ( { org: "me", namespace: "ticketevents", pageQuery: { page: 1, pageSize: 10 }, order: "date" } )
   if ( hasErrors ( ticketList ) ) throw new Error ( 'Failed to load ticketList\n' + ticketList.join ( '\n' ) )
   return ticketList
-}, {recover: () => undefined as any} )
+}, { recover: () => undefined as any } )
 
 const kaListDi = depDataK ( 'kaList', kaListO, async () => {
   const kaList = await urlStore.list ( { org: "me", namespace: "ka", pageQuery: { page: 1, pageSize: 1000 }, order: "date" } )
   if ( hasErrors ( kaList ) ) throw new Error ( 'Failed to load kaList\n' + kaList.join ( '\n' ) )
   return kaList
-}, { clear: true ,recover: () => undefined as any} )
+}, { clear: true, recover: () => undefined as any } )
 
 const deps: DD<ItsmState, any>[] = [ operatorDi, ticketListDi ]
 
 const logForDeps: FCLogRecord<any, any>[] = []
 const depEngine = {
-  ...dependentDataEngine<ItsmState> (() => container.state, setEventStoreValue ( container )),
+  ...dependentDataEngine<ItsmState> ( () => container.state, setEventStoreValue ( container ) ),
   listeners: [ futureCacheLog ( logForDeps ), futureCacheConsoleLog ( 'fc -' ) ]
 }
 
@@ -129,6 +130,15 @@ const eventPlugins = [
 
 const devMode = ( s: ItsmState ) => s?.debug?.showDevMode
 
+const processSe: IProcessEventSideEffectFn = <S extends any> ( s: LensState<S, any, any> ) => {
+  const esp = eventSideeffectProcessor<S> ( urlStore.save, ticketIdL as any );
+  return e => {
+    const result = esp.process ( s.main, e );
+    const tx: Transform<S, any> = [ workspaceTabO as any, () => 'chat' ]; // bit of a hack to avoid hinding ITSM state everywhere
+    s.massTransform ( 'processSe' ) ( tx )
+    return result
+  }
+}
 const displayPlugins: ActionPluginDetails<ItsmState, ItsmState, any>[] = [
   debugEventsPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( eventsO ) }) ),
   debugEnrichedEventsPlugin<ItsmState, ItsmState> ( devMode, eventPlugins ) ( s => ({ state: s.chainLens ( enrichedEventsO ) }) ),
@@ -143,14 +153,15 @@ const displayPlugins: ActionPluginDetails<ItsmState, ItsmState, any>[] = [
     }) ),
   displayMailerPlugin<ItsmState, ItsmState> () ( s => ({
     state: s.chainLens ( actionO ),
+    processSe,
     SuggestButton: <SuggestEmailForTicketButton state={s.doubleUp ().chain1 ( ticketL ).chain2 ( actionO )}/>
   }) ),
-  displayReceiveEmailPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( actionO ) }) ),
-  displayLdapPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( actionO ) }) ),
-  displayReviewTicketWorkbench<ItsmState, ItsmState> () ( s => ({ state: s.doubleUp ().chain1 ( ticketL ).chain2 ( actionO ) }) ),
-  displaySqlPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( actionO ) }) ),
+  displayReceiveEmailPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( actionO ), processSe  }) ),
+  displayLdapPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( actionO ), processSe }) ),
+  displayReviewTicketWorkbench<ItsmState, ItsmState> () ( s => ({ state: s.doubleUp ().chain1 ( ticketL ).chain2 ( actionO ), processSe }) ),
+  displaySqlPlugin<ItsmState, ItsmState> () ( s => ({ state: s.chainLens ( actionO ), processSe }) ),
   displaySelectKnowledgeArticlePlugin<ItsmState, ItsmState> () ( s => (
-    {
+    {processSe,
       targetPath: 'forTicket.tempData.newTicket.ticketDetails',
       state: s.doubleUp ().chain1 ( actionO ).chain2 ( ticketTypeO )
     }) ),
@@ -224,7 +235,7 @@ const pollingDetails = polling<Event[]> ( 1000, () => container.state.selectionS
 addEventStoreModifier ( container,
   processSideEffectsInState<ItsmState> (
     processSideEffect ( [
-      eventSideeffectProcessor ( urlStore.save, 'me', ticketIdL ),
+      eventSideeffectProcessor ( urlStore.save, ticketIdL ),
       addAiTicketSideeffectProcessor ( ai.variables, ticketVariablesL ),
       addAiMailerSideEffectProcessor ( ai.emails, emailDataL ),
       addSaveKnowledgeArticleSideEffect ( urlStore.save, 'me' ),

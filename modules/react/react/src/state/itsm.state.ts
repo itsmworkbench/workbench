@@ -41,7 +41,7 @@ export type ItsmStateDataForTicket = {
   events: Event[]
   enrichedEvents: EnrichedEvent<any, any>[] //The events enriched with local business knowledge. Especially useful for ids turned to values. But also 'should I hide this'
   ticket?: Ticket //This is a cache of what's in the events. It's not the source of truth
-  variables: NameAnd<string> // things we can use in the templates. Also a cache
+  variables: TicketVariables // things we can use in the templates. Also a cache
   status: PhaseAnd<NameAnd<boolean>>// more cached data
   tempData: TempData
 
@@ -101,6 +101,7 @@ export const emailDataL: Optional<ItsmState, Action> = tempDataL.focusQuery ( 'a
 export const conversationL = itsmIdL.focusOn ( 'conversation' );
 export const chatDataL: Lens<ItsmState, ChatDisplayData<any>> = conversationL.focusOn ( 'chat' )
 export const sideEffectsL: Lens<ItsmState, SideEffect[]> = itsmIdL.focusOn ( 'sideeffects' )
+export const workspaceTabO: Optional<ItsmState, string> = selectionStateL.focusQuery('tabs').focusQuery('workspaceTab')
 export const tabsL: Optional<ItsmState, TabPhaseAndActionSelectionState> = itsmIdL.focusQuery ( 'selectionState' ).focusQuery ( 'tabs' )
 export const logsL: Lens<ItsmState, SideeffectResult<any>[]> = itsmIdL.focusOn ( 'log' )
 export const eventsO: Optional<ItsmState, Event[]> = forTicketL.focusOn ( 'events' )

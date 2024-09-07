@@ -47,7 +47,8 @@ export interface ISideEffectProcessor<S, SE extends SideEffect, R> {
   process: ( state: S, se: SE ) => Promise<ResultsAndTransforms<S, R>>
 }
 
-export function eventSideeffectProcessor<S> ( saveFn: UrlSaveFn, organisation: string, ticketEventUrlL: Optional<S, string> ): ISideEffectProcessor<S, EventSideEffect, boolean> {
+
+export function eventSideeffectProcessor<S> ( saveFn: UrlSaveFn, ticketEventUrlL: Optional<S, string> ): ISideEffectProcessor<S, EventSideEffect, boolean> {
   return {
     accept: isEventSideEffect,
     process: async ( state, se ) => {
@@ -76,11 +77,11 @@ export function processSideEffect<S> ( processors: ISideEffectProcessor<S, any, 
 
 
 export function processSideEffectsInState<S> ( sep: ISideEffectProcessor<S, SideEffect, any>, seLens: Lens<S, SideEffect[]>, logL: Lens<S, SideeffectAndResult<any>[]>, debug?: boolean ): EventStoreModifier<S> {
-  return async ( oldState: S, state: S, ): Promise<(s: S) => S> => {
+  return async ( oldState: S, state: S, ): Promise<( s: S ) => S> => {
     const sideeffects = seLens.getOption ( state ) || []
     if ( sideeffects.length === 0 ) {
       if ( debug ) console.log ( 'processSideEffectsInState', 'no sideeffects' )
-      return s=>s
+      return s => s
     }
     if ( debug ) console.log ( 'processSideEffectsInState', 'sideeffects', sideeffects )
     const resultsAndTxs: SideEffectResultsAndTransforms<S, any>[] = await mapK ( sideeffects, async ( sideeffect ) => {
@@ -93,10 +94,11 @@ export function processSideEffectsInState<S> ( sep: ISideEffectProcessor<S, Side
     const results: SideeffectAndResult<any>[] = resultsAndTxs.map ( r =>
       ({ sideeffect: r.sideeffect, result: r.resultsAndTransforms.result }) )
     console.log ( 'just results1', results )
-    const txs: Transform<S, any>[] = flatMap ( resultsAndTxs, r => toArray ( r.resultsAndTransforms.txs ) );
+    const removeSideeffects: Transform<S, SideEffect[]> = [ seLens, old => [] ] //should just remove 'these' sideeffects and not remove any new ones
+    const txs: Transform<S, any>[] = [removeSideeffects, ...flatMap ( resultsAndTxs, r => toArray ( r.resultsAndTransforms.txs ) )];
     console.log ( 'txs', txs )
     return ( state: S ) => {
-      if (txs.length===0)return state
+      if ( txs.length === 0 ) return state
       const existingLog: SideeffectAndResult<any>[] = logL.getOption ( state ) || []
       const newLog = [ ...existingLog, ...results ]
       if ( debug ) console.log ( 'processSideEffectsInState', 'newLog', newLog )

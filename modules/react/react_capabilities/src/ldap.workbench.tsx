@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, SuccessFailureButton, useVariables } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, IProcessEventSideEffectFn, SuccessFailContextFn, SuccessFailureButton } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { LdapWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
@@ -11,9 +11,11 @@ import { ActionPluginDetails } from "@itsmworkbench/react_core";
 
 
 export interface DisplayLdapWorkbenchProps<S> extends LensProps<S, Action, any> {
+  processSe: IProcessEventSideEffectFn
+
 }
 
-export function DisplayLdapWorkbench<S> ( { state }: DisplayLdapWorkbenchProps<S> ) {
+export function DisplayLdapWorkbench<S> ( { state , processSe}: DisplayLdapWorkbenchProps<S> ) {
   let actionState: LensState<S, any, any> = state;
   const action: any = state.optJson ()
   const who = action?.who || ''
@@ -42,8 +44,8 @@ export function DisplayLdapWorkbench<S> ( { state }: DisplayLdapWorkbenchProps<S
       </Box>
       <Typography variant="subtitle1" gutterBottom>LDAP Result</Typography>
       <FocusedTextArea fullWidth variant="outlined" state={actionState.focusOn ( 'response' )}/>
-      <SuccessFailureButton title='The LDAP details are good' successOrFail={true} context={contextFn}/>
-      <SuccessFailureButton title='The LDAP details show a problem' successOrFail={false} context={contextFn}/>
+      <SuccessFailureButton  processSe={processSe} title='The LDAP details are good' successOrFail={true} context={contextFn}/>
+      <SuccessFailureButton processSe={processSe}title='The LDAP details show a problem' successOrFail={false} context={contextFn}/>
     </Box>
   </Container>
 }

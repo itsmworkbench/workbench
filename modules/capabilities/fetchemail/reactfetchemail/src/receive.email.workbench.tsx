@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { DisplayJson, FocusedTextArea, SuccessFailContextFn, SuccessFailureButton, useFetchEmailer } from "@itsmworkbench/components";
+import { DisplayJson, FocusedTextArea, IProcessEventSideEffectFn, SuccessFailContextFn, SuccessFailureButton, useFetchEmailer } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { ReceiveEmailWorkbenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
@@ -15,6 +15,7 @@ import { EmailDetails } from "./email.details";
 
 
 export interface DisplayReceiveEmailWorkbenchProps<S> extends LensProps<S, Action, any> {
+  processSe: IProcessEventSideEffectFn
 }
 
 type TestConnectionButtonProps<S> = LensProps<S, string, any> & {
@@ -43,11 +44,11 @@ function SearchButton<S> ( { fetchEmailer, state, from }: SearchButtonProps<S> )
   return <Button variant="contained" color="primary" endIcon={<TestIcon/>} onClick={onClick}>Search</Button>;
 }
 
-export function DisplayReceiveEmailWorkbench<S> ( { state }: DisplayReceiveEmailWorkbenchProps<S> ) {
+export function DisplayReceiveEmailWorkbench<S> ( { state, processSe }: DisplayReceiveEmailWorkbenchProps<S> ) {
   const action: any = state.optJson ()
   const email = action?.email || ''
   const from = action?.from || ''
-  const emailSummary = action?.emailSummary||{} as any
+  const emailSummary = action?.emailSummary || {} as any
   const fetchEmailer = useFetchEmailer ()
 
   const contextFn: SuccessFailContextFn = ( tab, phase, action, successOrFail ): ReceiveEmailWorkbenchContext => ({
@@ -76,15 +77,15 @@ export function DisplayReceiveEmailWorkbench<S> ( { state }: DisplayReceiveEmail
       <EmailsTable emails={actionState.focusOn ( 'emailSummary' ).optJson ()} state={actionState.focusOn ( 'email' )} maxHeight='800px'/>
       <Typography variant="subtitle1" gutterBottom>Email</Typography>
       <EmailDetails email={actionState.focusOn ( 'email' ).optJson ()}/>
-      <SuccessFailureButton title='Email read successfully' successOrFail={true} context={contextFn}/>
+      <SuccessFailureButton processSe={processSe ( state )} title='Email read successfully' successOrFail={true} context={contextFn}/>
     </Box>
 
   </Container>
 }
 
 
-export const displayReceiveEmailPlugin   = <S, State> (): ActionPlugIn<S, State, LensProps<S, Action, any>> =>
-  ( props: ( s: LensState<S, State, any> ) => LensProps<S, Action, any> ): ActionPluginDetails<S, State, LensProps<S, Action, any>> =>
+export const displayReceiveEmailPlugin = <S, State> (): ActionPlugIn<S, State, DisplayReceiveEmailWorkbenchProps<S>> =>
+  ( props: ( s: LensState<S, State, any> ) => DisplayReceiveEmailWorkbenchProps<S>): ActionPluginDetails<S, State,DisplayReceiveEmailWorkbenchProps<S>> =>
     ({
       by: "ReceiveEmailWorkbench",
       props,

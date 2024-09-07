@@ -2,13 +2,13 @@ import React from "react";
 import { LensProps, LensProps2, LensState } from "@focuson/state";
 import { Box, Button, Container, Typography } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
-import { FocusedTextArea, FocusedTextInput, SuccessFailContextFn, SuccessFailureButton, useAI, useAiEmail, useAllVariables, useCurrentSelection, useMailer, useTicketType, useTicketTypeVariables, useVariables } from "@itsmworkbench/components";
+import { FocusedTextArea, FocusedTextInput, IProcessEventSideEffect, IProcessEventSideEffectFn, SuccessFailContextFn, SuccessFailureButton, useAI, useAllVariables, useCurrentSelection, useMailer, useTicketTypeVariables, useVariables } from "@itsmworkbench/components";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { EmailTempData, EmailWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
 import { Ticket } from "@itsmworkbench/tickets";
 import { AI, EmailDataWithMissingData } from "@itsmworkbench/ai";
-import { Email } from "@mui/icons-material";
+import { EventSideEffect } from "@itsmworkbench/react_core";
 
 
 export interface SuggestEmailForTicketButtonProps<S> extends LensProps2<S, Ticket, Action, any> {
@@ -53,6 +53,7 @@ export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicke
 
 export interface DisplayEmailWorkbenchProps<S> extends LensProps<S, Action, any> {
   SuggestButton: React.ReactNode
+  processSe: IProcessEventSideEffectFn
 }
 
 
@@ -82,7 +83,7 @@ export function TestMailerConnectionButton<S> ( { state }: LensProps<S, any, any
   return <Button variant="contained" color="primary" onClick={testConnection} endIcon={<TestIcon/>}> Test Connection </Button>
 
 }
-export function DisplayEmailWorkbench<S> ( { state, SuggestButton }: DisplayEmailWorkbenchProps<S> ) {
+export function DisplayEmailWorkbench<S> ( { state, SuggestButton, processSe }: DisplayEmailWorkbenchProps<S> ) {
   const action: any = state.optJson ()
   const to = action.to || ''
   const subject = action.subject || ''
@@ -119,7 +120,7 @@ export function DisplayEmailWorkbench<S> ( { state, SuggestButton }: DisplayEmai
         <Button variant="contained" color="primary" endIcon={<RefreshIcon/>}> Reset</Button>
       </Box>
       {action.response && <pre>{action.response}</pre>}
-      <SuccessFailureButton title='Click when have sent the email' successOrFail={true} context={contextFn}/>
+      <SuccessFailureButton processSe={processSe(state)} title='Click when have sent the email' successOrFail={true} context={contextFn}/>
     </Box>
 
   </Container>

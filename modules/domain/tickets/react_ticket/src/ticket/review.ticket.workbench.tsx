@@ -1,7 +1,7 @@
 import { LensProps2, LensState } from "@focuson/state";
 import React from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { DisplayMarkdown, SuccessFailContextFn, SuccessFailureButton, useAI, useAiVariables, useTicketType, useYaml } from "@itsmworkbench/components";
+import { DisplayMarkdown, IProcessEventSideEffectFn, SuccessFailContextFn, SuccessFailureButton, useAI, useTicketType, useYaml } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { ReviewTicketWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
@@ -15,9 +15,11 @@ import { AI } from "@itsmworkbench/ai";
 
 
 export interface DisplayReviewTicketWorkbenchProps<S> extends LensProps2<S, Ticket, Action, any> {
+  processSe: IProcessEventSideEffectFn
+
 }
 
-export function DisplayReviewTicketWorkbench<S> ( { state }: DisplayReviewTicketWorkbenchProps<S> ) {
+export function DisplayReviewTicketWorkbench<S> ( { state, processSe }: DisplayReviewTicketWorkbenchProps<S> ) {
   let actionState: LensState<S, any, any> = state.state2 ();
   let ticket: Ticket = state.state1 ().json ()
   const action: any = (state.optJson2 () || {})
@@ -68,7 +70,7 @@ export function DisplayReviewTicketWorkbench<S> ( { state }: DisplayReviewTicket
             <YamlEditor
               yaml={attributes}
               Save={yaml =>
-                <SuccessFailureButton title='The attributes look good for now' successOrFail={true} context={contextFn ( (yaml || '{}').toString () )}/>}
+                <SuccessFailureButton processSe={processSe(state.state1())} title='The attributes look good for now' successOrFail={true} context={contextFn ( (yaml || '{}').toString () )}/>}
               onChange={setYaml}
               Suggest={setEditorYaml =>
                 <Button
@@ -83,7 +85,7 @@ export function DisplayReviewTicketWorkbench<S> ( { state }: DisplayReviewTicket
                 >Have AI suggest attributes</Button>}
             />
           </Box>
-          <SuccessFailureButton title='This ticket needs more work' successOrFail={false} context={contextFn ( '{}' )}/>
+          <SuccessFailureButton processSe={processSe(state.state1())} title='This ticket needs more work' successOrFail={false} context={contextFn ( '{}' )}/>
         </Grid>
       </Grid>
     </Box>

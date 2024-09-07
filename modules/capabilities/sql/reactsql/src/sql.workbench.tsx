@@ -4,7 +4,7 @@ import { findSqlDataDetails } from "@itsmworkbench/defaultdomains";
 import { Box, Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material";
 import TestIcon from '@mui/icons-material/SettingsEthernet'; // Example icon for "Test Connection"
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { DisplayJson, FocusedTextArea, MonospaceText, SuccessFailContextFn, SuccessFailureButton, useSqler, useVariables } from "@itsmworkbench/components";
+import { DisplayJson, FocusedTextArea, IProcessEventSideEffect, IProcessEventSideEffectFn, MonospaceText, SuccessFailContextFn, SuccessFailureButton, useSqler, useVariables } from "@itsmworkbench/components";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
 import { SqlWorkBenchContext } from "@itsmworkbench/domain";
 import { Action } from "@itsmworkbench/actions";
@@ -72,9 +72,10 @@ export function SqlResultOrError ( { data }: SqlResultOrErrorProps ) {
 
 //Note this is an action where as in fact it's really a SQLData
 export interface DisplaySqlWorkbenchProps<S> extends LensProps<S, Action, any> {
+  processSe: IProcessEventSideEffectFn
 }
 
-export function DisplaySqlWorkbench<S> ( { state }: DisplaySqlWorkbenchProps<S> ) {
+export function DisplaySqlWorkbench<S> ( { state, processSe }: DisplaySqlWorkbenchProps<S> ) {
   const action: any = state.optJson ()
   const sql = action?.sql || ''
   const response = action?.response || ''
@@ -122,8 +123,8 @@ export function DisplaySqlWorkbench<S> ( { state }: DisplaySqlWorkbenchProps<S> 
       </Box>
       <Typography variant="subtitle1" gutterBottom>SQL Result</Typography>
       <SqlResultOrError data={action.response}/>
-      <SuccessFailureButton title='This sql succeeded in the current task' successOrFail={true} context={contextFn}/>
-      <SuccessFailureButton title='Failure' successOrFail={false} context={contextFn}/>
+      <SuccessFailureButton processSe={processSe ( state )} title='This sql succeeded in the current task' successOrFail={true} context={contextFn}/>
+      <SuccessFailureButton processSe={processSe ( state )} title='Failure' successOrFail={false} context={contextFn}/>
     </Box>
 
   </Container>
