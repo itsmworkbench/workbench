@@ -19,7 +19,6 @@ export async function getResponse ( messages: OpenAiMessage[] ) {
       },
       body: JSON.stringify ( {
         model: 'gpt-3.5-turbo',
-
         messages,
         temperature: 0.7
       } )

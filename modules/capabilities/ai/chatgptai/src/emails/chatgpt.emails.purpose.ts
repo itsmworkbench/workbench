@@ -2,6 +2,7 @@ import { EmailData, EmailPurpose, isEmailDataWithMissingData } from "@itsmworkbe
 
 import { OpenAI } from "openai";
 import { ChatCompletionCreateParams } from "openai/src/resources/chat/completions";
+import { getResponse, OpenAiMessage } from "../variables/chatgpt.ticket.variables";
 
 export const clientSecret = process.env[ 'CHATGPT_CLIENT_SECRET' ]
 
@@ -38,50 +39,12 @@ Use these details to craft the email content.`;
 export const generateAllPurposeEmail = async ( emailData: EmailData ): Promise<string> => {
   const emailPrompt = generateEmailPrompt ( emailData );
 
-  let body: ChatCompletionCreateParams = {
-    messages: [
-      { role: 'system', content: emailPrompt },
-      { role: 'user', content: 'Generate the email' }
-    ],
-    model: 'gpt-3.5-turbo',
-    temperature: 0.7,
-    max_tokens: 1024,
-  };
-  const emailCompletion = await openai.chat.completions.create ( body );
-
-  // Assuming emailCompletion.choices contains the email content
-  const emailContent = emailCompletion?.choices?.[ 0 ].message?.content?.trim ();
-  console.log ( emailContent );
+  const messages: OpenAiMessage[] = [
+    { role: 'system', content: emailPrompt },
+    { role: 'user', content: 'Generate the email' }
+  ];
+  const emailContent = await getResponse ( messages );
+console.log ( emailContent );
 
   return emailContent || 'Ai was unable to generate email';
 };
-
-//TODO: unused method, we can delete later
-export const determineEmailPurpose = async ( ticket: string ): Promise<EmailPurpose> => {
-  const prompt = `Based on the following ticket details, should an email request for approval or closure be sent? Ticket details: "${ticket}"`;
-
-  const response = await openai.chat.completions.create ( {
-    messages: [
-      { role: 'system', content: prompt },
-      { role: 'user', content: 'Generate the email purpose' }
-    ],
-    model: "gpt-3.5-turbo", // or any suitable model
-    max_tokens: 60,
-    temperature: 0.5,
-  } );
-
-  const answer = response.choices[ 0 ]?.message?.content?.trim ().toLowerCase ();
-  if ( !answer ) throw new Error ( 'Ai was unable to determine email purpose' );
-
-  // Decide the purpose based on the model's response
-  if ( answer.includes ( "approval" ) ) {
-    return 'requestApproval';
-  } else if ( answer.includes ( "closure" ) ) {
-    return 'requestClosure';
-  } else {
-    // Default or handle ambiguity
-    console.log ( "Ambiguous or unclear answer from AI, consider manual review." );
-    return 'requestApproval'; // Defaulting or you might want a different handling
-  }
-};
-
