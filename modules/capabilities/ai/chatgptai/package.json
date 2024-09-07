@@ -19,7 +19,7 @@
   "dependencies": {
     "@laoban/utils": "1.4.45",
     "@laoban/variables": "1.4.45",
-    "openai": "^4.28.4",
+    "openai": "^4.58.0",
     "@itsmworkbench/ai": "0.0.10",
     "@itsmworkbench/utils": "0.0.10",
     "debug": "^4.3.4"

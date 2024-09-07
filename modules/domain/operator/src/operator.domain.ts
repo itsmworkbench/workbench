@@ -17,13 +17,13 @@ export function variablesFromOperator ( sofar: NameAnd<any>, operator: Operator 
   return { variables: operator as any, errors: [] }
 }
 
-function operatorParser ( yaml: YamlCapability, env: NameAnd<string> ): UrlStoreParser {
+function operatorParser ( yaml: YamlCapability, env: NameAnd<string|undefined> ): UrlStoreParser {
   return async ( id, s ) => {
     const transformed = derefence ( `emailConfig`, { env }, s, { variableDefn: dollarsBracesVarDefn, emptyTemplateReturnsSelf: true } )
     return camelCaseAndIdYamlParser ( yaml ) ( id, transformed )
   };
 }
-export function operatorNameSpaceDetails ( yaml: YamlCapability, env: NameAnd<string> ) {
+export function operatorNameSpaceDetails ( yaml: YamlCapability, env: NameAnd<string|undefined> ) {
   return nameSpaceDetailsForGit ( 'operator', {
     parser: operatorParser ( yaml, env ),
     writer: yaml.writer,

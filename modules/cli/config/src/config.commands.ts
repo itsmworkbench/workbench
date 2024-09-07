@@ -12,7 +12,7 @@ export function viewConfigCommand<Commander,Context, Config, CleanConfig> ( tc: 
     }
   }
 }
-export function configCommands<Commander,Config,  CleanConfig, Context> ( tc: ContextConfigAndCommander<Commander,Context, Config, CleanConfig> ): SubCommandDetails<Commander,Config, Context> {
+export function configCommands<Commander,Config,  CleanConfig, Context> ( tc: ContextConfigAndCommander<Commander,Context, Config, CleanConfig> ): SubCommandDetails<Commander, Context, Config> {
   return {
     cmd: 'config',
     description: 'Config commands',

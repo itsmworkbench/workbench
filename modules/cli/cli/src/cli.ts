@@ -37,11 +37,11 @@ export interface HasCurrentDirectory {
   currentDirectory: string
 }
 export interface HasEnv {
-  env: NameAnd<string>
+  env: NameAnd<string|undefined>
 
 }
 export interface CliContext extends HasNameAndVersion, HasCurrentDirectory, HasEnv {
-  env: NameAnd<string>
+  env: NameAnd<string|undefined>
   args: string[]
   fileOps: FileOps
 }

@@ -1,5 +1,5 @@
 import { ErrorsAnd, mapErrorsK } from "@laoban/utils";
-import { IdentityUrl, IdentityUrlLoadResult, isIdentityUrl, NamedLoadResult, NamedUrl, namedUrlToPathAndDetails, OrganisationUrlStoreConfigForGit, repoFrom, UrlLoadIdentityFn, UrlLoadNamedFn, urlToDetails } from "@itsmworkbench/urlstore";
+import { IdentityUrl, IdentityUrlLoadResult, isIdentityUrl, NamedLoadResult, NamedUrl, namedUrlToPathAndDetails, OrganisationUrlStoreConfigForGit, repoFrom, UrlLoadIdentityFn, UrlLoadNamedFn, urlToDetails, writeUrl } from "@itsmworkbench/urlstore";
 import { GitOps } from "@itsmworkbench/git";
 import path from "path";
 import { fileLoading, loadStringIncrementally } from "@itsmworkbench/fileloading";
@@ -9,13 +9,14 @@ import { ResultAndNewStart } from "@itsmworkbench/eventstore";
 export const loadFromNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfigForGit ): UrlLoadNamedFn => <T> ( named: NamedUrl, offset?: number ): Promise<ErrorsAnd<NamedLoadResult<T>>> => {
   return mapErrorsK ( namedUrlToPathAndDetails ( config ) ( named ), async ( { path: p, details } ) => {
     console.log ( 'loadFromNamedUrl path', p )
+    const namedUrl = named.url??writeUrl ( named )
     const fl = fileLoading ( p )
     const { result: raw, newStart: fileSize }: ResultAndNewStart = await loadStringIncrementally ( fl ) ( offset, details.encoding )
-    const result = await details.parser ( named.url, raw )
+    const result = await details.parser ( namedUrl, raw )
     const repo = repoFrom ( config, named )
     const hash = await gitOps.hashFor ( repo, path.relative ( repo, p ) )
     const id = `itsmid/${named.organisation}/${named.namespace}/${hash}`
-    return { url: named.url, mimeType: details.mimeType, result, id, fileSize }
+    return { url: namedUrl, mimeType: details.mimeType, result, id, fileSize }
   } )
 
 }
@@ -25,8 +26,11 @@ export const loadFromIdentityUrl = ( gitOps: GitOps, config: OrganisationUrlStor
   return mapErrorsK ( urlToDetails ( config.nameSpaceDetails, identity ), async ( details ) => {
     const repo = repoFrom ( config, identity )
     const string = await gitOps.fileFor ( repo, identity.id, details.encoding )
+    if (identity.url===undefined) return [ `IdentityUrl ${identity.id} has no url` ]
     const result = await details.parser ( identity.url, string )
-    return { url: identity.url, mimeType: details.mimeType, result, id: identity.url }
+
+    let loadResult: IdentityUrlLoadResult<T> = { url: identity.url, mimeType: details.mimeType, result, id: identity.url };
+    return loadResult
   } )
 }
 

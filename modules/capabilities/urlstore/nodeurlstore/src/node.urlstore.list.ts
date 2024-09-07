@@ -15,7 +15,7 @@ export type FileInfo = {
 async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => string, filter?: string ): Promise<FileInfo[]> {
   const files = await fs.readdir ( directoryPath, { withFileTypes: true } );
   const lcFilter = filter?.toLowerCase ()
-  const filterFn = filter ? ( file: Dirent ) => file.name.toLowerCase ().includes ( lcFilter ) : () => true;
+  const filterFn = lcFilter ? ( file: Dirent ) => file.name.toLowerCase ().includes ( lcFilter ) : () => true;
   const fileInfoPromises = files.filter ( file => file.isFile () && filterFn ( file ) ).map ( async file => {
     const filePath = path.join ( directoryPath, file.name );
     const stat = await fs.stat ( filePath );

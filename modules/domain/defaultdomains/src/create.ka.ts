@@ -1,5 +1,5 @@
 import { EnrichedEvent, Event } from "@itsmworkbench/events";
-import { Capability, EmailWorkBenchContext, isEmailWorkBenchContext, isLdapWorkBenchContext, isReceiveEmailWorkbenchContext, isReviewTicketWorkBenchContext, isSqlWorkBenchContext, isWorkBenchContext, LdapWorkBenchContext, ReceiveEmailWorkbenchContext, ReviewTicketWorkBenchContext, SqlWorkBenchContext, WorkBenchContext } from "@itsmworkbench/domain";
+import { Capability, EmailWorkBenchContext, isEmailWorkBenchContext, isLdapWorkBenchContext, isReceiveEmailWorkbenchContext, isReviewTicketWorkBenchContext, isSqlWorkBenchContext, isWorkBenchContext, LdapWorkBenchContext, PhaseName, ReceiveEmailWorkbenchContext, ReviewTicketWorkBenchContext, SqlWorkBenchContext, WorkBenchContext } from "@itsmworkbench/domain";
 import { TicketType } from "@itsmworkbench/tickettype";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 
@@ -16,10 +16,10 @@ export function findWorkbenchEventFor ( e: Event[], phase: string, action: strin
   return found.length === 0 ? undefined : found[ found.length - 1 ]
 }
 
-export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType, e: Event[], phase: string, action: string ) {
-  const found = ticketType?.actions?.[ phase ]?.[ action ] || {}
+export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType, e: Event[], phase: PhaseName, action: string ) {
+  const found = ticketType?.actions?.[ phase ]?.[ action ]
   // console.log ( 'findActionsInEventsMergeWithTicketType - found', phase, action, found )
-  const workBenchEvent: EventWithWorkBenchContext<any> = findWorkbenchEventFor ( e, phase, action )
+  const workBenchEvent = findWorkbenchEventFor ( e, phase, action )
   // console.log ( 'findActionsInEventsMergeWithTicketType - workBenchEvent', workBenchEvent )
   if ( workBenchEvent ) {
     const result = { ...found, by: workBenchEvent.context.capability, ...workBenchEvent.context.data } as Action
@@ -27,13 +27,13 @@ export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType,
   }
   return found
 }
-export function findActionInEventsFor ( e: EnrichedEvent<any, any>[], phase: string, action: string ): Action {
-  const ticketType: TicketType = lastTicketType ( e )
+export function findActionInEventsFor ( e: EnrichedEvent<any, any>[], phase: PhaseName, action: string ): Action | undefined {
+  const ticketType = lastTicketType ( e )
   // console.log ( 'findActionInEventsFor - ticketType', ticketType )
-  return findActionsInEventsMergeWithTicketType ( ticketType, e, phase, action )
+  return ticketType && findActionsInEventsMergeWithTicketType ( ticketType, e, phase, action )
 }
 
-export function lastTicketType ( e: EnrichedEvent<any, any>[] ): TicketType {
+export function lastTicketType ( e: EnrichedEvent<any, any>[] ): TicketType | undefined {
   const withTicketType: any[] = e.filter ( ( e: any ) => e.value?.ticketType || e.context?.data?.ticketType !== undefined )
   if ( withTicketType.length === 0 ) return undefined
   let foundEvent = withTicketType[ withTicketType.length - 1 ];
@@ -43,7 +43,7 @@ export function lastTicketType ( e: EnrichedEvent<any, any>[] ): TicketType {
 }
 
 export function createVariablesUsedFrom ( e: Event[], variables: Record<string, string> ): string[] {
-  const ticketType: TicketType = lastTicketType ( e )
+  const ticketType = lastTicketType ( e )
   if ( ticketType == undefined ) return []
   const result: string[] = []
   const workBenchEvents = allWorkbenchEvents ( e );
@@ -74,18 +74,18 @@ export function reverseEmailAction ( variables: Record<string, string>, a: Actio
   return {
     ...basics ( a ),
     by: 'Email',
-    to: reverseTemplate ( c.data.to, variables ),
+    to: reverseTemplate ( c.data.to, variables ) || '',
     withMissingData: a.withMissingData,
     subject: reverseTemplate ( a.highlyVariant ? undefined : c.data.subject, variables ),
     email: reverseTemplate ( a.highlyVariant ? undefined : c.data.email, variables )
   }
 }
 export function reverseLdapAction ( variables: Record<string, string>, a: Action, c: LdapWorkBenchContext ): Action {
-  console.log('reverseLdapAction - action',a)
-  console.log('reverseLdapAction - context',c)
+  console.log ( 'reverseLdapAction - action', a )
+  console.log ( 'reverseLdapAction - context', c )
   if ( a.by !== 'LDAP' ) return a
-  let who = reverseTemplate ( c.data.who, variables );
-  console.log('reverseLdapAction - who', who, c.data.who, variables)
+  let who = reverseTemplate ( c.data.who, variables ) || '';
+  console.log ( 'reverseLdapAction - who', who, c.data.who, variables )
   return {
     ...basics ( a ),
     by: 'LDAP',

@@ -5,8 +5,7 @@
   "packageJson": {
     "dependencies":     {
       "@laoban/utils":     "1.4.45",
-      "@laoban/variables": "1.4.45",
-      "openai": "^4.28.4"
+      "@laoban/variables": "1.4.45"
     },
     "devDependencies":  {},
     "peerDependencies": {}

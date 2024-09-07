@@ -22,13 +22,13 @@ export const defaultHandler = ( ...handlers: KoaPartialFunction[] ): ( from: Con
     notFoundIs404,
   )
 function readRawBody () {
-  return async ( ctx, next ) => {
+  return async ( ctx: any, next: any ) => {
     // Promise to read the raw body
     const getRawBody = () => new Promise ( ( resolve, reject ) => {
       let data = '';
-      ctx.req.on ( 'data', ( chunk ) => data += chunk );
+      ctx.req.on ( 'data', ( chunk: any ) => data += chunk );
       ctx.req.on ( 'end', () => resolve ( data ) );
-      ctx.req.on ( 'error', ( err ) => reject ( err ) );
+      ctx.req.on ( 'error', ( err: any ) => reject ( err ) );
     } );
 
     // Assign the raw body to ctx.request.rawBody for later use
@@ -42,7 +42,7 @@ export function startKoa ( root: string, port: number, debug: boolean, handler?:
   app.use ( cors () );
   app.use ( rawBodyParser );
   const realHandler = handler || defaultHandler ();
-  app.use ( async ctx => realHandler ( await contextAndStats ( ctx, root, debug ) ) )
+  app.use ( async ( ctx: any ) => realHandler ( await contextAndStats ( ctx, root, debug ) ) )
   const server = http.createServer ( app.callback () );
   return new Promise<KoaAndServer> ( ( resolve, reject ) => {
     server.listen ( port, () => {

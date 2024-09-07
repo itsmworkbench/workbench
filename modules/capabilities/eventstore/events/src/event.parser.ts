@@ -21,7 +21,7 @@ export const parseEvent = ( extraContext: NameAnd<JSONPrimitive> ) => ( s: strin
     if ( isSetValueEvent ( event ) ) return ('value' in event) ? event : makeError ( `No value` );
     if ( isAppendEvent ( event ) ) return ('value' in event) ? event : makeError ( `No value ` );
     return makeError ( `Unknown event type` )
-  } catch ( e ) { return { event: 'error', context: extraContext, error: e.message, from: s } }
+  } catch ( e:any ) { return { event: 'error', context: extraContext, error: e.message, from: s } }
 };
 
 

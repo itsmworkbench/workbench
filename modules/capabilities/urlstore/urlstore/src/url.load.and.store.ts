@@ -38,8 +38,9 @@ export type PageQuery = {
 }
 
 export function applyPaging<T> ( raw: T[], query: PageQuery ): T[] {
-  const start = (query.page - 1) * query.pageSize;
-  const end = start + query.pageSize;
+  let pageSize = query.pageSize || 10;
+  const start = (query.page - 1) * pageSize;
+  const end = start + pageSize;
   return raw.slice ( start, end );
 }
 export type ListNamesResult = PageQuery & {

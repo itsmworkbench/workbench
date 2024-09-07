@@ -1,5 +1,4 @@
 import { ContextAndStats, defaultShowsError, handleFile, KoaPartialFunction, notFoundIs404 } from "@itsmworkbench/koa";
-import { chainOfResponsibility } from "@runbook/utils";
 import { fileLoading, fileLocking, loadStringIncrementally, withFileLock } from "@itsmworkbench/fileloading";
 import { promises as fs } from 'fs';
 import { NameSpaceDetails, UrlStore } from "@itsmworkbench/urlstore";
@@ -13,22 +12,23 @@ import { FetchEmailer } from "@itsmworkbench/fetchemail";
 import { getUrls, listUrls, putUrls } from "@itsmworkbench/apiurlstore";
 import { apiForSqlerPosts } from "@itsmworkbench/apisql";
 import { apiForMailer } from "@itsmworkbench/apimailer";
+import { chainOfResponsibility } from "@itsmworkbench/utils";
 
 
 export const eventsPF: KoaPartialFunction = {
-  isDefinedAt: ( ctx ) => ctx.stats?.isFile () && ctx.context.request.method === 'GET',
+  isDefinedAt: ( ctx ) => ctx.stats?.isFile ()===true && ctx.context.request.method === 'GET',
   apply: async ( ctx ) => {
     const query = ctx.context.request.query
-    const start = Number.parseInt ( query.start || "0" )
+    const start = Number.parseInt ( query.start?.toString () || "0" )
     const result = await loadStringIncrementally ( fileLoading ( ctx.reqPathNoTrailing ) ) ( start )
     ctx.context.body = `${result.newStart}\n${result.result}`
   }
 }
 
 export const appendPostPF: KoaPartialFunction = {
-  isDefinedAt: ( ctx ) => ctx.stats?.isFile () && ctx.context.request.method === 'POST',
+  isDefinedAt: ( ctx ) => ctx.stats?.isFile () === true && ctx.context.request.method === 'POST',
   apply: async ( ctx ) => {
-    const body: any = await ctx.context.request.body // should be parsed according to content type
+    const body: any = await (ctx.context.request as any).body // should be parsed according to content type
     if ( typeof body !== 'object' ) throw new Error ( `Expected object, got ${typeof body}. Body is ${JSON.stringify ( body )}` )
     const str = `${JSON.stringify ( body )}\n` // one line is important
 

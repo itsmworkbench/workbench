@@ -1,4 +1,4 @@
-import { ErrorsAnd, mapErrors, mapErrorsK } from "@laoban/utils";
+import { ErrorsAnd, mapErrors, mapErrorsK, reportErrors } from "@laoban/utils";
 import { FileOps, findFileUp, parseJson } from "@laoban/fileops";
 import { CliContext } from "./cli";
 
@@ -32,7 +32,7 @@ export async function loadConfig<Config, Clean> ( fileOps: FileOps, tcFinder: Cl
       ({ cliConfigTc, config, configFileName }) ) )
 }
 
-function fixedCliTc<Config> ( config: Config ) {
+function fixedCliTc<Config> ( config: Config ): CliConfigTC<Config, Config> {
   return {
     load: () => async () => config,
     displayErrors: () => {},
@@ -49,19 +49,20 @@ export function fixedConfig<Config> ( config: Config ): CliTcFinder<Config, Conf
 export function notFoundError<Config, CleanConfig> ( name: string ): Promise<ErrorsAnd<FileNameAndCliConfigTc<Config, CleanConfig>>> {
   return Promise.resolve ( [ `File ${name} not found in current directory or any parent directory` ] )
 }
-export const defaultTo = <Config> ( config: Config, fileName?: string ) => async <CleanConfig> ( name: string ): Promise<ErrorsAnd<FileNameAndCliConfigTc<Config, CleanConfig>>> =>
-  ({ tc: fixedCliTc<Config> ( config ) , fileName})
+export const defaultTo = <Config> ( config: Config, fileName?: string ) => async  ( name: string ): Promise<ErrorsAnd<FileNameAndCliConfigTc<Config, Config>>> =>
+  ({ tc: fixedCliTc<Config> ( config ), fileName })
 export function fileConfig<Context extends CliContext, Config, CleanConfig> ( name: string, validate: ValidateFn<Config, CleanConfig>,
                                                                               onNotFound: ( name: string ) => Promise<ErrorsAnd<FileNameAndCliConfigTc<Config, CleanConfig>>> ): CliTcFinder<Config, CleanConfig> {
   return async ( fileOps: FileOps, currentDirectory: string ): Promise<ErrorsAnd<FileNameAndCliConfigTc<Config, CleanConfig>>> => {
     const fileName = await findFileUp ( currentDirectory, dir => fileOps.isFile ( fileOps.join ( dir, name ) ) )
     if ( fileName === undefined ) return onNotFound ( name )
     const tc: CliConfigTC<Config, CleanConfig> = {
-      load: ( fileOps: FileOps ) => async ( dir: string ) => {
+      load: ( fileOps: FileOps ) => async ( dir: string |undefined) => {
+        if ( dir === undefined ) return [ `No directory found for ${name}` ];
         let fileOrUrl = fileOps.join ( dir, name );
         return fileOps.loadFileOrUrl ( fileOrUrl ).then ( parseJson ( `Loading file ${fileOrUrl} for Config` ) );
       },
-      displayErrors: ( errors: string[] ) => reportError ( errors ),
+      displayErrors: ( errors: string[] ) => reportErrors ( errors ),
       validate,
       cleanForDisplay: c => c
     };

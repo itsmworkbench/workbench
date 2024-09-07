@@ -11,6 +11,6 @@ export const rawBodyParser: KoaMiddleware = async ( ctx: Context, next: Next ): 
   } );
 
   // Assign the raw body to ctx.request.rawBody for later use
-  ctx.request.rawBody = await getRawBody ();
+  (ctx.request as any).rawBody = await getRawBody ();
   await next ();
 };

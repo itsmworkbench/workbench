@@ -1,7 +1,8 @@
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
 import { Action } from "./actions";
 
-export function deref ( a: Action, s: string, dic: any ) {
+export function deref ( a: Action, s: string|undefined, dic: any ) {
+  if (s===undefined)return undefined
   return derefence ( `dereferenceTemplateToActions ${JSON.stringify ( a )}`, dic, s, { variableDefn: dollarsBracesVarDefn, allowUndefined: true } )
 }
 export function dereferenceSqlAction ( a: Action, variables: Record<string, string> ): Action {
@@ -15,11 +16,13 @@ export function dereferenceSqlAction ( a: Action, variables: Record<string, stri
 export function dereferenceEmailAction ( a: Action, variables: Record<string, string> ): Action {
   if ( a.by !== 'Email' ) return a
 
-  return { by: 'Email',
+  return {
+    by: 'Email',
     to: deref ( a, a.to, variables ),
     subject: deref ( a, a.subject, variables ),
     withMissingData: a.withMissingData,
-    email: deref ( a, a.email, variables ) }
+    email:  deref ( a, a.email, variables )
+  }
 }
 export function dereferenceLdapAction ( a: Action, variables: Record<string, string> ): Action {
   if ( a.by !== 'LDAP' ) return a
@@ -27,10 +30,10 @@ export function dereferenceLdapAction ( a: Action, variables: Record<string, str
 }
 
 export function dereferenceReceiveEmailAction ( a: Action, variables: Record<string, string> ): Action {
-  if (a.by !== 'ReceiveEmail') return a
-  return { by: 'ReceiveEmail', from: deref(a, a.from, variables) }
+  if ( a.by !== 'ReceiveEmail' ) return a
+  return { by: 'ReceiveEmail', from: deref ( a, a.from, variables ) }
 }
-export function dereferenceAction ( a: Action, variables: any ): Action {
+export function dereferenceAction ( a: Action, variables: any ): Action | undefined {
   if ( a === undefined ) return undefined
   if ( a.by === 'SQL' ) return dereferenceSqlAction ( a, variables )
   if ( a.by === 'Email' ) return dereferenceEmailAction ( a, variables )

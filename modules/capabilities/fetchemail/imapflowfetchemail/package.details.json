@@ -8,7 +8,9 @@
       "@laoban/variables": "1.4.45",
       "imapflow":          "1.0.158"
     },
-    "devDependencies": {},
+    "devDependencies": {
+      "@types/imapflow": "^1.0.19"
+    },
     "browser":         {
       "child_process": false
     }

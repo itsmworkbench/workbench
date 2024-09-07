@@ -12,7 +12,7 @@ export const executeScriptInShell: ExecuteInShellFn = ( cwd: string, cmd: string
       if ( stdErr === '' && (error === null || error.code === 0) )
         resolve ( { message: stdout.toString (), code: 0 } )
       else
-        resolve ( { message: stdout.toString (), error: stdErr.toString (), code: error?.code } )
+        resolve ( { message: stdout.toString (), error: stdErr.toString (), code: error?.code as number } )
     } )
   } );
 };

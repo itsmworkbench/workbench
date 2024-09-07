@@ -1,6 +1,6 @@
 import { NameAnd } from "@laoban/utils";
 
-export type TicketVariables = NameAnd<string>
+export type TicketVariables = NameAnd<string|number>
 
 export type AiTicketVariablesFn = ( ticket: string ) => Promise<TicketVariables>
 

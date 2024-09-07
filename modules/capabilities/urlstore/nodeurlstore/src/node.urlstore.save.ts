@@ -10,13 +10,14 @@ export const saveNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfig
   async ( namedOrUrl: NamedOrIdentityUrl, content: any, options?: UrlSaveOptions ): Promise<ErrorsAnd<UrlStoreResult>> => {
     if ( !isNamedUrl ( namedOrUrl ) ) return [ `${JSON.stringify ( namedOrUrl )} is not a NamedUrl` ]
     return mapErrorsK ( namedUrlToPathAndDetails ( config ) ( namedOrUrl ), ( { path: thePath, details } ) => {
-      return mapErrorsK ( details.writer ( content ), async string => {
+      return mapErrorsK ( details.writer ( content ), async ( string: string ): Promise<ErrorsAnd<UrlStoreResult>> => {
         try {
           console.log ( 'saveNamedUrl', namedOrUrl, thePath )
           console.log ( '  --append', options )
           console.log ( '  --content', content )
           console.log ( '  --asString', string )
           if ( string === undefined ) return [ `Failed to turn this into string ${JSON.stringify ( namedOrUrl )}\n${content}` ]
+          if ( namedOrUrl.url === undefined ) return [ `NamedUrl ${JSON.stringify ( namedOrUrl )} has no url` ]
           await fs.promises.mkdir ( path.dirname ( thePath ), { recursive: true } )
           const repo = repoFrom ( config, namedOrUrl )
           await gitOps.init ( repo ) // creates a new repo if needed including the directory.
@@ -34,8 +35,8 @@ export const saveNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfig
           const fileSize = options?.append ? undefined : await gitOps.sizeForHash ( repo, id.id )
           const result: UrlStoreResult = { url: namedOrUrl.url, fileSize, id: idAsString };
           return result
-        } catch ( e ) {
-          return [ `Failed to save ${JSON.stringify ( namedOrUrl )} Options=${JSON.stringify ( options )}\n${JSON.stringify ( content )}`, e ]
+        } catch ( e: any ) {
+          return [ `Failed to save ${JSON.stringify ( namedOrUrl )} Options=${JSON.stringify ( options )}\n${JSON.stringify ( content )}\nError ${JSON.stringify ( e )}` ]
         }
       } )
     } )

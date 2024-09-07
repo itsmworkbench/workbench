@@ -23,7 +23,7 @@ export function extractVariablesFrom ( ve: VariablesExtractor, id: string, soFar
     let result: ErrorsAnd<Variables> = v ( soFar, t );
     if ( hasErrors ( result ) ) return { variables: {}, errors: result }
     return result
-  } catch ( e ) {
+  } catch ( e :any) {
     return { variables: {}, errors: [ e.message ] }
   }
 }

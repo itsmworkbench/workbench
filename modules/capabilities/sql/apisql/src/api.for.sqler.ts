@@ -21,10 +21,10 @@ export const apiForSqlerPosts = ( sqler: Sqler, debug?: boolean ): KoaPartialFun
     const match = /^\/api\/sql/.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'POST';
     let result = match && isMethodMatch;
-    return result;
+    return !!result;
   },
   apply: async ( ctx ) => {
-    const json = JSON.parse ( ctx.context.request.rawBody );
+    const json = JSON.parse ( (ctx.context.request as any).rawBody );
     console.log ( 'Json for sql', json )
     try {
       const result: ErrorsAnd<string | number | SqlQueryResult | NameAnd<NameAnd<string>>> = await processSql ( ctx.context.request.path, json, sqler, );
@@ -34,7 +34,7 @@ export const apiForSqlerPosts = ( sqler: Sqler, debug?: boolean ): KoaPartialFun
       console.log ( 'Sql: resultString', resultString )
       ctx.context.set ( 'Content-Type', typeof result === 'string' ? 'text/plain' : 'application/json' );
       if ( hasErrors ( result ) ) ctx.context.status = 400;
-    } catch ( e ) {
+    } catch ( e :any) {
       ctx.context.status = 500;
       ctx.context.body = e.toString ();
     }

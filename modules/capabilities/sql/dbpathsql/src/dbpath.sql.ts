@@ -4,7 +4,7 @@ import { ErrorsAnd, mapErrors, NameAnd } from "@laoban/utils";
 import { parseColumnsToJSON } from "@itsmworkbench/utils";
 
 export function makeSqlerForDbPathShell ( executeFn: ExecuteInShellFn, cwd: string, debug?: boolean ): Sqler {
-  let query = async ( sql, env ): Promise<ErrorsAnd<SqlQueryResult>> => {
+  let query = async ( sql: any, env:string ): Promise<ErrorsAnd<SqlQueryResult>> => {
     const cmd = `dbpath sql --env ${env} --json "${sql.join ( ' ' )}"`;
     if ( debug ) console.log ( 'query - cmd:', cmd )
     return mapErrors ( await execute ( executeFn, cwd, cmd, 'utf8', debug ), ( res ) => {
