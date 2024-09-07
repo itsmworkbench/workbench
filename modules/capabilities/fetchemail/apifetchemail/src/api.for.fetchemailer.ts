@@ -12,7 +12,7 @@ export const apiForFetchEmailer = ( fetcher: FetchEmailer ): KoaPartialFunction 
     const match = /^\/api\/fetchemail/.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'POST';
     let result = match && isMethodMatch;
-    return result;
+    return !!result;
   },
   apply: async ( ctx ) => {
     try {
@@ -22,7 +22,7 @@ export const apiForFetchEmailer = ( fetcher: FetchEmailer ): KoaPartialFunction 
       console.log ( 'Email: ', path, body, result )
       ctx.context.body = JSON.stringify ( result, null, 2 );
       ctx.context.set ( 'Content-Type', 'application/json' );
-    } catch ( e ) {
+    } catch ( e :any) {
       ctx.context.status = 500;
       ctx.context.body = e.toString ();
     }

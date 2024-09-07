@@ -4,6 +4,7 @@
 import { ErrorsAnd, mapErrors, NameAnd } from "@laoban/utils";
 import { FileOps } from "@laoban/fileops";
 import { CliConfigTC, CliTcFinder, loadConfig } from "./cliconfig";
+import { Env } from "@itsmworkbench/utils";
 
 export type ActionFn<Commander> = ( commander: Commander, opts: NameAnd<string | boolean| string[]>, ...args: any[] ) => void | Promise<void>
 export interface Option {
@@ -37,11 +38,11 @@ export interface HasCurrentDirectory {
   currentDirectory: string
 }
 export interface HasEnv {
-  env: NameAnd<string>
+  env: NameAnd<string|undefined>
 
 }
 export interface CliContext extends HasNameAndVersion, HasCurrentDirectory, HasEnv {
-  env: NameAnd<string>
+  env: Env
   args: string[]
   fileOps: FileOps
 }

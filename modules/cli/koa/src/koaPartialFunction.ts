@@ -7,26 +7,28 @@ import { Context } from "koa";
 import { PartialFunction } from "@itsmworkbench/utils";
 
 export const defaultFiles = new Set ( [ 'index.html', 'default.html' ] );
+
+export type ContextWithRawbody = Context & { request: { rawBody: string } }
 export interface ContextAndStats {
   debug: boolean
   reqPath: string
   reqPathNoTrailing: string
-  context: Context
-  stats: Stats
+  context: ContextWithRawbody
+  stats: Stats | null
 }
 export async function contextAndStats ( context: Context, root: string, debug: boolean ): Promise<ContextAndStats> {
   let reqPath = path.join ( root, context.request.path );
   let reqPathNoTrailing = reqPath.replace ( /\/$/, '' );
   const stats = await fs.stat ( reqPathNoTrailing ).catch ( () => null );
   if ( debug ) console.log ( 'reqPathNoTrailing', reqPathNoTrailing, 'stats', stats, 'isFile:', stats?.isFile (), 'isDirectory:', stats?.isDirectory () );
-  return { reqPath, context, stats, reqPathNoTrailing, debug }
+  return { reqPath, context: context as ContextWithRawbody, stats, reqPathNoTrailing, debug }
 }
 
 export type KoaPartialFunction = PartialFunction<ContextAndStats, Promise<void>>
 export const handleFile: KoaPartialFunction = {
   isDefinedAt: ( { stats, debug }: ContextAndStats ) => {
     if ( debug ) console.log ( `file ${stats?.isFile ()}` );
-    return stats?.isFile ();
+    return stats?.isFile () === true;
   },
   apply: async ( { context, reqPathNoTrailing }: ContextAndStats ) =>
     serveStatic ( context, reqPathNoTrailing )
@@ -61,7 +63,7 @@ export const postHandler = ( path: string, bodyHandler: ( s: string ) => Promise
     return b;
   },
   apply: async ( { context }: ContextAndStats ) => {
-    let s: any = context.request.body;
+    let s: any = (context.request as any).body;
     console.log ( 'context:', context )
     console.log ( 'initial body: ', s )
     console.log ( 'initial rawBody: ', context.request.rawBody )
@@ -72,7 +74,7 @@ export const postHandler = ( path: string, bodyHandler: ( s: string ) => Promise
   }
 });
 export const directoryServesDefaultsIfExists: KoaPartialFunction = {
-  isDefinedAt: ( { stats }: ContextAndStats ) => stats?.isDirectory (),
+  isDefinedAt: ( { stats }: ContextAndStats ) => stats?.isDirectory () === true,
   apply: async ( { context, reqPathNoTrailing }: ContextAndStats ) => {
     for ( const file of defaultFiles ) {
       const filePath = path.join ( reqPathNoTrailing, file );

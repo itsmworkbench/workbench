@@ -6,10 +6,11 @@ import { NameAnd } from "@laoban/utils";
 
 import { ticketEventsNameSpaceDetails } from "@itsmworkbench/ticketevents";
 import { ticketTypeNamespaceDetails } from "@itsmworkbench/tickettype";
+import { Env } from "@itsmworkbench/utils";
 
 
 //Even though this is 'for git' it can be safely used by the 'for api' version
-export function defaultNameSpaceDetails ( yaml: YamlCapability, env: NameAnd<string> ): NameAnd<NameSpaceDetailsForGit> {
+export function defaultNameSpaceDetails ( yaml: YamlCapability, env: Env ): NameAnd<NameSpaceDetailsForGit> {
   return {
     ka: ticketTypeNamespaceDetails ( yaml ),
     ticket: ticketNamespaceDetails (),
@@ -17,7 +18,7 @@ export function defaultNameSpaceDetails ( yaml: YamlCapability, env: NameAnd<str
     ticketevents: ticketEventsNameSpaceDetails ()
   }
 }
-export function defaultOrganisationUrlStoreConfig ( yaml: YamlCapability, env: NameAnd<string> ): OrganisationUrlStoreConfigForGit {
+export function defaultOrganisationUrlStoreConfig ( yaml: YamlCapability, env: Env ): OrganisationUrlStoreConfigForGit {
   return {
     baseDir: 'organisations',
     nameSpaceDetails: defaultNameSpaceDetails ( yaml, env )

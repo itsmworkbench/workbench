@@ -72,7 +72,7 @@ export function fullExtension ( path: string ): string {
 
 }
 
-export function simpleTemplate(template: string, data: NameAnd<any>): string {
+export function simpleTemplate(template: string, data: NameAnd<any>): string|undefined {
   if (template === undefined) return undefined
   if (data === undefined) return template
   return template.replace(/\{(\w+)\}/g, (match, key) => {

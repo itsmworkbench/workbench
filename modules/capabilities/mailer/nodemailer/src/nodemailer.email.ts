@@ -8,7 +8,7 @@ export function sendEmailRaw ( transporter: Mail<SMTPTransport.SentMessageInfo>,
   return async email => {
     try {
       return await transporter.sendMail ( { ...email, from } )
-    } catch ( e ) {
+    } catch ( e:any ) {
       return [ e.toString () ]
     }
   }
@@ -19,7 +19,7 @@ function testEmail ( transporter: Mail<SMTPTransport.SentMessageInfo> ) {
     try {
       await transporter.verify ();
       return 'Test connection OK'
-    } catch ( e ) {
+    } catch ( e :any) {
       return [ e.toString () ]
     }
   };

@@ -29,9 +29,9 @@ async function loadToEnd ( { filePath }: FileLoading, start: number, encoding: B
 }
 
 
-export const loadStringIncrementally = ( fileLoading: FileLoading ) => async ( start: number, encoding: BufferEncoding = 'utf-8' ): Promise<ResultAndNewStart> => {
+export const loadStringIncrementally = ( fileLoading: FileLoading ) => async ( start: number|undefined, encoding: BufferEncoding = 'utf-8' ): Promise<ResultAndNewStart> => {
   const fileSize = await getFileSize ( fileLoading.filePath );
-  if ( fileSize === start ) return { newStart: start, result: '' };
+  if ( fileSize === start ) return { newStart: start ||0, result: '' };
   return withFileLock ( fileLoading, async () =>
-    ({ newStart: await getFileSize ( fileLoading.filePath ), result: await loadToEnd ( fileLoading, start, encoding ) }) )
+    ({ newStart: await getFileSize ( fileLoading.filePath ), result: await loadToEnd ( fileLoading, start||0, encoding ) }) )
 };

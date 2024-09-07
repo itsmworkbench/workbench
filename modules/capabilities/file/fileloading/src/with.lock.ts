@@ -23,7 +23,7 @@ async function acquireLock ( { lockFilePath, timeout, debug, timeservice }: Lock
       await fd.close (); //close the file descriptor. But importantly the file still exists
       if ( debug ) console.log ( 'acquired lock', lockFilePath )
       return true; // Lock acquired
-    } catch ( error ) {
+    } catch ( error:any ) {
       if ( debug ) console.log ( 'error acquiring lock', lockFilePath, error )
       if ( error.code === 'EEXIST' || error.code === 'EPERM' ) {
         await wait ( 100 ); // Wait before retrying if the lock exists

@@ -9,10 +9,15 @@ export const getUrls = ( loader: UrlLoaders ): KoaPartialFunction => ({
   isDefinedAt: ( ctx ) => {
     const match = matchGetUrls.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'GET';
-    return match && isMethodMatch;
+    return !!(match && isMethodMatch);
   },
   apply: async ( ctx ) => {
     const match = matchGetUrls.exec ( ctx.context.request.path );
+    if ( !match ) {
+      ctx.context.status = 404;
+      ctx.context.body = `Invalid URL: ${ctx.context.request.path}`;
+      return;
+    }
     const url = match[ 1 ];
     const identityOrNamedUrl = parseUrl ( url )
     if ( hasErrors ( identityOrNamedUrl ) ) {
@@ -25,7 +30,7 @@ export const getUrls = ( loader: UrlLoaders ): KoaPartialFunction => ({
       // The actionFn is either 'loader' for GET or 'save' for PUT
       let requestBody = ctx.context.request.rawBody;
       const query = ctx.context.request.query
-      const offset = Number.parseInt ( query.offset || "0" )
+      const offset = Number.parseInt ( query.offset?.toString () || "0" )
       console.log ( 'start', offset, 'requestBody', requestBody )
       const result = await loadFromString ( loader, url, offset );
       if ( hasErrors ( result ) ) {
@@ -36,7 +41,7 @@ export const getUrls = ( loader: UrlLoaders ): KoaPartialFunction => ({
       }
       ctx.context.body = JSON.stringify ( result );
       ctx.context.set ( 'Content-Type', 'application/json' );
-    } catch ( e ) {
+    } catch ( e: any ) {
       ctx.context.status = 404;
       ctx.context.body = e.toString ();
     }
@@ -46,12 +51,17 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
   isDefinedAt: ( ctx ) => {
     const match = /\/url\/itsm/.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'PUT';
-    return match && isMethodMatch;
+    return !!(match && isMethodMatch);
   },
   apply: async ( ctx ) => {
     console.log ( 'putUrls', ctx.context.request.path )
     const match = /\/url\/(itsm.*)/.exec ( ctx.context.request.path );
     console.log ( 'match', match )
+    if ( !match ) {
+      ctx.context.status = 404;
+      ctx.context.body = `Invalid URL: ${ctx.context.request.path}`;
+      return;
+    }
     const url = match[ 1 ];
     const append = ctx.context.request.query.append === 'true'
     const commit = ctx.context.request.query.commit !== 'false'
@@ -76,7 +86,7 @@ export const putUrls = ( save: UrlSaveFn, nsToDetails: NameAnd<NameSpaceDetails>
       }
       ctx.context.body = JSON.stringify ( result );
       ctx.context.set ( 'Content-Type', 'application/json' );
-    } catch ( e ) {
+    } catch ( e: any ) {
       ctx.context.status = 404;
       ctx.context.body = e.toString ();
     }
@@ -90,11 +100,16 @@ export const getFolders = ( folders: UrlFolderLoader ): KoaPartialFunction => ({
   isDefinedAt: ( ctx ) => {
     const match = folderUrlRegex.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'GET';
-    console.log('get folders isDefinedAt', match, isMethodMatch)
-    return match && isMethodMatch;
+    console.log ( 'get folders isDefinedAt', match, isMethodMatch )
+    return !!(match && isMethodMatch);
   },
   apply: async ( ctx ) => {
     const match = folderUrlRegex.exec ( ctx.context.request.path );
+    if ( !match ) {
+      ctx.context.status = 404;
+      ctx.context.body = `Invalid URL: ${ctx.context.request.path}`;
+      return;
+    }
     const org = match[ 1 ];
     const ns = match[ 2 ];
     const path = match[ 3 ];
@@ -109,7 +124,7 @@ export const getFolders = ( folders: UrlFolderLoader ): KoaPartialFunction => ({
       }
       ctx.context.body = JSON.stringify ( result );
       ctx.context.set ( 'Content-Type', 'application/json' );
-    } catch ( e ) {
+    } catch ( e: any ) {
       ctx.context.status = 500;
       ctx.context.body = e.toString ();
     }
@@ -119,16 +134,18 @@ export const getFolders = ( folders: UrlFolderLoader ): KoaPartialFunction => ({
 const listUrlRegex = /^\/url\/list\/([^\/]+)\/(.+)$/;
 
 
-const getOrder = ( order: string | undefined ): ListNamesOrder => {
+const getOrder = ( order: string[] | string | undefined ): ListNamesOrder => {
   if ( order === undefined ) return 'name'
+  if ( Array.isArray ( order ) ) throw new Error ( `Invalid order parameter: ${order}. Must be only present once` );
   if ( order === '' ) return 'name'
   if ( order === 'date' ) return 'date'
   if ( order === 'name' ) return 'name'
   throw new Error ( `Invalid order parameter: ${order}. Must be 'name' or 'date'.` );
 };
 
-const getIntegerWithDefault = ( value, defaultValue ) => {
-  const parsed = parseInt ( value, 10 );
+const getIntegerWithDefault = ( value: string|string[]|undefined, defaultValue: number ) => {
+  if (value === undefined) return defaultValue;
+  const parsed = parseInt ( value?.toString(), 10 );
   return isNaN ( parsed ) || parsed < 1 ? defaultValue : parsed;
 };
 
@@ -141,7 +158,7 @@ export const listUrls = ( list: UrlListFn ): KoaPartialFunction => ({
   isDefinedAt: ( ctx ) => {
     const match = listUrlRegex.exec ( ctx.context.request.path );
     const isMethodMatch = ctx.context.request.method === 'GET';
-    return match && isMethodMatch;
+    return !!(match && isMethodMatch);
   },
   apply: async ( ctx ) => {
     const match = listUrlRegex.exec ( ctx.context.request.path );
@@ -160,6 +177,9 @@ export const listUrls = ( list: UrlListFn ): KoaPartialFunction => ({
 
         console.log ( 'filter', filter )
 
+        if ( Array.isArray ( filter ) ) {
+          throw new Error ( `Filter must be a single string, not an array: ${filter}` )
+        }
         const result = await list ( { org, namespace, path, pageQuery: { page, pageSize }, order, filter } )
         if ( hasErrors ( result ) ) {
           console.log ( 'listUrls - errors', result )
@@ -169,7 +189,7 @@ export const listUrls = ( list: UrlListFn ): KoaPartialFunction => ({
         }
         ctx.context.body = JSON.stringify ( result );
         ctx.context.set ( 'Content-Type', 'application/json' );
-      } catch ( e ) {
+      } catch ( e: any ) {
         ctx.context.status = 500;
         ctx.context.body = e.toString ();
       }

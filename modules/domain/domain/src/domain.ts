@@ -27,7 +27,7 @@ export type Conversation = {
 
 export type QuestionPFK<S> = PartialFunctionK<S, ChatDisplayData<any>>
 
-export const camelCaseAndIdYamlParser = ( yaml: YamlCapability ) => <T> ( id, s ): ErrorsAnd<T> => {
+export const camelCaseAndIdYamlParser = ( yaml: YamlCapability ) => <T> ( id: string, s: string ): ErrorsAnd<T> => {
   let json = yaml.parser ( s );
   console.log ( 'id', id, 'json', json )
   return mapErrors ( json, ( doc: any ) => {
@@ -41,7 +41,7 @@ export const camelCaseAndIdYamlParser = ( yaml: YamlCapability ) => <T> ( id, s 
 }
 
 
-export const camelCaseAndIdAndNameParser = ( yaml: YamlCapability ) => ( id, s ) => {
+export const camelCaseAndIdAndNameParser = ( yaml: YamlCapability ) => ( id: string, s: string ) => {
   return mapErrors ( yaml.parser ( s ), input => {
     const doc = transformKeysToCamelCase<any> ( input )
     const { key, path: name } = findIdKeyAndPath ( id );

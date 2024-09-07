@@ -32,10 +32,11 @@ export const saveNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreConfig
             return { id, idAsString }
           } )
           const fileSize = options?.append ? undefined : await gitOps.sizeForHash ( repo, id.id )
-          const result: UrlStoreResult = { url: namedOrUrl.url, fileSize, id: idAsString };
+          const namedUrl = writeUrl ( namedOrUrl )
+          const result: UrlStoreResult = { url: namedUrl, fileSize, id: idAsString };
           return result
-        } catch ( e ) {
-          return [ `Failed to save ${JSON.stringify ( namedOrUrl )} Options=${JSON.stringify ( options )}\n${JSON.stringify ( content )}`, e ]
+        } catch ( e: any ) {
+          return [ `Failed to save ${JSON.stringify ( namedOrUrl )} Options=${JSON.stringify ( options )}\n${JSON.stringify ( content )}\nError ${JSON.stringify ( e )}` ]
         }
       } )
     } )

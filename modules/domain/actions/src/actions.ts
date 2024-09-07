@@ -1,4 +1,4 @@
-import { Capability, PhaseAnd } from "@itsmworkbench/domain";
+import { Capability, PhaseAnd, PhaseName } from "@itsmworkbench/domain";
 import { NameAnd } from "@laoban/utils";
 
 
@@ -22,12 +22,12 @@ export interface SqlAction extends BaseAction {
 }
 export interface LdapAction extends BaseAction {
   by: 'LDAP'
-  who: string
+  who?: string
 }
 
 export interface EmailAction extends BaseAction {
   by: 'Email'
-  to: string
+  to?: string
   withMissingData?: boolean
   subject?: string
   email?: string
@@ -35,7 +35,7 @@ export interface EmailAction extends BaseAction {
 }
 export interface ReceiveEmailAction extends BaseAction {
   by: 'ReceiveEmail'
-  from: string
+  from?: string
 }
 export interface ChatAction extends BaseAction {
   by: 'Chat'
@@ -72,10 +72,10 @@ export function isSafeAction ( x: any ): x is SafeAction {
   return x?.safe === true
 }
 
-export const phaseStatus = ( actions?: PhaseAnd<NameAnd<Action>> , status?: PhaseAnd<NameAnd<boolean>>  ) => ( phase: string ): (boolean | undefined) => {
+export const phaseStatus = ( actions?: PhaseAnd<NameAnd<Action>> , status?: PhaseAnd<NameAnd<boolean>>  ) => ( phase: PhaseName ): (boolean | undefined) => {
   const phaseActions = actions?.[ phase ] || {} as any
   const phaseStatus = status?.[ phase ]
-  let result: boolean = true;
+  let result: boolean|undefined = true;
   if ( Object.keys ( phaseActions ).length === 0 ) return true;
   for ( const action in phaseActions ) {
     if ( phaseStatus?.[ action ] === false ) return false

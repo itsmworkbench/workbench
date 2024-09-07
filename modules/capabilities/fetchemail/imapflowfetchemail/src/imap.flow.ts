@@ -1,5 +1,5 @@
 import { ImapFlow } from 'imapflow';
-import { FetchEmailer, FetchEmailFn, FetchEmailOptions, ListEmailsFn, ListEmailsOptions } from "@itsmworkbench/fetchemail";
+import { FetchEmailer, FetchEmailFn, FetchEmailOptions, FetchEmailResult, ListEmailsFn, ListEmailsOptions } from "@itsmworkbench/fetchemail";
 import { hasErrors, toArray } from "@laoban/utils";
 import { NamedUrl, UrlStore } from "@itsmworkbench/urlstore";
 
@@ -41,9 +41,9 @@ function transformEmailForRead ( message: any ) {
     envelope: {
       date: message.envelope.date,
       subject: message.envelope.subject,
-      from: message.envelope.from.map ( addr => ({ name: addr.name, address: addr.address }) ),
-      to: message.envelope.to.map ( addr => ({ name: addr.name, address: addr.address }) ),
-      cc: message.envelope.cc?.map ( addr => ({ name: addr.name, address: addr.address }) ) ?? [],
+      from: message.envelope.from.map ( (addr:any) => ({ name: addr.name, address: addr.address }) ),
+      to: message.envelope.to.map ( (addr:any) => ({ name: addr.name, address: addr.address }) ),
+      cc: message.envelope.cc?.map ( (addr:any) => ({ name: addr.name, address: addr.address }) ) ?? [],
     },
     flags: message.flags,
     bodyParts,
@@ -55,12 +55,12 @@ const listEmails = ( clientFn: () => ImapFlow ): ListEmailsFn =>
     await client.mailboxOpen ( 'INBOX' );
     console.log ( 'options', options )
     console.log ( 'from', options.from )
-    let uids: Number[] = await client.search ( { from: options.from, }, {} );
+    let uids: number[] = await client.search ( { from: options.from, }, {} );
     console.log ( 'uids', uids )
     const emailsData = [];
     for ( const uid of toArray ( uids ) ) {
       console.log ( 'checking uid', uid )
-      const fetchResult = await client.fetchOne ( uid, { envelope: true, internalDate: true, uid: true, flags: true, bodyStructure: true } );
+      const fetchResult = await client.fetchOne ( uid.toString(), { envelope: true, internalDate: true, uid: true, flags: true, bodyStructure: true } );
       console.log ( 'fetchResult', fetchResult )
       if ( fetchResult ) {
         emailsData.push ( transformEmailForRead ( fetchResult ) );
@@ -83,14 +83,15 @@ export function fetchEmail ( client: () => ImapFlow ): FetchEmailFn {
     const fetchResult = await client.fetchOne ( options.uid, query, { uid: true } )
     console.log ( 'fetchResult', fetchResult )
     let subject = fetchResult.envelope.subject;
-    let from = fetchResult.envelope.from.map ( addr => `${addr.name} <${addr.address}>` ).join ( ', ' );
+    let from = fetchResult.envelope.from.map ( (addr: any) => `${addr.name} <${addr.address}>` ).join ( ', ' );
     let date = fetchResult.envelope.date;
     console.log ( 'fetchResult-bodyParts', fetchResult.bodyParts )
     const textBody: string[] = toArray ( options.bodyParts ).map ( part => {
       console.log ( 'part', typeof part, part, fetchResult?.bodyParts?.get ( part ) )
-      return fetchResult?.bodyParts?.get ( part )?.toString ( 'utf8' );
+      return fetchResult?.bodyParts?.get ( part )?.toString ( 'utf8' )||'';
     } )
-    return { subject, from, date, textBody }
+    let result: FetchEmailResult = { subject, from, date, textBody };
+    return result
   } )
 }
 

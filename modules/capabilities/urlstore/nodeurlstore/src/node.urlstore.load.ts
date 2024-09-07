@@ -1,5 +1,5 @@
 import { ErrorsAnd, mapErrorsK } from "@laoban/utils";
-import { IdentityUrl, IdentityUrlLoadResult, isIdentityUrl, NamedLoadResult, NamedUrl, namedUrlToPathAndDetails, OrganisationUrlStoreConfigForGit, repoFrom, UrlLoadIdentityFn, UrlLoadNamedFn, urlToDetails } from "@itsmworkbench/urlstore";
+import { IdentityUrl, IdentityUrlLoadResult, isIdentityUrl, NamedLoadResult, NamedUrl, namedUrlToPathAndDetails, OrganisationUrlStoreConfigForGit, repoFrom, UrlLoadIdentityFn, UrlLoadNamedFn, urlToDetails, writeUrl } from "@itsmworkbench/urlstore";
 import { GitOps } from "@itsmworkbench/git";
 import path from "path";
 import { fileLoading, loadStringIncrementally } from "@itsmworkbench/fileloading";
@@ -11,12 +11,13 @@ export const loadFromNamedUrl = ( gitOps: GitOps, config: OrganisationUrlStoreCo
     try {
       const fl = fileLoading ( p )
       const { result: raw, newStart: fileSize }: ResultAndNewStart = await loadStringIncrementally ( fl ) ( offset, details.encoding )
-      const result = await details.parser ( named.url, raw )
+      const namedUrl = writeUrl(named)
+      const result = await details.parser (namedUrl, raw )
       const repo = repoFrom ( config, named )
       const hash = await gitOps.hashFor ( repo, path.relative ( repo, p ) )
       const id = `itsmid/${named.organisation}/${named.namespace}/${hash}`
-      return { url: named.url, mimeType: details.mimeType, result, id, fileSize }
-    } catch ( e ) {
+      return { url: namedUrl, mimeType: details.mimeType, result, id, fileSize }
+    } catch ( e :any) {
       return [ `Loading ${JSON.stringify ( named )} - ${e.toString ()}` ]
     }
   } )
@@ -29,9 +30,10 @@ export const loadFromIdentityUrl = ( gitOps: GitOps, config: OrganisationUrlStor
     try {
       const repo = repoFrom ( config, identity )
       const string = await gitOps.fileFor ( repo, identity.id, details.encoding )
-      const result = await details.parser ( identity.url, string )
-      return { url: identity.url, mimeType: details.mimeType, result, id: identity.url }
-    } catch ( e ) {
+      const identityUrl = writeUrl ( identity )
+      const result = await details.parser ( identityUrl, string )
+      return { url: identityUrl, mimeType: details.mimeType, result, id: identityUrl }
+    } catch ( e : any) {
       return [ e.toString () ]
     }
   } )

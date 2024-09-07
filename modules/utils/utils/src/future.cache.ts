@@ -24,23 +24,23 @@ export interface PromiseCacheListener<Context, Result> {
 
 export interface TwoKeyPromiseCache<Context, T> {
   listeners: PromiseCacheListener<Context, T>[]
-  cache: NameAnd<NameAnd<Promise<T>>>
+  cache: NameAnd<NameAnd<Promise<T|undefined>>>
 }
 
 export function getOrUpdateFromPromiseCache<Context, T> ( engine: TwoKeyPromiseCache<Context, T>, context: Context, name1: string, name2: string, raw: () => Promise<T> ): Promise<T | undefined> {
   const { listeners, cache } = engine
-  const thisCache: NameAnd<Promise<T>> = cache[ name1 ] || {}
+  const thisCache: NameAnd<Promise<T|undefined>> = cache[ name1 ] || {}
   const saved = thisCache[ name2 ]
   if ( saved ) {
-    callListeners ( listeners, 'duplicateCall', l => l.duplicateCall ( context ) )
+    callListeners ( listeners, 'duplicateCall', l => l.duplicateCall?. ( context ) )
     return saved
   }
-  callListeners ( listeners, 'callingLoad', l => l.callingLoad ( context ) )
+  callListeners ( listeners, 'callingLoad', l => l.callingLoad ?.( context ) )
   const result = raw ().then ( res => {
-    callListeners ( listeners, 'loadArrived', l => l.loadArrived ( context, res ) )
+    callListeners ( listeners, 'loadArrived', l => l.loadArrived ?.( context, res ) )
     return res;
   } ).catch ( e => {
-    callListeners ( listeners, 'loadError', l => l.loadError ( context, e ) )
+    callListeners ( listeners, 'loadError', l => l.loadError ?.( context, e ) )
     return undefined
   } ).finally ( () => {delete thisCache[ name2 ]} );
   thisCache[ name2 ] = result

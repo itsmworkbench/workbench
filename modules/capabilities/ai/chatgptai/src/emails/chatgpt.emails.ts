@@ -9,7 +9,7 @@ export const generalEmail: AIEmailsFn = async ( email: EmailData ): Promise<Emai
       subject: emailContent.subject,
       email: emailContent.email,
     };
-  } catch ( error ) {
+  } catch ( error:any ) {
     console.error ( "Error generating email: ", error );
     return {
       error: {

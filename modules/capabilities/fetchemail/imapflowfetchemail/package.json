@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "typescript": "^5.2.2",
+    "@types/imapflow": "^1.0.19",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "",
     "@types/node": "^14.0.0",

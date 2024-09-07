@@ -17,18 +17,19 @@ export const urlFolders = ( config: OrganisationUrlStoreConfigForGit ): UrlFolde
       const errors: string[] = [];
       for ( const entry of entries ) {
         console.log ( 'ext', ext, 'entry', entry.name, 'fullExtension', fullExtension ( entry.name ) )
+        if ( !folder.children ) folder.children = []
         if ( entry.isDirectory () ) {
           const childFolder = await load ( path.join ( dirPath, entry.name ), ext );
           if ( hasErrors ( childFolder ) ) errors.push ( ...childFolder );
           else {
-            if ( childFolder.children.length > 0 ) folder.children.push ( childFolder );
+            if ( childFolder.children && childFolder.children.length > 0 ) folder.children.push ( childFolder );
           }
         } else if ( entry.isFile () && fullExtension ( entry.name ) === ext ) {
           folder.children.push ( { name: entry.name } );
         }
       }
       return errors.length > 0 ? errors : folder;
-    } catch ( e ) {
+    } catch ( e: any ) {
       return [ 'urlFolders: ' + dirPath + ": " + e.toString () ];
     }
 

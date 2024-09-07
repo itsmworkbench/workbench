@@ -24,7 +24,7 @@ async function loadFileInfo ( directoryPath: string, nameFn: ( s: string ) => st
   }
   const files = await readIt ();
   const lcFilter = filter?.toLowerCase ()
-  const filterFn = filter ? ( file: Dirent ) => file.name.toLowerCase ().includes ( lcFilter ) : () => true;
+  const filterFn = lcFilter ? ( file: Dirent ) => file.name.toLowerCase ().includes ( lcFilter ) : () => true;
   const filesWithExtensionOrDir = files.filter ( file => fullExtension ( file.name ) === extension || file.isDirectory () );
   const fileInfoPromises = filesWithExtensionOrDir.filter ( file => filterFn ( file ) ).map ( async file => {
     const filePath = path.join ( directoryPath, file.name );

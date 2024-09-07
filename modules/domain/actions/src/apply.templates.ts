@@ -1,7 +1,8 @@
 import { derefence, dollarsBracesVarDefn } from "@laoban/variables";
 import { Action } from "./actions";
 
-export function deref ( a: Action, s: string, dic: any ) {
+export function deref ( a: Action, s: string|undefined, dic: any ) {
+  if (s===undefined)return undefined
   return derefence ( `dereferenceTemplateToActions ${JSON.stringify ( a )}`, dic, s, { variableDefn: dollarsBracesVarDefn, allowUndefined: true } )
 }
 export function dereferenceSqlAction ( a: Action, variables: Record<string, string> ): Action {
@@ -30,7 +31,7 @@ export function dereferenceReceiveEmailAction ( a: Action, variables: Record<str
   if (a.by !== 'ReceiveEmail') return a
   return { by: 'ReceiveEmail', from: deref(a, a.from, variables) }
 }
-export function dereferenceAction ( a: Action, variables: any ): Action {
+export function dereferenceAction ( a: Action, variables: any ): Action | undefined {
   if ( a === undefined ) return undefined
   if ( a.by === 'SQL' ) return dereferenceSqlAction ( a, variables )
   if ( a.by === 'Email' ) return dereferenceEmailAction ( a, variables )

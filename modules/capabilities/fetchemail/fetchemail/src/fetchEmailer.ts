@@ -29,7 +29,7 @@ export type ListEmailsFn = ( options: ListEmailsOptions ) => Promise<ListEmailsR
 export interface EmailContent {
   subject: string; // Subject of the email
   from: string; // From address of the email
-  date: string; // Date of the email
+  date: Date; // Date of the email
   textBody?: string[]; // Plain text body of the email
   htmlBody?: string[]; // HTML body of the email
 }

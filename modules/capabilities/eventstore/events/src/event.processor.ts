@@ -90,12 +90,12 @@ export async function processEvent<S> ( processor: EventProcessor<S>, startState
     if ( !processorFn ) return { errors: [ { event: 'error', error: `No processor for event ${e.event}`, context: {} } ] }
     let state = await processorFn ( processor, eventWithPrefix, startState );
     for ( let listener of processor.listeners ) {
-      try {listener ( e, startState, state )} catch ( e ) {
+      try {listener ( e, startState, state )} catch ( e: any ) {
         return { errors: [ { event: 'error', error: `Error in listener ${e.message}`, context: { event: e } } ] }
       }
     }
     return { state, errors: [] }
-  } catch ( e ) {
+  } catch ( e: any ) {
     return { errors: [ { event: 'error', error: `Error in processEvent ${e.message}`, context: { event: e } } ] }
   }
 }
@@ -109,9 +109,10 @@ export async function processEvents<S> ( processor: EventProcessor<S>, baseState
       if ( result === undefined ) throw new Error ( `result is undefined. ${JSON.stringify ( e )}` )
       if ( result.errors && result.errors.length > 0 )
         errors.push ( ...result.errors )
-      else
+      else {
+        if ( result.state === undefined ) throw new Error ( `result.state is undefined. ${JSON.stringify ( e )}` )
         state = result.state
-    }
+        }}
   }
   return { errors, state }
 }

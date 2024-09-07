@@ -50,10 +50,10 @@ export const generateAllPurposeEmail = async ( emailData: EmailData ): Promise<s
   const emailCompletion = await openai.chat.completions.create ( body );
 
   // Assuming emailCompletion.choices contains the email content
-  const emailContent = emailCompletion.choices[ 0 ].message.content.trim ();
+  const emailContent = emailCompletion?.choices?.[ 0 ].message?.content?.trim ();
   console.log ( emailContent );
 
-  return emailContent;
+  return emailContent || 'Ai was unable to generate email';
 };
 
 //TODO: unused method, we can delete later
@@ -70,7 +70,8 @@ export const determineEmailPurpose = async ( ticket: string ): Promise<EmailPurp
     temperature: 0.5,
   } );
 
-  const answer = response.choices[ 0 ].message.content.trim ().toLowerCase ();
+  const answer = response.choices[ 0 ]?.message?.content?.trim ().toLowerCase ();
+  if ( !answer ) throw new Error ( 'Ai was unable to determine email purpose' );
 
   // Decide the purpose based on the model's response
   if ( answer.includes ( "approval" ) ) {

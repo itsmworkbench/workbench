@@ -16,19 +16,24 @@ import { apiForMailer } from "@itsmworkbench/apimailer";
 
 
 export const eventsPF: KoaPartialFunction = {
-  isDefinedAt: ( ctx ) => ctx.stats?.isFile () && ctx.context.request.method === 'GET',
+  isDefinedAt: ( ctx ) => !!(ctx.stats?.isFile () && ctx.context.request.method === 'GET'),
   apply: async ( ctx ) => {
     const query = ctx.context.request.query
-    const start = Number.parseInt ( query.start || "0" )
+    const start = Number.parseInt ( query.start?.toString() || "0" )
+    if ( isNaN ( start ) ) {
+      ctx.context.status = 400
+      ctx.context.body = 'Invalid start parameter'
+      return
+    }
     const result = await loadStringIncrementally ( fileLoading ( ctx.reqPathNoTrailing ) ) ( start )
     ctx.context.body = `${result.newStart}\n${result.result}`
   }
 }
 
 export const appendPostPF: KoaPartialFunction = {
-  isDefinedAt: ( ctx ) => ctx.stats?.isFile () && ctx.context.request.method === 'POST',
+  isDefinedAt: ( ctx ) => !!(ctx.stats?.isFile () && ctx.context.request.method === 'POST'),
   apply: async ( ctx ) => {
-    const body: any = await ctx.context.request.body // should be parsed according to content type
+    const body: any = await (ctx.context.request as any).body // should be parsed according to content type
     if ( typeof body !== 'object' ) throw new Error ( `Expected object, got ${typeof body}. Body is ${JSON.stringify ( body )}` )
     const str = `${JSON.stringify ( body )}\n` // one line is important
 
