@@ -4,7 +4,7 @@
   "description": "A event source library for node.js backed with a file",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":   "1.4.51",
+      "@laoban/utils":   "${properties.laobanVersion}",
       "@focuson/lens":  "1.44.3",
       "@focuson/state": "1.44.3"
     },

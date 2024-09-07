@@ -4,7 +4,7 @@
   "description": "the interfaces and composition functions for the agents",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils": "1.4.51"
+      "@laoban/utils": "${properties.laobanVersion}"
     },
     "devDependencies": {},
     "browser":         {

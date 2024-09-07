@@ -4,8 +4,8 @@
   "description": "pushes data in the data lake to pinecone/titan",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":     "1.4.51",
-      "@laoban/variables": "1.4.51",
+      "@laoban/utils":     "${properties.laobanVersion}",
+      "@laoban/variables": "${properties.laobanVersion}",
       "mysql2":            "^3.10.1"
     },
     "devDependencies": {},

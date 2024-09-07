@@ -3,7 +3,7 @@
   "name":        "@itsmworkbench/git",
   "description": "git operations. This is just the interface. We have implementations elsewhere",
   "packageJson": {
-    "dependencies":    {"@laoban/utils":  "1.4.51"},
+    "dependencies":    {"@laoban/utils":  "${properties.laobanVersion}"},
     "devDependencies": {},
     "browser":         {
       "child_process": false

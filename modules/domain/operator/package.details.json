@@ -4,8 +4,8 @@
   "description": "Information about the operator",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":      "1.4.51",
-      "@laoban/variables":  "1.4.51",
+      "@laoban/utils":      "${properties.laobanVersion}",
+      "@laoban/variables":  "${properties.laobanVersion}",
       "@focuson/lens":     "1.44.3",
       "@focuson/state":    "1.44.3"
     },

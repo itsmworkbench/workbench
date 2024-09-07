@@ -4,9 +4,9 @@
   "description": "git operations. This implements git by calling out to the shell",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":          "1.4.51",
-      "@laoban/fileops":        "1.4.51",
-      "@laoban/filesops-node":  "1.4.51"
+      "@laoban/utils":          "${properties.laobanVersion}",
+      "@laoban/fileops":        "${properties.laobanVersion}",
+      "@laoban/filesops-node":  "${properties.laobanVersion}"
     },
     "devDependencies": {},
     "browser":         {

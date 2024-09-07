@@ -4,8 +4,8 @@
   "description": "higher order functions for kleislis that only work on node (use async-hooks)",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":     "1.4.51",
-      "@laoban/variables": "1.4.51",
+      "@laoban/utils":     "${properties.laobanVersion}",
+      "@laoban/variables": "${properties.laobanVersion}",
       "node":              "^v14.4.0"
     },
     "devDependencies": {

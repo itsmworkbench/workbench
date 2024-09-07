@@ -4,8 +4,8 @@
   "description": "loads and saves itsm schema urls used with intellimaintain using an api",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":    "1.4.51",
-      "@laoban/fileops":  "1.4.51"
+      "@laoban/utils":    "${properties.laobanVersion}",
+      "@laoban/fileops":  "${properties.laobanVersion}"
     },
     "devDependencies": {"jest-fetch-mock": "^3.0.3"},
     "browser":         {

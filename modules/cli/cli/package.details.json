@@ -4,8 +4,8 @@
   "description": "How to do a cli",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils":  "1.4.51",
-      "@laoban/fileops":  "1.4.51"
+      "@laoban/utils":  "${properties.laobanVersion}",
+      "@laoban/fileops":  "${properties.laobanVersion}"
     },
     "devDependencies": {},
     "browser":         {

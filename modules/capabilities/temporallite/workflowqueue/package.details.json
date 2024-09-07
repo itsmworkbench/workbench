@@ -4,7 +4,7 @@
   "description": "a queue of workflow instances that need to be processed/are being processed",
   "packageJson": {
     "dependencies":    {
-      "@laoban/utils": "1.4.51"
+      "@laoban/utils": "${properties.laobanVersion}"
     },
     "devDependencies": {
     }
