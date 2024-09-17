@@ -3,12 +3,7 @@
   "workspaces": [
     "modules/**"
   ],
-  "resolutions": {
-    "**/react": "18.2.0",
-    "**/react-dom": "18.2.0"
-  },
   "devDependencies": {
-    "ts-node": "^10.9.2",
     "@parcel/packager-raw-url": "^2.11.0",
     "@parcel/transformer-webmanifest": "^2.11.0",
     "assert": "^2.0.0",
@@ -22,9 +17,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "stream-http": "^3.1.0",
+    "ts-node": "^10.9.2",
     "url": "^0.11.0",
     "util": "^0.12.3"
-  },
-  "dependencies": {
   }
 }

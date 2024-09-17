@@ -20,22 +20,22 @@
     ]
   },
   "dependencies": {
-    "node": "^v14.4.0",
-    "@laoban/utils": "1.4.51",
     "@focuson/lens": "1.44.3",
-    "@itsmworkbench/utils": "0.3.11",
     "@itsmworkbench/events": "0.3.11",
-    "@itsmworkbench/kleislis": "0.3.11",
     "@itsmworkbench/eventstore": "0.3.11",
-    "debug": "^4.3.4"
+    "@itsmworkbench/kleislis": "0.3.11",
+    "@itsmworkbench/utils": "0.3.11",
+    "@laoban/utils": "1.4.51",
+    "debug": "^4.3.4",
+    "node": "^v14.4.0"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.0.0",
     "@types/node": "^14.0.0",
     "jest": "^29.0.0",
-    "ts-jest": "^29.0.0"
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.2.2"
   },
   "eslintConfig": {
     "extends": [

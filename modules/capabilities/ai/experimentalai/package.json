@@ -17,20 +17,20 @@
     ]
   },
   "dependencies": {
-    "@laoban/utils": "1.4.51",
-    "@laoban/variables": "1.4.51",
-    "openai": "^4.28.4",
     "@itsmworkbench/ai": "0.3.11",
     "@itsmworkbench/utils": "0.3.11",
-    "debug": "^4.3.4"
+    "@laoban/utils": "1.4.51",
+    "@laoban/variables": "1.4.51",
+    "debug": "^4.3.4",
+    "openai": "^4.28.4"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.0.0",
     "@types/node": "^14.0.0",
     "jest": "^29.0.0",
-    "ts-jest": "^29.0.0"
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.2.2"
   },
   "eslintConfig": {
     "extends": [
@@ -57,7 +57,6 @@
     "runbook"
   ],
   "license": "MIT",
-  "peerDependencies": {},
   "repository": "git@github.com:intellimaintain/intellimaintain.git",
   "scripts": {
     "test": "jest --config jest.config.json --env node",

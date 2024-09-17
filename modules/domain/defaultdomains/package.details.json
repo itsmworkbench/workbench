@@ -21,7 +21,9 @@
     "@itsmworkbench/tickettype",
     "@itsmworkbench/ticketevents",
     "@itsmworkbench/utils",
-    "@itsmworkbench/yaml"
+    "@itsmworkbench/yaml",
+    "@itsmworkbench/databaseconnection",
+    "@itsmworkbench/emailconnection"
   ],
   "guards":      {
     "compile": true,

@@ -23,34 +23,34 @@
     ]
   },
   "dependencies": {
-    "node": "^v16.0.0",
-    "@laoban/utils": "1.4.51",
-    "@laoban/filesops-node": "1.4.51",
     "@itsmworkbench/api": "0.3.11",
+    "@itsmworkbench/chatgptai": "0.3.11",
     "@itsmworkbench/cli": "0.3.11",
     "@itsmworkbench/commander12": "0.3.11",
     "@itsmworkbench/config": "0.3.11",
-    "@itsmworkbench/domain": "0.3.11",
-    "@itsmworkbench/chatgptai": "0.3.11",
-    "@itsmworkbench/mistralai": "0.3.11",
     "@itsmworkbench/defaultdomains": "0.3.11",
+    "@itsmworkbench/domain": "0.3.11",
     "@itsmworkbench/events": "0.3.11",
     "@itsmworkbench/eventstore": "0.3.11",
-    "@itsmworkbench/imapflowfetchemail": "0.3.11",
     "@itsmworkbench/fileloading": "0.3.11",
-    "@itsmworkbench/nodemailer": "0.3.11",
+    "@itsmworkbench/imapflowfetchemail": "0.3.11",
     "@itsmworkbench/jsyaml": "0.3.11",
+    "@itsmworkbench/mistralai": "0.3.11",
+    "@itsmworkbench/nodemailer": "0.3.11",
     "@itsmworkbench/shellgit": "0.3.11",
     "@itsmworkbench/utils": "0.3.11",
-    "debug": "^4.3.4"
+    "@laoban/filesops-node": "1.4.51",
+    "@laoban/utils": "1.4.51",
+    "debug": "^4.3.4",
+    "node": "^v16.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.0.0",
     "@types/node": "^14.0.0",
     "jest": "^29.0.0",
-    "ts-jest": "^29.0.0"
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.2.2"
   },
   "eslintConfig": {
     "extends": [

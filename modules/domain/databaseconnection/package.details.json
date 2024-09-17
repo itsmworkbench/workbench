@@ -1,0 +1,25 @@
+{
+  "template":    "typescript",
+  "name":        "@itsmworkbench/databaseconnection",
+  "description": "Information about the database connections",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":      "${properties.laobanVersion}",
+      "@laoban/variables":  "${properties.laobanVersion}",
+      "@focuson/lens":     "1.44.3",
+      "@focuson/state":    "1.44.3"
+    },
+    "devDependencies": {},
+    "browser":         {
+      "child_process": false
+    }
+  },
+  "links":       [
+    "@itsmworkbench/domain"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

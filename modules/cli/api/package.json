@@ -20,35 +20,35 @@
     ]
   },
   "dependencies": {
-    "@runbook/utils": "0.3.15",
-    "@laoban/utils": "1.4.51",
     "@itsmworkbench/apiai": "0.3.11",
     "@itsmworkbench/apifetchemail": "0.3.11",
     "@itsmworkbench/apimailer": "0.3.11",
     "@itsmworkbench/apisql": "0.3.11",
     "@itsmworkbench/apiurlstore": "0.3.11",
-    "@itsmworkbench/cli": "0.3.11",
     "@itsmworkbench/chatgptai": "0.3.11",
+    "@itsmworkbench/cli": "0.3.11",
     "@itsmworkbench/dbpathsql": "0.3.11",
-    "@itsmworkbench/domain": "0.3.11",
     "@itsmworkbench/defaultdomains": "0.3.11",
+    "@itsmworkbench/domain": "0.3.11",
+    "@itsmworkbench/fetchemail": "0.3.11",
     "@itsmworkbench/fileloading": "0.3.11",
     "@itsmworkbench/koa": "0.3.11",
-    "@itsmworkbench/fetchemail": "0.3.11",
     "@itsmworkbench/mailer": "0.3.11",
+    "@itsmworkbench/nodeurlstore": "0.3.11",
     "@itsmworkbench/shellgit": "0.3.11",
     "@itsmworkbench/urlstore": "0.3.11",
-    "@itsmworkbench/nodeurlstore": "0.3.11",
     "@itsmworkbench/utils": "0.3.11",
+    "@laoban/utils": "1.4.51",
+    "@runbook/utils": "0.3.15",
     "debug": "^4.3.4"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.0.0",
     "@types/node": "^14.0.0",
     "jest": "^29.0.0",
-    "ts-jest": "^29.0.0"
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.2.2"
   },
   "eslintConfig": {
     "extends": [

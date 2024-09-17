@@ -20,22 +20,22 @@
     ]
   },
   "dependencies": {
-    "@laoban/utils": "1.4.51",
-    "@laoban/fileops": "1.4.51",
-    "@laoban/filesops-node": "1.4.51",
     "@itsmworkbench/domain": "0.3.11",
     "@itsmworkbench/git": "0.3.11",
     "@itsmworkbench/nodeshell": "0.3.11",
     "@itsmworkbench/shell": "0.3.11",
+    "@laoban/fileops": "1.4.51",
+    "@laoban/filesops-node": "1.4.51",
+    "@laoban/utils": "1.4.51",
     "debug": "^4.3.4"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.0.0",
     "@types/node": "^14.0.0",
     "jest": "^29.0.0",
-    "ts-jest": "^29.0.0"
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.2.2"
   },
   "eslintConfig": {
     "extends": [

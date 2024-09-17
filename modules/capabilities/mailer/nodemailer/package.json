@@ -20,23 +20,23 @@
     ]
   },
   "dependencies": {
-    "nodemailer": "^6.9.13",
-    "@laoban/utils": "1.4.51",
-    "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "0.3.11",
     "@itsmworkbench/mailer": "0.3.11",
     "@itsmworkbench/urlstore": "0.3.11",
-    "debug": "^4.3.4"
+    "@itsmworkbench/utils": "0.3.11",
+    "@laoban/utils": "1.4.51",
+    "@laoban/variables": "1.4.51",
+    "debug": "^4.3.4",
+    "nodemailer": "^6.9.13"
   },
   "devDependencies": {
-    "@types/nodemailer": "^6.4.14",
-    "js-yaml": "^4.1.0",
-    "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.0.0",
     "@types/node": "^14.0.0",
+    "@types/nodemailer": "^6.4.14",
     "jest": "^29.0.0",
-    "ts-jest": "^29.0.0"
+    "js-yaml": "^4.1.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.2.2"
   },
   "eslintConfig": {
     "extends": [

@@ -15,20 +15,20 @@
     ]
   },
   "dependencies": {
-    "@monaco-editor/react": "^4.6.0",
-    "@itsmworkbench/components": "0.3.11",
-    "@itsmworkbench/events": "0.3.11",
-    "@itsmworkbench/urlstore": "0.3.11",
-    "@itsmworkbench/yaml": "0.3.11",
-    "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@focuson/lens": "1.44.3",
     "@focuson/state": "1.44.3",
+    "@itsmworkbench/components": "0.3.11",
+    "@itsmworkbench/events": "0.3.11",
+    "@itsmworkbench/urlstore": "0.3.11",
+    "@itsmworkbench/yaml": "0.3.11",
     "@laoban/utils": "1.4.45",
-    "@mui/material": "^5.15.10",
+    "@material-ui/core": "^4.12.4",
+    "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^5.15.10",
-    "@material-ui/core": "^4.12.4"
+    "@mui/material": "^5.15.10",
+    "debug": "^4.3.4"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
@@ -57,8 +57,7 @@
     "build/",
     "dist/index.js",
     "dist/index.d.ts",
-    "dist/src/",
-    "build/"
+    "dist/src/"
   ],
   "keywords": [
     "react",

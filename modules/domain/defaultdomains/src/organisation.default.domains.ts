@@ -4,6 +4,8 @@ import { operatorNameSpaceDetails } from "@itsmworkbench/operator";
 import { ticketNamespaceDetails } from "@itsmworkbench/tickets";
 import { NameAnd } from "@laoban/utils";
 
+import { databaseNamespaceDetails } from "@itsmworkbench/databaseconnection";
+import { emailNamespaceDetails } from "@itsmworkbench/emailconnection";
 import { ticketEventsNameSpaceDetails } from "@itsmworkbench/ticketevents";
 import { ticketTypeNamespaceDetails } from "@itsmworkbench/tickettype";
 import { Env } from "@itsmworkbench/utils";
@@ -14,6 +16,8 @@ export function defaultNameSpaceDetails ( yaml: YamlCapability, env: Env ): Name
   return {
     ka: ticketTypeNamespaceDetails ( yaml ),
     ticket: ticketNamespaceDetails (),
+    databaseConnection: databaseNamespaceDetails(yaml),
+    emailConnection: emailNamespaceDetails(yaml),
     operator: operatorNameSpaceDetails ( yaml, env ),
     ticketevents: ticketEventsNameSpaceDetails ()
   }

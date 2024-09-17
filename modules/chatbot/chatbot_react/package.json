@@ -15,30 +15,30 @@
     ]
   },
   "dependencies": {
-    "axios": "^1.7.2",
-    "openai": "^4.28.4",
-    "react-markdown": "^8.0.1",
-    "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@focuson/lens": "1.44.3",
     "@focuson/state": "1.44.3",
     "@laoban/utils": "1.4.45",
-    "@mui/material": "^5.15.10",
     "@mui/icons-material": "^5.15.10",
+    "@mui/material": "^5.15.10",
+    "axios": "^1.7.2",
+    "debug": "^4.3.4",
+    "openai": "^4.28.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-markdown": "^8.0.1"
   },
   "devDependencies": {
-    "@testing-library/react": "^16.0.0",
+    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-react": "^7.24.7",
     "@testing-library/dom": "^10.1.0",
     "@testing-library/jest-dom": "^6.4.6",
-    "jest-environment-jsdom": "^29.7.0",
+    "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
-    "@babel/preset-react": "^7.24.7",
-    "@babel/preset-env": "^7.24.7",
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
+    "jest-environment-jsdom": "^29.7.0",
     "parcel": "^2.11.0",
     "typescript": "^5.3.3"
   },
@@ -62,8 +62,7 @@
     "build/",
     "dist/index.js",
     "dist/index.d.ts",
-    "dist/src/",
-    "build/"
+    "dist/src/"
   ],
   "guards": {
     "compile": true,
@@ -77,7 +76,6 @@
   ],
   "license": "MIT",
   "links": [],
-  "peerDependencies": {},
   "repository": "git@github.com:intellimaintain/intellimaintain.git",
   "scripts": {
     "start": "parcel src/index.html",

@@ -7,7 +7,7 @@ import { getResponse, OpenAiMessage } from "../variables/chatgpt.ticket.variable
 export const clientSecret = process.env[ 'CHATGPT_CLIENT_SECRET' ]
 
 const openai = new OpenAI ( {
-  apiKey: clientSecret,
+  apiKey: "abc"
 } );
 
 const generateEmailPrompt = ( emailData: EmailData ): string => {
