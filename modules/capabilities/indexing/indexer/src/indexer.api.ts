@@ -58,7 +58,7 @@ export const getapiKey = ( fetch: FetchFn, allDetails: NameAnd<ApiKeyDetails>, s
     },
     apply: async ( ctx ) => {
       ctx.context.status = 200;
-      const name = ctx.context.query?.el || defaultEl
+      const name = (ctx.context.query?.el || defaultEl).toString ()
       const details = allDetails[ name ]
       if ( !details ) {
         ctx.context.status = 404;

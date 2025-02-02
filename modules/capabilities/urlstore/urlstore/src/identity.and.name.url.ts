@@ -5,7 +5,6 @@ export type HasNamespace = {
 }
 export type  HasOrganisation = {
   organisation: string,
-
 }
 
 export type OrgAndNamespace = HasNamespace & HasOrganisation;

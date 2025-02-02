@@ -4,6 +4,7 @@
   "version":          "${version}",
   "license":          "${properties.license}",
   "repository":       "${properties.repository}",
+  "type":            "module",
   "browserslist":     {
     "development": [
       "last 1 chrome version",

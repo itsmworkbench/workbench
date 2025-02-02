@@ -2,6 +2,7 @@
   "template":    "typescript",
   "name":        "itsmworkbench",
   "description": "",
+
   "packageJson": {
     "dependencies":    {
       "node":                  "^v16.0.0",

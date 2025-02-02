@@ -1,7 +1,3 @@
-import { NameAnd } from "@laoban/utils";
-import { JSONPrimitive } from "@itsmworkbench/utils";
-
-
 export type EventType = 'zero' | 'setId' | 'setValue' | 'append' | 'info' | 'error'
 
 export interface BaseEvent {
@@ -47,6 +43,7 @@ export function isSetIdEvent ( e: BaseEvent ): e is SetIdEvent {
 /** Set the value at the path */
 export interface SetValueEvent extends LensPathEvent {
   event: 'setValue'
+  path: string // inherited
   value: any
 }
 export function isSetValueEvent ( e: BaseEvent ): e is SetValueEvent {

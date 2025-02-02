@@ -13,6 +13,7 @@ import { executeScriptInShell } from "@itsmworkbench/nodeshell";
 import { FetchEmailer } from "@itsmworkbench/fetchemail";
 import { fetchEmailerFromUrlStore } from "@itsmworkbench/imapflowfetchemail";
 import { AI, HasAiCapabilities } from "@itsmworkbench/ai";
+import {hasErrors} from "@laoban/utils";
 
 
 export function apiCommand<Commander, Context extends HasCurrentDirectory & HasEnv & HasAiCapabilities, Config> ( yaml: YamlCapability ): CommandFn<Commander, Context, Config> {
@@ -35,7 +36,10 @@ export function apiCommand<Commander, Context extends HasCurrentDirectory & HasE
       const orgs = defaultOrganisationUrlStoreConfig ( yaml, context.env )
       const gitOps = shellGitsops ( false )
       const urlStore = nodeUrlstore ( gitOps, orgs )
-      const mailer: Mailer = await mailerFromUrlStore ( urlStore, "me", "me" )
+      const mailer = await mailerFromUrlStore ( urlStore, "me", "me" )
+      if (hasErrors(mailer))
+        throw new Error(`Error in mailerFromUrlStore. ${JSON.stringify(mailer)}`)
+
       const fetchEmailer: FetchEmailer = await fetchEmailerFromUrlStore ( urlStore, "me", "me" )
       const sqlerL: Sqler = makeSqlerForDbPathShell ( executeScriptInShell, context.currentDirectory, opts.debug === true )
       startKoa ( directory.toString (), Number.parseInt ( port.toString () ), debug === true,

@@ -13,6 +13,7 @@ export interface LockFileDetails {
 export function fileLocking ( filePath: string, timeservice?: Timeservice ): LockFileDetails {
   return { lockFilePath: filePath + '.lock', timeout: 5000, timeservice: timeservice ? timeservice : DateTimeService }
 }
+
 // Attempts to acquire a lock
 async function acquireLock ( { lockFilePath, timeout, debug, timeservice }: LockFileDetails ): Promise<boolean> {
   const startTime = timeservice ();
