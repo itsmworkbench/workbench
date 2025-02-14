@@ -9,7 +9,7 @@ import { LensState } from "@focuson/state";
 
 export type SuccessFailContextFn = ( tab: string | undefined, phase: PhaseName | undefined, action: string | undefined, successOrFail: boolean | undefined ) => any
 export type IProcessEventSideEffect = ( e: EventSideEffect ) => void
-export type IProcessEventSideEffectFn = <S>(s: LensState<S, any, any>) =>( e: EventSideEffect ) => void
+export type IProcessEventSideEffectFn = <S>(s: LensState<S, any, any>) =>IProcessEventSideEffect
 export interface SuccessFailureButtonProps<S> extends ButtonProps {
   pathToStatus?: string
   successOrFail: boolean;

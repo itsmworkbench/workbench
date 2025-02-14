@@ -16,7 +16,7 @@ export function findWorkbenchEventFor ( e: Event[], phase: string, action: strin
   return found.length === 0 ? undefined : found[ found.length - 1 ]
 }
 
-export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType, e: Event[], phase: PhaseName, action: string ) {
+export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType|undefined, e: Event[], phase: PhaseName, action: string ) {
   const found = ticketType?.actions?.[ phase ]?.[ action ]
   // console.log ( 'findActionsInEventsMergeWithTicketType - found', phase, action, found )
   const workBenchEvent = findWorkbenchEventFor ( e, phase, action )

@@ -23,7 +23,7 @@ export function ActionButton<S> ( { name, action, phase,ticket, status, state }:
     console.log ( 'ActionButton - action', foundAction, variables )
     let derefed = dereferenceAction ( foundAction, variables )
     console.log ( 'ActionButton - derefed', derefed )
-    state.setJson ( derefed, { workspaceTab: workbenchName ( derefed.by ), phase, action: name }, derefed );
+    state.setJson ( derefed, { workspaceTab: workbenchName ( derefed?.by! ), phase, action: name }, derefed );
   };
   return <><Button
     variant="text"

@@ -22,6 +22,14 @@
     "NPM_TOKEN": ""
   },
   "scripts":        {
+    "rmDist": {
+      "description": "Removes the dist directories",
+      "commands": ["file:rmDir(dist)"]
+    },
+    "rmNodeModules": {
+      "description": "Removes the node_modules directories",
+      "commands": ["file:rmDir(node_modules)"]
+    },
     "ls-react": {
       "description": "Lists all the react projects",
       "commands":    [

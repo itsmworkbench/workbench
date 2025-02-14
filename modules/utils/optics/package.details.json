@@ -1,20 +1,21 @@
 {
-  "template":    "typescript",
-  "name":        "@itsmworkbench/optics",
-  "description": "The usual utility functions",
+  "template": "typescript",
+  "name": "@itsmworkbench/optics",
+  "description": "A simple implementation of optics and turning them into/from paths",
   "packageJson": {
-    "dependencies":    {
-      "@focuson/lens": "1.44.3"
+    "files": ["build/"],
+    "dependencies": {
     },
-    "devDependencies": {},
-    "browser":         {
-      "child_process": false
-    }
+    "devDependencies": {
+
+    },
+    "links": [
+    ]
   },
-  "links":       [],
-  "guards":      {
+  "guards": {
     "compile": true,
-    "publish": true,
-    "test":    true
+    "publish": false,
+    "test": true,
+    "react": false
   }
 }

@@ -1,1 +1,0 @@
-export type VectorisationFn = ( text: string ) => Promise<number[]>

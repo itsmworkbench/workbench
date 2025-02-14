@@ -1,12 +1,9 @@
 {
   "name": "@itsmworkbench/optics",
-  "description": "The usual utility functions",
-  "version": "0.3.11",
+  "description": "A simple implementation of optics and turning them into/from paths",
+  "version": "1.0.0",
   "main": "dist/index",
   "types": "dist/index",
-  "browser": {
-    "child_process": false
-  },
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -20,7 +17,6 @@
     ]
   },
   "dependencies": {
-    "@focuson/lens": "1.44.3",
     "debug": "^4.3.4"
   },
   "devDependencies": {
@@ -50,12 +46,14 @@
   "files": [
     "dist/index.js",
     "dist/index.d.ts",
-    "dist/src/"
+    "dist/src/",
+    "build/"
   ],
   "keywords": [
     "runbook"
   ],
   "license": "MIT",
+  "links": [],
   "repository": "git@github.com:intellimaintain/intellimaintain.git",
   "scripts": {
     "test": "jest --config jest.config.json --env node",

@@ -1,0 +1,1 @@
+export type NameAnd<T> = Record<string,T>
