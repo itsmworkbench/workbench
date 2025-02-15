@@ -1,4 +1,4 @@
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import DataIcon from "@mui/icons-material/DataUsage";
 import ContextIcon from "@mui/icons-material/Settings";
 import PromptIcon from "@mui/icons-material/QuestionAnswer";

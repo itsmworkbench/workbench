@@ -1,5 +1,5 @@
 import { Capability, PhaseAnd, PhaseName } from "@itsmworkbench/domain";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 
 
 export interface BaseAction {

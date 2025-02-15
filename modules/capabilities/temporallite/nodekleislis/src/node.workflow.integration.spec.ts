@@ -1,4 +1,4 @@
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { defaultRetryPolicy, inMemoryIncMetric, rememberUpdateCache, BasicReplayEvents } from "@itsmworkbench/kleislis";
 import { nodeActivity } from "./node.activities";
 import { nodeWorkflow, runWithWorkflowEngine } from "./node.workflow";

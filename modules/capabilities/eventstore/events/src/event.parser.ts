@@ -1,4 +1,4 @@
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { JSONPrimitive } from "@itsmworkbench/utils";
 import { ErrorEvent, Event, isAppendEvent, isErrorEvent, isInfoEvent, isSetIdEvent, isSetValueEvent, isZeroEvent } from "./events";
 

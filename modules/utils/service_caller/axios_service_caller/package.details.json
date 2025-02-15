@@ -1,0 +1,26 @@
+{
+  "template": "typescript",
+  "name": "@itsmworkbench/axios_service_caller",
+  "description": "Implements service caller for axios",
+  "links": [
+    "@itsmworkbench/authentication",
+    "@itsmworkbench/errors",
+    "@itsmworkbench/service_caller",
+    "@itsmworkbench/utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+      "axios": "1.7.9"
+    },
+    "devDependencies": {
+      "axios-mock-adapter": "^2.1.0"
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "template": "typescript",
+  "name": "@itsmworkbench/authentication",
+  "description": "An interface that abstracts over authentication",
+  "links": [
+    "@itsmworkbench/loading",
+    "@itsmworkbench/service_caller"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

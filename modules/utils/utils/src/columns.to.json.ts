@@ -1,4 +1,5 @@
-import { NameAnd } from "@laoban/utils";
+import {NameAnd} from "./name.and";
+
 
 export function findColumnStartIndexes ( header: string ): number[] {
   const startIndexes: number[] = [];

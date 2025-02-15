@@ -1,6 +1,6 @@
 import { IncMetric, invalid, ReplayEvent, ReplayEventProcessorFn, validateActivityId } from "@itsmworkbench/kleislis";
 import { chainOfResponsibility, PartialFunction } from "@itsmworkbench/utils";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { Workflow, WorkflowEngine } from "./workflow";
 
 

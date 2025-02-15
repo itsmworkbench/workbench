@@ -1,0 +1,18 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/record_utils",
+  "description": "Utilities around record especially NameAnd",
+  "packageJson": {
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "links": [
+  ],
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": true
+  }
+}

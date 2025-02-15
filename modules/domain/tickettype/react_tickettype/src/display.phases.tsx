@@ -1,5 +1,5 @@
 import React from "react";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { PhaseAnd, PhaseName } from "@itsmworkbench/domain";
 import { Action, phaseStatus } from "@itsmworkbench/actions";
 import { Box, Grid, Typography } from "@mui/material";

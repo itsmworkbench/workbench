@@ -6,7 +6,7 @@ import { Conversation } from "@itsmworkbench/domain";
 import { SideEffect } from '@itsmworkbench/react_core';
 import { displayMessage, DisplayMessagePlugin, TemplateFn } from '@itsmworkbench/components';
 import { Variables } from "@itsmworkbench/variables";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { Lenses } from "@focuson/lens";
 
 export interface HasDisplayPlugins {

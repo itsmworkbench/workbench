@@ -3,7 +3,7 @@ import { chainOfResponsibility } from "@runbook/utils";
 import { fileLoading, fileLocking, loadStringIncrementally, withFileLock } from "@itsmworkbench/fileloading";
 import { promises as fs } from 'fs';
 import { NameSpaceDetails, UrlStore } from "@itsmworkbench/urlstore";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { executeAIForEmail, executeAIForKnownVariables, executeAIForVariables } from "@itsmworkbench/apiai";
 import { AI } from "@itsmworkbench/ai";
 import { Mailer } from "@itsmworkbench/mailer";

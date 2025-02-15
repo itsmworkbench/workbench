@@ -1,7 +1,7 @@
 import { PipelineIcon } from "./pipelineIcon";
 import { Box, Checkbox, Paper, Typography } from '@mui/material';
 import React, { useState } from "react";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { doTwoThings } from "../utils";
 import { AgentData, AgentStageAnd, AgentStages, emptyAgentStateAnd, IconAndTitle, SelectedAgentList } from "../domain/domain";
 import { LensProps2 } from "@focuson/state";

@@ -1,0 +1,22 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/selectable_button",
+  "description": "Interface and simple implementation for a selectable button",
+  "links": [
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/translation"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

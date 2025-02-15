@@ -1,0 +1,24 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/error_boundary",
+  "description": "The error boundary component",
+  "links": [
+    "@itsmworkbench/authentication",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/translation"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

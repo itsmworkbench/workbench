@@ -1,4 +1,4 @@
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 
 export type EmailPurpose = 'requestApproval' | 'requestClosure' | 'requestMoreData'
 export type EmailData = {

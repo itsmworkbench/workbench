@@ -1,4 +1,4 @@
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { Optional } from "@focuson/lens";
 import { callDDF, DD, DDDecisions, findParams } from "./dependent.data.domain";
 import { chainOfResponsibility, PartialFunction } from "@itsmworkbench/utils";

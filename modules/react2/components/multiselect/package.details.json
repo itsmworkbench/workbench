@@ -1,0 +1,25 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/multiselect",
+  "description": "A multiselect model",
+  "links": [
+    "@itsmworkbench/icons",
+    "@itsmworkbench/record_utils",
+    "@itsmworkbench/translation"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+
+    },
+    "scripts": {"start": "react-scripts start"}
+  },
+  "guards": {
+  "compile": true,
+  "publish": false,
+  "test": true,
+  "react": false
+}
+}

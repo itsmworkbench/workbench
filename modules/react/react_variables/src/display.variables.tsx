@@ -3,7 +3,7 @@ import { Card, CardContent, List, ListItem, ListItemIcon, ListItemText, Typograp
 import { DisplayYaml } from "@itsmworkbench/components";
 import ErrorIcon from "@mui/icons-material/Error";
 import { LensProps2 } from "@focuson/state";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { SideEffect } from "@itsmworkbench/react_core";
 import React from "react";
 

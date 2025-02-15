@@ -1,6 +1,6 @@
 import { callListeners } from "./listeners";
-import { NameAnd } from "@laoban/utils";
 import { Optional } from "@focuson/lens";
+import {NameAnd} from "./name.and";
 
 export interface PromiseCacheListener<Context, Result> {
   duplicateCall?: ( context: Context ) => void

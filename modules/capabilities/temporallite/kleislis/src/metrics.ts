@@ -1,4 +1,4 @@
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { K0, K1, K2, K3, K4, K5 } from "./kleisli";
 import { Sideeffect } from "./sideeffect";
 

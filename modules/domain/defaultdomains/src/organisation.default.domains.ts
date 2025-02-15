@@ -2,7 +2,7 @@ import { NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit } from "@itsmw
 import { YamlCapability } from "@itsmworkbench/yaml";
 import { operatorNameSpaceDetails } from "@itsmworkbench/operator";
 import { ticketNamespaceDetails } from "@itsmworkbench/tickets";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 
 import { ticketEventsNameSpaceDetails } from "@itsmworkbench/ticketevents";
 import { ticketTypeNamespaceDetails } from "@itsmworkbench/tickettype";

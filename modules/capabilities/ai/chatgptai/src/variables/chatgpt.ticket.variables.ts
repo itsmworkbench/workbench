@@ -1,5 +1,5 @@
 import { AIKnownTicketVariablesFn, AiTicketVariablesFn, TicketVariables } from "@itsmworkbench/ai";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import fetch from 'node-fetch'
 
 export const clientSecret = process.env[ 'CHATGPT_CLIENT_SECRET' ]

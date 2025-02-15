@@ -1,0 +1,22 @@
+{
+  "template": "typescript",
+  "name": "@itsmworkbench/service_caller",
+  "description": "Thin wrapper around any library to call apis using http(s)",
+  "links": [
+    "@itsmworkbench/errors",
+    "@itsmworkbench/record_utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    },
+    "guards": {
+      "compile": true,
+      "publish": false,
+      "test": true,
+      "react": false
+    }
+  }
+}

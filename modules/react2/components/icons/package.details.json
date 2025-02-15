@@ -1,0 +1,23 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/icons",
+  "description": "How we handle icons",
+  "links": [
+    "@itsmworkbench/errors",
+    "@itsmworkbench/translation"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

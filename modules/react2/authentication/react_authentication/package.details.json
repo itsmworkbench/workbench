@@ -1,0 +1,24 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/react_login_component",
+  "description": "The login component that shows the login/logout button",
+  "links": [
+    "@itsmworkbench/service_caller",
+    "@itsmworkbench/authentication"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+      "@azure/msal-browser": "${properties.msal}"
+    },
+    "devDependencies": {
+
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

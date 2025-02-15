@@ -1,1 +1,1 @@
-export type NameAnd<T> = Record<string,T>
+export type NameAnd<T>=Record<string, T>

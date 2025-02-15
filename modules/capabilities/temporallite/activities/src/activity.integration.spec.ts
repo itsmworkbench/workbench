@@ -1,5 +1,5 @@
 import { activity, ActivityEngine } from "./activities";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { defaultRetryPolicy, inMemoryIncMetric, BasicReplayEvents } from "@itsmworkbench/kleislis";
 
 

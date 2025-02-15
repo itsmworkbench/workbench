@@ -1,6 +1,6 @@
 import fs from "fs";
 import { FileNamesForTemporal } from "./filenames";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { BasicReplayEvents } from "@itsmworkbench/kleislis";
 import { WorkflowAndInstanceId } from "@itsmworkbench/workflow";
 import path from "node:path";

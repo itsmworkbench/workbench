@@ -1,6 +1,6 @@
 import fetchMock from 'jest-fetch-mock';
 import { loadIdentityFromApi, UrlStoreApiClientConfig } from "./url.store.api.client";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { nameSpaceDetails, NameSpaceDetails, parseIdentityUrl, parseIdentityUrlOrThrow } from "@itsmworkbench/urlstore";
 
 fetchMock.enableMocks ();

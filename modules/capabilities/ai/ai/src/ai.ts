@@ -1,6 +1,6 @@
 import { AIKnownTicketVariablesFn, AiTicketVariablesFn } from "./ai.variables";
 import { AIEmailsFn, EmailDataWithMissingData } from "./ai.email";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 
 export interface AI {
   variables: AiTicketVariablesFn

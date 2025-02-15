@@ -1,27 +1,29 @@
 {
   "packageManager": "yarn",
-  "parents":        [
+  "parents": [
     "@laoban@/laoban.json/core.laoban.json",
     "@laoban@/laoban.json/javascript.laoban.json",
     "@laoban@/laoban.json/typescript.laoban.json",
     "@laoban@/laoban.json/typescript.publish.laoban.json",
     "@laoban@/laoban.json/react.laoban.json"
   ],
-  "properties":     {
-    "license":       "MIT",
-    "repository":    "git@github.com:intellimaintain/intellimaintain.git",
+  "properties": {
+    "license": "MIT",
+    "repository": "git@github.com:intellimaintain/intellimaintain.git",
     "laobanVersion": "1.4.51",
-    "jest":          "^29.0.0"
+    "jest": "^29.0.0",
+    "axios": "1.7.2",
+    "msal": "^3.28.0"
   },
-  "templates":      {
-    "typescript":    "templates/typescript",
-    "react":         "templates/react",
+  "templates": {
+    "typescript": "templates/typescript",
+    "react": "templates/react",
     "react_library": "templates/react_library"
   },
-  "defaultEnv":     {
+  "defaultEnv": {
     "NPM_TOKEN": ""
   },
-  "scripts":        {
+  "scripts": {
     "rmDist": {
       "description": "Removes the dist directories",
       "commands": ["file:rmDir(dist)"]
@@ -32,27 +34,27 @@
     },
     "ls-react": {
       "description": "Lists all the react projects",
-      "commands":    [
+      "commands": [
         {
-          "guard":   "${packageDetails.guards.react}",
+          "guard": "${packageDetails.guards.react}",
           "command": "js:process.cwd()"
         }
       ]
     },
     "ls-build": {
       "description": "Lists all the  projects that will be built",
-      "commands":    [
+      "commands": [
         {
-          "guard":   "${packageDetails.guards.react}",
+          "guard": "${packageDetails.guards.react}",
           "command": "js:process.cwd()"
         }
       ]
     },
-    "build":    {
+    "build": {
       "description": "Packages the react projects",
-      "commands":    [
+      "commands": [
         {
-          "guard":   "${packageDetails.guards.react}",
+          "guard": "${packageDetails.guards.react}",
           "command": "yarn run build"
         }
       ]

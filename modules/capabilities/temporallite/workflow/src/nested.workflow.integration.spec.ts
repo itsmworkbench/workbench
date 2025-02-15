@@ -1,5 +1,5 @@
 import { ActivityEngineWithWorkflow, workflow, WorkflowEngine } from "./workflow";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { ActivityEngine } from "@itsmworkbench/activities";
 import { BasicReplayEvent, inMemoryIncMetric, rememberUpdateCache } from "@itsmworkbench/kleislis";
 import { WorkflowEvent } from "./workflow.replay";

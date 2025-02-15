@@ -1,7 +1,7 @@
 import { findFileUp } from "@laoban/fileops";
 import fs from "fs";
 import { NameSpaceDetailsForGit, OrganisationUrlStoreConfigForGit, UrlStoreParser, UrlStoreWriter } from "@itsmworkbench/urlstore";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 
 const laobanDir = findFileUp ( process.cwd (), async f => {
   try {

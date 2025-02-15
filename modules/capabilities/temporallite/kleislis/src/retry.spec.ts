@@ -1,6 +1,6 @@
 import { withMeteredRetry, withRetry } from "./retry";
 
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { inMemoryIncMetric } from "./metrics";
 
 

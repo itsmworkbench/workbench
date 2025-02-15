@@ -1,5 +1,3 @@
-import { Timeservice } from "./timeservice";
-
 export const formatDate = ( template: string ) => ( date: Date ): string => {
   const pad = ( n: number ) => n.toString ().padStart ( 2, '0' );
 

@@ -3,7 +3,7 @@ import { Lens, Lenses, Optional } from "@focuson/lens";
 import { MainAppMainState } from "@itsmworkbench/components";
 import { ChatDisplayData, Conversation, EmailTempData, LdapData, PhaseAnd, ReceiveEmailData, SqlData } from "@itsmworkbench/domain";
 import { ListNamesResult } from "@itsmworkbench/urlstore";
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { Variables } from "@itsmworkbench/variables";
 import { Operator } from "@itsmworkbench/operator";
 import { EnrichedEvent, Event } from "@itsmworkbench/events";

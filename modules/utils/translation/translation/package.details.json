@@ -1,0 +1,22 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/translation",
+  "description": "This is how we handle translations.",
+  "links": [
+    "@itsmworkbench/react_utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    },
+    "scripts": {"start": "react-scripts start"}
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

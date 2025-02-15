@@ -1,4 +1,4 @@
-import {NameAnd} from "@itsmworkbench/utils";
+import { NameAnd } from "@itsmworkbench/utils"
 
 export type ErrorsOr<T> = Errors | Value<T>;
 export type Value<T> = { value: T };

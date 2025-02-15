@@ -1,0 +1,21 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/loading",
+  "description": "How we handle asynchronicity in our components",
+  "links": [
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

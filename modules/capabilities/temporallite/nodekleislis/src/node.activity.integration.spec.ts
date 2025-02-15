@@ -1,4 +1,4 @@
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { BasicReplayEvents, defaultRetryPolicy, inMemoryIncMetric } from "@itsmworkbench/kleislis";
 import { nodeActivity, runWithActivityEngine } from "./node.activities";
 import { ActivityEngine } from "@itsmworkbench/activities";

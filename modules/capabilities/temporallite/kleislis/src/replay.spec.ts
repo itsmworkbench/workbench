@@ -1,4 +1,4 @@
-import { NameAnd } from "@laoban/utils";
+import { NameAnd } from "@itsmworkbench/utils";
 import { inMemoryIncMetric } from "./metrics";
 import { BasicReplayEvents, ReplayEngine, replyEventProcessor } from "./replay.events";
 import { withReplay } from "./replay";
