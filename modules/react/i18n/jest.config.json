@@ -1,6 +1,9 @@
 {
-  "transform"             : {
-    "^.+\\.(ts|tsx)?$": "ts-jest"
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+  "testEnvironment": "jsdom",
+  "transform": {
+    "^.+\\.(ts|tsx)$": ["ts-jest", {"tsconfig": {"module": "commonjs"}}],
+    "^.+\\.(js|jsx)$": "babel-jest"
   },
   "testRegex"             : "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",
   "moduleFileExtensions"  : ["ts", "tsx", "js"],

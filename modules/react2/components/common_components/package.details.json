@@ -1,0 +1,26 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/common_components",
+  "description": "A selection of commonly used components. This is so that we can have MUI implementations, or other implementations and the majority of the code doesn't care",
+  "links": [
+    "@itsmworkbench/clip_height",
+    "@itsmworkbench/mouse_over",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/selectable_button",
+    "@itsmworkbench/table",
+    "@itsmworkbench/translation"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

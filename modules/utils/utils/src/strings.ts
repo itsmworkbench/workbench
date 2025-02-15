@@ -88,3 +88,24 @@ export function withoutFirstSegment ( path: string ): string {
   const index = path.indexOf ( '/' );
   return index === -1 ? '' : path.slice ( index+1 );
 }
+
+
+export const ellipsesInMiddle = (
+    text: string,
+    maxLength: number,
+    ellipsis = "..."
+): string => {
+  if (text.length <= maxLength) return text;
+
+  const ellipsisLength = ellipsis.length;
+  const partLength = Math.floor((maxLength - ellipsisLength) / 2);
+
+  // Ensure we don't cut too much when maxLength is small
+  if (partLength <= 0) return ellipsis;
+
+  const start = text.slice(0, partLength);
+  const end = text.slice(-partLength);
+
+  return `${start}${ellipsis}${end}`;
+};
+

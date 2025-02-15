@@ -1,0 +1,29 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/devmode",
+  "description": "components to support dev mode for gui state",
+  "links": [
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/utils",
+    "@itsmworkbench/editors",
+    "@itsmworkbench/optics",
+    "@itsmworkbench/language",
+    "@itsmworkbench/translation",
+    "@itsmworkbench/renderers",
+    "@itsmworkbench/all_renderers",
+    "@itsmworkbench/selectable_button"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": true,
+    "react": false
+  }
+}

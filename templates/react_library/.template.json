@@ -9,6 +9,10 @@
       "target": ".npmrc"
     },
     {
+      "file": "jest.setup.js",
+      "target": "jest.setup.js"
+    },
+    {
       "file":   "babel.config.json",
       "target": "babel.config.json"
     },

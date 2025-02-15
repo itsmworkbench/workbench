@@ -1,0 +1,24 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/itsmsovereign",
+  "description": "The sovereign pane for the main itsm workbench",
+  "links": [
+    "@itsmworkbench/sovereign",
+    "@itsmworkbench/translation",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

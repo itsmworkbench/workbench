@@ -1,0 +1,24 @@
+{
+  "template": "react",
+  "name": "@itsmworkbench/itsm2",
+  "description": "ITSM Workbench",
+  "links": [
+    "@itsmworkbench/itsmsovereign",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/sovereign",
+    "@itsmworkbench/utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

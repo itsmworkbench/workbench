@@ -1,0 +1,23 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/language",
+  "description": "The interface and context / hooks for the language we are using",
+  "links": [
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/record_utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    },
+    "scripts": {"start": "react-scripts start"}
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": false,
+    "react": false
+  }
+}

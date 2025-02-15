@@ -1,0 +1,22 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/all_themes",
+  "description": "All the supported themes for the itsm workbench",
+  "links": [
+    "@itsmworkbench/themes",
+    "@itsmworkbench/itsm_themes"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": false,
+    "react": false
+  }
+}

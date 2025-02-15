@@ -1,0 +1,26 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/sovereign",
+  "description": "A sovereign is something that takes up the whole display.",
+  "links": [
+    "@itsmworkbench/devmode",
+    "@itsmworkbench/icons",
+    "@itsmworkbench/translation",
+    "@itsmworkbench/react_login_component",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

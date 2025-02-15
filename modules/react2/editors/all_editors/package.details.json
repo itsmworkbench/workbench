@@ -1,0 +1,25 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/all_editors",
+  "description": "Aggregates the used editors",
+  "links": [
+    "@itsmworkbench/editors",
+    "@itsmworkbench/errors",
+    "@itsmworkbench/renderers"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+      "react-markdown": "7.1.2"
+    },
+    "devDependencies": {
+
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": false,
+    "react": false
+  }
+}

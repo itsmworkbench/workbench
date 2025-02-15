@@ -2,7 +2,7 @@
   "compilerOptions": {
     "jsx":              "react",
     "module": "ESNext",
-    "target":           "es6",
+    "target":           "ES2022",
     "outDir":           "./dist",
     "moduleResolution": "node",
     "declaration":      true,

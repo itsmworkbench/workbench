@@ -1,0 +1,18 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/mouse_over",
+  "description": "Since we can't have a mouseover in styles we need a component to do that",
+  "packageJson": {
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "links": [
+  ],
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": true
+  }
+}
