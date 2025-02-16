@@ -1,0 +1,21 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/wizard",
+  "description": "The interfaces and simple implementation for wizard with next/prev etc",
+  "links": [
+    "@itsmworkbench/react_utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": true,
+    "react": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/panelnavigator",
+  "description": "Interface and simple implementation for a panel navigator",
+  "links": [
+    "@itsmworkbench/sovereign"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": true,
+    "react": false
+  }
+}

@@ -9,10 +9,12 @@ import {consoleErrorReporter, DebugStateProvider, FeatureFlags, NonFunctionalsPr
 import {AttributeValueOrientation, AttributeValueOrientationProvider, AttributeValueOrientations} from "@itsmworkbench/renderers";
 import {DevMode, DevModeStateForSearchProvider} from "@itsmworkbench/devmode";
 import {ThemeProvider} from "@mui/material/styles";
-import {ItsmSovereignPagePlugin} from "@itsmworkbench/itsmsovereign/src/itsm.sovereign.page";
+import {ItsmSovereignPagePlugin} from "@itsmworkbench/itsmsovereign";
+import {HomeSovereignPagePlugin} from "@itsmworkbench/homesovereign";
 import {defaultTheme} from "./mui.theme";
 import {emptyUsedAndNotFound, TranslationUsedAndNotFoundProvider} from "@itsmworkbench/translation";
-import {SimpleTranslationProvider} from "@itsmworkbench/simple_translation/dist/src/simple.translation";
+import {SimpleTranslationProvider} from "@itsmworkbench/simple_translation";
+import {NavigatorPanelDefns} from "@itsmworkbench/panelnavigator";
 
 
 const debugState = {
@@ -31,9 +33,21 @@ export const exampleMsalConfig: Configuration = {
 const msal = new PublicClientApplication(exampleMsalConfig);
 const login: LoginConfig = loginUsingMsal({msal});
 
+export const navPanels: NavigatorPanelDefns = {
+    getStarted: {icon: 'getStarted', descriptionKey: 'nav.getStarted'},
+    newTicket: {icon: 'new', descriptionKey: 'nav.newTicket'},
+    activeTickets: {icon: 'active', descriptionKey: 'nav.activeTickets'},
+    historicalTickets: {icon: 'historical', descriptionKey: 'nav.historicalTickets'},
+    examineKnowledgeArticles: {icon: 'knowledge', descriptionKey: 'nav.examineKnowledgeArticles'},
+    services: {icon: 'services', descriptionKey: 'nav.services'},
+    healthCheck: {icon: 'health', descriptionKey: 'nav.healthCheck'},
+    askForHelp: {icon: 'help', descriptionKey: 'nav.askForHelp'},
+}
+
 
 const sovereignStatePlugins: SovereignStatePlugins = {
     plugins: {
+        home: HomeSovereignPagePlugin(navPanels),
         itsm: ItsmSovereignPagePlugin,
     },
     UnknownDisplay: SimpleUnknownDisplay

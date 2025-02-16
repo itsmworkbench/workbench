@@ -4,6 +4,7 @@ import {ClipHeight} from "@itsmworkbench/clip_height";
 import {SimpleTable, Table} from "@itsmworkbench/table";
 import {makeContextFor} from "@itsmworkbench/react_utils";
 import {BgMouseOver, MouseOver, SimpleBgMouseOver, SimpleMouseOver} from "@itsmworkbench/mouse_over";
+import {OneNavigatorPanel, NavigatorPanelLayout, SimpleNavigatorPanel, SimpleNavigatorPanelLayout} from "@itsmworkbench/panelnavigator";
 
 const componentsFlagName = "commonCommonComponents";
 const componentsFeatureFlag: FeatureFlag = {
@@ -18,12 +19,17 @@ export type CommonComponents = {
     Table: Table
     MouseOver: MouseOver,
     BgMouseOver: BgMouseOver
+    NavPanelLayout: NavigatorPanelLayout
+    NavPanel: OneNavigatorPanel
 }
 export const commonComponents: CommonComponents = {
     SelectableButton: SimpleSelectableButton,
     ClipHeight: ClipHeight,
     Table: SimpleTable,
     MouseOver: SimpleMouseOver,
-    BgMouseOver: SimpleBgMouseOver
+    BgMouseOver: SimpleBgMouseOver,
+    NavPanelLayout: SimpleNavigatorPanelLayout,
+    NavPanel: SimpleNavigatorPanel
+
 };
 export const {use: useCommonComponents, Provider: CommonComponentsProvider} = makeContextFor<CommonComponents, "commonComponents">("commonComponents", commonComponents);

@@ -1,0 +1,1 @@
+export * from './src/itsm.sovereign.page';

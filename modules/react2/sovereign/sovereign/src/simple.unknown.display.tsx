@@ -16,6 +16,7 @@ const styles: Record<string, React.CSSProperties> = {
     message: {
         fontSize: '20px',
         marginBottom: '20px',
+        whiteSpace: "pre-line"
     },
     button: {
         padding: '10px 20px',
@@ -38,7 +39,7 @@ export function SimpleUnknownDisplay() {
     const translate = useTranslation();
     return (
         <div style={styles.container}>
-            <div style={styles.message}>{translate('sovereign.unknown.display')}: <strong>{selected}</strong></div>
+            <div style={styles.message}>{translate('sovereign.unknown.display')}<strong>{selected}</strong></div>
             <button
                 style={styles.button}
                 onMouseOver={(e) => Object.assign(e.currentTarget.style, styles.buttonHover)}

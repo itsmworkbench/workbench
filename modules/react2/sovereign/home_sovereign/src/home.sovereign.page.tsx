@@ -1,0 +1,13 @@
+import {DisplaySovereignPage, makeSovereignStatePlugin} from "@itsmworkbench/sovereign";
+import React from "react";
+import {NavigatorPanel, NavigatorPanelDefns} from "@itsmworkbench/panelnavigator";
+
+export const HomeSovereignPage = (panels: NavigatorPanelDefns): DisplaySovereignPage =>
+    () => {
+        return <NavigatorPanel panels={panels}/>
+    };
+
+export function HomeSovereignPagePlugin(panels: NavigatorPanelDefns) {
+    return makeSovereignStatePlugin(HomeSovereignPage(panels))
+}
+

@@ -1,22 +1,10 @@
 export const translationEn = {
-    common:{
+    common: {
         select: 'Select',
         clear: 'Clear',
     },
-    data: {
-        "lastUpdated": "Last Updated",
-        "status": "Status",
-        "source": "Source",
-        "space": "Space",
-        date: "Date",
-    },
-    dataview: {
-        all: "All",
-        jira: "Jira",
-        confluence: "Confluence",
-        graphApiPeople: "People",
-        sharepoint: "Files"
-    },
+
+
     devmode: {
         Debug: "Debug",
         GuiState: "Gui State",
@@ -31,41 +19,26 @@ export const translationEn = {
         UserData: "User Data",
     },
 
-    filter: {
-        'data-view': {
-            'select-data-sources': "Select data sources",
-        },
-        time: {
-            title: "Time",
-            yesterday: "Yesterday",
-            lastWeek: "Last Week",
-            lastMonth: "Last Month",
-            lastYear: "Last Year",
-        }
-
-    },
     login: {
         login: "Login",
         logout: "Logout",
         loggedIn: "",
     },
-    search: {
-        advance: {
-            title: "Welcome to your new search experience",
-        },
 
-
+    nav: {
+        getStarted: `Click here to learn how to get started`,
+        newTicket: "Start processing a new ticket.\n\nImport from servicenow or just create a new one",
+        activeTickets: "Find your started but not finished tickets here",
+        historicalTickets: "All your completed tickets can be found here",
+        services: "Describe the systems you are working with, and how they are connected",
+        healthCheck: "Validates that the systems you want to link to are working",
+        examineKnowledgeArticles: "Knowledge articles describe how to solve common problems.\n\nNormally when processing a ticket after the first time you will be using a knowledge article",
+        askForHelp: "When you are stuck, talk to a human here",
     },
-    time:{
-        'yesterday': "Yesterday",
-        'lastWeek': "Last Week",
-        'lastMonth': "Last Month",
-        'lastYear': "Last Year",
-    },
-    //datasources needs code change. These are used in the data view filters.
-    'jira-prod': "Jira",
-    'confluence-prod': "Confluence",
-    'people': "People",
-    'sharepoint': "Files",
-
+    sovereign:{
+        unknown: {
+            display:'Oops! Something went wrong.\n An unknown url was requested\n\n',
+            reload: 'Start again',
+        }
+    }
 }

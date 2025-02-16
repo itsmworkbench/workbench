@@ -1,0 +1,21 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/horizontal_navbar",
+  "description": "Interface and simple implementation for a horizontal nav bar",
+  "links": [
+
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": true,
+    "react": false
+  }
+}

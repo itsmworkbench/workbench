@@ -1,13 +1,12 @@
 {
-  "template": "react",
-  "name": "@itsmworkbench/itsm2",
-  "description": "ITSM Workbench",
+  "template": "react_library",
+  "name": "@itsmworkbench/homesovereign",
+  "description": "The sovereign pane for a home page that lists what we can do",
   "links": [
-    "@itsmworkbench/homesovereign",
-    "@itsmworkbench/itsmsovereign",
-    "@itsmworkbench/panelnavigator",
-    "@itsmworkbench/react_utils",
+    "@itsmworkbench/common_components",
     "@itsmworkbench/sovereign",
+    "@itsmworkbench/translation",
+    "@itsmworkbench/react_utils",
     "@itsmworkbench/utils"
   ],
   "packageJson": {

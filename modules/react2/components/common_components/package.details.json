@@ -8,6 +8,7 @@
     "@itsmworkbench/react_utils",
     "@itsmworkbench/selectable_button",
     "@itsmworkbench/table",
+    "@itsmworkbench/panelnavigator",
     "@itsmworkbench/translation"
   ],
   "packageJson": {
