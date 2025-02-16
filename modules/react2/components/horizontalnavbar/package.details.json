@@ -3,7 +3,7 @@
   "name": "@itsmworkbench/horizontal_navbar",
   "description": "Interface and simple implementation for a horizontal nav bar",
   "links": [
-
+    "@itsmworkbench/utils"
   ],
   "packageJson": {
     "files": ["build/"],

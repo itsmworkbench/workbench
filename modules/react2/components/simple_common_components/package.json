@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/horizontal_navbar",
-  "description": "Interface and simple implementation for a horizontal nav bar",
+  "name": "@itsmworkbench/simple_common_components",
+  "description": "A simple implementation of common components",
   "version": "1.0.0",
   "browserslist": {
     "development": [
@@ -15,7 +15,14 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/utils": "1.0.0",
+    "@itsmworkbench/common_components": "1.0.0",
+    "@itsmworkbench/clip_height": "1.0.0",
+    "@itsmworkbench/mouse_over": "1.0.0",
+    "@itsmworkbench/react_utils": "1.0.0",
+    "@itsmworkbench/selectable_button": "1.0.0",
+    "@itsmworkbench/table": "1.0.0",
+    "@itsmworkbench/panelnavigator": "1.0.0",
+    "@itsmworkbench/translation": "1.0.0",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

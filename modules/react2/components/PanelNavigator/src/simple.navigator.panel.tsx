@@ -22,7 +22,8 @@ const styles: Record<string, React.CSSProperties> = {
         maxWidth: "300px", // Ensures they don't stretch too far
         minHeight: "150px",
         boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
-        whiteSpace: "pre-line"
+        whiteSpace: "pre-line",
+        gridAutoFlow:"dense"
 
     },
     panelHover: {
@@ -31,12 +32,13 @@ const styles: Record<string, React.CSSProperties> = {
     },
     layout: {
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", // Changed to auto-fill for proper spacing
+        gridTemplateColumns: "repeat(auto-fit, minmax(calc(280px + 30px), 1fr))",
         gap: "30px", // Ensures proper spacing horizontally and vertically
         width: "100%",
         maxWidth: "1200px", // Prevents too much stretching
         margin: "auto",
         padding: "20px",
+
     },
     icon: {
         fontSize: "40px",

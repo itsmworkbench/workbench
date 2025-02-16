@@ -4,7 +4,7 @@ import {Configuration, PublicClientApplication} from "@azure/msal-browser";
 import {loginUsingMsal} from "@itsmworkbench/msal_authentication";
 import {Authenticate, authenticateDebug, AuthenticationProvider, LoginConfig} from "@itsmworkbench/react_login_component";
 
-import {SimpleSovereignAppComponents, SimpleUnknownDisplay, SovereignApp, SovereignAppComponentsProvider, SovereignStatePlugins, SovereignStatePluginsProvider, SovereignStateProvider} from "@itsmworkbench/sovereign";
+import {makeSovereignStatePlugin, SimpleSovereignAppComponents, SimpleUnknownDisplay, SovereignApp, SovereignAppComponentsProvider, SovereignStatePlugins, SovereignStatePluginsProvider, SovereignStateProvider} from "@itsmworkbench/sovereign";
 import {consoleErrorReporter, DebugStateProvider, FeatureFlags, NonFunctionalsProvider, routingDebug, useFeatureFlag, WindowUrlProvider} from "@itsmworkbench/react_utils";
 import {AttributeValueOrientation, AttributeValueOrientationProvider, AttributeValueOrientations} from "@itsmworkbench/renderers";
 import {DevMode, DevModeStateForSearchProvider} from "@itsmworkbench/devmode";
@@ -53,6 +53,7 @@ export const navPanels: NavigatorPanelDefns = {
 const sovereignStatePlugins: SovereignStatePlugins = {
     plugins: {
         home: HomeSovereignPagePlugin(navPanels),
+        getStarted: makeSovereignStatePlugin(() =><span>Get Started</span>),
         newTicket: NewTicketSovereignPanePlugin,
         itsm: ItsmSovereignPagePlugin,
     },
@@ -87,7 +88,7 @@ msal.initialize({}).then(() => {
                                             <DevModeStateForSearchProvider devModeState={{selected: ''}}>
                                                 <AuthenticationProvider loginConfig={login}>
                                                     <Authenticate>
-                                                        <SovereignAppComponentsProvider sovereignAppComponents={SimpleSovereignAppComponents('itsm.logo.png')}>
+                                                        <SovereignAppComponentsProvider sovereignAppComponents={SimpleSovereignAppComponents}>
                                                             <WizardComponentsProvider wizardComponents={SimpleWizardComponents}>
                                                                 <DevMode/>
                                                                 <SovereignApp/>

@@ -15,6 +15,7 @@
     ]
   },
   "dependencies": {
+    "@itsmworkbench/simple_common_components": "1.0.0",
     "@itsmworkbench/homesovereign": "1.0.0",
     "@itsmworkbench/itsmsovereign": "1.0.0",
     "@itsmworkbench/itsm_translation": "1.0.0",

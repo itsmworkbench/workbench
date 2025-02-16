@@ -1,4 +1,4 @@
-export * from './src/clip.height';
+
 export * from './src/make.getter.setter'
 export * from './src/non.functionals.provider'
 export * from './src/routing/path.name.provider'
