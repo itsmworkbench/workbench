@@ -8,13 +8,18 @@ import {SimpleSovereignAppComponents, SimpleUnknownDisplay, SovereignApp, Sovere
 import {consoleErrorReporter, DebugStateProvider, FeatureFlags, NonFunctionalsProvider, routingDebug, useFeatureFlag, WindowUrlProvider} from "@itsmworkbench/react_utils";
 import {AttributeValueOrientation, AttributeValueOrientationProvider, AttributeValueOrientations} from "@itsmworkbench/renderers";
 import {DevMode, DevModeStateForSearchProvider} from "@itsmworkbench/devmode";
-import {ThemeProvider} from "@mui/material/styles";
 import {ItsmSovereignPagePlugin} from "@itsmworkbench/itsmsovereign";
 import {HomeSovereignPagePlugin} from "@itsmworkbench/homesovereign";
-import {defaultTheme} from "./mui.theme";
 import {emptyUsedAndNotFound, TranslationUsedAndNotFoundProvider} from "@itsmworkbench/translation";
 import {SimpleTranslationProvider} from "@itsmworkbench/simple_translation";
 import {NavigatorPanelDefns} from "@itsmworkbench/panelnavigator";
+import {NewTicketSovereignPanePlugin} from "@itsmworkbench/newticket_wizard";
+import {SimpleWizardComponents} from "@itsmworkbench/wizard/src/simple.wizard.components";
+import {WizardComponentsProvider} from "@itsmworkbench/wizard";
+import {itsmTheme} from "@itsmworkbench/itsm_themes/src/itsm.theme";
+import {ThemeProvider} from "@itsmworkbench/themes";
+import {allThemes} from "@itsmworkbench/all_themes";
+import {itsmTranslation} from "@itsmworkbench/itsm_translation";
 
 
 const debugState = {
@@ -48,6 +53,7 @@ export const navPanels: NavigatorPanelDefns = {
 const sovereignStatePlugins: SovereignStatePlugins = {
     plugins: {
         home: HomeSovereignPagePlugin(navPanels),
+        newTicket: NewTicketSovereignPanePlugin,
         itsm: ItsmSovereignPagePlugin,
     },
     UnknownDisplay: SimpleUnknownDisplay
@@ -65,37 +71,40 @@ export function AttributeValueOrientationFromFeatureFlagProvider({children}: { c
     return <AttributeValueOrientationProvider orientation={hv}>{children}</AttributeValueOrientationProvider>
 }
 
+
 msal.initialize({}).then(() => {
 //we set up here: how we display the components, how we do state management and how we do authentication
 
     root.render(<React.StrictMode>
-            <ThemeProvider theme={defaultTheme}>
-                <WindowUrlProvider>
-                    <DebugStateProvider debugState={debugState}>
-                        <SovereignStatePluginsProvider plugins={sovereignStatePlugins}>
-                            <SovereignStateProvider>
-                                <TranslationUsedAndNotFoundProvider usedAndNotFound={emptyUsedAndNotFound()}>
-                                    <SimpleTranslationProvider>
-                                        <NonFunctionalsProvider debugState={debugState} featureFlags={featureFlags} errorReporter={consoleErrorReporter}>
+            <WindowUrlProvider>
+                <DebugStateProvider debugState={debugState}>
+                    <SovereignStatePluginsProvider plugins={sovereignStatePlugins}>
+                        <SovereignStateProvider>
+                            <TranslationUsedAndNotFoundProvider usedAndNotFound={emptyUsedAndNotFound()}>
+                                <SimpleTranslationProvider translation={itsmTranslation}>
+                                    <NonFunctionalsProvider debugState={debugState} featureFlags={featureFlags} errorReporter={consoleErrorReporter}>
+                                        <ThemeProvider themes={allThemes}>
                                             <DevModeStateForSearchProvider devModeState={{selected: ''}}>
                                                 <AuthenticationProvider loginConfig={login}>
                                                     <Authenticate>
-                                                        <SovereignAppComponentsProvider sovereignAppComponents={SimpleSovereignAppComponents}>
-                                                            <DevMode/>
-                                                            <SovereignApp/>
+                                                        <SovereignAppComponentsProvider sovereignAppComponents={SimpleSovereignAppComponents('itsm.logo.png')}>
+                                                            <WizardComponentsProvider wizardComponents={SimpleWizardComponents}>
+                                                                <DevMode/>
+                                                                <SovereignApp/>
+                                                            </WizardComponentsProvider>
                                                         </SovereignAppComponentsProvider>
 
                                                     </Authenticate>
                                                 </AuthenticationProvider>
                                             </DevModeStateForSearchProvider>
-                                        </NonFunctionalsProvider>
-                                    </SimpleTranslationProvider>
-                                </TranslationUsedAndNotFoundProvider>
-                            </SovereignStateProvider>
-                        </SovereignStatePluginsProvider>
-                    </DebugStateProvider>
-                </WindowUrlProvider>
-            </ThemeProvider>
+                                        </ThemeProvider>
+                                    </NonFunctionalsProvider>
+                                </SimpleTranslationProvider>
+                            </TranslationUsedAndNotFoundProvider>
+                        </SovereignStateProvider>
+                    </SovereignStatePluginsProvider>
+                </DebugStateProvider>
+            </WindowUrlProvider>
         </React.StrictMode>
     );
 })

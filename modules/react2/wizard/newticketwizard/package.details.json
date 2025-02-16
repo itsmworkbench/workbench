@@ -1,0 +1,23 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/newticket_wizard",
+  "description": "the wizard for creating a new ticket",
+  "links": [
+    "@itsmworkbench/wizard",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/sovereign"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": true,
+    "react": false
+  }
+}

@@ -3,7 +3,12 @@ import {commonDataLayoutStyles, commonRendererStyles, Theme} from "@itsmworkbenc
 export const itsmTheme: Theme = {
     name: "itsm theme",
     description: "The theme for the itsm workbench",
-    header: {logoUrl: 'noLogo'},
+    header: {
+        logoUrl: 'itsm.logo.png',
+        logoStyle: {
+            height: '64px'
+        }
+    },
     renderer: commonRendererStyles,
     dataLayout: commonDataLayoutStyles
 };

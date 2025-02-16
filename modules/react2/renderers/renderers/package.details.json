@@ -1,0 +1,22 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/renderers",
+  "description": "Components that allow us to render some value. Such as a string, or markdown, or html etc.",
+  "links": [
+    "@itsmworkbench/common_components",
+    "@itsmworkbench/errors"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": true,
+    "react": false
+  }
+}

@@ -8,8 +8,9 @@ export const SimpleSovereignLayout: SovereignAppLayout =
     ({children}) =>
         <div>{children}</div>
 
-export const SimpleSovereignAppComponents: SovereignAppComponents = {
+export const SimpleSovereignAppComponents = (homeIcon: string): SovereignAppComponents => ({
+    homeIcon,
     SovereignAppLayout: SimpleSovereignLayout,
     SovereignHeader: SimpleSovereignHeader,
     SovereignFooter: SimpleSovereignFooter
-}
+})

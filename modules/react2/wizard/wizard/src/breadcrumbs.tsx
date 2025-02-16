@@ -1,5 +1,6 @@
 import React from "react";
 import {DisplayBreadcrumb, DisplayBreadcrumbs, useWizardComponents} from "./wizard";
+import {camelCaseToWords} from "@itsmworkbench/utils";
 
 export const SimpleDisplayBreadcrumbs: DisplayBreadcrumbs =
     ({steps, stepOps}) => {
@@ -25,5 +26,6 @@ export const SimpleDisplayBreadcrumb: DisplayBreadcrumb =
         const [currentStep, setCurrentStep] = stepOps; //an external shared 'useState'
         const isSelected = step === currentStep
         const onClick = clickable ? () => setCurrentStep(step) : undefined
-        return <span style={{color: isSelected ? 'red' : 'black'}} onClick={onClick}>{step}</span>
+            const niceName = camelCaseToWords(step)
+        return <span style={{color: isSelected ? 'red' : 'black'}} onClick={onClick}>{niceName}</span>
     }

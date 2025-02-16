@@ -3,6 +3,7 @@
   "name": "@itsmworkbench/wizard",
   "description": "The interfaces and simple implementation for wizard with next/prev etc",
   "links": [
+    "@itsmworkbench/translation",
     "@itsmworkbench/react_utils"
   ],
   "packageJson": {

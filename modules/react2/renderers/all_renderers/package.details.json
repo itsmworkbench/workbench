@@ -1,0 +1,24 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/all_renderers",
+  "description": "One stop shopping for renderers",
+  "links": [
+    "@itsmworkbench/errors",
+    "@itsmworkbench/renderers"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+      "dompurify": "^3.2.3"
+    },
+    "devDependencies": {
+
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": false,
+    "react": false
+  }
+}

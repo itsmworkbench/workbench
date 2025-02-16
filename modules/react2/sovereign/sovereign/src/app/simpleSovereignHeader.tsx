@@ -1,8 +1,9 @@
-import {SovereignHeader} from "./sovereign.app.components";
+import {SovereignHeader, useSovereignAppComponents} from "./sovereign.app.components";
 import {useLoginComponents} from "@itsmworkbench/react_login_component";
 import {useIcon} from "@itsmworkbench/icons";
 import {useTranslation} from "@itsmworkbench/translation";
 import React, {ReactNode} from "react";
+import {useTheme} from "@itsmworkbench/themes";
 
 const headerLayoutStyles: React.CSSProperties = {
     display: 'flex',
@@ -26,11 +27,13 @@ export const SimpleSovereignHeader: SovereignHeader = ({}) => {
     const {DisplayLogin} = useLoginComponents();
     const {MeaningfulIcon} = useIcon();
     const translate = useTranslation();
-    const HomeIcon = MeaningfulIcon('home', 'icon.homepage');
+    const {header} = useTheme()
+    const {logoStyle, logoUrl} = header
+    const HomeIcon = MeaningfulIcon(logoUrl, 'icon.homepage');
     return (
         <SimpleHeaderLayout>
             <a href='/' title={translate('header.home')}>
-                <HomeIcon/>
+                <HomeIcon style={logoStyle}/>
             </a>
             <DisplayLogin/>
         </SimpleHeaderLayout>

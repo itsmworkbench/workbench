@@ -14,6 +14,7 @@ export type RendererStyles = {
 
 export type HeaderTheme = {
     logoUrl: string
+    logoStyle?: CSSProperties
 }
 
 export type DataLayoutStyles = {
@@ -59,6 +60,7 @@ export type Theme = {
     header: HeaderTheme
     renderer: RendererStyles
     dataLayout: DataLayoutStyles
+
 }
 
 export const commonLink: CSSProperties = {
@@ -105,7 +107,7 @@ export const themeForTests: Theme = {
     name: "test theme",
     description: "The theme for tests",
     header: {
-        logoUrl: "someLogoUrl",
+        logoUrl: "itsm.logo.png",
     },
     renderer: commonRendererStyles,
     dataLayout: commonDataLayoutStyles

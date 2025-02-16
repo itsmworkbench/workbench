@@ -4,9 +4,10 @@ import {makeContextFor} from "@itsmworkbench/react_utils";
 import {useTranslation} from "@itsmworkbench/translation";
 
 // Types for decorative and meaningful icons
-export type DecorativeIconFn = (name: string) => Icon;
-export type MeaningfulIconFn = (name: string, purpose: string) => Icon;
-export type Icon = () => React.ReactElement;
+export type DecorativeIconFn = (name: string, type?: string) => Icon;
+export type MeaningfulIconFn = (name: string, purpose: string, type?: string) => Icon;
+export type IconProps = React.HTMLProps<HTMLImageElement>
+export type Icon = (props: IconProps) => React.ReactElement;
 
 // Icon context type to manage both types of icons
 export type IconContextData = {
@@ -16,24 +17,31 @@ export type IconContextData = {
 
 // Accessible descriptions for meaningful icons
 
+function calculatePath(name: string, type: string) {
+    return name.indexOf('.') === -1 ? `icons/${name}.${type || 'png'}` : name
+}
+
 // Decorative icons (non-interactive)
-export const decorativeIconFn: DecorativeIconFn = (name: string): Icon =>
-    () => (
-        <img
-            src={`icons/${name}.svg`}
-            alt=""
+export const decorativeIconFn: DecorativeIconFn = (name: string, type): Icon =>
+    (props) => {
+        const path = calculatePath(name, type);
+        return <img
+            src={`icons/${path}`}
             role="presentation"
-        />
-    );
+            {...props}
+        />;
+    };
 
 // Meaningful icons (interactive or informative)
-export const meaningfulIconFn: MeaningfulIconFn = (name: string, purpose: string): Icon =>
-    () => {
+export const meaningfulIconFn: MeaningfulIconFn = (name: string, purpose: string, type = 'png'): Icon =>
+    (props) => {
         const translation = useTranslation()
+        const path = calculatePath(name, type);
         return (
             <img
-                src={`icons/${name}.svg`}
+                src={`icons/${path}`}
                 alt={translation(purpose)}
+                {...props}
             />
         );
     };

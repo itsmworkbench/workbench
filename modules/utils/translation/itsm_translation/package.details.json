@@ -1,0 +1,23 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/itsm_translation",
+  "description": "The translations for ITSM Workbench",
+  "links": [
+    "@itsmworkbench/record_utils",
+    "@itsmworkbench/translation"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    },
+    "scripts": {"start": "react-scripts start"}
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}
