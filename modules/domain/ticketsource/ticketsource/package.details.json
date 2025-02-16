@@ -1,0 +1,23 @@
+{
+  "template": "typescript",
+  "name": "@itsmworkbench/ticketsource",
+  "description": "Where we get tickets from",
+  "packageJson": {
+    "dependencies": {},
+    "devDependencies": {},
+    "browser": {
+      "child_process": false
+    }
+  },
+  "links": [
+    "@itsmworkbench/domain",
+    "@itsmworkbench/tickets",
+    "@itsmworkbench/utils",
+    "@itsmworkbench/react_utils"
+  ],
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": false
+  }
+}

@@ -3,6 +3,8 @@
   "name": "@itsmworkbench/itsm2",
   "description": "ITSM Workbench",
   "links": [
+    "@itsmworkbench/all_ticketsource",
+    "@itsmworkbench/ticketsource",
     "@itsmworkbench/simple_common_components",
     "@itsmworkbench/homesovereign",
     "@itsmworkbench/itsmsovereign",

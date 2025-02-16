@@ -12,11 +12,10 @@ export const SimpleDisplayBreadcrumbs: DisplayBreadcrumbs =
                 const isCurrentStep = step === currentStep;
                 const isClickable = index <= selectedIndex;
                 const needsSeparator = index < steps.length - 1;
-                return (
-                    <><Breadcrumb stepOps={stepOps} step={step} clickable={isClickable}/>
-                        {needsSeparator && <> &gt;&gt; </>}
-                    </>
-                );
+                return <span key={step}>
+                    <Breadcrumb stepOps={stepOps} step={step} clickable={isClickable}/>
+                    {needsSeparator && <> &gt;&gt; </>}
+                </span>;
             })}
         </div>
     }
@@ -26,6 +25,6 @@ export const SimpleDisplayBreadcrumb: DisplayBreadcrumb =
         const [currentStep, setCurrentStep] = stepOps; //an external shared 'useState'
         const isSelected = step === currentStep
         const onClick = clickable ? () => setCurrentStep(step) : undefined
-            const niceName = camelCaseToWords(step)
+        const niceName = camelCaseToWords(step)
         return <span style={{color: isSelected ? 'red' : 'black'}} onClick={onClick}>{niceName}</span>
     }
