@@ -18,7 +18,7 @@
     "@itsmworkbench/git",
     "@itsmworkbench/operator",
     "@itsmworkbench/tickets",
-    "@itsmworkbench/tickettype",
+    "@itsmworkbench/knowledgearticle",
     "@itsmworkbench/ticketevents",
     "@itsmworkbench/utils",
     "@itsmworkbench/yaml"

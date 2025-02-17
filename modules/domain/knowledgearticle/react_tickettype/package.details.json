@@ -1,0 +1,20 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/reacttickettype",
+  "description": "The react gui around tickettypes",
+  "packageJson": {
+    "files":        ["build/"],
+    "dependencies": {
+    }
+  },
+  "links":       [
+    "@itsmworkbench/components",
+    "@itsmworkbench/knowledgearticle"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false,
+    "react":   false
+  }
+}

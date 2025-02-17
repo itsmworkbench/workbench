@@ -3,19 +3,16 @@ import {DisplaySovereignPage, makeSovereignStatePlugin, SovereignStatePlugin} fr
 import React, {useState} from "react";
 import {CreateTicketWizardPage} from "./create.ticket.wizard.page";
 import {Ticket} from "@itsmworkbench/tickets";
+import {SelectKnowledgeArticleTicketWizardPage} from "./select.knowledge.article.ticket.wizard.page";
 
 export const NewTicketWizard: Wizard<any> = {
     createTicket: {
         descriptionKey: 'newTicket.wizard.createTicket',
         Panel: CreateTicketWizardPage
     },
-    howToProcessTicket: {
-        descriptionKey: 'newTicket.wizard.howToProcessTicket',
-        Panel: SimpleWizardDescriptionPanel()
-    },
     selectKnowledgeArticle: {
         descriptionKey: 'newTicket.wizard.selectKnowledgeArticle',
-        Panel: SimpleWizardDescriptionPanel()
+        Panel: SelectKnowledgeArticleTicketWizardPage
     },
 
 }

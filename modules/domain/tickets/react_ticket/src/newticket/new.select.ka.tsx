@@ -3,7 +3,7 @@ import { LensProps } from "@focuson/state";
 import { NewTicketWizardData } from "./new.ticket.wizard.domain";
 import { NextNewWizardStepButton, PreviousNewWizardStepButton } from "./new.ticket.wizard.next.prev";
 import { DisplayPhasesForTicketType } from "@itsmworkbench/reacttickettype";
-import { detailsToTicketType, TicketType } from "@itsmworkbench/tickettype";
+import { detailsToKnowledgeArticle, KnowledgeArticle } from "@itsmworkbench/knowledgearticle";
 import { SelectAndLoadFromUrlStore, Status, useSideEffects } from "@itsmworkbench/components";
 import { IdAnd } from "@itsmworkbench/utils";
 import Typography from "@mui/material/Typography";
@@ -16,7 +16,7 @@ export interface NewSelectKaProps<S> extends LensProps<S, NewTicketWizardData, a
 
 }
 
-const initialState = detailsToTicketType ( {
+const initialState = detailsToKnowledgeArticle ( {
   ticketType: 'General',
   approvalState: 'Needs Approval',
   validateInvolvedParties: false
@@ -30,7 +30,7 @@ export function NewSelectKa<S> ( { state }: NewSelectKaProps<S> ) {
                                Title={<h1>Knowledge Article</h1>}
                                Text={<MultiParagraphText i18nKey={[ "knowledge.article.description", "knowledge.article.kas", "knowledge.article.newticket.select" ]}/>}
                                TextIfNoKas={<MultiParagraphText i18nKey={[ "knowledge.article.description", "knowledge.article.nokas" ]}/>}
-                               Summary={( ka: IdAnd<TicketType> | undefined ) =>
+                               Summary={( ka: IdAnd<KnowledgeArticle> | undefined ) =>
                                  <DisplayPhasesForTicketType ticketType={ka?.item} pStatus={{} as Status} Action={
                                    ( phase, name, action, status ) => <Tooltip title={JSON.stringify ( action )}>
                                      <Typography

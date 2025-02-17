@@ -10,7 +10,7 @@ import { EnrichedEvent, Event } from "@itsmworkbench/events";
 import { Ticket } from "@itsmworkbench/tickets";
 import { EmailResult, TicketVariables } from "@itsmworkbench/ai";
 import { DisplayTicketListSelectionState, NewTicketData, NewTicketState, NewTicketWizardData } from "@itsmworkbench/reactticket";
-import { defaultTicketTypeDetails, TicketType } from "@itsmworkbench/tickettype";
+import { defaultKnowledgeArticleDetails, KnowledgeArticle } from "@itsmworkbench/knowledgearticle";
 import { Action } from "@itsmworkbench/actions";
 import { FCLogRecord, IdAnd } from "@itsmworkbench/utils";
 import { KnowledgeArticleTempData } from "@itsmworkbench/reacttickettype";
@@ -30,7 +30,7 @@ export interface TempData {
   emailResult: EmailResult
   receiveEmailData: ReceiveEmailData
   ka: KnowledgeArticleTempData
-  ticketType: IdAnd<TicketType>
+  ticketType: IdAnd<KnowledgeArticle>
 }
 
 
@@ -67,7 +67,7 @@ export interface ItsmState {
   debug?: ItsmDebugState
 }
 
-const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '', ticketType: defaultTicketTypeDetails };
+const newTicket: NewTicketData = { organisation: 'me', name: '', ticket: '', ticketType: defaultKnowledgeArticleDetails };
 
 export const startAppState: ItsmState = {
   forTicket: {} as any,

@@ -27,7 +27,7 @@
     "@itsmworkbench/git": "1.0.0",
     "@itsmworkbench/operator": "1.0.0",
     "@itsmworkbench/tickets": "1.0.0",
-    "@itsmworkbench/tickettype": "1.0.0",
+    "@itsmworkbench/knowledgearticle": "1.0.0",
     "@itsmworkbench/ticketevents": "1.0.0",
     "@itsmworkbench/utils": "1.0.0",
     "@itsmworkbench/yaml": "1.0.0",

@@ -5,7 +5,7 @@ import { ListNamesResult, NamedUrl, UrlSaveFn, UrlStoreResult, writeUrl } from "
 import { Optional, Transform } from "@focuson/lens";
 import { Event, SetIdEvent, SetValueEvent } from "@itsmworkbench/events";
 import { TicketVariables } from "@itsmworkbench/ai";
-import { defaultTicketTypeDetails, detailsToTicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
+import { defaultKnowledgeArticleDetails, detailsToKnowledgeArticle, KnowledgeArticleDetails } from "@itsmworkbench/knowledgearticle";
 import { NewTicketWizardData } from "./new.ticket.wizard.domain";
 
 
@@ -13,7 +13,7 @@ import { NewTicketWizardData } from "./new.ticket.wizard.domain";
 //This is so that we can test out the happy path of the gui. We want to see what it will look like. We will come back to the errors later.
 export interface NewTicketData {
   organisation: string,
-  ticketType: TicketTypeDetails
+  ticketType: KnowledgeArticleDetails
   name: string
   ticket: string
   aiAddedVariables?: TicketVariables
@@ -41,8 +41,8 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
       console.log ( 'addNewTicketSideeffectProcessor - se', se )
       const ticketUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticket', name: se.ticketName }
       const ticketeventsUrl: NamedUrl = { scheme: 'itsm', organisation: se.organisation, namespace: 'ticketevents', name: se.ticketName }
-      const ticketTypeDetails = se.ticketTypeDetails || defaultTicketTypeDetails
-      const ticketType = se.ticketType ?? detailsToTicketType ( ticketTypeDetails )
+      const ticketTypeDetails = se.ticketTypeDetails || defaultKnowledgeArticleDetails
+      const ticketType = se.ticketType ?? detailsToKnowledgeArticle ( ticketTypeDetails )
 
 
       //what we should do instead of this
@@ -90,7 +90,7 @@ export function addNewTicketSideeffectProcessor<S> ( urlSaveFn: UrlSaveFn,
         [ ticketL, _ => {} ], //clear all the ticket data
         [ ticketIdL, _ => writeUrl ( ticketeventsUrl ) ],
         [ tickListO, _ => undefined ],
-        [ newTicketL, _ => ({ organisation: se.organisation, ticketType: defaultTicketTypeDetails, name: '', ticket: '' }) ]
+        [ newTicketL, _ => ({ organisation: se.organisation, ticketType: defaultKnowledgeArticleDetails, name: '', ticket: '' }) ]
       ]
       return hasErrors ( res ) ? { result: res } : {
         result: res, txs

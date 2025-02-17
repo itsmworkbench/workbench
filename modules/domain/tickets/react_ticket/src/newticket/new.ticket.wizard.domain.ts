@@ -1,4 +1,4 @@
-import { TicketType, TicketTypeDetails } from "@itsmworkbench/tickettype";
+import { KnowledgeArticle, KnowledgeArticleDetails } from "@itsmworkbench/knowledgearticle";
 import { LensState } from "@focuson/state";
 import { TicketVariables } from "@itsmworkbench/ai";
 
@@ -9,8 +9,8 @@ export type NewTicketWizardData = {
   ticketName: string
   issuer: string
   ticketDetails: string
-  ticketTypeDetails: TicketTypeDetails
-  ticketType: TicketType
+  ticketTypeDetails: KnowledgeArticleDetails
+  ticketType: KnowledgeArticle
   aiAddedVariables: TicketVariables
 }
 

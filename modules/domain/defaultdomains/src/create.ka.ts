@@ -1,6 +1,6 @@
 import { EnrichedEvent, Event } from "@itsmworkbench/events";
 import { Capability, EmailWorkBenchContext, isEmailWorkBenchContext, isLdapWorkBenchContext, isReceiveEmailWorkbenchContext, isReviewTicketWorkBenchContext, isSqlWorkBenchContext, isWorkBenchContext, LdapWorkBenchContext, PhaseName, ReceiveEmailWorkbenchContext, ReviewTicketWorkBenchContext, SqlWorkBenchContext, WorkBenchContext } from "@itsmworkbench/domain";
-import { TicketType } from "@itsmworkbench/tickettype";
+import { KnowledgeArticle } from "@itsmworkbench/knowledgearticle";
 import { ErrorsAnd, NameAnd } from "@laoban/utils";
 
 import { findUsedVariables, reverseTemplate } from "@itsmworkbench/utils";
@@ -16,7 +16,7 @@ export function findWorkbenchEventFor ( e: Event[], phase: string, action: strin
   return found.length === 0 ? undefined : found[ found.length - 1 ]
 }
 
-export function findActionsInEventsMergeWithTicketType ( ticketType: TicketType|undefined, e: Event[], phase: PhaseName, action: string ) {
+export function findActionsInEventsMergeWithTicketType (ticketType: KnowledgeArticle|undefined, e: Event[], phase: PhaseName, action: string ) {
   const found = ticketType?.actions?.[ phase ]?.[ action ]
   // console.log ( 'findActionsInEventsMergeWithTicketType - found', phase, action, found )
   const workBenchEvent = findWorkbenchEventFor ( e, phase, action )
@@ -33,11 +33,11 @@ export function findActionInEventsFor ( e: EnrichedEvent<any, any>[], phase: Pha
   return ticketType && findActionsInEventsMergeWithTicketType ( ticketType, e, phase, action )
 }
 
-export function lastTicketType ( e: EnrichedEvent<any, any>[] ): TicketType | undefined {
+export function lastTicketType ( e: EnrichedEvent<any, any>[] ): KnowledgeArticle | undefined {
   const withTicketType: any[] = e.filter ( ( e: any ) => e.value?.ticketType || e.context?.data?.ticketType !== undefined )
   if ( withTicketType.length === 0 ) return undefined
   let foundEvent = withTicketType[ withTicketType.length - 1 ];
-  const foundTicketType: TicketType = foundEvent.value.ticketType || foundEvent.context.data.ticketType
+  const foundTicketType: KnowledgeArticle = foundEvent.value.ticketType || foundEvent.context.data.ticketType
   return JSON.parse ( JSON.stringify ( foundTicketType ) )
 
 }
@@ -113,7 +113,7 @@ export function reverseAction ( variables: Record<string, string>, e: EventWithW
 }
 
 
-export function makeKnowledgeArticle ( e: Event[], ticketType: TicketType, variables: Record<string, string> ): ErrorsAnd<TicketType> {
+export function makeKnowledgeArticle (e: Event[], ticketType: KnowledgeArticle, variables: Record<string, string> ): ErrorsAnd<KnowledgeArticle> {
   if ( ticketType == undefined ) return [ 'Could not find ticket type event' ]
   const copy = JSON.parse ( JSON.stringify ( ticketType ) )
   const capabilities: Capability[] = []

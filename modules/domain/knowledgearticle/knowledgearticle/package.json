@@ -1,5 +1,5 @@
 {
-  "name": "@itsmworkbench/tickettype",
+  "name": "@itsmworkbench/knowledgearticle",
   "description": "",
   "version": "1.0.0",
   "main": "dist/index",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.51",
+    "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/actions": "1.0.0",
     "@itsmworkbench/domain": "1.0.0",
     "@itsmworkbench/tickets": "1.0.0",

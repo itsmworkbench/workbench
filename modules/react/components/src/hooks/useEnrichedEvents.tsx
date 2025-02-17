@@ -1,7 +1,7 @@
 // Service implementation
 import React, {useContext} from "react";
 import {EnrichedEvent} from "@itsmworkbench/events";
-import {TicketType} from "@itsmworkbench/tickettype";
+import {KnowledgeArticle} from "@itsmworkbench/knowledgearticle";
 import {findActionsInEventsMergeWithTicketType, lastTicketType} from "@itsmworkbench/defaultdomains";
 import {PhaseName} from "@itsmworkbench/domain";
 
@@ -27,7 +27,7 @@ export function useEnrichedEvents(): EnrichedEvent<any, any>[] {
     return results;
 }
 
-export function useTicketType(): TicketType | undefined {
+export function useTicketType(): KnowledgeArticle | undefined {
     let enriched = useEnrichedEvents();
     let result = lastTicketType(enriched);
     return result
