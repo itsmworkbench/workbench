@@ -116,6 +116,7 @@ export const ellipsesInMiddle = (
     maxLength: number,
     ellipsis = "..."
 ): string => {
+  if (!text) return text;
   if (text.length <= maxLength) return text;
 
   const ellipsisLength = ellipsis.length;

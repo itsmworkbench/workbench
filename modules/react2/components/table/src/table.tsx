@@ -7,6 +7,7 @@ export interface SimpleTableProps<T> {
     keys: (keyof T)[];
     noDataText?: string;
     noWrap?: (keyof T)[];  // Columns that should NOT wrap
+    onRowSelect?: (row: T, index: number) => void;
 }
 
 export type TableStyleKeys = 'header' | 'cell' | 'noWrapCell' | 'noData' | 'hoverRow';

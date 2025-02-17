@@ -4,12 +4,12 @@ import {NameAnd} from "@itsmworkbench/utils";
 
 export type TicketSourceProps<Config> = {
     config: Config
-    ops: GetterSetter<Ticket>
+    systemName: string
+    onCreated: (ticket: Ticket) => void
 }
 export type DisplayTicketSource<Config> = (props: TicketSourceProps<Config>) => React.ReactNode
 
 export type TicketSource<Config> = {
-    name: string
     description: string
     config: Config
     Display: DisplayTicketSource<Config>

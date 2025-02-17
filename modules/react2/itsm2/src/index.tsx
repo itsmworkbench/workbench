@@ -20,6 +20,11 @@ import {itsmTheme} from "@itsmworkbench/itsm_themes/src/itsm.theme";
 import {ThemeProvider} from "@itsmworkbench/themes";
 import {allThemes} from "@itsmworkbench/all_themes";
 import {itsmTranslation} from "@itsmworkbench/itsm_translation";
+import {TicketSourceProvider} from "@itsmworkbench/ticketsource";
+import {AllTicketSources} from "@itsmworkbench/all_ticketsources";
+import {mockTickets} from "@itsmworkbench/mock_ticketsource/src/mock.tickets";
+import {mockSystems, SystemsProvider} from "@itsmworkbench/system";
+import {AllRenderersSimpleProvider} from "@itsmworkbench/all_renderers";
 
 
 const debugState = {
@@ -53,7 +58,7 @@ export const navPanels: NavigatorPanelDefns = {
 const sovereignStatePlugins: SovereignStatePlugins = {
     plugins: {
         home: HomeSovereignPagePlugin(navPanels),
-        getStarted: makeSovereignStatePlugin(() =><span>Get Started</span>),
+        getStarted: makeSovereignStatePlugin(() => <span>Get Started</span>),
         newTicket: NewTicketSovereignPanePlugin,
         itsm: ItsmSovereignPagePlugin,
     },
@@ -78,33 +83,39 @@ msal.initialize({}).then(() => {
 
     root.render(<React.StrictMode>
             <WindowUrlProvider>
-                <DebugStateProvider debugState={debugState}>
-                    <SovereignStatePluginsProvider plugins={sovereignStatePlugins}>
-                        <SovereignStateProvider>
-                            <TranslationUsedAndNotFoundProvider usedAndNotFound={emptyUsedAndNotFound()}>
-                                <SimpleTranslationProvider translation={itsmTranslation}>
-                                    <NonFunctionalsProvider debugState={debugState} featureFlags={featureFlags} errorReporter={consoleErrorReporter}>
-                                        <ThemeProvider themes={allThemes}>
-                                            <DevModeStateForSearchProvider devModeState={{selected: ''}}>
-                                                <AuthenticationProvider loginConfig={login}>
-                                                    <Authenticate>
-                                                        <SovereignAppComponentsProvider sovereignAppComponents={SimpleSovereignAppComponents}>
-                                                            <WizardComponentsProvider wizardComponents={SimpleWizardComponents}>
-                                                                <DevMode/>
-                                                                <SovereignApp/>
-                                                            </WizardComponentsProvider>
-                                                        </SovereignAppComponentsProvider>
+                <AllRenderersSimpleProvider>
+                    <SystemsProvider systems={mockSystems}>
+                        <TicketSourceProvider ticketSource={AllTicketSources(mockTickets)}>
+                            <DebugStateProvider debugState={debugState}>
+                                <SovereignStatePluginsProvider plugins={sovereignStatePlugins}>
+                                    <SovereignStateProvider>
+                                        <TranslationUsedAndNotFoundProvider usedAndNotFound={emptyUsedAndNotFound()}>
+                                            <SimpleTranslationProvider translation={itsmTranslation}>
+                                                <NonFunctionalsProvider debugState={debugState} featureFlags={featureFlags} errorReporter={consoleErrorReporter}>
+                                                    <ThemeProvider themes={allThemes}>
+                                                        <DevModeStateForSearchProvider devModeState={{selected: ''}}>
+                                                            <AuthenticationProvider loginConfig={login}>
+                                                                <Authenticate>
+                                                                    <SovereignAppComponentsProvider sovereignAppComponents={SimpleSovereignAppComponents}>
+                                                                        <WizardComponentsProvider wizardComponents={SimpleWizardComponents}>
+                                                                            <DevMode/>
+                                                                            <SovereignApp/>
+                                                                        </WizardComponentsProvider>
+                                                                    </SovereignAppComponentsProvider>
 
-                                                    </Authenticate>
-                                                </AuthenticationProvider>
-                                            </DevModeStateForSearchProvider>
-                                        </ThemeProvider>
-                                    </NonFunctionalsProvider>
-                                </SimpleTranslationProvider>
-                            </TranslationUsedAndNotFoundProvider>
-                        </SovereignStateProvider>
-                    </SovereignStatePluginsProvider>
-                </DebugStateProvider>
+                                                                </Authenticate>
+                                                            </AuthenticationProvider>
+                                                        </DevModeStateForSearchProvider>
+                                                    </ThemeProvider>
+                                                </NonFunctionalsProvider>
+                                            </SimpleTranslationProvider>
+                                        </TranslationUsedAndNotFoundProvider>
+                                    </SovereignStateProvider>
+                                </SovereignStatePluginsProvider>
+                            </DebugStateProvider>
+                        </TicketSourceProvider>
+                    </SystemsProvider>
+                </AllRenderersSimpleProvider>
             </WindowUrlProvider>
         </React.StrictMode>
     );

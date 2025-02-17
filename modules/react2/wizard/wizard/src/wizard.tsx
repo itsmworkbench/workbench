@@ -58,6 +58,21 @@ export type WizardComponents = {
     NextPrevFooter: WizardNextPrevFooter
 }
 
+export function nextWizardStep(steps: string[], stepOps: GetterSetter<string>) {
+    const [step, setStep] = stepOps
+    const index = steps.indexOf(step)
+    if (index === steps.length - 1) return
+    setStep(steps[index + 1])
+}
+
+export function prevWizardStep(steps: string[], stepOps: GetterSetter<string>) {
+    const [step, setStep] = stepOps
+    const index = steps.indexOf(step)
+    if (index === 0) return
+    setStep(steps[index - 1])
+}
+
+
 export const {use: useWizardComponents, Provider: WizardComponentsProvider} = makeContextFor<WizardComponents, 'wizardComponents'>('wizardComponents')
 
 export type WizardProps<T> = {

@@ -1,4 +1,12 @@
-import {GetterSetter} from "@itsmworkbench/react_utils";
-import {Ticket} from "@itsmworkbench/tickets";
+import {CreateTicketSource} from "@itsmworkbench/create_ticketsource";
+import {MockServiceConfig, MockTicketSource} from "@itsmworkbench/mock_ticketsource";
 
-ex
+
+export function AllTicketSources(data: MockServiceConfig) {
+    return {
+        serviceNow: MockTicketSource('Service Now', data),
+        jira: MockTicketSource('Jira', data),
+        manualTicket: CreateTicketSource,
+        // azureDevOps: MockTicketSource('Azure DevOps', data),
+    }
+}

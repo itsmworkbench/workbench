@@ -5,6 +5,7 @@ import { nameSpaceDetailsForGit, UrlStoreParser, UrlStoreWriter } from "@itsmwor
 export interface Ticket {
   id: string
   attributes: NameAnd<any>
+  summary: string
   description: string
 }
 

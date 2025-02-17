@@ -1,5 +1,5 @@
 {
-  "template": "typescript",
+  "template": "react_library",
   "name": "@itsmworkbench/create_ticketsource",
   "description": "Making a ticket manually",
   "packageJson": {

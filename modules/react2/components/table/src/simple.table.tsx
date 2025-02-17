@@ -36,6 +36,7 @@ export const SimpleTable: Table = <T, >({
                                             keys,
                                             noDataText = "No data available",
                                             noWrap = [],
+    onRowSelect
                                         }: SimpleTableProps<T>) => {
     return (
         <div style={{overflowX: "auto"}}>
@@ -58,7 +59,7 @@ export const SimpleTable: Table = <T, >({
                     </tr>
                 ) : (
                     data.map((item, rowIndex) => (
-                        <tr
+                        <tr onClick={()=>onRowSelect?.(item, rowIndex) }
                             key={rowIndex}
                             style={{
                                 backgroundColor: rowIndex % 2 ? "#ffffff" : "#f9f9f9",

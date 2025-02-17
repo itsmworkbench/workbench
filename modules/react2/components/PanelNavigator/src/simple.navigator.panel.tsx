@@ -9,8 +9,6 @@ const styles: Record<string, React.CSSProperties> = {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "20px",
-        borderRadius: "10px",
         border: "2px solid #ccc",
         cursor: "pointer",
         fontSize: "18px",
@@ -19,12 +17,30 @@ const styles: Record<string, React.CSSProperties> = {
         backgroundColor: "#f8f9fa",
         textAlign: "center",
         width: "100%",
-        maxWidth: "300px", // Ensures they don't stretch too far
-        minHeight: "150px",
         boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
         whiteSpace: "pre-line",
-        gridAutoFlow:"dense"
+        gridAutoFlow: "dense",
+        maxWidth: "300px",
+    },
+    small: {
+        minHeight: "24px",
+        padding: "2px",
+        borderRadius: "2px",
 
+    },
+    medium: {
+        minHeight: "50px",
+        padding: "20px",
+        borderRadius: "5px",
+    },
+    large: {
+        minHeight: "150px",
+        padding: "20px",
+        borderRadius: "10px",
+    },
+    panelSelected: {
+        backgroundColor: "#007bff",
+        color: "white",
     },
     panelHover: {
         backgroundColor: "#e9ecef",
@@ -38,7 +54,6 @@ const styles: Record<string, React.CSSProperties> = {
         maxWidth: "1200px", // Prevents too much stretching
         margin: "auto",
         padding: "20px",
-
     },
     icon: {
         fontSize: "40px",
@@ -47,19 +62,30 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 
-export const SimpleNavigatorPanel: OneNavigatorPanel = ({name, Icon, description}) => {
+export const SimpleNavigatorPanel: OneNavigatorPanel = ({name, Icon, size = 'large', description, ops, onSelected}) => {
     const [hovered, setHovered] = React.useState(false);
-    const [selected, setSelected] = useSelectedSovereign();
+    const [selected, setSelected] = ops;
+    const isSelected = selected === name;
+
+    const style = {
+        ...styles.panel,
+        ...(styles[size]),
+        ...(isSelected ? styles.panelSelected : {}),
+        ...(hovered ? styles.panelHover : {})
+    };
     return (
         <div
-            style={{...styles.panel, ...(hovered ? styles.panelHover : {})}}
+            style={{...style}}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            onClick={() => setSelected(name)}
+            onClick={() => {
+                setSelected(name);
+                onSelected?.(name)
+            }}
         >
-            <Icon/>
+            {Icon && <Icon/>}
             <div>{camelCaseToWords(name)}</div>
-            <br />
+            <br/>
             <div style={{fontSize: "14px", fontWeight: "normal", color: "#555"}}>
                 {description}
             </div>

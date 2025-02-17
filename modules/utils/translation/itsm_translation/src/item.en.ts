@@ -37,7 +37,8 @@ export const itsmTranslation = {
     },
     newTicket:{
         wizard:{
-            whereIsTicket: `Here we will select how we get the ticket`
+            whereIsTicket: `Here we will select how we get the ticket`,
+            createTicket: "Here we create the ticket we want to process\nThis can be by importing from servicenow or by creating a new ticket",
         }
     },
 

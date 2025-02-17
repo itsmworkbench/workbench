@@ -3,9 +3,12 @@
   "name": "@itsmworkbench/newticket_wizard",
   "description": "the wizard for creating a new ticket",
   "links": [
-    "@itsmworkbench/wizard",
     "@itsmworkbench/react_utils",
-    "@itsmworkbench/sovereign"
+    "@itsmworkbench/sovereign",
+    "@itsmworkbench/tickets",
+    "@itsmworkbench/system",
+    "@itsmworkbench/ticketsource",
+    "@itsmworkbench/wizard"
   ],
   "packageJson": {
     "files": ["build/"],

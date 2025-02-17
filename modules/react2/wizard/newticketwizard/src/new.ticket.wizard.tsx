@@ -1,15 +1,13 @@
-import {DisplayWizard, SimpleWizardDescriptionPanel, useWizardComponents, Wizard} from "@itsmworkbench/wizard";
+import {SimpleWizardDescriptionPanel, useWizardComponents, Wizard} from "@itsmworkbench/wizard";
 import {DisplaySovereignPage, makeSovereignStatePlugin, SovereignStatePlugin} from "@itsmworkbench/sovereign";
 import React, {useState} from "react";
+import {CreateTicketWizardPage} from "./create.ticket.wizard.page";
+import {Ticket} from "@itsmworkbench/tickets";
 
 export const NewTicketWizard: Wizard<any> = {
-    whereIsTicket: {
-        descriptionKey: 'newTicket.wizard.whereIsTicket',
-        Panel: SimpleWizardDescriptionPanel()
-    },
     createTicket: {
         descriptionKey: 'newTicket.wizard.createTicket',
-        Panel: SimpleWizardDescriptionPanel()
+        Panel: CreateTicketWizardPage
     },
     howToProcessTicket: {
         descriptionKey: 'newTicket.wizard.howToProcessTicket',
@@ -24,7 +22,7 @@ export const NewTicketWizard: Wizard<any> = {
 
 export const NewTicketSovereignPane: DisplaySovereignPage = () => {
     const {Display} = useWizardComponents();
-    const ops = useState<any>({}); //will become set ticket when we do that...
+    const ops = useState<Ticket>({} as Ticket);
     return <Display wizard={NewTicketWizard} ops={ops}/>
 };
 

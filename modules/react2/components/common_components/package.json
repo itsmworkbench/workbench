@@ -19,6 +19,7 @@
     "@itsmworkbench/mouse_over": "1.0.0",
     "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/selectable_button": "1.0.0",
+    "@itsmworkbench/system": "1.0.0",
     "@itsmworkbench/table": "1.0.0",
     "@itsmworkbench/panelnavigator": "1.0.0",
     "@itsmworkbench/translation": "1.0.0",

@@ -1,6 +1,6 @@
 {
-  "template": "typescript",
-  "name": "@itsmworkbench/servicenow_ticketsource",
+  "template": "react_library",
+  "name": "@itsmworkbench/mock_ticketsource",
   "description": "Making a ticket manually",
   "packageJson": {
     "dependencies": {},

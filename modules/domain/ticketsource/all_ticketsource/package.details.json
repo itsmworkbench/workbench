@@ -1,6 +1,6 @@
 {
-  "template": "typescript",
-  "name": "@itsmworkbench/all_ticketsource",
+  "template": "react_library",
+  "name": "@itsmworkbench/all_ticketsources",
   "description": "Making a ticket manually",
   "packageJson": {
     "dependencies": {},
@@ -11,7 +11,7 @@
   },
   "links": [
     "@itsmworkbench/create_ticketsource",
-    "@itsmworkbench/servicenow_ticketsource",
+    "@itsmworkbench/mock_ticketsource",
     "@itsmworkbench/domain",
     "@itsmworkbench/tickets",
     "@itsmworkbench/utils",

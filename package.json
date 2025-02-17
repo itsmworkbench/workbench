@@ -10,7 +10,7 @@
   },
   "scripts": {
     "api": "ts-node  ./modules/cli/itsmworkbench/index api -d organisations",
-    "start": "cd modules/react/react && yarn start",
+    "start": "cd modules/react/react && yarn start --port 1238",
     "itsm": "cd modules/react2/itsm2 && yarn start"
   },
   "staticFiles": {
