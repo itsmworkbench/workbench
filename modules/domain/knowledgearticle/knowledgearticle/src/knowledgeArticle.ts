@@ -2,14 +2,14 @@ import {Capability, PhaseAnd} from "@itsmworkbench/domain";
 import {Action} from "@itsmworkbench/actions";
 import {NameAnd} from "@itsmworkbench/utils";
 import {IdentityUrl, nameSpaceDetailsForGit, UrlStoreParser} from "@itsmworkbench/urlstore";
-import {Ticket} from "@itsmworkbench/tickets";
 import {YamlCapability} from "@itsmworkbench/yaml";
-import {makeContextForState} from "@itsmworkbench/react_utils";
 
-export type KnowledgeArticles=NameAnd<KnowledgeArticle>
-export const {use: useKnowledgeArticles, Provider: KnowledgeArticleProvider} = makeContextForState<KnowledgeArticles, 'knowledgeArticles'>('knowledgeArticles');
+export type SystemToKnowledgeArticles = NameAnd<KnowledgeArticles>
+export type KnowledgeArticles = NameAnd<KnowledgeArticle>
+
 export interface KnowledgeArticle {
     name?: string
+    description?: string
     id?: IdentityUrl
     variables?: string[]
     capabilities: Capability[]

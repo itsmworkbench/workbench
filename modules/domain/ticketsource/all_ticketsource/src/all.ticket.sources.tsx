@@ -5,7 +5,6 @@ import {MockServiceConfig, MockTicketSource} from "@itsmworkbench/mock_ticketsou
 export function AllTicketSources(data: MockServiceConfig) {
     return {
         serviceNow: MockTicketSource('Service Now', data),
-        jira: MockTicketSource('Jira', data),
         manualTicket: CreateTicketSource,
         // azureDevOps: MockTicketSource('Azure DevOps', data),
     }

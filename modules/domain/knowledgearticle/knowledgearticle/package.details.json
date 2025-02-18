@@ -3,7 +3,8 @@
   "name":        "@itsmworkbench/knowledgearticle",
   "description": "",
   "packageJson": {
-    "dependencies":    { "@laoban/utils":      "${properties.laobanVersion}"},
+    "dependencies":    {
+      "@laoban/utils":      "${properties.laobanVersion}"},
     "devDependencies": {},
     "browser":         {
       "child_process": false

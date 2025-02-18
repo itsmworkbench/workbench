@@ -1,4 +1,4 @@
-import React, {Context, Dispatch, ReactElement, ReactNode, SetStateAction, useContext, useMemo, useState} from "react";
+import React, {Context, Dispatch, ReactElement, ReactNode, SetStateAction, useContext, useEffect, useMemo, useState} from "react";
 import {LensAndPath, lensBuilder, LensBuilder} from "@itsmworkbench/optics";
 import {makeGetterSetter} from "./make.getter.setter";
 import {uppercaseFirstLetter} from "@itsmworkbench/utils";
@@ -43,6 +43,53 @@ export function makeContextFor<Data, FIELD extends string>(
     return {use: useField, Provider: FIELDProvider, context};
 }
 
+export type ContextResultsForWriteThroughCache<Data, FIELD extends string> = {
+    use: () => GetterSetter<Data | undefined>
+    Provider: (props: { children: ReactNode } & Record<FIELD, Data>) => ReactNode
+    context: Context<GetterSetter<Data> | undefined>
+}
+
+export type LoadFn<Data> = () => Promise<Data>
+export type SaveFn<Data> = (data: Data) => Promise<void>
+
+export function makeContextForCacheWriteThrough<Data, FIELD extends string>(field: FIELD, load: LoadFn<Data>, save: SaveFn<Data>): ContextResultsForWriteThroughCache<Data, FIELD> {
+
+    const Context = React.createContext<GetterSetter<Data | undefined> | undefined>(undefined);
+
+    function useField(): GetterSetter<Data> {
+        const ops = useContext(Context);
+        const throwError = useThrowError()
+        if (ops === undefined) return throwError('s/w', `use${uppercaseFirstLetter(field)} must be used within a ${uppercaseFirstLetter(field)}Provider`);
+        return ops
+    }
+
+    function FieldProvider({children}: { children: React.ReactNode }) {
+        const [value, setValue] = useState<Data | undefined>(undefined);
+
+        // Load initial value once on mount
+        useEffect(() => {
+            load()
+                .then(setValue)
+                .catch(console.error);
+        }, []);
+
+        const realSetValue: Setter<Data> = async (newValue: SetStateAction<Data>) => {
+            setValue((prev) => {
+                const resolvedValue =
+                    typeof newValue === "function" ? (newValue as (prev: Data | undefined) => Data)(prev) : newValue;
+                save(resolvedValue).catch(console.error);
+                return resolvedValue;
+            });
+        };
+        const ops: GetterSetter<Data | undefined> = useMemo(() => [value, realSetValue], [value]);
+
+        return <Context.Provider value={ops}>{children}</Context.Provider>;
+    }
+
+    return {use: useField, Provider: FieldProvider, context: Context};
+}
+
+
 export type ContextResultsForState<Data, FIELD extends string> = {
     use: () => GetterSetter<Data>
     Provider: (props: { children: ReactNode } & Record<FIELD, Data>) => ReactNode
@@ -56,7 +103,7 @@ export function makeContextForState<Data, FIELD extends string>(field: FIELD, al
     function useField() {
         const contextValue = useContext(Context);
         const reportError = useThrowError();
-        if (contextValue === undefined && !allowedUndefined) {
+        if (contextValue === undefined) {
             const fieldWithCap = uppercaseFirstLetter(field);
             reportError('s/w', `use${fieldWithCap} must be used within a ${fieldWithCap}Provider`);
         }
