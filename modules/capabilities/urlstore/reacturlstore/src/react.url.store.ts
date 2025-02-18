@@ -1,0 +1,38 @@
+import {makeContextFor} from "@itsmworkbench/react_utils";
+import {NamedLoadResult, NamedUrl, UrlQuery, UrlStore} from "@itsmworkbench/urlstore";
+import {ErrorsAnd, hasErrors, mapK} from "@laoban/utils";
+import {KnowledgeArticle} from "@itsmworkbench/knowledgearticle";
+import {ErrorsOr} from "@itsmworkbench/errors";
+
+export const {use: useUrlStore, Provider: UrlStoreProvider} = makeContextFor<UrlStore, 'urlStore'>('urlStore')
+
+export type KADetails = {
+    name: string
+    descriptionOrError: string
+    ka?: KnowledgeArticle
+}
+
+export function makeKaDetails(name: string, details: ErrorsAnd<NamedLoadResult<KnowledgeArticle>>): KADetails {
+    if (hasErrors(details)) return {name, descriptionOrError: details.join('\n')}
+    return {name, descriptionOrError: details.result.description, ka: details.result}
+}
+export async function findKaDetails(urlStore: UrlStore, org: string, system: string): Promise<ErrorsOr<KADetails[]>> {
+    const urlQuery: UrlQuery = {
+        org,
+        namespace: 'ka',
+        path: system,
+        pageQuery: {page: 1},
+        order: 'name'
+    }
+    const kaNames = await urlStore.list(urlQuery)
+    if (hasErrors(kaNames)) return {errors: kaNames}
+    const names = kaNames.names
+
+    const kas = await mapK(names,
+        async name => {
+            const url: NamedUrl = {scheme: 'itsm', name: `${system}/${name}`, namespace: 'ka', organisation: org};
+            const loaded = await urlStore.loadNamed<KnowledgeArticle>(url)
+            return makeKaDetails(name, loaded);
+        })
+    return {value: kas}
+}

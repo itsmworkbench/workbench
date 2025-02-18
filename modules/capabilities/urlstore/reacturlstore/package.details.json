@@ -1,0 +1,19 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/reacturlstore",
+  "description": "code to support the use of url stores in react",
+  "packageJson": {
+    "dependencies":    {
+    },
+    "devDependencies": {}
+  },
+  "links":       [
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/urlstore"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

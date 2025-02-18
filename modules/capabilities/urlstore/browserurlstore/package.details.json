@@ -1,7 +1,7 @@
 {
   "template":    "typescript",
   "name":        "@itsmworkbench/browserurlstore",
-  "description": "loads and saves itsm schema urls used with intellimaintain using an api",
+  "description": "how a browser uses a url store via an api",
   "packageJson": {
     "dependencies":    {
       "@laoban/utils":    "${properties.laobanVersion}",

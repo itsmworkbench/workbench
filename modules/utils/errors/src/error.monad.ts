@@ -17,7 +17,7 @@ export function isValue<T>(e: ErrorsOr<T>): e is Value<T> {
 }
 
 export function isErrors<T>(e: ErrorsOr<T>): e is Errors {
-    return (e as any).errors !== undefined;
+    return (e as any)?.errors !== undefined;
 }
 
 // Throw exception if errors are present

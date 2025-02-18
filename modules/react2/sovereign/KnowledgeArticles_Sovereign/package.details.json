@@ -1,0 +1,28 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/knowledgearticles_sovereign",
+  "description": "The sovereign pane that allows us to explore our knowledge articles",
+  "links": [
+    "@itsmworkbench/common_components",
+    "@itsmworkbench/sovereign",
+    "@itsmworkbench/knowledgearticle",
+    "@itsmworkbench/system",
+    "@itsmworkbench/reacturlstore",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/translation",
+    "@itsmworkbench/utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

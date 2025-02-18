@@ -25,6 +25,13 @@ import {AllTicketSources} from "@itsmworkbench/all_ticketsources";
 import {mockTickets} from "@itsmworkbench/mock_ticketsource/src/mock.tickets";
 import {mockSystems, SystemsProvider} from "@itsmworkbench/system";
 import {AllRenderersSimpleProvider} from "@itsmworkbench/all_renderers";
+import {KnowledgeArticleSovereignPagePlugin} from "@itsmworkbench/knowledgearticles_sovereign";
+import {UrlStoreProvider} from "@itsmworkbench/reacturlstore";
+import {AiClientConfig} from "@itsmworkbench/browserai";
+import {defaultNameSpaceDetails} from "@itsmworkbench/defaultdomains";
+import {UrlStoreApiClientConfig, urlStoreFromApi} from "@itsmworkbench/browserurlstore";
+import {YamlCapability} from "@itsmworkbench/yaml";
+import {jsYaml} from "@itsmworkbench/jsyaml";
 
 
 const debugState = {
@@ -60,6 +67,7 @@ const sovereignStatePlugins: SovereignStatePlugins = {
         home: HomeSovereignPagePlugin(navPanels),
         getStarted: makeSovereignStatePlugin(() => <span>Get Started</span>),
         newTicket: NewTicketSovereignPanePlugin,
+        examineKnowledgeArticles: KnowledgeArticleSovereignPagePlugin,
         itsm: ItsmSovereignPagePlugin,
     },
     UnknownDisplay: SimpleUnknownDisplay
@@ -76,13 +84,18 @@ export function AttributeValueOrientationFromFeatureFlagProvider({children}: { c
     const hv = useFeatureFlag('hv') as AttributeValueOrientation
     return <AttributeValueOrientationProvider orientation={hv}>{children}</AttributeValueOrientationProvider>
 }
-
+const yaml: YamlCapability = jsYaml ()
+const rootUrl = "http://localhost:1235/";
+const nameSpaceDetails = defaultNameSpaceDetails ( yaml, {} );
+const urlStoreconfig: UrlStoreApiClientConfig = { apiUrlPrefix: rootUrl + "url", details: nameSpaceDetails }
+const urlStore = urlStoreFromApi ( urlStoreconfig )
 
 msal.initialize({}).then(() => {
 //we set up here: how we display the components, how we do state management and how we do authentication
 
     root.render(<React.StrictMode>
             <WindowUrlProvider>
+                <UrlStoreProvider urlStore={urlStore}>
                 <AllRenderersSimpleProvider>
                     <SystemsProvider systems={mockSystems}>
                         <TicketSourceProvider ticketSource={AllTicketSources(mockTickets)}>
@@ -116,6 +129,7 @@ msal.initialize({}).then(() => {
                         </TicketSourceProvider>
                     </SystemsProvider>
                 </AllRenderersSimpleProvider>
+                </UrlStoreProvider>
             </WindowUrlProvider>
         </React.StrictMode>
     );

@@ -4,18 +4,21 @@
   "description": "ITSM Workbench",
   "links": [
     "@itsmworkbench/all_ticketsources",
-    "@itsmworkbench/ticketsource",
-    "@itsmworkbench/simple_common_components",
+    "@itsmworkbench/browserurlstore",
     "@itsmworkbench/homesovereign",
     "@itsmworkbench/itsmsovereign",
     "@itsmworkbench/itsm_translation",
+    "@itsmworkbench/jsyaml",
+    "@itsmworkbench/knowledgearticle",
     "@itsmworkbench/newticket_wizard",
     "@itsmworkbench/panelnavigator",
     "@itsmworkbench/react_utils",
+    "@itsmworkbench/simple_common_components",
     "@itsmworkbench/sovereign",
     "@itsmworkbench/system",
-    "@itsmworkbench/wizard",
-    "@itsmworkbench/utils"
+    "@itsmworkbench/ticketsource",
+    "@itsmworkbench/utils",
+    "@itsmworkbench/wizard"
   ],
   "packageJson": {
     "files": ["build/"],
@@ -25,7 +28,6 @@
       "parcel-reporter-static-files-copy": "^1.5.3"
     }
   },
-
   "guards": {
     "compile": true,
     "publish": false,

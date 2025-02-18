@@ -1,0 +1,1 @@
+export * from './src/knowledge.article.sovereign.pane'
