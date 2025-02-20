@@ -5,6 +5,7 @@
   "links": [
     "@itsmworkbench/clip_height",
     "@itsmworkbench/mouse_over",
+    "@itsmworkbench/secrets",
     "@itsmworkbench/react_utils",
     "@itsmworkbench/selectable_button",
     "@itsmworkbench/system",

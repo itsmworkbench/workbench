@@ -1,13 +1,15 @@
 import React, {act} from "react";
 import {render, screen} from "@testing-library/react";
 
-import {DevModeTranslate} from "./devmode.translate";
+
 import "@testing-library/jest-dom";
 import {AttributeValueProvider, SimpleAttributeValueLayout, SimpleDataLayout} from "@itsmworkbench/renderers";
 import {allRenderers} from "@itsmworkbench/all_renderers";
-import {TranslationUsedAndNotFoundProvider} from "@itsmworkbench/translation";
+
 import {LanguageProvider} from "@itsmworkbench/language";
 import {RawThemeProvider, themeForTests} from "@itsmworkbench/themes";
+import {TranslationUsedAndNotFoundProvider} from "./translation";
+import {DevModeTranslate} from "./devmode.translate";
 
 
 // Create a wrapper provider that includes both the translation and renderer context

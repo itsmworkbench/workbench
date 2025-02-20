@@ -1,4 +1,5 @@
-// jest.setup.js
+
+import { TextEncoder, TextDecoder } from "util";
 
 function getDocDefinedBecauseInNodeJestEnvironemnt() {
     try {
@@ -14,3 +15,6 @@ if (getDocDefinedBecauseInNodeJestEnvironemnt()) {
     document.body.appendChild(root);
 }
 
+Object.defineProperty(window, 'crypto', {   get() {     return require('crypto');   }, })
+
+Object.assign(global, { TextDecoder, TextEncoder });``

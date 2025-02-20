@@ -4,8 +4,9 @@ import {useTranslation} from "@itsmworkbench/translation";
 
 
 export const SimpleSelectableButton: SelectableButton =
-    ({selectedOps, text, prefix}) => {
-        const [selected, setSelected] = selectedOps
+    ({selectedOps, text, prefix, onClick}) => {
+        const selected = selectedOps ? selectedOps[0] : '';
+        const setSelected = selectedOps ? selectedOps[1] : () => {};
         const translate = useTranslation();
         const isSelected = selected === text;
         return (
@@ -19,7 +20,10 @@ export const SimpleSelectableButton: SelectableButton =
                     cursor: 'pointer',
                     transition: 'background-color 0.3s, border-color 0.3s', // Smooth transitions for hover and selection
                 }}
-                onClick={() => setSelected(text)}
+                onClick={() => {
+                    setSelected(text);
+                    onClick?.(text)
+                }}
             >{translate(`${prefix}.${text}`)}</button>
         );
     };

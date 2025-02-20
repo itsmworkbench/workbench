@@ -1,44 +1,35 @@
 import React from "react";
 
-import {DevModeDebug} from "./devmode.debug";
-import {DevModeFeatureFlags} from "./devmode.feature.flags";
-import {DevModeTranslate} from "./devmode.translate";
-import {makeContextFor, makeContextForState, makeUseStateChild, useWindowUrlData} from "@itsmworkbench/react_utils";
+import {makeContextFor, makeContextForState, makeUseStateChild} from "@itsmworkbench/react_utils";
 import {NameAnd} from "@itsmworkbench/utils";
+import {NavigatorPanelForStrings} from "@itsmworkbench/panelnavigator";
 
 export type DevModeComponent = () => React.ReactElement;
 export type DevModeComponents = NameAnd<DevModeComponent>
 
 
-const devModeComponents: NameAnd<() => React.ReactElement> = {
-    Hide: () => <></>,
-    Debug: DevModeDebug,
-    FeatureFlags: DevModeFeatureFlags,
-    Translate: DevModeTranslate,
-};
-
-export const {Provider: DevModeComponentsProvider, use: useDevModeComponents} = makeContextFor("components", devModeComponents);
+export const {Provider: DevModeComponentsProvider, use: useDevModeComponents} = makeContextFor("components");
 
 export type DevModeState = {
     selected: string
+    visible: string
 }
 export const {Provider: DevModeStateForSearchProvider, use: useDevModeState} = makeContextForState<DevModeState, "devModeState">("devModeState");
 export const useDevModeSelected = makeUseStateChild<DevModeState, string>(useDevModeState, id => id.focusOn("selected"));
+export const useDevModeVisible = makeUseStateChild<DevModeState, string>(useDevModeState, id => id.focusOn("visible"));
 
 
 export function DevMode() {
     const components = useDevModeComponents();
     const selectedOps = useDevModeSelected();
-    const [urlData] = useWindowUrlData();
+    const [visible, setVisible] = useDevModeVisible();
 
-    const allowedbyUserType = true;
-    const devModeReqestedAndAllowed = allowedbyUserType && urlData.url.searchParams.get("devMode");
-    if (!devModeReqestedAndAllowed) return <></>;
     const [selected] = selectedOps;
+    if (visible === '') return <></>;
     const Component = components[selected] || (() => <></>);
+    const panels = Object.keys(components);
     return <div className="dev-mode">
-        <hr/>
-        <span>nav bar goes here</span>
+        <NavigatorPanelForStrings size='small' ops={selectedOps} translatePrefix='devMode' panels={panels}/>
         <Component/>
     </div>;
 }

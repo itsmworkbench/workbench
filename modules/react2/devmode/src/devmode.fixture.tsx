@@ -4,7 +4,7 @@ import {DebugState} from "@itsmworkbench/utils";
 import {DevModeComponent, DevModeComponents} from "./devmode";
 import React from "react";
 import {DebugStateProvider, FeatureFlagsStateProvider, WindowUrlProviderForTests} from "@itsmworkbench/react_utils";
-import {commonComponents, CommonComponentsProvider} from "@itsmworkbench/common_components/dist/src/components";
+import {commonComponents, CommonComponentsProvider} from "@itsmworkbench/common_components";
 
 const mockUserData = {
     email: "user@example.com",

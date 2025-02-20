@@ -17,6 +17,7 @@
   "dependencies": {
     "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/record_utils": "1.0.0",
+    "@itsmworkbench/devmode": "1.0.0",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

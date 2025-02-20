@@ -1,4 +1,4 @@
-import {camelCaseToWords, ellipsesInMiddle, simpleTemplate, splitAndCapitalize, toCamelCase} from "./strings";
+import {camelCaseToWords, ellipsesInMiddle, simpleTemplate, splitAndCapitalize, throwErrorIfNotBase64, toCamelCase} from "./strings";
 
 describe('toCamelCase', () => {
   test('converts mixed separators while preserving existing camelCase', () => {
@@ -172,5 +172,27 @@ describe('camelCaseToWords', () => {
 
   it('trims leading and trailing spaces', () => {
     expect(camelCaseToWords('  thisText  ')).toBe('This Text');
+  });
+});
+
+
+describe("throwErrorIfNotBase64", () => {
+  it("should not throw for a valid Base64 string without padding", () => {
+    // "SGVsbG8" is "Hello" in standard base64 (no padding)
+    expect(() => throwErrorIfNotBase64("SGVsbG8")).not.toThrow();
+  });
+
+  it("should not throw for a valid Base64 string with padding", () => {
+    // "SGVsbG8=" is "Hello" with one '=' padding
+    expect(() => throwErrorIfNotBase64("SGVsbG8=")).not.toThrow();
+  });
+
+  it("should throw for an invalid Base64 string", () => {
+    // Contains invalid characters '#$@'
+    expect(() => throwErrorIfNotBase64("#$@#!")).toThrowError(/Invalid Base64/);
+  });
+
+  it("should throw for an empty string", () => {
+    expect(() => throwErrorIfNotBase64("")).toThrowError(/empty/);
   });
 });

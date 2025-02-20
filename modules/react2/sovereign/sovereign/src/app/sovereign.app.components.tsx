@@ -2,8 +2,8 @@ import {ReactNode} from "react";
 import {makeContextFor} from "@itsmworkbench/react_utils";
 
 export type SovereignAppLayoutProps = {
-    /* Header, Sovereign, and Footer */
-    children: [ReactNode, ReactNode, ReactNode]
+    /* Header, DevMode,Sovereign, and Footer */
+    children: [ReactNode, ReactNode, ReactNode, ReactNode]
 }
 export type SovereignAppLayout = (props: SovereignAppLayoutProps) => ReactNode
 

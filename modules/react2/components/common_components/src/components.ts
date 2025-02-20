@@ -3,6 +3,7 @@ import {SelectableButton, SimpleSelectableButton} from "@itsmworkbench/selectabl
 import {ClipHeight} from "@itsmworkbench/clip_height";
 import {SimpleTable, Table} from "@itsmworkbench/table";
 import {makeContextFor} from "@itsmworkbench/react_utils";
+import {Password, SimplePassword} from "@itsmworkbench/secrets";
 import {BgMouseOver, MouseOver, SimpleBgMouseOver, SimpleMouseOver} from "@itsmworkbench/mouse_over";
 import {OneNavigatorPanel, NavigatorPanelLayout, SimpleNavigatorPanel, SimpleNavigatorPanelLayout} from "@itsmworkbench/panelnavigator";
 
@@ -15,6 +16,7 @@ const componentsFeatureFlag: FeatureFlag = {
 
 export type CommonComponents = {
     SelectableButton: SelectableButton
+    Password: Password,
     ClipHeight: ClipHeight
     Table: Table
     MouseOver: MouseOver,
@@ -24,6 +26,7 @@ export type CommonComponents = {
 }
 export const commonComponents: CommonComponents = {
     SelectableButton: SimpleSelectableButton,
+    Password: SimplePassword,
     ClipHeight: ClipHeight,
     Table: SimpleTable,
     MouseOver: SimpleMouseOver,

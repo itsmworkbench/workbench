@@ -55,6 +55,14 @@ const styles: Record<string, React.CSSProperties> = {
         margin: "auto",
         padding: "20px",
     },
+    layoutSmall: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '1rem',
+        gap: '1rem',
+        flexWrap: 'wrap', // Allow items to wrap on smaller screens
+    },
     icon: {
         fontSize: "40px",
         marginBottom: "10px",
@@ -66,6 +74,7 @@ export const SimpleNavigatorPanel: OneNavigatorPanel = ({name, Icon, size = 'lar
     const [hovered, setHovered] = React.useState(false);
     const [selected, setSelected] = ops;
     const isSelected = selected === name;
+
 
     const style = {
         ...styles.panel,
@@ -85,14 +94,16 @@ export const SimpleNavigatorPanel: OneNavigatorPanel = ({name, Icon, size = 'lar
         >
             {Icon && <Icon/>}
             <div>{camelCaseToWords(name)}</div>
-            <br/>
-            <div style={{fontSize: "14px", fontWeight: "normal", color: "#555"}}>
-                {description}
-            </div>
+            {size !== 'small' && <><br/>
+                <div style={{fontSize: "14px", fontWeight: "normal", color: "#555"}}>
+                    {description}
+                </div>
+            </>}
         </div>
     );
 };
 
-export const SimpleNavigatorPanelLayout: NavigatorPanelLayout = ({children}) => {
-    return <div style={styles.layout}>{children}</div>;
+export const SimpleNavigatorPanelLayout: NavigatorPanelLayout = ({children, size = 'large'}) => {
+    const style = size === 'small' ? styles.layoutSmall : styles.layout;
+    return <div style={style}>{children}</div>;
 };

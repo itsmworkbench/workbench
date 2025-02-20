@@ -5,18 +5,23 @@ export const itsmTranslation = {
     },
 
 
-    devmode: {
-        Debug: "Debug",
-        GuiState: "Gui State",
-        Hide: "Hide",
-        FeatureFlags: "Feature Flags",
-        SearchState: "Search State",
+    devMode: {
+        debug: "Debug",
+        hide: "Hide DevMode",
+        show: "Developer Mode",
+        language: 'Language',
+        featureFlags: "Feature Flags",
         Sovereign: "Sovereign State",
-        Translate: {
+        translation: {
             used: "Used",
+            errors: "Errors",
             notFound: "Not Found"
         },
-        UserData: "User Data",
+        userData: "User Data",
+        hasEnteredPassword: 'Has entered password',
+        hasPassword: 'Has password',
+        secretData: 'Secret Data',
+        secretDataInLocalStorage: 'Secret Data In Local Storage',
     },
 
     login: {
@@ -35,16 +40,21 @@ export const itsmTranslation = {
         examineKnowledgeArticles: "Knowledge articles describe how to solve common problems.\n\nNormally when processing a ticket after the first time you will be using a knowledge article",
         askForHelp: "When you are stuck, talk to a human here",
     },
-    newTicket:{
-        wizard:{
+    newTicket: {
+        wizard: {
             whereIsTicket: `Here we will select how we get the ticket`,
             createTicket: "Here we create the ticket we want to process\nThis can be by importing from servicenow or by creating a new ticket",
-        }
+        },
+        id: "id",
+        description: 'Description',
+        prompt: 'Prompt',
+        summary: 'Summary',
+        ticket: 'Ticket',
     },
 
-    sovereign:{
+    sovereign: {
         unknown: {
-            display:'Oops! Something went wrong.\n An unknown url was requested\n\n',
+            display: 'Oops! Something went wrong.\n An unknown url was requested\n\n',
             reload: 'Start again',
         }
     }

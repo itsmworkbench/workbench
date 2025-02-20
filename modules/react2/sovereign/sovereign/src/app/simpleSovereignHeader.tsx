@@ -4,6 +4,8 @@ import {useIcon} from "@itsmworkbench/icons";
 import {useTranslation} from "@itsmworkbench/translation";
 import React, {ReactNode} from "react";
 import {useTheme} from "@itsmworkbench/themes";
+import {useCommonComponents} from "@itsmworkbench/common_components";
+import {useDevModeState, useDevModeVisible} from "@itsmworkbench/devmode";
 
 const headerLayoutStyles: React.CSSProperties = {
     display: 'flex',
@@ -13,7 +15,7 @@ const headerLayoutStyles: React.CSSProperties = {
     borderBottom: '1px solid #ddd',
 };
 export type SimpleHeaderLayoutProps = {
-    children: [ReactNode, ReactNode];
+    children: ReactNode;
 };
 
 // Layout Component
@@ -24,7 +26,9 @@ export function SimpleHeaderLayout({children}: SimpleHeaderLayoutProps) {
 
 // Header Implementation
 export const SimpleSovereignHeader: SovereignHeader = ({}) => {
-    const {DisplayLogin} = useLoginComponents();
+    const {DisplayLogin} = useLoginComponents()
+    const {SelectableButton, Password} = useCommonComponents();
+    const [devModeVisible, setDevModeVisible] = useDevModeVisible()
     const {MeaningfulIcon} = useIcon();
     const translate = useTranslation();
     const {header} = useTheme()
@@ -35,7 +39,13 @@ export const SimpleSovereignHeader: SovereignHeader = ({}) => {
             <a href='/' title={translate('header.home')}>
                 <HomeIcon style={logoStyle}/>
             </a>
+            {devModeVisible
+                ? <SelectableButton prefix={'devMode'} onClick={() => setDevModeVisible('')} text={'hide'}/>
+                : <SelectableButton prefix={'devMode'} onClick={() => setDevModeVisible('visible')} text={'show'}/>}
+           <div>
             <DisplayLogin/>
+            <Password/>
+           </div>
         </SimpleHeaderLayout>
     );
 };

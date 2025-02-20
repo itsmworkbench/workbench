@@ -3,7 +3,9 @@
   "name": "@itsmworkbench/translation",
   "description": "This is how we handle translations.",
   "links": [
-    "@itsmworkbench/react_utils"
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/devmode",
+    "@itsmworkbench/language"
   ],
   "packageJson": {
     "files": ["build/"],

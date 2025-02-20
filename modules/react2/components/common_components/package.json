@@ -17,6 +17,7 @@
   "dependencies": {
     "@itsmworkbench/clip_height": "1.0.0",
     "@itsmworkbench/mouse_over": "1.0.0",
+    "@itsmworkbench/secrets": "1.0.0",
     "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/selectable_button": "1.0.0",
     "@itsmworkbench/system": "1.0.0",

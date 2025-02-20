@@ -7,8 +7,6 @@
     "@itsmworkbench/utils",
     "@itsmworkbench/editors",
     "@itsmworkbench/optics",
-    "@itsmworkbench/language",
-    "@itsmworkbench/translation",
     "@itsmworkbench/renderers",
     "@itsmworkbench/all_renderers",
     "@itsmworkbench/selectable_button"

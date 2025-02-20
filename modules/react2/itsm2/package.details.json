@@ -13,7 +13,8 @@
     "@itsmworkbench/newticket_wizard",
     "@itsmworkbench/panelnavigator",
     "@itsmworkbench/react_utils",
-    "@itsmworkbench/simple_common_components",
+    "@itsmworkbench/secrets",
+
     "@itsmworkbench/sovereign",
     "@itsmworkbench/system",
     "@itsmworkbench/ticketsource",
@@ -25,7 +26,8 @@
     "dependencies": {
     },
     "devDependencies": {
-      "parcel-reporter-static-files-copy": "^1.5.3"
+      "parcel-reporter-static-files-copy": "^1.5.3",
+      "@parcel/transformer-raw": "^2.13.3"
     }
   },
   "guards": {

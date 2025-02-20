@@ -25,7 +25,7 @@
     "@itsmworkbench/newticket_wizard": "1.0.0",
     "@itsmworkbench/panelnavigator": "1.0.0",
     "@itsmworkbench/react_utils": "1.0.0",
-    "@itsmworkbench/simple_common_components": "1.0.0",
+    "@itsmworkbench/secrets": "1.0.0",
     "@itsmworkbench/sovereign": "1.0.0",
     "@itsmworkbench/system": "1.0.0",
     "@itsmworkbench/ticketsource": "1.0.0",
@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "parcel-reporter-static-files-copy": "^1.5.3",
+    "@parcel/transformer-raw": "^2.13.3",
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-env": "^7.24.7",
     "@types/react": "^18.2.56",
