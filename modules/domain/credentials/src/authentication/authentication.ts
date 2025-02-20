@@ -1,14 +1,15 @@
 import {Env, NameAnd} from "@itsmworkbench/utils";
 import {ErrorsOr, isErrors} from "@itsmworkbench/errors";
 
+export type DecryptFn = (encrypted: string) => Promise<string>
 export type AuthenticationPlugsin = NameAnd<AuthenticationPlugin<any>>;
 export type AuthenticationPlugin<A> = {
     plugin: "authentication";
     validate: (a: any) => string[];
     isA: (a: any) => a is A;
-    addToHeaders: (env: Env, a: A, headers: NameAnd<string>) => NameAnd<string>;
-    modifyUrl: (env: Env, u: string, a: A) => string;
-    variables: (env: Env, a: A) => NameAnd<string>;
+    addToHeaders: (decrypt: DecryptFn, a: A, headers: NameAnd<string>) => Promise<NameAnd<string>>;
+    modifyUrl: (decrypt: DecryptFn, u: string, a: A) => Promise<string>;
+    variables: (decrypt: DecryptFn, a: A) => Promise<NameAnd<string>>;
 };
 
 

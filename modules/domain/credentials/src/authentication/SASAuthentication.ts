@@ -1,4 +1,4 @@
-import {AuthenticationPlugin} from "./authentication";
+import {AuthenticationPlugin, DecryptFn} from "./authentication";
 import {Env, getEnvOrNotDefined, getEnvOrThrow} from "@itsmworkbench/utils";
 
 export type SASAuthentication = {
@@ -19,14 +19,14 @@ export const sasAuthenticationPlugin: AuthenticationPlugin<SASAuthentication> = 
         return errors;
     },
     isA: (auth: any): auth is SASAuthentication => auth?.method === "SAS",
-    addToHeaders: (env, auth, headers) => headers,
-    modifyUrl: (env: Env, u: string, a: SASAuthentication) => {
+    addToHeaders: async (decrypt, auth, headers) => headers,
+    modifyUrl: async (decrypt: DecryptFn, u: string, a: SASAuthentication) => {
         // Resolve the SAS token from the environment.
-        const token = getEnvOrThrow(env, a.credentials.sasToken);
+        const token = await decrypt(a.credentials.sasToken);
         const join = u.includes("?") ? "&" : "?";
         return `${u}${join}sasToken=${token}`;
     },
-    variables: (env: Env, a: SASAuthentication) => ({
-        sasToken: getEnvOrNotDefined(env, a.credentials.sasToken),
+    variables: async (decrypt: DecryptFn, a: SASAuthentication) => ({
+        sasToken: await decrypt(a.credentials.sasToken),
     }),
 };

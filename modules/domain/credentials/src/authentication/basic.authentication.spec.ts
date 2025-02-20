@@ -10,8 +10,6 @@ export const testBasicKeyAuthConfig: TestA<BasicAuthentication> = {
             env: {PASSWORD_ENV: "secret_password"},
             expectedHeaders: {"Authorization": "Basic c29tZXVzZXI6c2VjcmV0X3Bhc3N3b3Jk"},
             expectedUrl: (u: string) => u,
-            headerThrowsWhenEnvEmpty: "Environment variable PASSWORD_ENV is not defined",
-            urlThrowsWhenEnvEmpty: undefined,
         },
     },
     invalid: [

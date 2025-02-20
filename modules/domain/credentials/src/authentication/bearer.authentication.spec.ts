@@ -12,10 +12,6 @@ export const testBearerAuthConfig: TestA<BearerAuthentication> = {
             expectedHeaders: {Authorization: "Bearer bearer_secret"},
             // Expected URL remains unchanged.
             expectedUrl: (u: string) => u,
-            // When the environment is empty, variables() should return "<Not Defined>".
-            headerThrowsWhenEnvEmpty: "Environment variable MY_BEARER is not defined",
-            // modifyUrl doesn't rely on env so no error is expected.
-            urlThrowsWhenEnvEmpty: undefined,
         },
     },
     invalid: [

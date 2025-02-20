@@ -1,4 +1,4 @@
-import {AuthenticationPlugin} from "./authentication";
+import {AuthenticationPlugin, DecryptFn} from "./authentication";
 import {Env} from "@itsmworkbench/utils";
 
 export type NoAuthentication = {
@@ -12,7 +12,7 @@ export const noAuthenticationPlugin: AuthenticationPlugin<NoAuthentication> = {
         return errors;
     },
     isA: (auth: any): auth is NoAuthentication => auth?.method === "none",
-    addToHeaders: (env, auth, headers) => headers,
-    modifyUrl: (env: Env, u: string, a: NoAuthentication) => u,
-    variables: (env: Env, a: NoAuthentication) => ({}),
+    addToHeaders: async (decrypt: DecryptFn, auth, headers) => headers,
+    modifyUrl: async (decrypt: DecryptFn, u: string, a: NoAuthentication) => u,
+    variables: async (decrypt: DecryptFn, a: NoAuthentication) => ({}),
 };

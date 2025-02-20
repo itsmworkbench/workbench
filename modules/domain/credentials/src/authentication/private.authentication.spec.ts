@@ -12,10 +12,6 @@ export const testPrivateTokenAuthConfig: TestA<PrivateTokenAuthentication> = {
             expectedHeaders: {"private-token": "super_secret"},
             // Expected URL remains unchanged.
             expectedUrl: (u: string) => u,
-            // When env is empty, variables() will return "<Not Defined>" for the token.
-            headerThrowsWhenEnvEmpty: "Environment variable MY_TOKEN is not defined",
-            // No error is expected for modifyUrl even with an empty env.
-            urlThrowsWhenEnvEmpty: undefined,
         },
     },
     invalid: [

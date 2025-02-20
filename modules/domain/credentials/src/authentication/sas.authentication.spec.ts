@@ -12,10 +12,6 @@ export const testApiKeyAuthConfig: TestA<SASAuthentication> = {
             expectedHeaders: {},
             // Expected URL remains unchanged:
             expectedUrl: (u: string) => u + "?sasToken=super_sas",
-            // When env is empty, addToHeaders should throw (via getEnvOrThrow), so we expect an error message:
-            headerThrowsWhenEnvEmpty: undefined,
-            // modifyUrl doesn't depend on env, so we don't expect any error:
-            urlThrowsWhenEnvEmpty: "Environment variable MY_SAS_TOKEN is not defined",
         },
     },
     invalid: [

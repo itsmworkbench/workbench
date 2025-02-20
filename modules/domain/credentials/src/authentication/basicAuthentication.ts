@@ -1,4 +1,4 @@
-import {AuthenticationPlugin} from "./authentication";
+import {AuthenticationPlugin, DecryptFn} from "./authentication";
 import {Env, getEnvOrNotDefined, getEnvOrThrow} from "@itsmworkbench/utils";
 
 export type BasicAuthentication = {
@@ -23,15 +23,15 @@ export const basicAuthenticationPlugin: AuthenticationPlugin<BasicAuthentication
         return errors;
     },
     isA: (auth: any): auth is BasicAuthentication => auth?.method === "Basic",
-    addToHeaders: (env, auth, headers) => {
+    addToHeaders: async (decrypt: DecryptFn, auth, headers) => {
         // For Basic auth, we expect the password to be an environment variable.
-        const credentials = `${auth.credentials.username}:${getEnvOrThrow(env, auth.credentials.password)}`;
+        const credentials = `${auth.credentials.username}:${await decrypt(auth.credentials.password)}`;
         const encoded = btoa(credentials);
         return {...headers, Authorization: `Basic ${encoded}`};
     },
-    modifyUrl: (env: Env, u: string, a: BasicAuthentication) => u,
-    variables: (env: Env, a: BasicAuthentication) => ({
+    modifyUrl: async (decrypt: DecryptFn, u: string, a: BasicAuthentication) => u,
+    variables: async (decrypt: DecryptFn, a: BasicAuthentication) => ({
         username: a.credentials.username,
-        password: getEnvOrNotDefined(env, a.credentials.password),
+        password: await decrypt(a.credentials.password),
     }),
 };

@@ -1,4 +1,4 @@
-import {AuthenticationPlugin} from "./authentication";
+import {AuthenticationPlugin, DecryptFn} from "./authentication";
 import {Env, getEnvOrNotDefined, getEnvOrThrow} from "@itsmworkbench/utils";
 
 export type BearerAuthentication = {
@@ -19,12 +19,12 @@ export const bearerAuthenticationPlugin: AuthenticationPlugin<BearerAuthenticati
         return errors;
     },
     isA: (auth: any): auth is BearerAuthentication => auth?.method === "Bearer",
-    addToHeaders: (env, auth, headers) => ({
+    addToHeaders: async (decrypt: DecryptFn, auth, headers) => ({
         ...headers,
-        Authorization: `Bearer ${getEnvOrThrow(env, auth.credentials.apiKey)}`,
+        Authorization: `Bearer ${await decrypt(auth.credentials.apiKey)}`,
     }),
-    modifyUrl: (env: Env, u: string, a: BearerAuthentication) => u,
-    variables: (env: Env, a: BearerAuthentication) => ({
-        apiKey: getEnvOrNotDefined(env, a.credentials.apiKey),
+    modifyUrl: async (decrypt: DecryptFn, u: string, a: BearerAuthentication) => u,
+    variables: async (decrypt: DecryptFn, a: BearerAuthentication) => ({
+        apiKey: await decrypt(a.credentials.apiKey),
     }),
 };

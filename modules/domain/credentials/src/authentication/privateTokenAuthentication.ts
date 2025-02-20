@@ -1,4 +1,4 @@
-import {AuthenticationPlugin} from "./authentication";
+import {AuthenticationPlugin, DecryptFn} from "./authentication";
 import {Env, getEnvOrNotDefined, getEnvOrThrow} from "@itsmworkbench/utils";
 
 export type PrivateTokenAuthentication = {
@@ -20,12 +20,12 @@ export const privateTokenAuthenticationPlugin: AuthenticationPlugin<PrivateToken
     },
     isA: (auth: any): auth is PrivateTokenAuthentication =>
         auth?.method === "PrivateToken",
-    addToHeaders: (env, auth, headers) => ({
+    addToHeaders: async (decrypt: DecryptFn, auth, headers) => ({
         ...headers,
-        "private-token": getEnvOrThrow(env, auth.credentials.token),
+        "private-token": await decrypt(auth.credentials.token),
     }),
-    modifyUrl: (env: Env, u: string, a: PrivateTokenAuthentication) => u,
-    variables: (env: Env, a: PrivateTokenAuthentication) => ({
-        token: getEnvOrNotDefined(env, a.credentials.token),
+    modifyUrl: async (decrypt: DecryptFn, u: string, a: PrivateTokenAuthentication) => u,
+    variables: async (decrypt: DecryptFn, a: PrivateTokenAuthentication) => ({
+        token: await decrypt(a.credentials.token),
     }),
 };

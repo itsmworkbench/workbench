@@ -12,10 +12,7 @@ export const testApiKeyAuthConfig: TestA<ApiKeyAuthentication> = {
             expectedHeaders: { "apikey": "super_api_key" },
             // Expected URL remains unchanged:
             expectedUrl: (u: string) => u,
-            // When env is empty, addToHeaders should throw (via getEnvOrThrow), so we expect an error message:
-            headerThrowsWhenEnvEmpty: "Environment variable MY_API_KEY is not defined",
-            // modifyUrl doesn't depend on env, so we don't expect any error:
-            urlThrowsWhenEnvEmpty: undefined,
+
         },
     },
     invalid: [

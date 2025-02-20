@@ -1,4 +1,4 @@
-import {AuthenticationPlugin} from "./authentication";
+import {AuthenticationPlugin, DecryptFn} from "./authentication";
 import {Env, getEnvOrNotDefined, getEnvOrThrow} from "@itsmworkbench/utils";
 
 export type ApiKeyAuthentication = {
@@ -19,12 +19,12 @@ export const apiKeyAuthenticationPlugin: AuthenticationPlugin<ApiKeyAuthenticati
         return errors;
     },
     isA: (auth: any): auth is ApiKeyAuthentication => auth?.method === "ApiKey",
-    addToHeaders: (env, auth, headers) => ({
+    addToHeaders: async (decrypt: DecryptFn, auth, headers) => ({
         ...headers,
-        apikey: getEnvOrThrow(env, auth.credentials.apiKey),
+        apikey: await decrypt(auth.credentials.apiKey),
     }),
-    modifyUrl: (env: Env, u: string, a: ApiKeyAuthentication) => u,
-    variables: (env: Env, a: ApiKeyAuthentication) => ({
-        apiKey: getEnvOrNotDefined(env, a.credentials.apiKey),
+    modifyUrl: async (decrypt: DecryptFn, u: string, a: ApiKeyAuthentication) => u,
+    variables: async (decrypt: DecryptFn, a: ApiKeyAuthentication) => ({
+        apiKey: await decrypt(a.credentials.apiKey),
     }),
 };
