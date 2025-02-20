@@ -62,7 +62,7 @@ export const navPanels: NavigatorPanelDefns = {
     activeTickets: {icon: 'active', descriptionKey: 'nav.activeTickets'},
     historicalTickets: {icon: 'historical', descriptionKey: 'nav.historicalTickets'},
     examineKnowledgeArticles: {icon: 'knowledge', descriptionKey: 'nav.examineKnowledgeArticles'},
-    services: {icon: 'services', descriptionKey: 'nav.services'},
+    systems: {icon: 'systems', descriptionKey: 'nav.systems'},
     healthCheck: {icon: 'health', descriptionKey: 'nav.healthCheck'},
     credentials: {icon: 'credentials', descriptionKey: 'nav.credentials'},
     askForHelp: {icon: 'help', descriptionKey: 'nav.askForHelp'},
@@ -75,6 +75,7 @@ const sovereignStatePlugins: SovereignStatePlugins = {
         getStarted: makeSovereignStatePlugin(() => <span>Get Started</span>),
         newTicket: NewTicketSovereignPanePlugin,
         examineKnowledgeArticles: KnowledgeArticleSovereignPagePlugin,
+        credentials: makeSovereignStatePlugin(() => <span>Credentials</span>),
         itsm: ItsmSovereignPagePlugin,
     },
     UnknownDisplay: SimpleUnknownDisplay

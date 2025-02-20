@@ -1,7 +1,7 @@
 import {ErrorsOr} from "@itsmworkbench/errors";
 import {generateRandomBase64, throwErrorIfNotBase64} from "@itsmworkbench/utils";
-import {plainTextForTest} from "./password";
 
+export const plainTextForTest = 'plain text'
 
 //Will normally be the browser's localStorage
 export type SecretDataStore = {

@@ -35,7 +35,7 @@ export const itsmTranslation = {
         newTicket: "Start processing a new ticket.\n\nImport from servicenow or just create a new one",
         activeTickets: "Find your started but not finished tickets here",
         historicalTickets: "All your completed tickets can be found here",
-        services: "Describe the systems you are working with, and how they are connected",
+        systems: "Describe the systems and services you are working with, and how they are connected",
         healthCheck: "Validates that the systems you want to link to are working",
         examineKnowledgeArticles: "Knowledge articles describe how to solve common problems.\n\nNormally when processing a ticket after the first time you will be using a knowledge article",
         askForHelp: "When you are stuck, talk to a human here",

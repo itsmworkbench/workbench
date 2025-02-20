@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/secrets",
-  "description": "Getting the keys to the kingdom",
+  "name": "@itsmworkbench/credentials_sovereign",
+  "description": "The sovereign pane that helps us manage credentials",
   "version": "1.0.0",
   "browserslist": {
     "development": [
@@ -15,11 +15,15 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/credentials": "1.0.0",
-    "@itsmworkbench/devmode": "1.0.0",
-    "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/common_components": "1.0.0",
+    "@itsmworkbench/sovereign": "1.0.0",
+    "@itsmworkbench/knowledgearticle": "1.0.0",
+    "@itsmworkbench/secrets": "1.0.0",
+    "@itsmworkbench/system": "1.0.0",
+    "@itsmworkbench/reacturlstore": "1.0.0",
+    "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/translation": "1.0.0",
+    "@itsmworkbench/utils": "1.0.0",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

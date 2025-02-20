@@ -1,7 +1,6 @@
 import {GetterSetter, makeContextFor} from "@itsmworkbench/react_utils";
 import {NameAnd} from "@itsmworkbench/utils";
-import React, {useReducer} from "react";
-import {useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderers";
+import React from "react";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 
 export type System = {
