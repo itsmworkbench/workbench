@@ -23,6 +23,7 @@
     "node": "^v14.4.0",
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
+    "@itsmworkbench/login": "1.0.0",
     "@itsmworkbench/domain": "1.0.0",
     "@itsmworkbench/git": "1.0.0",
     "@itsmworkbench/operator": "1.0.0",

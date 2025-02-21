@@ -17,6 +17,7 @@
   "dependencies": {
     "@itsmworkbench/all_ticketsources": "1.0.0",
     "@itsmworkbench/browserurlstore": "1.0.0",
+    "@itsmworkbench/authentication_sovereign": "1.0.0",
     "@itsmworkbench/homesovereign": "1.0.0",
     "@itsmworkbench/itsmsovereign": "1.0.0",
     "@itsmworkbench/itsm_translation": "1.0.0",

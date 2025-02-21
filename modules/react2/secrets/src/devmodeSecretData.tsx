@@ -1,10 +1,9 @@
 import {DevModeComponent} from "@itsmworkbench/devmode";
-
 import React from "react";
 import {useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderers";
 import {ellipsesInMiddle} from "@itsmworkbench/utils";
 import {useSecretData} from "./password";
-import {hasEnteredPassword, hasPassword} from "@itsmworkbench/credentials/src/crypto/secret.data";
+import {hasEnteredPassword, hasPassword} from "@itsmworkbench/authentication";
 
 
 export const DevmodeSecretData: DevModeComponent = () => {

@@ -1,7 +1,7 @@
 import axios, {AxiosError, AxiosRequestConfig} from 'axios';
 import {Errors, ErrorsOr} from "@itsmworkbench/errors";
 import {makeServiceResponse, ServiceRequest, ServiceResponse} from "@itsmworkbench/service_caller";
-import {applyAuthentication, Authentication} from "@itsmworkbench/authentication";
+import {applyAuthentication, Authentication} from "@itsmworkbench/login";
 import {DebugLog, NameAnd} from '@itsmworkbench/utils';
 
 export type AxiosContext = {

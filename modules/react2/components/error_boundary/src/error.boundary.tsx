@@ -5,7 +5,7 @@ import {Errors} from "@itsmworkbench/errors";
 
 import {TranslationContext, TranslationFn} from "@itsmworkbench/translation";
 import {defaultErrorBoundaryStyles, ErrorBoundaryStyles} from "./defaultErrorBoundaryStyles";
-import {UserData} from "@itsmworkbench/authentication";
+import {UserData} from "@itsmworkbench/login";
 import {UserDataAccessor} from "@itsmworkbench/react_login_component";
 
 interface ErrorBoundaryProps {

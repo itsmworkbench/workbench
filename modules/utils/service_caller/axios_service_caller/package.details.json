@@ -3,7 +3,7 @@
   "name": "@itsmworkbench/axios_service_caller",
   "description": "Implements service caller for axios",
   "links": [
-    "@itsmworkbench/authentication",
+    "@itsmworkbench/login",
     "@itsmworkbench/errors",
     "@itsmworkbench/service_caller",
     "@itsmworkbench/utils"

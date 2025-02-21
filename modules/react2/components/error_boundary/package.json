@@ -15,7 +15,7 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/authentication": "1.0.0",
+    "@itsmworkbench/login": "1.0.0",
     "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/translation": "1.0.0",
     "debug": "^4.3.4",

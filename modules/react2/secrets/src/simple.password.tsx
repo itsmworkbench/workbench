@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {valueOrThrow} from "@itsmworkbench/errors";
 import {Password, useSecretData} from "./password";
-import {hasEnteredPassword, hasPassword, setNewPassword, validatePassword} from "@itsmworkbench/credentials/src/crypto/secret.data";
+import {hasEnteredPassword, hasPassword, setNewPassword, validatePassword} from "@itsmworkbench/authentication";
 
 export const SimplePassword: Password = () => {
     const [secretData, setSecretData] = useSecretData();

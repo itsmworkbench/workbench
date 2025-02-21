@@ -1,7 +1,7 @@
 import React from "react";
 import {createRoot} from "react-dom/client";
 import {Configuration, PublicClientApplication} from "@azure/msal-browser";
-import {loginUsingMsal} from "@itsmworkbench/msal_authentication";
+import {loginUsingMsal} from "@itsmworkbench/msal_login";
 import {Authenticate, authenticateDebug, AuthenticationProvider, LoginConfig} from "@itsmworkbench/react_login_component";
 
 import {makeSovereignStatePlugin, SimpleSovereignAppComponents, SimpleUnknownDisplay, SovereignApp, SovereignAppComponentsProvider, SovereignStatePlugins, SovereignStatePluginsProvider, SovereignStateProvider} from "@itsmworkbench/sovereign";
@@ -35,10 +35,11 @@ import {allEditors} from "@itsmworkbench/all_editors";
 import {LanguageProvider} from "@itsmworkbench/language";
 import {NameAnd} from "@itsmworkbench/utils";
 
-import {DevModeFeatureFlags} from "@itsmworkbench/devmode/src/devmode.feature.flags";
+import {DevModeFeatureFlags} from "@itsmworkbench/devmode";
 import {DevModeDebug} from "@itsmworkbench/devmode/src/devmode.debug";
-import {defaultSecretData, DevmodeSecretData, SecretDataProvider} from "@itsmworkbench/secrets";
-
+import { DevmodeSecretData, SecretDataProvider} from "@itsmworkbench/secrets";
+import {AuthenticationSovereignPagePlugin} from "@itsmworkbench/authentication_sovereign";
+import {defaultSecretData} from "@itsmworkbench/authentication";
 
 const debugState = {
     [authenticateDebug]: false,
@@ -64,7 +65,7 @@ export const navPanels: NavigatorPanelDefns = {
     examineKnowledgeArticles: {icon: 'knowledge', descriptionKey: 'nav.examineKnowledgeArticles'},
     systems: {icon: 'systems', descriptionKey: 'nav.systems'},
     healthCheck: {icon: 'health', descriptionKey: 'nav.healthCheck'},
-    credentials: {icon: 'credentials', descriptionKey: 'nav.credentials'},
+    authentication: {icon: 'authentication', descriptionKey: 'nav.authentication'},
     askForHelp: {icon: 'help', descriptionKey: 'nav.askForHelp'},
 }
 
@@ -75,7 +76,7 @@ const sovereignStatePlugins: SovereignStatePlugins = {
         getStarted: makeSovereignStatePlugin(() => <span>Get Started</span>),
         newTicket: NewTicketSovereignPanePlugin,
         examineKnowledgeArticles: KnowledgeArticleSovereignPagePlugin,
-        credentials: makeSovereignStatePlugin(() => <span>Credentials</span>),
+        authentication: AuthenticationSovereignPagePlugin,
         itsm: ItsmSovereignPagePlugin,
     },
     UnknownDisplay: SimpleUnknownDisplay

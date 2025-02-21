@@ -4,7 +4,7 @@ import {AxiosContext, axiosServiceCaller} from './axios.service.caller';
 import {justValidator, ServiceRequest, ServiceResponse} from '@itsmworkbench/service_caller';
 import {ErrorsOr} from '@itsmworkbench/errors';
 import {createMockDebugLog} from '@itsmworkbench/utils';
-import {emptyAuthentication, testAuthentication} from '@itsmworkbench/authentication';
+import {emptyAuthentication, testAuthentication} from '@itsmworkbench/login';
 
 const mock = new MockAdapter(axios);
 const debugMock = createMockDebugLog();

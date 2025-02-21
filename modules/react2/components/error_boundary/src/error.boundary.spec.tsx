@@ -3,7 +3,7 @@ import React, {ReactNode} from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {ErrorReporter, ErrorReporterProvider} from "@itsmworkbench/react_utils";
-import {UserData} from "@itsmworkbench/authentication";
+import {UserData} from "@itsmworkbench/login";
 import {TranslationContext, TranslationFn} from "@itsmworkbench/translation";
 import {ErrorBoundary, makeErrorBoundary, SimpleErrorBoundary} from "./error.boundary";
 import {ErrorBoundaryStyles} from "./defaultErrorBoundaryStyles";

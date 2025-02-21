@@ -5,6 +5,7 @@
   "links": [
     "@itsmworkbench/all_ticketsources",
     "@itsmworkbench/browserurlstore",
+    "@itsmworkbench/authentication_sovereign",
     "@itsmworkbench/homesovereign",
     "@itsmworkbench/itsmsovereign",
     "@itsmworkbench/itsm_translation",
@@ -14,7 +15,6 @@
     "@itsmworkbench/panelnavigator",
     "@itsmworkbench/react_utils",
     "@itsmworkbench/secrets",
-
     "@itsmworkbench/sovereign",
     "@itsmworkbench/system",
     "@itsmworkbench/ticketsource",

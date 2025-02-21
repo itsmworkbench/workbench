@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "axios": "1.7.9",
-    "@itsmworkbench/authentication": "1.0.0",
+    "@itsmworkbench/login": "1.0.0",
     "@itsmworkbench/errors": "1.0.0",
     "@itsmworkbench/service_caller": "1.0.0",
     "@itsmworkbench/utils": "1.0.0",

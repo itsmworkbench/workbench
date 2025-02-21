@@ -1,5 +1,5 @@
 import {makeContextForState} from "@itsmworkbench/react_utils";
-import {SecretDataWithoutPasswordChecked} from "@itsmworkbench/credentials/src/crypto/secret.data";
+import {SecretDataWithoutPasswordChecked} from "@itsmworkbench/login/src/crypto/secret.data";
 
 
 export type PasswordProps = {}

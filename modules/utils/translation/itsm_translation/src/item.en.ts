@@ -34,6 +34,7 @@ export const itsmTranslation = {
         getStarted: `Click here to learn how to get started`,
         newTicket: "Start processing a new ticket.\n\nImport from servicenow or just create a new one",
         activeTickets: "Find your started but not finished tickets here",
+        authentication: "Storing and managing your passwords and tokens",
         historicalTickets: "All your completed tickets can be found here",
         systems: "Describe the systems and services you are working with, and how they are connected",
         healthCheck: "Validates that the systems you want to link to are working",

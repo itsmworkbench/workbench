@@ -3,7 +3,7 @@
   "name": "@itsmworkbench/error_boundary",
   "description": "The error boundary component",
   "links": [
-    "@itsmworkbench/authentication",
+    "@itsmworkbench/login",
     "@itsmworkbench/react_utils",
     "@itsmworkbench/translation"
   ],

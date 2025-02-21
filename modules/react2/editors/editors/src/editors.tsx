@@ -1,12 +1,14 @@
-
 import {ReactNode} from "react";
 import {OptionsEditor} from "./simple.options.editor";
 import {GetterSetter, makeContextFor} from "@itsmworkbench/react_utils";
+import {NameAnd} from "@laoban/utils";
+import {LensAndPath} from "@itsmworkbench/optics";
 
-export type EditorProps<T> = {
+
+export type EditorProps<Main, T> = {
     rootId: string
     attribute: string
-    ops: GetterSetter<T>
+    ops: GetterSetter<Main>
     //Only needed if no label is provided
     ariaLabel?: string
 }
