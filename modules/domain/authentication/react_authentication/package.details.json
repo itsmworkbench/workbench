@@ -1,0 +1,22 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/react_authentication",
+  "description": "Handling credentials",
+  "packageJson": {
+    "dependencies":    {
+    },
+    "devDependencies": {},
+    "browser":         {
+      "child_process": false
+    }
+  },
+  "links":       [
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/authentication"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/viewobject",
+  "description": "Allows us to view objects that have an object defn",
+  "links": [
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/secrets",
+    "@itsmworkbench/object_defn",
+    "@itsmworkbench/optics",
+    "@itsmworkbench/errors"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": true,
+    "react": false
+  }
+}

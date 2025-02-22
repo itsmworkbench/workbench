@@ -1,0 +1,24 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/msal_login",
+  "description": "An interface that implements our authentication using MSAL",
+  "links": [
+    "@itsmworkbench/service_caller",
+    "@itsmworkbench/login"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+      "@azure/msal-browser": "${properties.msal}"
+    },
+    "devDependencies": {
+
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

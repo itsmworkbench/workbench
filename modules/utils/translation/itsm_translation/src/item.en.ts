@@ -4,6 +4,12 @@ export const itsmTranslation = {
         clear: 'Clear',
     },
 
+    authentication:{
+        method: 'Method',
+        credentials:{
+            apiKey: 'ApiKey'
+        }
+    },
 
     devMode: {
         debug: "Debug",

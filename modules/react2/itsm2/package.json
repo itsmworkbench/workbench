@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@itsmworkbench/all_ticketsources": "1.0.0",
+    "@itsmworkbench/axios_service_caller": "1.0.0",
+    "@itsmworkbench/azureai2_react": "1.0.0",
     "@itsmworkbench/browserurlstore": "1.0.0",
     "@itsmworkbench/authentication_sovereign": "1.0.0",
     "@itsmworkbench/homesovereign": "1.0.0",

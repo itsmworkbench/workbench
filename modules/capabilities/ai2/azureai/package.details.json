@@ -1,0 +1,22 @@
+{
+  "template": "typescript",
+  "name": "@itsmworkbench/azureai2",
+  "description": "Accessing ai",
+  "packageJson": {
+    "dependencies": {
+      "@laoban/utils": "${properties.laobanVersion}",
+      "@laoban/variables": "${properties.laobanVersion}"
+    },
+    "devDependencies": {}
+  },
+  "links": [
+    "@itsmworkbench/ai2",
+    "@itsmworkbench/components",
+    "@itsmworkbench/utils"
+  ],
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": false
+  }
+}

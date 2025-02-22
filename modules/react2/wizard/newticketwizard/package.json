@@ -16,9 +16,10 @@
   },
   "dependencies": {
     "@itsmworkbench/react_utils": "1.0.0",
+    "@itsmworkbench/reacturlstore": "1.0.0",
     "@itsmworkbench/sovereign": "1.0.0",
-    "@itsmworkbench/tickets": "1.0.0",
     "@itsmworkbench/system": "1.0.0",
+    "@itsmworkbench/tickets": "1.0.0",
     "@itsmworkbench/ticketsource": "1.0.0",
     "@itsmworkbench/wizard": "1.0.0",
     "debug": "^4.3.4",

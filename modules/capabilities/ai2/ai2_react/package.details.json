@@ -1,0 +1,21 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/ai2_react",
+  "description": "Accessing ai",
+  "packageJson": {
+    "dependencies": {
+      "@laoban/utils": "${properties.laobanVersion}",
+      "@laoban/variables": "${properties.laobanVersion}"
+    },
+    "devDependencies": {}
+  },
+  "links": [
+    "@itsmworkbench/ai2",
+    "@itsmworkbench/utils"
+  ],
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/authentication_sovereign",
+  "description": "The sovereign pane that helps us manage credentials",
+  "links": [
+    "@itsmworkbench/common_components",
+    "@itsmworkbench/react_authentication",
+    "@itsmworkbench/sovereign",
+    "@itsmworkbench/login",
+    "@itsmworkbench/secrets",
+    "@itsmworkbench/system",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/translation",
+    "@itsmworkbench/utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

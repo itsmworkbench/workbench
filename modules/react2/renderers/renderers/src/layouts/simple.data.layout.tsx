@@ -1,8 +1,7 @@
-import { DataLayout, DataLayoutProps } from "../data.layout";
-import React, { ReactNode } from "react";
-import { useRef } from "react";
-import { useTheme } from "@itsmworkbench/themes";
-import { useCommonComponents } from "@itsmworkbench/common_components";
+import {DataLayout, DataLayoutProps} from "../data.layout";
+import React, {ReactNode} from "react";
+import {useTheme} from "@itsmworkbench/themes";
+import {useCommonComponents} from "@itsmworkbench/common_components";
 
 export const SimpleDataLayout: DataLayout = ({ rootId, layout, children, className }: DataLayoutProps) => {
     const theme = useTheme();

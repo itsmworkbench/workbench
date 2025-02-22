@@ -1,0 +1,25 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/azureai2_react",
+  "description": "Accessing ai",
+  "packageJson": {
+    "dependencies": {
+      "@laoban/utils": "${properties.laobanVersion}",
+      "@laoban/variables": "${properties.laobanVersion}"
+    },
+    "devDependencies": {}
+  },
+  "links": [
+    "@itsmworkbench/ai2",
+    "@itsmworkbench/ai2_react",
+    "@itsmworkbench/react_authentication",
+    "@itsmworkbench/react_service_caller",
+    "@itsmworkbench/components",
+    "@itsmworkbench/utils"
+  ],
+  "guards": {
+    "compile": true,
+    "publish": true,
+    "test": false
+  }
+}

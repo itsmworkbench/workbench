@@ -4,6 +4,8 @@
   "description": "ITSM Workbench",
   "links": [
     "@itsmworkbench/all_ticketsources",
+    "@itsmworkbench/axios_service_caller",
+    "@itsmworkbench/azureai2_react",
     "@itsmworkbench/browserurlstore",
     "@itsmworkbench/authentication_sovereign",
     "@itsmworkbench/homesovereign",
