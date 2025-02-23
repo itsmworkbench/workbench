@@ -6,23 +6,25 @@ import {DebugLog, NameAnd} from '@itsmworkbench/utils';
 
 
 export const axiosServiceCaller =
-    async <T, >(req: ServiceRequest<T>, debug): Promise<ErrorsOr<ServiceResponse<T>>> => {
+    async <T, >({body,...req}: ServiceRequest<T>, debug): Promise<ErrorsOr<ServiceResponse<T>>> => {
         try {
-            debug('serviceCaller - req', req);
+            debug?.('serviceCaller - req', req);
             const axiosReq = {
                 ...req,
+                data: body,
                 headers: req.headers || {},
+                transformRequest: [] // Prevents Axios from re-transforming the request body
             };
             const response = await axios(axiosReq);
             const responseHeaders: NameAnd<string> = {}
             for (const [key, value] of Object.entries(response?.headers || {}))
                 responseHeaders[key] = Array.isArray(value) ? value.join(',') : value.toString()
             const result = makeServiceResponse<T>(response.status, responseHeaders, response.data, req.parser);
-            debug('serviceCaller - res', result);
+            debug?.('serviceCaller - res', result);
             return result
         } catch (error: any) {
             const result: Errors = handleAxiosError(req, error);
-            debug.debugError(error, 'serviceCaller - error', result);
+            debug?.debugError?.(error, 'serviceCaller - error', result);
             return result;
         }
     };

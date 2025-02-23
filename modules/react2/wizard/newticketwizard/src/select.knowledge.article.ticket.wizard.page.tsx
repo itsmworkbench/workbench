@@ -7,9 +7,13 @@ import {useTranslation} from "@itsmworkbench/translation";
 import {findKaDetails, KADetails, useUrlStore} from "@itsmworkbench/reacturlstore";
 import {NewTicketWizardData, useNewTicketTicket, useNewTicketWizardData} from "./new.ticket.wizard";
 import {UrlStore} from "@itsmworkbench/urlstore";
-import {ErrorsOr, isErrors, mapErrorsOr} from "@itsmworkbench/errors";
+import {ErrorsOr, isErrors, isValue, mapErrorsOr} from "@itsmworkbench/errors";
 import {simpleTemplate} from "@itsmworkbench/utils";
 import {Ticket} from "@itsmworkbench/tickets";
+import {useChatCompletion} from "@itsmworkbench/ai2_react";
+import {aiDebugName, ChatCompletionMessage, showAiPromptsFFName} from "@itsmworkbench/ai2";
+import {useDebug, useFeatureFlag} from "@itsmworkbench/react_utils";
+import {ListKasForSelection} from "./listKasForSelection";
 
 
 function makePromptFor(kad: KADetails) {
@@ -36,27 +40,38 @@ ticket is not matched by a knowledge article you respond 'unknown', so think car
 }
 
 export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
-                                                                                             name,
-                                                                                             description,
-                                                                                             steps,
-                                                                                             ops,
-                                                                                             stepOps
-                                                                                         }: WizardPanelProps<Ticket>) => {
+                                                                                name,
+                                                                                description,
+                                                                                steps,
+                                                                                ops,
+                                                                                stepOps
+                                                                            }: WizardPanelProps<Ticket>) => {
     const urlStore = useUrlStore()
     const {H1} = useRenderers()
-    const {DataLayout, Text} = useAttributeValueComponents()
+    const {DataLayout, Text, Json} = useAttributeValueComponents()
     const {ClipHeight, Table} = useCommonComponents()
     const [newTicketData] = useNewTicketWizardData()
-    const [ticket] =useNewTicketTicket()
+    const [ticket] = useNewTicketTicket()
     const rootId = 'select-knowledge-article-ticket-wizard'
     const translation = useTranslation()
     const [prompt, setPrompt] = useState<ErrorsOr<string>>({value: ''})
+    const chatCompletion = useChatCompletion()
+    const [chatResult, setChatResult] = useState<ErrorsOr<ChatCompletionMessage>>()
+    const debug = useDebug(aiDebugName)
+    const ff = useFeatureFlag(showAiPromptsFFName)
     useEffect(() => {
         makePrompt(urlStore, newTicketData).then(p => setPrompt(p))
     }, [newTicketData]);
+
     useEffect(() => {
-        findKaDetails(urlStore, 'me', 'system').then(d => console.log(d))
-    }, []);
+        if (isValue(prompt)) {
+            chatCompletion([{role: 'assistant', content: prompt.value}]).then(res => {
+                debug('SelectKnowledgeArticleTicketWizardPage-chatCompletion', res)
+                setChatResult(res);
+            })
+        } else
+            setChatResult(prompt)
+    }, [chatCompletion, prompt]);
     return <>
         <div data-testid={rootId}>
             <pre>{JSON.stringify(newTicketData)}</pre>
@@ -68,10 +83,10 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
                     <Text rootId={rootId} attribute='newTicket.description' value={ticket.description}/>
                 </ClipHeight>
             </DataLayout>
-            <DataLayout rootId={rootId} layout={[1, 1, 1]}>
-                <H1 rootId={rootId} attribute='prompt' value={translation('newTicket.prompt')}/>
-                <pre>{isErrors(prompt) ? prompt.errors.join('\n') : prompt.value}</pre>
-            </DataLayout>
+            {ff && <DataLayout rootId={rootId} layout={[1, 1, 1]}>
+                <Json rootId={rootId} attribute='newTicket.prompt' value={isErrors(prompt) ? prompt.errors.join('\n') : prompt.value}/>
+            </DataLayout>}
+            <ListKasForSelection system={newTicketData.system} organisation={'me'}/>
         </div>
 
     </>

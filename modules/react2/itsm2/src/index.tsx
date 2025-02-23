@@ -44,12 +44,18 @@ import {ServiceCallerProvider} from "@itsmworkbench/react_service_caller";
 import {axiosServiceCaller} from "@itsmworkbench/axios_service_caller";
 import {AuthFnProviderFromUrlStore} from "@itsmworkbench/react_authentication";
 import {AzureChatCompletionProvider} from "@itsmworkbench/azureai2_react";
+import {aiDebugName, showAiPromptsFFName} from "@itsmworkbench/ai2";
 
 const debugState = {
     [authenticateDebug]: false,
-    [routingDebug]: true,
+    [routingDebug]: false,
+    [aiDebugName]: false
 };
 
+const featureFlags: FeatureFlags = {
+    hv: {value: 'horizontal', description: 'Show the attribute value horizontally or vertically', options: AttributeValueOrientations},
+    [showAiPromptsFFName]: {value: false, description: 'Show the AI prompts in the chat'}
+};
 export const exampleMsalConfig: Configuration = {
     auth: {
         clientId: process.env.REACT_MSAL_CLIENT_ID ?? "ec963ff8-b8c7-411e-80b1-9473d0390b3b",
@@ -87,9 +93,6 @@ const sovereignStatePlugins: SovereignStatePlugins = {
 }
 
 
-const featureFlags: FeatureFlags = {
-    hv: {value: 'horizontal', description: 'Show the attribute value horizontally or vertically', options: AttributeValueOrientations},
-};
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 

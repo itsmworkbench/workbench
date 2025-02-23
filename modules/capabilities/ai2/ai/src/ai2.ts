@@ -1,6 +1,9 @@
 // Define the three possible roles that a message can have
 import {ErrorsOr} from "@itsmworkbench/errors";
 
+export const aiDebugName = 'ai'
+export const showAiPromptsFFName = 'showAiPrompts'
+
 export type ChatCompletionRole = 'system' | 'assistant' | 'user';
 
 // A single message, which has a role and some textual content

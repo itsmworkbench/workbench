@@ -1,7 +1,7 @@
 import React from 'react'
 import {ChatCompletionProvider} from "@itsmworkbench/ai2_react";
 import {useSecretData} from "@itsmworkbench/secrets";
-import {ChatCompletionFn, ChatCompletionMessage} from "@itsmworkbench/ai2";
+import {aiDebugName, ChatCompletionFn, ChatCompletionMessage} from "@itsmworkbench/ai2";
 import {useServiceCaller} from "@itsmworkbench/react_service_caller";
 import {ServiceRequest, ServiceResponse} from "@itsmworkbench/service_caller";
 import {useCallback} from "react";
@@ -10,6 +10,7 @@ import {ErrorsOr, flatMapErrorsOrK} from "@itsmworkbench/errors";
 import {decryptString, hasEnteredPassword} from "@itsmworkbench/authentication";
 import {NameAnd} from "@itsmworkbench/utils";
 import {ChatCompletionResponse} from "@itsmworkbench/azureai2/src/azureai";
+import {useDebug} from "@itsmworkbench/react_utils";
 
 export type AzureChatCompletionProviderProps = {
     children: React.ReactNode
@@ -21,27 +22,35 @@ export const rawHeaders: NameAnd<string> = {
     'Content-Type': 'application/json',
 }
 
-export function AzureChatCompletionProvider({children, authName = 'azureai', url = 'someurl'}: AzureChatCompletionProviderProps) {
+export function AzureChatCompletionProvider({children, authName = 'azureai', url = 'https://api.openai.com/v1/chat/completions'}: AzureChatCompletionProviderProps) {
     const serviceCaller = useServiceCaller()
     const authFn = useAuthFn()
     const [secretData] = useSecretData()
+    const debug = useDebug(aiDebugName)
 
     const completion: ChatCompletionFn = useCallback(async (request) => {
         if (!hasEnteredPassword(secretData)) return {errors: ['No password entered']}
         const decrypt = decryptString(secretData.cryptoKeyString)
+        const body = {
+            model: "gpt-4o-mini",
+            messages: request
+        }
+        debug('AzureChatCompletionProvider', request, body)
         const result: Promise<ErrorsOr<ChatCompletionMessage>> = flatMapErrorsOrK(await authFn(authName), async ({auth, authPlugin}) => {
-            const body = {}
             const sr: ServiceRequest<ChatCompletionResponse> = {
                 method: 'POST',
                 url: await authPlugin.modifyUrl(decrypt, url, auth),
                 body: JSON.stringify(body),
                 headers: await authPlugin.addToHeaders(decrypt, auth, rawHeaders),
             }
-            return flatMapErrorsOrK<ServiceResponse<ChatCompletionResponse>, ChatCompletionMessage>(await serviceCaller(sr),
+            debug('AzureChatCompletionProvider', sr)
+            return flatMapErrorsOrK<ServiceResponse<ChatCompletionResponse>, ChatCompletionMessage>(await serviceCaller(sr, debug),
                 async res => {
+                    debug('AzureChatCompletionProvider', 'res', res)
                     const choices = res.body.choices
-                    if (!choices || choices.length === 0) return {errors: ['No choices in response']}
-                    return {value: choices[0].message}
+                    const result =  !choices || choices.length === 0 ? {errors: ['No choices in response']} : {value: choices[0].message};
+                    debug ('AzureChatCompletionProvider', 'result', result)
+                    return result
                 })
         })
         return result

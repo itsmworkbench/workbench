@@ -3,9 +3,9 @@ import React, {ReactNode} from "react";
 import {useTheme} from "@itsmworkbench/themes";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 
-export const SimpleDataLayout: DataLayout = ({ rootId, layout, children, className }: DataLayoutProps) => {
+export const SimpleDataLayout: DataLayout = ({rootId, layout, children, className}: DataLayoutProps) => {
     const theme = useTheme();
-    const { dataLayout: styles } = theme;
+    const {dataLayout: styles} = theme;
     const rows: ReactNode[][] = [];
     let childIndex = 0;
 
@@ -19,7 +19,7 @@ export const SimpleDataLayout: DataLayout = ({ rootId, layout, children, classNa
         }
         childIndex += itemsInRow;
     }
-    const { BgMouseOver } = useCommonComponents();
+    const {BgMouseOver} = useCommonComponents();
     return (
         <BgMouseOver bgHover={"var(--bg-hover-color)"}>
             <div
@@ -29,19 +29,14 @@ export const SimpleDataLayout: DataLayout = ({ rootId, layout, children, classNa
                 style={styles.dataLayoutContainer}
             >
                 {rows.map((row, rowIndex) => (
-                    <div className="simple_data_rows" key={rowIndex} role="row" style={{ ...styles.dataLayoutRow, ...(row.length > 1 ? { display: "flex" } : null) }}>
-                        {row.map((child, colIndex) => {
-                            return (
-                                <>{child && (
-                                    <div key={colIndex} role="cell" style={{ ...styles.dataLayoutItem, marginTop: "4px" }}>
-                                        {child}
-                                    </div>
-                                )}</>
-                            )
-                        })}
+                    <div className="simple_data_rows" key={rowIndex} role="row" style={{...styles.dataLayoutRow, ...(row.length > 1 ? {display: "flex"} : null)}}>
+                        {row.map((child, colIndex) => (<>{child && (
+                                <div key={colIndex} role="cell" style={{...styles.dataLayoutItem, marginTop: "4px"}}>{child}</div>
+                            )}</>
+                        ))}
                     </div>
                 ))}
             </div>
-        </BgMouseOver >
+        </BgMouseOver>
     );
 };
