@@ -1,5 +1,5 @@
 import {useWizardComponents, Wizard} from "@itsmworkbench/wizard";
-import {DisplaySovereignPage, makeSovereignStatePlugin, SovereignStatePlugin} from "@itsmworkbench/sovereign";
+import {DisplaySovereignPage, makeSovereignStatePlugin, SovereignStatePlugin, useSelectedSovereign} from "@itsmworkbench/sovereign";
 import React, {useEffect, useState} from "react";
 import {CreateTicketWizardPage} from "./create.ticket.wizard.page";
 import {Ticket} from "@itsmworkbench/tickets";
@@ -25,7 +25,7 @@ export const NewTicketWizard: Wizard<Ticket> = {
         descriptionKey: 'newTicket.wizard.selectKnowledgeArticle',
         Panel: SelectKnowledgeArticleTicketWizardPage
     },
-    createNewKnowledgeArticle:{
+    createNewKnowledgeArticle: {
         descriptionKey: 'newTicket.wizard.createNewKnowledgeArticle',
         Panel: CreateNewKnowledgeArticleWizardPage
     }
@@ -37,12 +37,13 @@ export const NewTicketSovereignPane: DisplaySovereignPage = () => {
     const [ntd, setNtd] = useNewTicketWizardData()
     const systems = useSystems()
     const sources = useTicketSources()
+    const [sov, setSov] = useSelectedSovereign()
     useEffect(() => {
         if (ntd.system === '')
             setNtd({system: Object.keys(systems)[0], source: Object.keys(sources)[0], ticket: {} as Ticket})
     }, []);
     const ops = useState<Ticket>({} as Ticket);
-    return <Display wizard={NewTicketWizard} ops={ops}/>
+    return <Display wizard={NewTicketWizard} ops={ops} onFinish={() => setSov('')}/>
 };
 export const {use: useNewTicketWizardData, Provider: NewTicketWizardProvider} = makeContextForState<NewTicketWizardData, 'newWizardData'>('newWizardData')
 export const useNewTicketSource = makeUseStateChild(useNewTicketWizardData, id => id.focusOn('source'))

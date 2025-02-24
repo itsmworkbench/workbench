@@ -1,10 +1,7 @@
-import {nextWizardStep, WizardPanel, WizardPanelProps} from "@itsmworkbench/wizard";
+import {WizardPanel, WizardPanelProps} from "@itsmworkbench/wizard";
 import React, {useEffect, useState} from "react";
-import {useCommonComponents} from "@itsmworkbench/common_components";
-import {useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderers";
-import {useTranslation} from "@itsmworkbench/translation";
 import {findKaDetails, KADetails, useUrlStore} from "@itsmworkbench/reacturlstore";
-import {NewTicketWizardData, useNewTicketTicket, useNewTicketWizardData} from "./new.ticket.wizard";
+import {NewTicketWizardData, useNewTicketWizardData} from "./new.ticket.wizard";
 import {NamedUrl, UrlStore} from "@itsmworkbench/urlstore";
 import {ErrorsOr, isErrors, isValue, mapErrorsOr} from "@itsmworkbench/errors";
 import {simpleTemplate} from "@itsmworkbench/utils";
@@ -13,8 +10,9 @@ import {useChatCompletion} from "@itsmworkbench/ai2_react";
 import {aiDebugName, ChatCompletionMessage, showAiPromptsFFName} from "@itsmworkbench/ai2";
 import {useDebug, useFeatureFlag} from "@itsmworkbench/react_utils";
 import {hasErrors} from "@laoban/utils";
-import {NewKnowledgeArticle} from "./newKnowledgeArticle";
-import {defaultKnowledgeArticleDetails, KnowledgeArticleDetails} from "@itsmworkbench/knowledgearticle";
+import {EditObjectFromDefn} from "@itsmworkbench/editobject";
+import {defaultKnowledgeArticleDetails, detailsToKnowledgeArticle, KnowledgeArticleDetails, knowledgeArticleDetailsObjectDefn} from "@itsmworkbench/knowledgearticle";
+import {SimpleWizardNextPrevFooter, WizardPrevButton} from "@itsmworkbench/wizard/src/simple.wizard.next.prev.footer";
 
 
 function makePromptFor(kad: KADetails) {
@@ -54,8 +52,10 @@ Deletes a project from Leo
 ----
 
 I want your response to be two lines. The first line is the name of the knowledge article, the second line is the description.
+It is important that the name and description are abstract. For example if the item was to update the colour of an item in a system the 
+result would be 'updateColour' and 'Update Colour in ...the system...' rather than mentioning the button
 
-Please do not duplicate any existing names. Existing names are these:
+Please do not duplicate any existing names. Please check this carefull. Existing names are these:
 {kaNames}
 
 The ticket is for the {system} system, and reads like this
@@ -69,11 +69,11 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
                                                                              description,
                                                                              steps,
                                                                              ops,
-                                                                             stepOps
+                                                                             stepOps,
+                                                                             onFinish
                                                                          }: WizardPanelProps<Ticket>) => {
     const urlStore = useUrlStore()
     const [newTicketData] = useNewTicketWizardData()
-    const [ticket, setTicket] = useNewTicketTicket()
     const rootId = 'select-knowledge-article-ticket-wizard'
     const [prompt, setPrompt] = useState<ErrorsOr<string>>({value: ''})
     const chatCompletion = useChatCompletion()
@@ -81,13 +81,22 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
     const debug = useDebug(aiDebugName)
     const ff = useFeatureFlag(showAiPromptsFFName)
     const [errors, setErrors] = useState('')
-    const kadOps = useState(defaultKnowledgeArticleDetails)
+    const kaDetailsOps = useState<KADetails>({name: '', descriptionOrError: ''})
+    const [kadDetails, setKaDetails] = kaDetailsOps
+    const kadOps = useState<KnowledgeArticleDetails>(defaultKnowledgeArticleDetails)
+    const [kad, setKad] = kadOps
+
     useEffect(() => {
         debug('Making Prompt', newTicketData)
         makePrompt(urlStore, newTicketData).then(p => {
             if (JSON.stringify(prompt) !== JSON.stringify(p)) setPrompt(p)
         })
     }, [newTicketData]);
+
+    useEffect(() => {
+        setKaDetails({name: kad.name, descriptionOrError: kad.description, ka: detailsToKnowledgeArticle(kad)})
+    }, [kad]);
+
 
     useEffect(() => {
         debug('In Chat Completion', prompt, chatCompletion)
@@ -100,11 +109,11 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
                     const lines = res.value.content.split('\n').map(x => x.trim()).filter(x => x.length > 0)
                     debug('Lines in chat response', lines, lines.length)
                     if (lines.length === 2) {
-                        kadOps[1](old => {
+                        setKad(old => {
                             const name = old.name || lines[0]
                             const description = old.description || lines[1]
                             const result: KnowledgeArticleDetails = {...old, name, description};
-                            debug('setKnowledgeArticleDetails', result)
+                            debug('setKad', result)
                             return result;
                         })
                     }
@@ -114,21 +123,27 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
             setChatResult(prompt)
     }, [chatCompletion, prompt]);
 
-    function newKa(kad: KADetails) {
-        const url: NamedUrl = {scheme: 'itsm', namespace: 'ka', name: `${newTicketData.system}/${kad.name}`, organisation: 'me'}
-        urlStore.save(url, kad.ka).then(res => {
-            if (hasErrors(res)) throw new Error(res.join('\n'))
-            const ticket: Ticket = {...newTicketData.ticket, kaName: kad.name}
-            ops[1](ticket)
-            nextWizardStep(steps, stepOps)
+    function submit() {
+        const url: NamedUrl = {scheme: 'itsm', namespace: 'ka', name: `${newTicketData.system}/${kadDetails.name}`, organisation: 'me'}
+        const ka = kadDetails.ka;
+        if (!ka) throw new Error('No ka')
+        urlStore.save(url, ka).then(res => {
+            if (hasErrors(res)) setErrors(res.join('\n'))
+            else onFinish()
         })
     }
 
+    const valid = kad.name && kad.description
     return <>
         <div data-testid={rootId}>
-            <NewKnowledgeArticle onNewKa={newKa} kadOps={kadOps}/>
             {ff && <pre>{JSON.stringify(prompt)}</pre>}
             {errors && <pre>{errors}</pre>}
+            <EditObjectFromDefn showLabel={true} rootId='new-knowledge-article' mainOps={kadOps} objectDefn={knowledgeArticleDetailsObjectDefn}/>
+            <WizardPrevButton steps={steps} stepOps={stepOps}/>
+            <button disabled={!valid} onClick={onFinish}>Finished</button>
+
+            <h1>Ka Details</h1>
+            <pre>{JSON.stringify(kadDetails, null, 2)}</pre>
         </div>
     </>
 

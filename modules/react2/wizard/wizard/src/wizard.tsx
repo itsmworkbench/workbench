@@ -15,6 +15,7 @@ export type WizardPanelProps<T> = {
     ops: GetterSetter<T>
     steps: string[]
     stepOps: GetterSetter<string>
+    onFinish: () => void
 }
 export type WizardPanel<T> = (props: WizardPanelProps<T>) => React.ReactNode
 
@@ -29,6 +30,7 @@ export type WizardLayout = <T extends any>(props: WizardLayoutProps<T>) => React
 export type DisplayWizardProps<T> = {
     wizard: Wizard<T>
     ops: GetterSetter<T>
+    onFinish: () => void
 }
 export type DisplayWizard = <T>(props: DisplayWizardProps<T>) => React.ReactNode
 
@@ -76,13 +78,8 @@ export function prevWizardStep(steps: string[], stepOps: GetterSetter<string>) {
 
 export const {use: useWizardComponents, Provider: WizardComponentsProvider} = makeContextFor<WizardComponents, 'wizardComponents'>('wizardComponents')
 
-export type WizardProps<T> = {
-    wizard: Wizard<T>
-    ops: GetterSetter<T>
-}
 
-
-export function DisplayWizard<T>({wizard, ops}: WizardProps<T>) {
+export function DisplayWizard<T>({wizard, ops, onFinish}: DisplayWizardProps<T>) {
     const stepOps = useState(Object.keys(wizard)[0])
     const [step] = stepOps
     const {Layout} = useWizardComponents()
@@ -91,7 +88,7 @@ export function DisplayWizard<T>({wizard, ops}: WizardProps<T>) {
     if (!selected) return <div>Unknown step {step}</div>
     const description = translation(selected.descriptionKey)
     return <Layout steps={Object.keys(wizard)} stepOps={stepOps}>
-        <selected.Panel name={step} description={description} ops={ops} steps={Object.keys(wizard)} stepOps={stepOps}/>
+        <selected.Panel name={step} description={description} ops={ops} steps={Object.keys(wizard)} stepOps={stepOps} onFinish={onFinish}/>
     </Layout>
 }
 
