@@ -1,4 +1,4 @@
-import {FieldDefn, ObjectDefn} from "@itsmworkbench/object_defn";
+import {FieldDefn, FieldType, ObjectDefn} from "@itsmworkbench/object_defn";
 import {DataLayout} from "@itsmworkbench/renderers";
 import {makeContextFor} from "@itsmworkbench/react_utils";
 import React from "react";
@@ -24,14 +24,21 @@ export type ViewObjectProps<Main> = {
     objectDefn: ObjectDefn<Main>
 }
 
+export function findView<Main>(Views: ViewComponents, fieldType: FieldType, props: ViewComponentProps<Main, any>) {
+    if (fieldType === 'encrypted') return <Views.EncryptedView {...props}/>;
+    if (fieldType === 'string') return <Views.StringView {...props}/>;
+    throw new Error(`Unknown field type ${fieldType}. Legal values are ${Object.keys(Views).toString()}`)
+}
+
 export function ViewObjectFromDefn<Main>({rootId, main, objectDefn}: ViewObjectProps<Main>) {
-    const {DataLayout, StringView, EncryptedView} = useViewComponents();
+    const Views = useViewComponents();
+    const DataLayout = Views.DataLayout;
+
     return (
         <DataLayout rootId={rootId} layout={objectDefn.layout}>
             {Object.entries(objectDefn.fields).map(([name, fieldDefn]) => {
                 const {fieldType} = fieldDefn;
-                const View = fieldType === 'encrypted' ? EncryptedView : StringView;
-                return <View rootId={rootId} main={main} fieldDefn={fieldDefn} showLabel={true}/>
+                return findView(Views, fieldType, {rootId, main, fieldDefn});
             })}
         </DataLayout>
     )

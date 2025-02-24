@@ -22,6 +22,7 @@ export type WizardLayoutProps<T> = {
     steps: string[]
     stepOps: GetterSetter<string>
     children: React.ReactNode
+
 }
 export type WizardLayout = <T extends any>(props: WizardLayoutProps<T>) => React.ReactNode
 
@@ -79,6 +80,7 @@ export type WizardProps<T> = {
     wizard: Wizard<T>
     ops: GetterSetter<T>
 }
+
 
 export function DisplayWizard<T>({wizard, ops}: WizardProps<T>) {
     const stepOps = useState(Object.keys(wizard)[0])

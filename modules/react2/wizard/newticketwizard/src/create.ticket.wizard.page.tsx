@@ -1,13 +1,11 @@
 import {nextWizardStep, WizardPanel, WizardPanelProps} from "@itsmworkbench/wizard";
 import {Ticket} from "@itsmworkbench/tickets";
-import React, {useState} from "react";
+import React from "react";
 import {useTicketSources} from "@itsmworkbench/ticketsource";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 import {useSystems} from "@itsmworkbench/system";
 import {useRenderers} from "@itsmworkbench/renderers";
-import {NewTicketWizardData, useNewTicketSource, useNewTicketSystem, useNewTicketTicket} from "./new.ticket.wizard";
-import {makeContextForState, makeGetterSetter, makeUseStateChild} from "@itsmworkbench/react_utils";
-import {lensBuilder} from "@itsmworkbench/optics";
+import {useNewTicketSource, useNewTicketSystem, useNewTicketTicket} from "./new.ticket.wizard";
 
 
 export const CreateTicketWizardPage: WizardPanel<Ticket> = ({

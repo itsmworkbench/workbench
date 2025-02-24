@@ -11,9 +11,10 @@
     }
   },
   "links":       [
-    "@itsmworkbench/react_utils",
     "@itsmworkbench/actions",
     "@itsmworkbench/domain",
+    "@itsmworkbench/object_defn",
+    "@itsmworkbench/react_utils",
     "@itsmworkbench/tickets",
     "@itsmworkbench/yaml"
   ],

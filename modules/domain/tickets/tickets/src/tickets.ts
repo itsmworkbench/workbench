@@ -7,6 +7,7 @@ export interface Ticket {
   attributes: NameAnd<any>
   summary: string
   description: string
+  kaName: string
 }
 
 

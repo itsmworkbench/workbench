@@ -96,7 +96,7 @@ export type ContextResultsForState<Data, FIELD extends string> = {
     context: Context<GetterSetter<Data> | undefined>
 }
 
-export function makeContextForState<Data, FIELD extends string>(field: FIELD, allowedUndefined?: boolean): ContextResultsForState<Data, FIELD> {
+export function makeContextForState<Data, FIELD extends string>(field: FIELD): ContextResultsForState<Data, FIELD> {
     const Context = React.createContext<GetterSetter<Data> | undefined>(undefined);
 
 
@@ -123,12 +123,14 @@ export function makeContextForState<Data, FIELD extends string>(field: FIELD, al
 
 export function makeUseStateChild<Data, Child>(
     parent: () => GetterSetter<Data>,
-    lens: (id: LensBuilder<Data, Data>) => LensAndPath<Data, Child>
+    lens: (id: LensBuilder<Data, Data>) => LensAndPath<Data, Child>,
+    debugName?: boolean
 ): () => GetterSetter<Child> {
 
     return () => {
         const [value, setValue] = parent(); // This is `useField()` behind the scenes
         return useMemo(() => {
+            if (debugName) console.log(debugName, 'makeUseStateChild', value, setValue, lens)
             return makeGetterSetter(value, setValue, lens(lensBuilder()));
         }, [value, setValue, lens]); // lens might be stable or not, depends on usage
     };

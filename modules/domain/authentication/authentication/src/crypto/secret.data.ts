@@ -98,6 +98,18 @@ export function encryptString(cryptoKey: string): DecryptFn {
     }
 }
 
+export function secretDataToEncypt(s: SecretDataWithoutPasswordChecked, messageIfNoPassword: string): DecryptFn {
+    return hasEnteredPassword(s)
+        ? encryptString(s.cryptoKeyString)
+        : async (): Promise<string> => messageIfNoPassword;
+}
+export function secretDataToDecrypt(s: SecretDataWithoutPasswordChecked, messageIfNoPassword: string): DecryptFn {
+    return hasEnteredPassword(s)
+        ? decryptString(s.cryptoKeyString)
+        : async (): Promise<string> => messageIfNoPassword;
+}
+
+
 /**
  * Decrypt an AES-GCM ciphertext string (which contains IV) back to plaintext.
  * The input must be in the format "ivBase64:cipherBase64".

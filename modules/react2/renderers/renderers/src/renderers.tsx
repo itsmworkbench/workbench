@@ -38,6 +38,5 @@ export type Renderers = {
     Label: Render<string>
 }
 
-
 export const {Provider: RenderProvider, use: useRenderers} = makeContextFor<Renderers, 'renderers'>('renderers');
 

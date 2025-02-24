@@ -57,6 +57,8 @@ export const itsmTranslation = {
         prompt: 'Prompt',
         summary: 'Summary',
         ticket: 'Ticket',
+        newKa: 'None of these are the right knowledge article, I will create a new one',
+        cancelNewKa: `Let's look at the knowledge articles again`,
     },
 
     sovereign: {

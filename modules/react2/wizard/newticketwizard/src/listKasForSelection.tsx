@@ -1,40 +1,63 @@
 import {aiDebugName, showAiPromptsFFName} from "@itsmworkbench/ai2";
 import {ErrorsOr, isErrors, isValue, mapErrorsOr} from "@itsmworkbench/errors";
 import React, {useEffect, useState} from "react";
-import {useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderers";
+import {useAttributeValueComponents} from "@itsmworkbench/renderers";
 import {findKaDetails, KADetails, useUrlStore} from "@itsmworkbench/reacturlstore";
 import {useChatCompletion} from "@itsmworkbench/ai2_react";
 import {useDebug, useFeatureFlag} from "@itsmworkbench/react_utils";
-import {makePrompt} from "./select.knowledge.article.ticket.wizard.page";
-import {useNewTicketWizardData} from "./new.ticket.wizard";
+import {NewTicketWizardData, useNewTicketWizardData} from "./new.ticket.wizard";
 import {useCommonComponents} from "@itsmworkbench/common_components";
+import {useTranslation} from "@itsmworkbench/translation";
+import {UrlStore} from "@itsmworkbench/urlstore";
+import {simpleTemplate} from "@itsmworkbench/utils";
 
 export type AiSuggestedKaProps = {
     organisation: string
     system: string
     onSelect: (ka: KADetails) => void
-    onNewKa: () => void
+    onNewKa: (kad: KADetails) => void
+
+}
+
+function makePromptFor(kad: KADetails) {
+    return `* ${kad.name}: ${kad.descriptionOrError}`
+}
+
+export async function makePrompt(urlStore: UrlStore, ntd: NewTicketWizardData) {
+    const kadse = await findKaDetails(urlStore, 'me', ntd.system)
+    const kaPrompt = mapErrorsOr(kadse, kads =>
+        kads.filter(kad => kad.ka).map(kad => makePromptFor(kad)).join('\n')
+    )
+    const rawPrompt = `
+You are a categoriser. Your job is to work out which knowledge article the attached ticket is best described by
+
+The knowledge articles are
+{kas}
+The ticket is
+{ticket}
+
+In your answer just give the name of the knowledge article and nothing else. It is really important to us that if the 
+ticket is not matched by a knowledge article you respond 'unknown', so think carefully about your answer
+`
+    return mapErrorsOr(kaPrompt, kas => simpleTemplate(rawPrompt, {ticket: ntd.ticket.description, kas}))
 }
 
 
 export function ListKasForSelection({organisation, system, ...rest}: AiSuggestedKaProps) {
-    const {Text} = useRenderers();
-    const {DataLayout} = useAttributeValueComponents();
-    const {Table} = useCommonComponents()
     const urlStore = useUrlStore();
     const [newTicketData] = useNewTicketWizardData()
-
+    const debug = useDebug(aiDebugName)
     const [kaDetails, setKaDetails] = useState<ErrorsOr<KADetails[]>>({errors: ['Loading']})
     useEffect(() => {
+        debug('Finding ka details', urlStore, organisation, system)
         findKaDetails(urlStore, organisation, system).then(setKaDetails)
     }, [urlStore, organisation, system]);
     const [aiSuggestedKa, setAiSuggestedKa] = useState<ErrorsOr<string>>({errors: ['Loading']})
 
     const [prompt, setPrompt] = useState<ErrorsOr<string>>({errors: ['Loading']})
     const chatCompletion = useChatCompletion()
-    const debug = useDebug(aiDebugName)
     const ff = useFeatureFlag(showAiPromptsFFName)
-
+    const {DataLayout, Json} = useAttributeValueComponents()
     useEffect(() => {
         makePrompt(urlStore, newTicketData).then(p => setPrompt(p))
     }, [newTicketData]);
@@ -54,7 +77,12 @@ export function ListKasForSelection({organisation, system, ...rest}: AiSuggested
 
 
     return <div data-testid={rootId}>
+
         <KaLoadTable kaDetails={kaDetails} aiSuggestedKa={aiSuggestedKa} {...rest}/>
+        {ff && <DataLayout rootId={rootId} layout={[1, 1, 1]}>
+            <Json rootId={rootId} attribute='newTicket.prompt' value={isErrors(prompt) ? prompt.errors.join('\n') : prompt.value}/>
+        </DataLayout>}
+
     </div>
 }
 
@@ -62,24 +90,36 @@ export type KaLoadTableProps = {
     kaDetails: ErrorsOr<KADetails[]>
     aiSuggestedKa: ErrorsOr<string>
     onSelect: (ka: KADetails) => void
-    onNewKa: () => void
+    onNewKa: (kad: KADetails) => void
+}
+
+function getTextForAiSuggestion(aiSuggestedKa: ErrorsOr<string>, index: number, name: string, kaDetails: KADetails[]) {
+    if (isErrors(aiSuggestedKa)) return aiSuggestedKa.errors.join(',')
+    if (kaDetails.length === 0) return `No KAs found for AI to make suggestion`
+    if (name === 'unknown') return 'unknown'
+    if (index === -1) return `Odd choice: ${name}`
+    return kaDetails[index].name;
 }
 
 export function KaLoadTable({kaDetails, aiSuggestedKa, onNewKa, onSelect}: KaLoadTableProps) {
     const {Table} = useCommonComponents()
-    const {DataLayout} = useAttributeValueComponents()
+    const {DataLayout, Json} = useAttributeValueComponents()
+    const [newKa, setNewKa] = useState(false)
+    const translate = useTranslation()
     if (isErrors(kaDetails)) return <div>{kaDetails.errors.join('\n')}</div>
     const name = isErrors(aiSuggestedKa) ? undefined : aiSuggestedKa.value
     if (isErrors(kaDetails)) return <div>{kaDetails.errors.join('\n')}</div>
     const data = [...kaDetails.value]
     const index = data.findIndex(ka => ka.name === name)
-    const text = isErrors(aiSuggestedKa) ? aiSuggestedKa.errors.join(',') : index === -1 ? `Odd choice: ${name}` : kaDetails.value[index].name
+    const text = getTextForAiSuggestion(aiSuggestedKa, index, name, kaDetails.value)
     const dataWithKa = index >= 0 ? [data[index], ...data.slice(0, index).concat(data.slice(index + 1))] : data
-
-    return <DataLayout rootId='list-kas-for-selection' layout={[1, 1, 1]}>
-        <button onClick={onNewKa}>This is a new kind of ticket, none of these articles are relevant</button>
+    const buttonText = translate(newKa ? 'newTicket.cancelNewKa' : 'newTicket.newKa')
+    const rootId = 'list-kas-for-selection'
+    return <DataLayout rootId={rootId} layout={[1, 1, 1]}>
         <span>Ai suggests: {text}</span>
-        <Table titles={['Name', 'Description']} keys={['name', 'descriptionOrError']} data={dataWithKa} onRowSelect={onSelect}/>
+        {!newKa &&
+            <Table titles={['Name', 'Description']} keys={['name', 'descriptionOrError']} data={dataWithKa} onRowSelect={onSelect}/>}
     </DataLayout>
 
 }
+

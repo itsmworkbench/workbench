@@ -3,11 +3,12 @@
   "name": "@itsmworkbench/editobject",
   "description": "Allows us to edit objects that have an object defn",
   "links": [
-    "@itsmworkbench/react_utils",
-    "@itsmworkbench/secrets",
+    "@itsmworkbench/errors",
     "@itsmworkbench/object_defn",
     "@itsmworkbench/optics",
-    "@itsmworkbench/errors"
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/secrets",
+    "@itsmworkbench/viewobject"
   ],
   "packageJson": {
     "files": ["build/"],

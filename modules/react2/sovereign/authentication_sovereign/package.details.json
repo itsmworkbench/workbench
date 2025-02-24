@@ -11,6 +11,8 @@
     "@itsmworkbench/system",
     "@itsmworkbench/react_utils",
     "@itsmworkbench/translation",
+    "@itsmworkbench/viewobject",
+    "@itsmworkbench/editobject",
     "@itsmworkbench/utils"
   ],
   "packageJson": {

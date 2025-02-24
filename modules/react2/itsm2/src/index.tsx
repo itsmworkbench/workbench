@@ -49,7 +49,7 @@ import {aiDebugName, showAiPromptsFFName} from "@itsmworkbench/ai2";
 const debugState = {
     [authenticateDebug]: false,
     [routingDebug]: false,
-    [aiDebugName]: false
+    [aiDebugName]: true
 };
 
 const featureFlags: FeatureFlags = {

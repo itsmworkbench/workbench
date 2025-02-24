@@ -1,6 +1,5 @@
 import {makeSovereignStatePlugin} from "@itsmworkbench/sovereign";
 import React, {useCallback} from "react";
-import {useCommonComponents} from "@itsmworkbench/common_components";
 import {useUrlStore} from "@itsmworkbench/reacturlstore";
 import {useSecretData} from "@itsmworkbench/secrets";
 import {mapAsync, NameAnd} from "@itsmworkbench/utils";
@@ -8,11 +7,10 @@ import {UrlQuery, UrlStore} from "@itsmworkbench/urlstore";
 import {Kleisli, useKleisli} from "@itsmworkbench/loading";
 import {ErrorsAnd, hasErrors} from "@laoban/utils";
 import {Authentication} from "@itsmworkbench/login";
-import {asAuthentication, authenticationNameSpace, AuthFn, AuthFnResult, hasEnteredPassword} from "@itsmworkbench/authentication";
-import {useViewComponents, ViewObjectFromDefn} from "@itsmworkbench/viewobject";
-import {useAuthenticationPlugins, useAuthFn} from "@itsmworkbench/react_authentication";
+import {authenticationNameSpace, AuthFn, AuthFnResult, hasEnteredPassword} from "@itsmworkbench/authentication";
+import {ViewObjectFromDefn} from "@itsmworkbench/viewobject";
+import {useAuthFn} from "@itsmworkbench/react_authentication";
 import {ErrorsOr, isErrors} from "@itsmworkbench/errors";
-import {useRenderers} from "@itsmworkbench/renderers";
 
 
 export type AuthenticationProps = {
