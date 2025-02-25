@@ -1,4 +1,5 @@
 import React from "react";
+import {GetterSetter} from "@itsmworkbench/react_utils";
 
 export interface SimpleTableProps<T> {
     styles?: TableStyles;
@@ -7,6 +8,7 @@ export interface SimpleTableProps<T> {
     keys: (keyof T)[];
     noDataText?: string;
     noWrap?: (keyof T)[];  // Columns that should NOT wrap
+    selectedRowOps?: GetterSetter<number> //if defined we track selectedRow
     onRowSelect?: (row: T, index: number) => void;
 }
 

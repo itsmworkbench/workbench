@@ -13,7 +13,7 @@ import {HomeSovereignPagePlugin} from "@itsmworkbench/homesovereign";
 import {DevModeTranslate, emptyUsedAndNotFound, TranslationUsedAndNotFoundProvider} from "@itsmworkbench/translation";
 import {SimpleTranslationProvider} from "@itsmworkbench/simple_translation";
 import {NavigatorPanelDefns} from "@itsmworkbench/panelnavigator";
-import {emptyNewTicketWizardData, NewTicketSovereignPanePlugin, NewTicketWizardProvider} from "@itsmworkbench/newticket_wizard";
+import {DevModeNewTicket, devmodeNewTicketName, emptyNewTicketWizardData, NewTicketSovereignPanePlugin, NewTicketWizardProvider} from "@itsmworkbench/newticket_wizard";
 import {SimpleWizardComponents} from "@itsmworkbench/wizard/src/simple.wizard.components";
 import {WizardComponentsProvider} from "@itsmworkbench/wizard";
 import {ThemeProvider} from "@itsmworkbench/themes";
@@ -93,7 +93,6 @@ const sovereignStatePlugins: SovereignStatePlugins = {
 }
 
 
-
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
 export function AttributeValueOrientationFromFeatureFlagProvider({children}: { children: React.ReactNode }) {
@@ -111,7 +110,8 @@ const devModeComponents: NameAnd<() => React.ReactElement> = {
     Debug: DevModeDebug,
     FeatureFlags: DevModeFeatureFlags,
     Translate: DevModeTranslate,
-    SecretData: DevmodeSecretData
+    SecretData: DevmodeSecretData,
+    [devmodeNewTicketName]: DevModeNewTicket
 };
 
 

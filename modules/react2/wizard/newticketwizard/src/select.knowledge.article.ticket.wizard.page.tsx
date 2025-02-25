@@ -4,7 +4,7 @@ import {useCommonComponents} from "@itsmworkbench/common_components";
 import {useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderers";
 import {useTranslation} from "@itsmworkbench/translation";
 import {findKaDetails, KADetails, useUrlStore} from "@itsmworkbench/reacturlstore";
-import {NewTicketWizardData, useNewTicketTicket, useNewTicketWizardData} from "./new.ticket.wizard";
+import {NewTicketWizardData, useNewTicketKaDetails, useNewTicketTicket, useNewTicketWizardData} from "./new.ticket.wizard";
 import {UrlStore} from "@itsmworkbench/urlstore";
 import {ErrorsOr, isErrors, isValue, mapErrorsOr} from "@itsmworkbench/errors";
 import {simpleTemplate} from "@itsmworkbench/utils";
@@ -13,6 +13,7 @@ import {useChatCompletion} from "@itsmworkbench/ai2_react";
 import {aiDebugName, ChatCompletionMessage, showAiPromptsFFName} from "@itsmworkbench/ai2";
 import {useDebug, useFeatureFlag} from "@itsmworkbench/react_utils";
 import {ListKasForSelection} from "./listKasForSelection";
+import {WizardPrevButton} from "@itsmworkbench/wizard/src/simple.wizard.next.prev.footer";
 
 
 export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
@@ -20,7 +21,8 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
                                                                                 description,
                                                                                 steps,
                                                                                 ops,
-                                                                                stepOps
+                                                                                stepOps,
+                                                                                onFinish
                                                                             }: WizardPanelProps<Ticket>) => {
     const {H1} = useRenderers()
     const {DataLayout, Text, Json} = useAttributeValueComponents()
@@ -30,7 +32,11 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
     const rootId = 'select-knowledge-article-ticket-wizard'
     const translation = useTranslation()
     const translate = useTranslation()
-
+    const [selected, setSelect] = useNewTicketKaDetails()
+    function newKa() {
+        nextWizardStep(steps, stepOps)
+        setSelect(undefined)
+    }
     return <>
         <div data-testid={rootId}>
             <pre>{JSON.stringify(newTicketData)}</pre>
@@ -42,9 +48,12 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
                     <Text rootId={rootId} attribute='newTicket.description' value={ticket.description}/>
                 </ClipHeight>
             </DataLayout>
-
-            <button onClick={() => nextWizardStep(steps, stepOps)}>{translate('newTicket.newKa')}</button>
-            <ListKasForSelection system={newTicketData.system} organisation={'me'}/>
+            <div>
+                <WizardPrevButton steps={steps} stepOps={stepOps}/>
+                <button disabled={selected === undefined} onClick={onFinish}>Finished</button>
+            </div>
+            <button onClick={newKa}>{translate('newTicket.newKa')}</button>
+            <ListKasForSelection system={newTicketData.system} organisation={'me'} onSelect={(kad) => setSelect(kad)}/>
         </div>
 
     </>

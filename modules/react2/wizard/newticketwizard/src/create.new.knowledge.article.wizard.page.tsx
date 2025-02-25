@@ -1,7 +1,7 @@
 import {WizardPanel, WizardPanelProps} from "@itsmworkbench/wizard";
 import React, {useEffect, useState} from "react";
 import {findKaDetails, KADetails, useUrlStore} from "@itsmworkbench/reacturlstore";
-import {NewTicketWizardData, useNewTicketWizardData} from "./new.ticket.wizard";
+import {NewTicketWizardData, useNewTicketKaDetails, useNewTicketWizardData} from "./new.ticket.wizard";
 import {NamedUrl, UrlStore} from "@itsmworkbench/urlstore";
 import {ErrorsOr, isErrors, isValue, mapErrorsOr} from "@itsmworkbench/errors";
 import {simpleTemplate} from "@itsmworkbench/utils";
@@ -81,7 +81,7 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
     const debug = useDebug(aiDebugName)
     const ff = useFeatureFlag(showAiPromptsFFName)
     const [errors, setErrors] = useState('')
-    const kaDetailsOps = useState<KADetails>({name: '', descriptionOrError: ''})
+    const kaDetailsOps = useNewTicketKaDetails()
     const [kadDetails, setKaDetails] = kaDetailsOps
     const kadOps = useState<KnowledgeArticleDetails>(defaultKnowledgeArticleDetails)
     const [kad, setKad] = kadOps
@@ -125,12 +125,12 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
 
     function submit() {
         const url: NamedUrl = {scheme: 'itsm', namespace: 'ka', name: `${newTicketData.system}/${kadDetails.name}`, organisation: 'me'}
-        const ka = kadDetails.ka;
+        const ka = {description: kadDetails.descriptionOrError, ...kadDetails.ka};
         if (!ka) throw new Error('No ka')
         urlStore.save(url, ka).then(res => {
             if (hasErrors(res)) setErrors(res.join('\n'))
             else onFinish()
-        })
+        }).catch(e=>setErrors(e.message))
     }
 
     const valid = kad.name && kad.description
@@ -140,8 +140,7 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
             {errors && <pre>{errors}</pre>}
             <EditObjectFromDefn showLabel={true} rootId='new-knowledge-article' mainOps={kadOps} objectDefn={knowledgeArticleDetailsObjectDefn}/>
             <WizardPrevButton steps={steps} stepOps={stepOps}/>
-            <button disabled={!valid} onClick={onFinish}>Finished</button>
-
+            <button disabled={!valid} onClick={submit}>Finished</button>
             <h1>Ka Details</h1>
             <pre>{JSON.stringify(kadDetails, null, 2)}</pre>
         </div>

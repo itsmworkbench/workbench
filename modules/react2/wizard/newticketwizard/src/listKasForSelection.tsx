@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {useAttributeValueComponents} from "@itsmworkbench/renderers";
 import {findKaDetails, KADetails, useUrlStore} from "@itsmworkbench/reacturlstore";
 import {useChatCompletion} from "@itsmworkbench/ai2_react";
-import {useDebug, useFeatureFlag} from "@itsmworkbench/react_utils";
+import {GetterSetter, useDebug, useFeatureFlag} from "@itsmworkbench/react_utils";
 import {NewTicketWizardData, useNewTicketWizardData} from "./new.ticket.wizard";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 import {useTranslation} from "@itsmworkbench/translation";
@@ -15,8 +15,6 @@ export type AiSuggestedKaProps = {
     organisation: string
     system: string
     onSelect: (ka: KADetails) => void
-    onNewKa: (kad: KADetails) => void
-
 }
 
 function makePromptFor(kad: KADetails) {
@@ -58,6 +56,7 @@ export function ListKasForSelection({organisation, system, ...rest}: AiSuggested
     const chatCompletion = useChatCompletion()
     const ff = useFeatureFlag(showAiPromptsFFName)
     const {DataLayout, Json} = useAttributeValueComponents()
+    const selectedRowOps = useState(-1)
     useEffect(() => {
         makePrompt(urlStore, newTicketData).then(p => setPrompt(p))
     }, [newTicketData]);
@@ -67,7 +66,12 @@ export function ListKasForSelection({organisation, system, ...rest}: AiSuggested
             setAiSuggestedKa({errors: ['Loading']})
             chatCompletion([{role: 'assistant', content: prompt.value}]).then(res => {
                 debug('ListKasForSelection-chatCompletion', res)
-                setAiSuggestedKa(mapErrorsOr(res, r => r.content));
+                setAiSuggestedKa(mapErrorsOr(res, r => {
+                    selectedRowOps[1](0)
+                    if (isValue(kaDetails)) rest.onSelect(kaDetails.value[0])
+                    return r.content;
+                }));
+
             })
         } else
             setAiSuggestedKa(prompt)
@@ -77,8 +81,7 @@ export function ListKasForSelection({organisation, system, ...rest}: AiSuggested
 
 
     return <div data-testid={rootId}>
-
-        <KaLoadTable kaDetails={kaDetails} aiSuggestedKa={aiSuggestedKa} {...rest}/>
+        <KaLoadTable kaDetails={kaDetails} aiSuggestedKa={aiSuggestedKa} selectedRowOps={selectedRowOps} {...rest}/>
         {ff && <DataLayout rootId={rootId} layout={[1, 1, 1]}>
             <Json rootId={rootId} attribute='newTicket.prompt' value={isErrors(prompt) ? prompt.errors.join('\n') : prompt.value}/>
         </DataLayout>}
@@ -90,7 +93,7 @@ export type KaLoadTableProps = {
     kaDetails: ErrorsOr<KADetails[]>
     aiSuggestedKa: ErrorsOr<string>
     onSelect: (ka: KADetails) => void
-    onNewKa: (kad: KADetails) => void
+    selectedRowOps: GetterSetter<number>
 }
 
 function getTextForAiSuggestion(aiSuggestedKa: ErrorsOr<string>, index: number, name: string, kaDetails: KADetails[]) {
@@ -101,10 +104,9 @@ function getTextForAiSuggestion(aiSuggestedKa: ErrorsOr<string>, index: number, 
     return kaDetails[index].name;
 }
 
-export function KaLoadTable({kaDetails, aiSuggestedKa, onNewKa, onSelect}: KaLoadTableProps) {
+export function KaLoadTable({kaDetails, aiSuggestedKa, onSelect, selectedRowOps}: KaLoadTableProps) {
     const {Table} = useCommonComponents()
     const {DataLayout, Json} = useAttributeValueComponents()
-    const [newKa, setNewKa] = useState(false)
     const translate = useTranslation()
     if (isErrors(kaDetails)) return <div>{kaDetails.errors.join('\n')}</div>
     const name = isErrors(aiSuggestedKa) ? undefined : aiSuggestedKa.value
@@ -113,12 +115,10 @@ export function KaLoadTable({kaDetails, aiSuggestedKa, onNewKa, onSelect}: KaLoa
     const index = data.findIndex(ka => ka.name === name)
     const text = getTextForAiSuggestion(aiSuggestedKa, index, name, kaDetails.value)
     const dataWithKa = index >= 0 ? [data[index], ...data.slice(0, index).concat(data.slice(index + 1))] : data
-    const buttonText = translate(newKa ? 'newTicket.cancelNewKa' : 'newTicket.newKa')
     const rootId = 'list-kas-for-selection'
     return <DataLayout rootId={rootId} layout={[1, 1, 1]}>
         <span>Ai suggests: {text}</span>
-        {!newKa &&
-            <Table titles={['Name', 'Description']} keys={['name', 'descriptionOrError']} data={dataWithKa} onRowSelect={onSelect}/>}
+        <Table titles={['Name', 'Description']} keys={['name', 'descriptionOrError']} data={dataWithKa} onRowSelect={onSelect} selectedRowOps={selectedRowOps}/>
     </DataLayout>
 
 }
