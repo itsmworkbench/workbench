@@ -1,0 +1,21 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/itsm_state",
+  "description": "The global state for the itsm",
+  "links": [
+    "@itsmworkbench/react_utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

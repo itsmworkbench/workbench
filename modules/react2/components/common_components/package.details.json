@@ -5,13 +5,16 @@
   "links": [
     "@itsmworkbench/clip_height",
     "@itsmworkbench/mouse_over",
-    "@itsmworkbench/secrets",
+    "@itsmworkbench/mouse_over",
+    "@itsmworkbench/panelnavigator",
     "@itsmworkbench/react_utils",
+    "@itsmworkbench/rows_and_panels",
+    "@itsmworkbench/secrets",
     "@itsmworkbench/selectable_button",
     "@itsmworkbench/system",
     "@itsmworkbench/table",
-    "@itsmworkbench/panelnavigator",
-    "@itsmworkbench/translation"
+    "@itsmworkbench/translation",
+    "@itsmworkbench/layouts"
   ],
   "packageJson": {
     "files": ["build/"],

@@ -22,6 +22,7 @@
     "@itsmworkbench/authentication_sovereign": "1.0.0",
     "@itsmworkbench/homesovereign": "1.0.0",
     "@itsmworkbench/itsmsovereign": "1.0.0",
+    "@itsmworkbench/itsm_state": "1.0.0",
     "@itsmworkbench/itsm_translation": "1.0.0",
     "@itsmworkbench/jsyaml": "1.0.0",
     "@itsmworkbench/knowledgearticle": "1.0.0",

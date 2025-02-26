@@ -1,7 +1,7 @@
 import {WizardPanel, WizardPanelProps} from "@itsmworkbench/wizard";
 import React, {useEffect, useState} from "react";
-import {findKaDetails, KADetails, useUrlStore} from "@itsmworkbench/reacturlstore";
-import {NewTicketWizardData, useNewTicketKaDetails, useNewTicketWizardData} from "./new.ticket.wizard";
+import {useUrlStore} from "@itsmworkbench/reacturlstore";
+
 import {NamedUrl, UrlStore} from "@itsmworkbench/urlstore";
 import {ErrorsOr, isErrors, isValue, mapErrorsOr} from "@itsmworkbench/errors";
 import {simpleTemplate} from "@itsmworkbench/utils";
@@ -11,15 +11,16 @@ import {aiDebugName, ChatCompletionMessage, showAiPromptsFFName} from "@itsmwork
 import {useDebug, useFeatureFlag} from "@itsmworkbench/react_utils";
 import {hasErrors} from "@laoban/utils";
 import {EditObjectFromDefn} from "@itsmworkbench/editobject";
-import {defaultKnowledgeArticleDetails, detailsToKnowledgeArticle, KnowledgeArticleDetails, knowledgeArticleDetailsObjectDefn} from "@itsmworkbench/knowledgearticle";
-import {SimpleWizardNextPrevFooter, WizardPrevButton} from "@itsmworkbench/wizard/src/simple.wizard.next.prev.footer";
+import {defaultKnowledgeArticleDetails, detailsToKnowledgeArticle, findKaDetails, KADetails, KnowledgeArticleDetails, knowledgeArticleDetailsObjectDefn} from "@itsmworkbench/knowledgearticle";
+import {WizardPrevButton} from "@itsmworkbench/wizard/src/simple.wizard.next.prev.footer";
+import {ItsmState, useItsmState, useItsmStateKaDetails} from "@itsmworkbench/itsm_state";
 
 
 function makePromptFor(kad: KADetails) {
     return `* ${kad.name}: ${kad.descriptionOrError}`
 }
 
-async function makePrompt(urlStore: UrlStore, ntd: NewTicketWizardData) {
+async function makePrompt(urlStore: UrlStore, ntd: ItsmState) {
     const kadse = await findKaDetails(urlStore, 'me', ntd.system)
     const kaNames = mapErrorsOr(kadse, kads => kads.map(k => k.name))
     const rawPrompt = `
@@ -73,7 +74,7 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
                                                                              onFinish
                                                                          }: WizardPanelProps<Ticket>) => {
     const urlStore = useUrlStore()
-    const [newTicketData] = useNewTicketWizardData()
+    const [newTicketData] = useItsmState()
     const rootId = 'select-knowledge-article-ticket-wizard'
     const [prompt, setPrompt] = useState<ErrorsOr<string>>({value: ''})
     const chatCompletion = useChatCompletion()
@@ -81,7 +82,7 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
     const debug = useDebug(aiDebugName)
     const ff = useFeatureFlag(showAiPromptsFFName)
     const [errors, setErrors] = useState('')
-    const kaDetailsOps = useNewTicketKaDetails()
+    const kaDetailsOps = useItsmStateKaDetails()
     const [kadDetails, setKaDetails] = kaDetailsOps
     const kadOps = useState<KnowledgeArticleDetails>(defaultKnowledgeArticleDetails)
     const [kad, setKad] = kadOps

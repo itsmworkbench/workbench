@@ -1,4 +1,4 @@
 export type PhaseName = 'CheckTicket' | 'Approval' | 'Resolve' | 'Close' | 'Review'
 export const phaseNames: PhaseName[] = [ 'CheckTicket', 'Approval', 'Resolve', 'Close', 'Review' ]
-export type PhaseAnd<T> = Record<PhaseName, T>
+export type PhaseNameAnd<T> = Record<PhaseName, T>
 

@@ -21,9 +21,10 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.51",
-    "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/actions": "1.0.0",
     "@itsmworkbench/domain": "1.0.0",
+    "@itsmworkbench/object_defn": "1.0.0",
+    "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/tickets": "1.0.0",
     "@itsmworkbench/yaml": "1.0.0",
     "debug": "^4.3.4"

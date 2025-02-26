@@ -1,6 +1,6 @@
 import React from "react";
 import { NameAnd } from "@itsmworkbench/utils";
-import { PhaseAnd, PhaseName } from "@itsmworkbench/domain";
+import { PhaseNameAnd, PhaseName } from "@itsmworkbench/domain";
 import { Action, phaseStatus } from "@itsmworkbench/actions";
 import { Box, Grid, Typography } from "@mui/material";
 import { splitAndCapitalize } from "@itsmworkbench/utils";
@@ -53,7 +53,7 @@ export interface DisplayPhasesForTicketTypeProps extends DisplayPhasesProps {
 
 export function DisplayPhasesForTicketType ( { ticketType, pStatus, Action }: DisplayPhasesForTicketTypeProps ) {
   if ( !ticketType ) return <pre>No ticket type!</pre>
-  const phases: PhaseAnd<NameAnd<Action>> = ticketType.actions
+  const phases: PhaseNameAnd<NameAnd<Action>> = ticketType.actions
   const ps =  phaseStatus ( phases, pStatus )
   let previousPhaseOk: boolean|undefined = true
   return <Box sx={{ margin: 2 }}><Grid container spacing={2}>

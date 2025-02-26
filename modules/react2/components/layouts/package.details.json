@@ -1,0 +1,20 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/layouts",
+  "description": "Some basic layouts",
+  "links": [
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "template":    "react_library",
+  "name":        "@itsmworkbench/react_knowledgearticle",
+  "description": "The react gui for knowledege articles",
+
+  "packageJson": {
+    "files":        ["build/"],
+    "dependencies": {
+    }
+  },
+  "links":       [
+    "@itsmworkbench/components",
+    "@itsmworkbench/knowledgearticle"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false,
+    "react":   false
+  }
+}

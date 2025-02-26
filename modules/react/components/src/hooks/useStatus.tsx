@@ -1,8 +1,8 @@
-import { PhaseAnd } from "@itsmworkbench/domain";
+import { PhaseNameAnd } from "@itsmworkbench/domain";
 import React, { useContext } from "react";
 import { NameAnd } from "@itsmworkbench/utils";
 
-export type Status = PhaseAnd<NameAnd<boolean>>
+export type Status = PhaseNameAnd<NameAnd<boolean>>
 
 export interface StatusProviderProps {
   status: Status

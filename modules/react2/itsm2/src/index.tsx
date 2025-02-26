@@ -13,7 +13,7 @@ import {HomeSovereignPagePlugin} from "@itsmworkbench/homesovereign";
 import {DevModeTranslate, emptyUsedAndNotFound, TranslationUsedAndNotFoundProvider} from "@itsmworkbench/translation";
 import {SimpleTranslationProvider} from "@itsmworkbench/simple_translation";
 import {NavigatorPanelDefns} from "@itsmworkbench/panelnavigator";
-import {DevModeNewTicket, devmodeNewTicketName, emptyNewTicketWizardData, NewTicketSovereignPanePlugin, NewTicketWizardProvider} from "@itsmworkbench/newticket_wizard";
+import {DevModeItsmState, itsmState, NewTicketSovereignPanePlugin} from "@itsmworkbench/newticket_wizard";
 import {SimpleWizardComponents} from "@itsmworkbench/wizard/src/simple.wizard.components";
 import {WizardComponentsProvider} from "@itsmworkbench/wizard";
 import {ThemeProvider} from "@itsmworkbench/themes";
@@ -45,6 +45,7 @@ import {axiosServiceCaller} from "@itsmworkbench/axios_service_caller";
 import {AuthFnProviderFromUrlStore} from "@itsmworkbench/react_authentication";
 import {AzureChatCompletionProvider} from "@itsmworkbench/azureai2_react";
 import {aiDebugName, showAiPromptsFFName} from "@itsmworkbench/ai2";
+import {emptyItsmState, ItsmStateProvider} from "@itsmworkbench/itsm_state";
 
 const debugState = {
     [authenticateDebug]: false,
@@ -111,7 +112,7 @@ const devModeComponents: NameAnd<() => React.ReactElement> = {
     FeatureFlags: DevModeFeatureFlags,
     Translate: DevModeTranslate,
     SecretData: DevmodeSecretData,
-    [devmodeNewTicketName]: DevModeNewTicket
+    [itsmState]: DevModeItsmState
 };
 
 
@@ -124,7 +125,7 @@ msal.initialize({}).then(() => {
                     <ServiceCallerProvider serviceCaller={axiosServiceCaller}>
                         <SecretDataProvider secretData={defaultSecretData()}>
                             <DevModeComponentsProvider components={devModeComponents}>
-                                <NewTicketWizardProvider newWizardData={emptyNewTicketWizardData}>
+                                <ItsmStateProvider state={emptyItsmState}>
                                     <UrlStoreProvider urlStore={urlStore}>
                                         <AuthFnProviderFromUrlStore>
                                             <AzureChatCompletionProvider>
@@ -165,7 +166,7 @@ msal.initialize({}).then(() => {
                                             </AzureChatCompletionProvider>
                                         </AuthFnProviderFromUrlStore>
                                     </UrlStoreProvider>
-                                </NewTicketWizardProvider>
+                                </ItsmStateProvider>
                             </DevModeComponentsProvider>
                         </SecretDataProvider>
                     </ServiceCallerProvider>

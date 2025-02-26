@@ -23,6 +23,8 @@
     "@itsmworkbench/system": "1.0.0",
     "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/translation": "1.0.0",
+    "@itsmworkbench/viewobject": "1.0.0",
+    "@itsmworkbench/editobject": "1.0.0",
     "@itsmworkbench/utils": "1.0.0",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",

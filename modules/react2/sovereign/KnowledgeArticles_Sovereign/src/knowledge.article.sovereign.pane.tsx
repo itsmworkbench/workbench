@@ -2,7 +2,8 @@ import {makeSovereignStatePlugin} from "@itsmworkbench/sovereign";
 import React, {useEffect, useState} from "react";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 import {useSystems} from "@itsmworkbench/system";
-import {findKaDetails, KADetails, useUrlStore} from "@itsmworkbench/reacturlstore";
+import {useUrlStore} from "@itsmworkbench/reacturlstore";
+import {findKaDetails, KADetails,} from "@itsmworkbench/knowledgearticle";
 import {ErrorsOr, isErrors} from "@itsmworkbench/errors";
 
 
@@ -17,7 +18,7 @@ export function KnowledgeArticles({org, system}: KnowledgeArticlesProps) {
     const urlStore = useUrlStore()
     const {Table} = useCommonComponents()
     const [details, setDetails] = useState<ErrorsOr<KADetails[]> | undefined>(undefined)
-    const [index, setIndex] = useState(0)
+    const selectedRowOps = useState(0)
     const [ka, setKa] = useState<KADetails | undefined>()
     useEffect(() => {
         setKa(undefined)
@@ -26,8 +27,7 @@ export function KnowledgeArticles({org, system}: KnowledgeArticlesProps) {
     if (isErrors(details)) return <div>{details.errors.join('\n')}</div>
     return <div>
         <p>table of knowledge articles {system}</p>
-        <Table titles={['Name', 'Description']} keys={['name', 'descriptionOrError']} data={details?details.value:[]} onRowSelect={(row, index) => {
-            setIndex(index)
+        <Table titles={['Name', 'Description']} keys={['name', 'descriptionOrError']} data={details ? details.value : []} selectedRowOps={selectedRowOps} onRowSelect={(row, index) => {
             setKa(row)
         }}/>
         <pre>{JSON.stringify(ka, null, 2)}</pre>
@@ -43,7 +43,7 @@ export function KnowledgeArticlesSovereignPage() {
     return <div>
         <NavPanelLayout>{Object.entries(systems).map(([name, system]) =>
             <NavPanel key={name} size='small' name={name} description={system.description} ops={systemOps}/>)}</NavPanelLayout>
-        <KnowledgeArticles org={org} system={system} />
+        <KnowledgeArticles org={org} system={system}/>
     </div>
 
 }

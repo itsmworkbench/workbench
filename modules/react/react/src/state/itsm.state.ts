@@ -1,7 +1,7 @@
 import { BasicData, DebugState, SideEffect, SideeffectResult, TabPhaseAndActionSelectionState } from "@itsmworkbench/react_core";
 import { Lens, Lenses, Optional } from "@focuson/lens";
 import { MainAppMainState } from "@itsmworkbench/components";
-import { ChatDisplayData, Conversation, EmailTempData, LdapData, PhaseAnd, ReceiveEmailData, SqlData } from "@itsmworkbench/domain";
+import { ChatDisplayData, Conversation, EmailTempData, LdapData, PhaseNameAnd, ReceiveEmailData, SqlData } from "@itsmworkbench/domain";
 import { ListNamesResult } from "@itsmworkbench/urlstore";
 import { NameAnd } from "@itsmworkbench/utils";
 import { Variables } from "@itsmworkbench/variables";
@@ -42,7 +42,7 @@ export type ItsmStateDataForTicket = {
   enrichedEvents: EnrichedEvent<any, any>[] //The events enriched with local business knowledge. Especially useful for ids turned to values. But also 'should I hide this'
   ticket?: Ticket //This is a cache of what's in the events. It's not the source of truth
   variables: TicketVariables // things we can use in the templates. Also a cache
-  status: PhaseAnd<NameAnd<boolean>>// more cached data
+  status: PhaseNameAnd<NameAnd<boolean>>// more cached data
   tempData: TempData
 
 }
@@ -108,7 +108,7 @@ export const eventsO: Optional<ItsmState, Event[]> = forTicketL.focusOn ( 'event
 export const eventsL: Lens<ItsmState, Event[]> = forTicketL.focusOn ( 'events' )
 export const enrichedEventsO: Optional<ItsmState, Event[]> = forTicketL.focusOn ( 'enrichedEvents' )
 export const enrichedEventsL: Lens<ItsmState, Event[]> = forTicketL.focusOn ( 'enrichedEvents' )
-export const statusL: Lens<ItsmState, PhaseAnd<NameAnd<boolean>>> = forTicketL.focusOn ( 'status' )
+export const statusL: Lens<ItsmState, PhaseNameAnd<NameAnd<boolean>>> = forTicketL.focusOn ( 'status' )
 export const ticketListO: Optional<ItsmState, ListNamesResult> = itsmIdL.focusOn ( 'ticketList' )
 export const kaListO: Optional<ItsmState, ListNamesResult> = itsmIdL.focusOn ( 'kaList' )
 export const actionO = forTicketL.focusOn ( 'tempData' ).focusOn ( 'action' )

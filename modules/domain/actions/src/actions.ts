@@ -1,4 +1,4 @@
-import { Capability, PhaseAnd, PhaseName } from "@itsmworkbench/domain";
+import { Capability, PhaseNameAnd, PhaseName } from "@itsmworkbench/domain";
 import { NameAnd } from "@itsmworkbench/utils";
 
 
@@ -72,7 +72,7 @@ export function isSafeAction ( x: any ): x is SafeAction {
   return x?.safe === true
 }
 
-export const phaseStatus = ( actions?: PhaseAnd<NameAnd<Action>> , status?: PhaseAnd<NameAnd<boolean>>  ) => ( phase: PhaseName ): (boolean | undefined) => {
+export const phaseStatus = (actions?: PhaseNameAnd<NameAnd<Action>> , status?: PhaseNameAnd<NameAnd<boolean>>  ) => (phase: PhaseName ): (boolean | undefined) => {
   const phaseActions = actions?.[ phase ] || {} as any
   const phaseStatus = status?.[ phase ]
   let result: boolean|undefined = true;

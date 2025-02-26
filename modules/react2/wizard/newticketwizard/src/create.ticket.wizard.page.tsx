@@ -5,7 +5,8 @@ import {useTicketSources} from "@itsmworkbench/ticketsource";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 import {useSystems} from "@itsmworkbench/system";
 import {useRenderers} from "@itsmworkbench/renderers";
-import {useNewTicketSource, useNewTicketSystem, useNewTicketTicket} from "./new.ticket.wizard";
+import {useItsmStateSource, useItsmStateSystem, useItsmStateTicket} from "@itsmworkbench/itsm_state";
+
 
 
 export const CreateTicketWizardPage: WizardPanel<Ticket> = ({
@@ -20,11 +21,11 @@ export const CreateTicketWizardPage: WizardPanel<Ticket> = ({
     const {NavPanelLayout, NavPanel} = useCommonComponents()
     const systems = useSystems()
     const systemNames = Object.keys(systems)
-    const sourceOps = useNewTicketSource()
-    const systemOps = useNewTicketSystem()
+    const sourceOps = useItsmStateSource()
+    const systemOps = useItsmStateSystem()
     const ticketSource = ticketSources[sourceOps[0]]
     const systemName = systemOps[0]
-    const [_, setTicket] = useNewTicketTicket()
+    const [_, setTicket] = useItsmStateTicket()
     const onCreated = (ticket: Ticket) => {
         setTicket(ticket)
         nextWizardStep(steps, stepOps)

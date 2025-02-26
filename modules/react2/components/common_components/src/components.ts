@@ -6,6 +6,9 @@ import {makeContextFor} from "@itsmworkbench/react_utils";
 import {Password, SimplePassword} from "@itsmworkbench/secrets";
 import {BgMouseOver, MouseOver, SimpleBgMouseOver, SimpleMouseOver} from "@itsmworkbench/mouse_over";
 import {OneNavigatorPanel, NavigatorPanelLayout, SimpleNavigatorPanel, SimpleNavigatorPanelLayout} from "@itsmworkbench/panelnavigator";
+import {SimpleTwoColumnAndRestLayout, TwoColumnAndRestLayout} from "@itsmworkbench/layouts";
+import {PanelWithWidth, SimplePanelWithWidth} from "@itsmworkbench/rows_and_panels";
+import {PanelsInARow, SimplePanelsInARow} from "@itsmworkbench/rows_and_panels";
 
 const componentsFlagName = "commonCommonComponents";
 const componentsFeatureFlag: FeatureFlag = {
@@ -23,6 +26,9 @@ export type CommonComponents = {
     BgMouseOver: BgMouseOver
     NavPanelLayout: NavigatorPanelLayout
     NavPanel: OneNavigatorPanel
+    TwoColumnAndRestLayout: TwoColumnAndRestLayout
+    PanelWithWidth: PanelWithWidth
+    PanelsInARow: PanelsInARow
 }
 export const commonComponents: CommonComponents = {
     SelectableButton: SimpleSelectableButton,
@@ -32,7 +38,10 @@ export const commonComponents: CommonComponents = {
     MouseOver: SimpleMouseOver,
     BgMouseOver: SimpleBgMouseOver,
     NavPanelLayout: SimpleNavigatorPanelLayout,
-    NavPanel: SimpleNavigatorPanel
+    NavPanel: SimpleNavigatorPanel,
+    TwoColumnAndRestLayout: SimpleTwoColumnAndRestLayout,
+    PanelWithWidth: SimplePanelWithWidth,
+    PanelsInARow: SimplePanelsInARow
 
 };
 export const {use: useCommonComponents, Provider: CommonComponentsProvider} = makeContextFor<CommonComponents, "commonComponents">("commonComponents", commonComponents);

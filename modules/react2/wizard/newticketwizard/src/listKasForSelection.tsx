@@ -2,14 +2,17 @@ import {aiDebugName, showAiPromptsFFName} from "@itsmworkbench/ai2";
 import {ErrorsOr, isErrors, isValue, mapErrorsOr} from "@itsmworkbench/errors";
 import React, {useEffect, useState} from "react";
 import {useAttributeValueComponents} from "@itsmworkbench/renderers";
-import {findKaDetails, KADetails, useUrlStore} from "@itsmworkbench/reacturlstore";
+import {useUrlStore} from "@itsmworkbench/reacturlstore";
 import {useChatCompletion} from "@itsmworkbench/ai2_react";
 import {GetterSetter, useDebug, useFeatureFlag} from "@itsmworkbench/react_utils";
-import {NewTicketWizardData, useNewTicketWizardData} from "./new.ticket.wizard";
+import {} from "./new.ticket.wizard";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 import {useTranslation} from "@itsmworkbench/translation";
 import {UrlStore} from "@itsmworkbench/urlstore";
 import {simpleTemplate} from "@itsmworkbench/utils";
+import {findKaDetails, KADetails} from "@itsmworkbench/knowledgearticle";
+import {ItsmState, useItsmState} from "@itsmworkbench/itsm_state";
+
 
 export type AiSuggestedKaProps = {
     organisation: string
@@ -21,7 +24,7 @@ function makePromptFor(kad: KADetails) {
     return `* ${kad.name}: ${kad.descriptionOrError}`
 }
 
-export async function makePrompt(urlStore: UrlStore, ntd: NewTicketWizardData) {
+export async function makePrompt(urlStore: UrlStore, ntd: ItsmState) {
     const kadse = await findKaDetails(urlStore, 'me', ntd.system)
     const kaPrompt = mapErrorsOr(kadse, kads =>
         kads.filter(kad => kad.ka).map(kad => makePromptFor(kad)).join('\n')
@@ -43,7 +46,7 @@ ticket is not matched by a knowledge article you respond 'unknown', so think car
 
 export function ListKasForSelection({organisation, system, ...rest}: AiSuggestedKaProps) {
     const urlStore = useUrlStore();
-    const [newTicketData] = useNewTicketWizardData()
+    const [newTicketData] = useItsmState()
     const debug = useDebug(aiDebugName)
     const [kaDetails, setKaDetails] = useState<ErrorsOr<KADetails[]>>({errors: ['Loading']})
     useEffect(() => {
@@ -58,7 +61,10 @@ export function ListKasForSelection({organisation, system, ...rest}: AiSuggested
     const {DataLayout, Json} = useAttributeValueComponents()
     const selectedRowOps = useState(-1)
     useEffect(() => {
-        makePrompt(urlStore, newTicketData).then(p => setPrompt(p))
+        makePrompt(urlStore, newTicketData).then(p => {
+            if (JSON.stringify(p) !== JSON.stringify(prompt))
+                setPrompt(p)
+        })
     }, [newTicketData]);
 
     useEffect(() => {

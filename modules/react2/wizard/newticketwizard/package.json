@@ -15,8 +15,10 @@
     ]
   },
   "dependencies": {
+    "@itsmworkbench/itsm_state": "1.0.0",
     "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/reacturlstore": "1.0.0",
+    "@itsmworkbench/react_knowledgearticle": "1.0.0",
     "@itsmworkbench/sovereign": "1.0.0",
     "@itsmworkbench/system": "1.0.0",
     "@itsmworkbench/tickets": "1.0.0",

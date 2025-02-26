@@ -1,0 +1,22 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/rows_and_panels",
+  "description": "Layout components for rows and panels",
+  "links": [
+    "@itsmworkbench/devmode",
+    "@itsmworkbench/optics"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

@@ -1,4 +1,4 @@
-import {Capability, PhaseAnd} from "@itsmworkbench/domain";
+import {Capability, PhaseNameAnd} from "@itsmworkbench/domain";
 import {Action} from "@itsmworkbench/actions";
 import {NameAnd} from "@itsmworkbench/utils";
 import {IdentityUrl, nameSpaceDetailsForGit, UrlStoreParser} from "@itsmworkbench/urlstore";
@@ -6,14 +6,14 @@ import {YamlCapability} from "@itsmworkbench/yaml";
 
 export type SystemToKnowledgeArticles = NameAnd<KnowledgeArticles>
 export type KnowledgeArticles = NameAnd<KnowledgeArticle>
-
+export type Phase = NameAnd<Action>
 export interface KnowledgeArticle {
     name?: string
     description?: string
     id?: IdentityUrl
     variables?: string[]
     capabilities: Capability[]
-    actions: PhaseAnd<NameAnd<Action>>
+    actions: PhaseNameAnd<Phase>
 }
 
 export const checkUsersTT: KnowledgeArticle = ({

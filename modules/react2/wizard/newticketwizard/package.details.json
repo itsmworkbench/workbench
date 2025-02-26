@@ -3,8 +3,10 @@
   "name": "@itsmworkbench/newticket_wizard",
   "description": "the wizard for creating a new ticket",
   "links": [
+    "@itsmworkbench/itsm_state",
     "@itsmworkbench/react_utils",
     "@itsmworkbench/reacturlstore",
+    "@itsmworkbench/react_knowledgearticle",
     "@itsmworkbench/sovereign",
     "@itsmworkbench/system",
     "@itsmworkbench/tickets",

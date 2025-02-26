@@ -10,6 +10,7 @@
     "@itsmworkbench/authentication_sovereign",
     "@itsmworkbench/homesovereign",
     "@itsmworkbench/itsmsovereign",
+    "@itsmworkbench/itsm_state",
     "@itsmworkbench/itsm_translation",
     "@itsmworkbench/jsyaml",
     "@itsmworkbench/knowledgearticle",
