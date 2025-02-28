@@ -35,8 +35,8 @@ export const DevmodeSecretData: DevModeComponent = () => {
         <Text rootId={rootId} attribute='devMode.hasEnteredPassword' value={hasEnteredPassword(sd).toString()}/>
         <Json rootId={rootId} attribute='devMode.secretData' value={safer}/>
         <Json rootId={rootId} attribute='devMode.secretDataInLocalStorage' value={fromLocalStorage}/>
-        {hasPassword(secretData) && <><input type={'text'} defaultValue='' onChange={e => {
-            encryptString(secretData.cryptoKeyString)(e.target.value || '').then(setEncrypted).catch(e=>setEncrypted(e.message))
+        {hasEnteredPassword(secretData) && <><input type={'text'} defaultValue='' onChange={e => {
+            encryptString(secretData.cryptoKeyString)(e.target.value || '').then(setEncrypted).catch(e => setEncrypted(e.message))
         }}/>
             <Text rootId={rootId} attribute='devMode.encryptedValue' value={encrypted}/>
         </>}

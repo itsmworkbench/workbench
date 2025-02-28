@@ -11,6 +11,7 @@ export type RenderProps<T> = {
     value: T | undefined;
     label?: string;
     icon?: () => ReactElement;
+    style?: React.CSSProperties;
 };
 
 export type TitleAndUrl = {
@@ -36,6 +37,7 @@ export type Renderers = {
     H2: Render<string>
     H3: Render<string>
     Label: Render<string>
+    Status: Render<boolean>
 }
 
 export const {Provider: RenderProvider, use: useRenderers} = makeContextFor<Renderers, 'renderers'>('renderers');

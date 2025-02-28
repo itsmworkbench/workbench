@@ -12,10 +12,12 @@ export type PanelsInARow = (props: PanelsInARowProps) => ReactNode;
 
 const defaultRowStyle: CSSProperties = {
     display: "flex",
-    flexWrap: "wrap",      // This allows panels to wrap to the next row
-    alignItems: "stretch", // Ensures all panels have the same height
+    flexWrap: "wrap",
+    alignItems: "stretch",
     boxSizing: "border-box",
+    gap: "5px", // Adds a 5px gap between panels
 };
+
 export const SimplePanelsInARow: PanelsInARow = ({
                                                      width,
                                                      panel: Panel,

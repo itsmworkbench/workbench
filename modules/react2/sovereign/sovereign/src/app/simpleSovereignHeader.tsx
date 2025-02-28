@@ -43,7 +43,7 @@ export const SimpleSovereignHeader: SovereignHeader = ({}) => {
                 ? <SelectableButton prefix={'devMode'} onClick={() => setDevModeVisible('')} text={'hide'}/>
                 : <SelectableButton prefix={'devMode'} onClick={() => setDevModeVisible('visible')} text={'show'}/>}
            <div>
-            <DisplayLogin/>
+            {/*<DisplayLogin/>*/}
             <Password/>
            </div>
         </SimpleHeaderLayout>

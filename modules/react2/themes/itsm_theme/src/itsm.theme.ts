@@ -1,4 +1,4 @@
-import {commonDataLayoutStyles, commonRendererStyles, Theme} from "@itsmworkbench/themes";
+import {commonDataLayoutStyles, commonObjectDefnTheme, commonRendererStyles, Theme} from "@itsmworkbench/themes";
 
 export const itsmTheme: Theme = {
     name: "itsm theme",
@@ -10,5 +10,6 @@ export const itsmTheme: Theme = {
         }
     },
     renderer: commonRendererStyles,
-    dataLayout: commonDataLayoutStyles
+    dataLayout: commonDataLayoutStyles,
+    objectDefn: commonObjectDefnTheme
 };

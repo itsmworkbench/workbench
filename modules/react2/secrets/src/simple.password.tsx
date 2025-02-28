@@ -27,6 +27,7 @@ export const SimplePassword: Password = () => {
                 const result = await validatePassword(localStorage, secretData, password);
                 const validated = valueOrThrow(result);
                 setSecretData(validated);
+
             }
 
             setPassword("");
@@ -37,11 +38,9 @@ export const SimplePassword: Password = () => {
 
     if (hasEnteredPassword(secretData)) {
         return (
-            <div style={{display: "flex", alignItems: "center"}}>
-        <span style={{color: "green", marginRight: 8}}>
-          ✓ Password OK
-        </span>
-            </div>
+            <span style={{marginRight: 8, verticalAlign:'top'}}>
+                <button onClick={() => setSecretData({...secretData, cryptoKeyString: undefined} as any)} type="submit" style={{marginLeft: 8, color: "green",}}>✓ Password OK - clear it</button>
+            </span>
         );
     }
 
@@ -58,18 +57,17 @@ export const SimplePassword: Password = () => {
                     />
                 </label>
 
-                <label>
-                    Password:{" "}
-                    <input
-                        type="password"
-                        name="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter password"
-                        // Tells browsers this is the current password (vs. new password)
-                        autoComplete="current-password"
-                    />
-                </label>
+                <input
+                    aria-label={"Password"}
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter password"
+                    // Tells browsers this is the current password (vs. new password)
+                    autoComplete="current-password"
+                />
+
                 <button type="submit" style={{marginLeft: 8}}>
                     Submit
                 </button>

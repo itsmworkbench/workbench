@@ -28,6 +28,7 @@ export type EditComponents = {
     EditEncryptedString: EditComponent<string>
     EditBoolean: EditComponent<boolean>
     EditOptions: EditComponentWithOptions<string>
+    EditStatus: EditComponent<boolean>
 }
 
 export const simpleEditComponents: EditComponents = {
@@ -35,7 +36,8 @@ export const simpleEditComponents: EditComponents = {
     EditString: SimpleEditString,
     EditEncryptedString: SimpleEditEncryptedString,
     EditBoolean: SimpleEditBoolean,
-    EditOptions: SimpleEditOptions
+    EditOptions: SimpleEditOptions,
+    EditStatus: SimpleEditBoolean
 }
 
 export const {use: useEditComponents, Provider: EditComponentsProvider} = makeContextFor<EditComponents, 'editComponents'>('editComponents', simpleEditComponents);

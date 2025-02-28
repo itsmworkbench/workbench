@@ -4,7 +4,7 @@ import React from "react";
 import {useTheme} from "@itsmworkbench/themes";
 
 // Updated to Render<string>
-export const SimpleDateRenderer: Render<string> = ({ attribute, rootId, value }) => {
+export const SimpleDateRenderer: Render<string> = ({ attribute, rootId, value, style={} }) => {
     const id = idFrom(rootId, attribute);
     const styles = useTheme().renderer.text;
 

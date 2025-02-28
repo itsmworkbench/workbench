@@ -53,6 +53,24 @@ export const commonDataLayoutStyles: DataLayoutStyles = {
     themedIconColor: "#ea1b0a",
 };
 
+export type ObjectDefnTheme = {
+    selected: CSSProperties
+    notSelected: CSSProperties
+}
+
+export const commonObjectDefnTheme: ObjectDefnTheme = {
+    notSelected: {
+        border: 'none',
+        padding: '2px', // optional: add some padding so the border doesn't clash with the content
+        display: 'inline-block',
+    },
+    selected: {
+        border: '2px solid #e0e0e0',
+        padding: '2px', // optional: add some padding so the border doesn't clash with the content
+        display: 'inline-block',
+    }
+
+}
 
 export type Theme = {
     name: string
@@ -60,7 +78,7 @@ export type Theme = {
     header: HeaderTheme
     renderer: RendererStyles
     dataLayout: DataLayoutStyles
-
+    objectDefn: ObjectDefnTheme
 }
 
 export const commonLink: CSSProperties = {
@@ -110,7 +128,8 @@ export const themeForTests: Theme = {
         logoUrl: "itsm.logo.png",
     },
     renderer: commonRendererStyles,
-    dataLayout: commonDataLayoutStyles
+    dataLayout: commonDataLayoutStyles,
+    objectDefn: commonObjectDefnTheme,
 };
 
 

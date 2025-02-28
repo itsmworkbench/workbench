@@ -1,18 +1,22 @@
 import {SimpleDataLayout, useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderers";
 import {useSecretData} from "@itsmworkbench/secrets";
 import React, {useEffect, useState} from "react";
-import {decryptString, hasEnteredPassword, hasPassword} from "@itsmworkbench/authentication";
+import {decryptString, hasEnteredPassword} from "@itsmworkbench/authentication";
 import {ViewComponentProps, ViewComponents} from "./view.object";
 import {LensAndPath} from "@itsmworkbench/optics";
+
+export function findAttribute(lens: LensAndPath<any, any>) {
+    return lens.path.join('.')
+}
 
 export function SimpleStringView<Main>({rootId, main, fieldDefn, showLabel}: ViewComponentProps<Main, string>) {
     const {Text} = useRenderers();
     const {Text: TextAndLabel} = useAttributeValueComponents();
     const {lens} = fieldDefn;
     const value = lens.get(main);
-    const attribute = `${rootId}.${lens.path}`
+    const attribute = findAttribute(lens)
     return showLabel ?
-        <TextAndLabel rootId={rootId} attribute={attribute} value={value}/> :
+        <TextAndLabel rootId={rootId} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
         <Text rootId={rootId} attribute={attribute} value={value}/>
 }
 
@@ -31,17 +35,43 @@ export function SimpleEncryptedView<Main>({rootId, main, fieldDefn, showLabel}: 
             } else setValue('')
         } else setValue(rawValue)
     }, [rawValue, SecretData, show])
-    const attribute = `${rootId}.${lens.path.join('.')}`
+    const attribute = findAttribute(lens)
     return <div style={{display: 'flex', justifyContent: 'startpace-between', alignItems: 'center'}}>
         {showLabel ?
-            <TextAndLabel rootId={rootId} attribute={attribute} value={value}/> :
+            <TextAndLabel rootId={rootId} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
             <Text rootId={rootId} attribute={attribute} value={value}/>}&nbsp;
         <button onClick={() => setShow(!show)}>{show ? '🚫' : '👁️‍🗨️'}</button>
     </div>
+}
+
+export function SimpleBooleanView<Main>({rootId, main, fieldDefn, showLabel}: ViewComponentProps<Main, boolean>) {
+    const {Text} = useRenderers();
+    const {Text: TextAndLabel} = useAttributeValueComponents();
+    const lens: LensAndPath<Main, boolean> = fieldDefn.lens;
+    const value = lens.get(main);
+    const attribute = findAttribute(lens)
+    return showLabel ?
+        <TextAndLabel rootId={rootId} attribute={attribute} value={value?.toString()} labelDisplay={fieldDefn.labelDisplay}/> :
+        <Text rootId={rootId} attribute={attribute} value={value === undefined ? 'undefined' : value?.toString()}/>
+}
+
+export function SimpleStatusView<Main>({rootId, main, fieldDefn, showLabel}: ViewComponentProps<Main, boolean>) {
+    const {Status} = useRenderers();
+    const {Status: StatusAndLabel} = useAttributeValueComponents();
+    const lens: LensAndPath<Main, boolean> = fieldDefn.lens;
+    const value = lens.get(main);
+    const attribute = findAttribute(lens)
+
+    return showLabel ?
+        <StatusAndLabel rootId={rootId} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
+        <Status rootId={rootId} attribute={attribute} value={value}/>
 }
 
 export const SimpleViewComponents: ViewComponents = {
     DataLayout: SimpleDataLayout,
     StringView: SimpleStringView,
     EncryptedView: SimpleEncryptedView,
+    OptionsView: SimpleStringView,
+    BooleanView: SimpleBooleanView,
+    StatusView: SimpleStatusView
 }

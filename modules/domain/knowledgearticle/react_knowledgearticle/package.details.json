@@ -1,21 +1,22 @@
 {
-  "template":    "react_library",
-  "name":        "@itsmworkbench/react_knowledgearticle",
+  "template": "react_library",
+  "name": "@itsmworkbench/react_knowledgearticle",
   "description": "The react gui for knowledege articles",
-
   "packageJson": {
-    "files":        ["build/"],
+    "files": ["build/"],
     "dependencies": {
     }
   },
-  "links":       [
+  "links": [
     "@itsmworkbench/components",
+    "@itsmworkbench/object_defn",
+    "@itsmworkbench/viewobject",
     "@itsmworkbench/knowledgearticle"
   ],
-  "guards":      {
+  "guards": {
     "compile": true,
     "publish": true,
-    "test":    false,
-    "react":   false
+    "test": false,
+    "react": false
   }
 }

@@ -1,8 +1,7 @@
-
-
 import React from "react";
-import { RawThemeProvider, themeForTests } from "@itsmworkbench/themes";
-import { AttributeValueProvider, Renderers, SimpleAttributeValueLayout, SimpleDataLayout, SimpleDateRenderer, SimpleH1Renderer, SimpleH1WithIconAndUrlRenderer, SimpleH1WithUrlRenderer, SimpleH2Renderer, SimpleH3Renderer, SimpleJsonRenderer, SimpleLabelRenderer, SimpleTextRenderer, SimpleUrlRenderer } from "@itsmworkbench/renderers";
+import {RawThemeProvider, themeForTests} from "@itsmworkbench/themes";
+import {AttributeValueProvider, Renderers, SimpleAttributeValueLayout, SimpleDataLayout, SimpleDateRenderer, SimpleH1Renderer, SimpleH1WithIconAndUrlRenderer, SimpleH1WithUrlRenderer, SimpleH2Renderer, SimpleH3Renderer, SimpleJsonRenderer, SimpleLabelRenderer, SimpleTextRenderer, SimpleUrlRenderer} from "@itsmworkbench/renderers";
+import {StatusRenderer} from "@itsmworkbench/renderers/src/renderers/simple.status.renderer";
 
 
 export const allRenderers: Renderers = {
@@ -16,12 +15,13 @@ export const allRenderers: Renderers = {
     H1WithUrl: SimpleH1WithUrlRenderer,
     H2: SimpleH2Renderer,
     H3: SimpleH3Renderer,
+    Status: StatusRenderer
 };
 type AllrenderersSimpleProviderProps = {
     children: React.ReactNode;
 }
 
-export function AllRenderersSimpleProvider({ children }: AllrenderersSimpleProviderProps) {
+export function AllRenderersSimpleProvider({children}: AllrenderersSimpleProviderProps) {
     return <RawThemeProvider theme={themeForTests}>
         <AttributeValueProvider renderers={allRenderers} AttributeValueLayout={SimpleAttributeValueLayout} DataLayout={SimpleDataLayout}>
             {children}

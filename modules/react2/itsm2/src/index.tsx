@@ -46,11 +46,13 @@ import {AuthFnProviderFromUrlStore} from "@itsmworkbench/react_authentication";
 import {AzureChatCompletionProvider} from "@itsmworkbench/azureai2_react";
 import {aiDebugName, showAiPromptsFFName} from "@itsmworkbench/ai2";
 import {emptyItsmState, ItsmStateProvider} from "@itsmworkbench/itsm_state";
+import {objectDefnDebugName} from "@itsmworkbench/object_defn";
 
 const debugState = {
     [authenticateDebug]: false,
     [routingDebug]: false,
-    [aiDebugName]: true
+    [aiDebugName]: false,
+    [objectDefnDebugName]: true
 };
 
 const featureFlags: FeatureFlags = {
@@ -129,40 +131,38 @@ msal.initialize({}).then(() => {
                                     <UrlStoreProvider urlStore={urlStore}>
                                         <AuthFnProviderFromUrlStore>
                                             <AzureChatCompletionProvider>
-                                                <AttributeEditorProvider editors={allEditors} AttributeEditorLayout={SimpleAttributeValueLayout} DataLayout={SimpleDataLayout}>
-                                                    <AttributeValueProvider renderers={allRenderers} AttributeValueLayout={SimpleAttributeValueLayout} DataLayout={SimpleDataLayout}>
-                                                        <SystemsProvider systems={mockSystems}>
-                                                            <TicketSourceProvider ticketSource={AllTicketSources(mockTickets)}>
-                                                                <DebugStateProvider debugState={debugState}>
-                                                                    <SovereignStatePluginsProvider plugins={sovereignStatePlugins}>
-                                                                        <SovereignStateProvider>
-                                                                            <LanguageProvider language='en'>
-                                                                                <TranslationUsedAndNotFoundProvider usedAndNotFound={emptyUsedAndNotFound()}>
-                                                                                    <SimpleTranslationProvider translation={itsmTranslation}>
-                                                                                        <ThemeProvider themes={allThemes}>
-                                                                                            <DevModeStateForSearchProvider devModeState={{selected: '', visible: ''}}>
-                                                                                                <AuthenticationProvider loginConfig={login}>
-                                                                                                    <Authenticate>
-                                                                                                        <SovereignAppComponentsProvider sovereignAppComponents={SimpleSovereignAppComponents}>
-                                                                                                            <WizardComponentsProvider wizardComponents={SimpleWizardComponents}>
-                                                                                                                <SovereignApp/>
-                                                                                                            </WizardComponentsProvider>
-                                                                                                        </SovereignAppComponentsProvider>
+                                                <AttributeValueProvider renderers={allRenderers} AttributeValueLayout={SimpleAttributeValueLayout} DataLayout={SimpleDataLayout}>
+                                                    <SystemsProvider systems={mockSystems}>
+                                                        <TicketSourceProvider ticketSource={AllTicketSources(mockTickets)}>
+                                                            <DebugStateProvider debugState={debugState}>
+                                                                <SovereignStatePluginsProvider plugins={sovereignStatePlugins}>
+                                                                    <SovereignStateProvider>
+                                                                        <LanguageProvider language='en'>
+                                                                            <TranslationUsedAndNotFoundProvider usedAndNotFound={emptyUsedAndNotFound()}>
+                                                                                <SimpleTranslationProvider translation={itsmTranslation}>
+                                                                                    <ThemeProvider themes={allThemes}>
+                                                                                        <DevModeStateForSearchProvider devModeState={{selected: '', visible: ''}}>
+                                                                                            {/*<AuthenticationProvider loginConfig={login}>*/}
+                                                                                            {/*    <Authenticate>*/}
+                                                                                            <SovereignAppComponentsProvider sovereignAppComponents={SimpleSovereignAppComponents}>
+                                                                                                <WizardComponentsProvider wizardComponents={SimpleWizardComponents}>
+                                                                                                    <SovereignApp/>
+                                                                                                </WizardComponentsProvider>
+                                                                                            </SovereignAppComponentsProvider>
 
-                                                                                                    </Authenticate>
-                                                                                                </AuthenticationProvider>
-                                                                                            </DevModeStateForSearchProvider>
-                                                                                        </ThemeProvider>
-                                                                                    </SimpleTranslationProvider>
-                                                                                </TranslationUsedAndNotFoundProvider>
-                                                                            </LanguageProvider>
-                                                                        </SovereignStateProvider>
-                                                                    </SovereignStatePluginsProvider>
-                                                                </DebugStateProvider>
-                                                            </TicketSourceProvider>
-                                                        </SystemsProvider>
-                                                    </AttributeValueProvider>
-                                                </AttributeEditorProvider>
+                                                                                            {/*</Authenticate>*/}
+                                                                                            {/*</AuthenticationProvider>*/}
+                                                                                        </DevModeStateForSearchProvider>
+                                                                                    </ThemeProvider>
+                                                                                </SimpleTranslationProvider>
+                                                                            </TranslationUsedAndNotFoundProvider>
+                                                                        </LanguageProvider>
+                                                                    </SovereignStateProvider>
+                                                                </SovereignStatePluginsProvider>
+                                                            </DebugStateProvider>
+                                                        </TicketSourceProvider>
+                                                    </SystemsProvider>
+                                                </AttributeValueProvider>
                                             </AzureChatCompletionProvider>
                                         </AuthFnProviderFromUrlStore>
                                     </UrlStoreProvider>

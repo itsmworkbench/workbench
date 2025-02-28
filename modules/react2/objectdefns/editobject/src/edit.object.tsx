@@ -34,6 +34,7 @@ export function EditObjectFromDefn<Main>(props: EditObjectProps<Main>) {
         if (fieldType === 'string') return <Edits.EditString {...fieldProps}/>;
         if (fieldType === 'options') return <Edits.EditOptions {...fieldProps} options={(fieldDefn as OptionsFieldDefn<Main, any>).options}/>;
         if (fieldType === 'boolean') return <Edits.EditBoolean {...fieldProps}/>;
+        if (fieldType === 'status') return <Edits.EditStatus {...fieldProps}/>;
         throw new Error(`Unknown field type ${fieldType}. Legal values are ${Object.keys(Edits).toString()}`)
     }
 

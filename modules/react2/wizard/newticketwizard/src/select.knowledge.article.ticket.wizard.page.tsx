@@ -1,5 +1,5 @@
 import {nextWizardStep, WizardPanel, WizardPanelProps} from "@itsmworkbench/wizard";
-import React from "react";
+import React, {useState} from "react";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 import {useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderers";
 import {useTranslation} from "@itsmworkbench/translation";
@@ -7,6 +7,8 @@ import {Ticket} from "@itsmworkbench/tickets";
 import {ListKasForSelection} from "./listKasForSelection";
 import {WizardPrevButton} from "@itsmworkbench/wizard/src/simple.wizard.next.prev.footer";
 import {useItsmState, useItsmStateKaDetails, useItsmStateTicket} from "@itsmworkbench/itsm_state";
+import {DisplayKnowledgeArticleStatus, DisplayPhaseAction} from "@itsmworkbench/react_knowledgearticle/src/display.knowledge.article";
+import {PhaseName, PhaseStatus} from "@itsmworkbench/domain";
 
 
 export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
@@ -26,6 +28,9 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
     const translation = useTranslation()
     const translate = useTranslation()
     const [selected, setSelect] = useItsmStateKaDetails()
+    const [selPhase, setSelPhase] = useState<string | undefined>(undefined)
+    const [selAction, setSelAction] = useState<string | undefined>(undefined)
+    const [kad] = useItsmStateKaDetails()
 
     function newKa() {
         nextWizardStep(steps, stepOps)
@@ -51,6 +56,12 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
                 <button onClick={newKa}>{translate('newTicket.newKa')}</button>
                 <ListKasForSelection system={newTicketData.system} organisation={'me'} onSelect={(kad) => setSelect(kad)}/>
             </>
+            {kad.ka && <DisplayKnowledgeArticleStatus ka={kad.ka} status={{} as PhaseStatus} onClick={(phase, action) => {
+                setSelPhase(phase)
+                setSelAction(action)
+            }}/>}
+            {kad.ka && selPhase && selAction && <DisplayPhaseAction ka={kad.ka} phaseName={selPhase as PhaseName} action={selAction}/>}
+            <pre>{JSON.stringify(kad)}</pre>
         </TwoColumnAndRestLayout>
 
     </>

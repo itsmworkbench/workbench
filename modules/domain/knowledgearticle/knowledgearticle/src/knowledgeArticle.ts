@@ -1,12 +1,15 @@
-import {Capability, PhaseNameAnd} from "@itsmworkbench/domain";
+import {Capability, PhaseName, PhaseNameAnd, PhaseStatus} from "@itsmworkbench/domain";
 import {Action} from "@itsmworkbench/actions";
 import {NameAnd} from "@itsmworkbench/utils";
 import {IdentityUrl, nameSpaceDetailsForGit, UrlStoreParser} from "@itsmworkbench/urlstore";
 import {YamlCapability} from "@itsmworkbench/yaml";
+import {FieldDefn, ObjectDefn} from "@itsmworkbench/object_defn";
+import {lensBuilder, LensBuilder} from "@itsmworkbench/optics";
 
 export type SystemToKnowledgeArticles = NameAnd<KnowledgeArticles>
 export type KnowledgeArticles = NameAnd<KnowledgeArticle>
 export type Phase = NameAnd<Action>
+
 export interface KnowledgeArticle {
     name?: string
     description?: string
@@ -14,6 +17,19 @@ export interface KnowledgeArticle {
     variables?: string[]
     capabilities: Capability[]
     actions: PhaseNameAnd<Phase>
+}
+
+export function phaseStatusObjectDefn(ka: KnowledgeArticle, phaseName: PhaseName): ObjectDefn<NameAnd<boolean>> {
+    const actions = ka.actions[phaseName];
+    const actionNames = Object.keys(actions);
+    const length = actionNames.length
+    const fd: Partial<FieldDefn<PhaseStatus, boolean>> = {fieldType: "status", labelDisplay: 'camelToWords'}
+    const lb = lensBuilder<NameAnd<boolean>>()
+    const defn: ObjectDefn<NameAnd<boolean>> = {
+        layout: Array(length + 1).fill(1),
+        fields: Object.fromEntries(Object.keys(actions).map(name => [name, {...fd, lens: lb.focusOn(name)}]))
+    };
+    return defn
 }
 
 export const checkUsersTT: KnowledgeArticle = ({

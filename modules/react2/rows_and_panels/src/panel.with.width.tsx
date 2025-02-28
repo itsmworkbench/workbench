@@ -12,6 +12,8 @@ const defaultStyle: CSSProperties = {
     border: "1px solid black",
     padding: "8px",
     boxSizing: "border-box",
+    borderRadius: "5px",
+    overflow: "hidden"
 }
 export const SimplePanelWithWidth = ({ children, width, style = {} }) => {
     const combinedStyle = useMemo(() => ({ ...defaultStyle, ...style, width }), [style, width]);

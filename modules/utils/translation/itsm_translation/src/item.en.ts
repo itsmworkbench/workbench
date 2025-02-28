@@ -4,9 +4,9 @@ export const itsmTranslation = {
         clear: 'Clear',
     },
 
-    authentication:{
+    authentication: {
         method: 'Method',
-        credentials:{
+        credentials: {
             apiKey: 'ApiKey'
         }
     },
@@ -28,6 +28,15 @@ export const itsmTranslation = {
         hasPassword: 'Has password',
         secretData: 'Secret Data',
         secretDataInLocalStorage: 'Secret Data In Local Storage',
+    },
+    knowledgeArticle: {
+        phase: {
+            Approval: {title: 'Approval'},
+            CheckTicket: {title: 'Check Ticket'},
+            Close: {title: 'Close'},
+            Resolve: {title: 'Resolve'},
+            Review: {title: 'Review'},
+        }
     },
 
     login: {
