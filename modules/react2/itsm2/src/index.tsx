@@ -91,6 +91,7 @@ const sovereignStatePlugins: SovereignStatePlugins = {
         examineKnowledgeArticles: KnowledgeArticleSovereignPagePlugin,
         authentication: AuthenticationSovereignPagePlugin,
         itsm: ItsmSovereignPagePlugin,
+        askForHelp:makeSovereignStatePlugin(() => <span>Ask For Help</span>),
     },
     UnknownDisplay: SimpleUnknownDisplay
 }

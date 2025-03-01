@@ -9,6 +9,7 @@ import {WizardPrevButton} from "@itsmworkbench/wizard/src/simple.wizard.next.pre
 import {useItsmState, useItsmStateKaDetails, useItsmStateTicket} from "@itsmworkbench/itsm_state";
 import {DisplayKnowledgeArticleStatus, DisplayPhaseAction} from "@itsmworkbench/react_knowledgearticle/src/display.knowledge.article";
 import {PhaseName, PhaseStatus} from "@itsmworkbench/domain";
+import {EntitiesForKa} from "./entities.for.ka";
 
 
 export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
@@ -30,7 +31,8 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
     const [selected, setSelect] = useItsmStateKaDetails()
     const [selPhase, setSelPhase] = useState<string | undefined>(undefined)
     const [selAction, setSelAction] = useState<string | undefined>(undefined)
-    const [kad] = useItsmStateKaDetails()
+    const kadOps = useItsmStateKaDetails()
+    const kad = kadOps[0]
 
     function newKa() {
         nextWizardStep(steps, stepOps)
@@ -39,31 +41,37 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
 
     return <>
         <TwoColumnAndRestLayout>
-            <div><DataLayout rootId={rootId} layout={[1, 1, 1, 1, 1]}>
-                <H1 rootId={rootId} attribute='newTicket.ticket' value={translation('newTicket.ticket')}/>
-                <Text rootId={rootId} attribute='newTicket.id' value={ticket.id}/>
-                <Text rootId={rootId} attribute='newTicket.summary' value={ticket.summary}/>
-                <ClipHeight maxHeight='200px'>
-                    <Text rootId={rootId} attribute='newTicket.description' value={ticket.description}/>
-                </ClipHeight>
-            </DataLayout>
+            <div>
+                <DataLayout rootId={rootId} layout={[1, 1, 1, 1, 1]}>
+                    <H1 rootId={rootId} attribute={translate('newTicket.ticket')} value={translation('newTicket.ticket')}/>
+                    <Text rootId={rootId} attribute={translate('newTicket.id')} value={ticket.id}/>
+                    <Text rootId={rootId} attribute={translate('newTicket.summary')} value={ticket.summary}/>
+                    <ClipHeight maxHeight='200px'>
+                        <Text rootId={rootId} attribute={translate('newTicket.description')} value={ticket.description}/>
+                    </ClipHeight>
+                </DataLayout>
                 <div>
                     <WizardPrevButton steps={steps} stepOps={stepOps}/>
                     <button disabled={selected === undefined} onClick={onFinish}>Finished</button>
                 </div>
+                <EntitiesForKa kaOps={kadOps}/>
             </div>
-            <>
+            <div>
                 <button onClick={newKa}>{translate('newTicket.newKa')}</button>
+                <button onClick={() => {
+                    kadOps[1](old => ({...old, ka: undefined}));
+                    setSelect(old => ({...old, ka: undefined}));
+                }}>{translate('newTicket.reset')}</button>
                 <ListKasForSelection system={newTicketData.system} organisation={'me'} onSelect={(kad) => setSelect(kad)}/>
-            </>
-            {kad.ka && <DisplayKnowledgeArticleStatus ka={kad.ka} status={{} as PhaseStatus} onClick={(phase, action) => {
-                setSelPhase(phase)
-                setSelAction(action)
-            }}/>}
-            {kad.ka && selPhase && selAction && <DisplayPhaseAction ka={kad.ka} phaseName={selPhase as PhaseName} action={selAction}/>}
-            <pre>{JSON.stringify(kad)}</pre>
+            </div>
         </TwoColumnAndRestLayout>
 
+        {kad?.ka && selPhase && selAction && <DisplayPhaseAction ka={kad.ka} phaseName={selPhase as PhaseName} action={selAction}/>}
+        {kad?.ka && <DisplayKnowledgeArticleStatus ka={kad.ka} status={{} as PhaseStatus} onClick={(phase, action) => {
+            setSelPhase(phase)
+            setSelAction(action)
+        }}/>}
+        <pre>{JSON.stringify(kad)}</pre>
     </>
 
 }

@@ -67,6 +67,7 @@ export const itsmTranslation = {
         summary: 'Summary',
         ticket: 'Ticket',
         newKa: 'None of these are the right knowledge article, I will create a new one',
+        reset: 'Reset',
         cancelNewKa: `Let's look at the knowledge articles again`,
     },
 

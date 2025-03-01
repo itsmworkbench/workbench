@@ -39,4 +39,6 @@ export const NewTicketSovereignPane: DisplaySovereignPage = () => {
     const ops = useState<Ticket>({} as Ticket);
     return <Display wizard={NewTicketWizard} ops={ops} onFinish={() => setSov('')}/>
 };
+
+
 export const NewTicketSovereignPanePlugin: SovereignStatePlugin = makeSovereignStatePlugin(NewTicketSovereignPane)

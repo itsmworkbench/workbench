@@ -74,7 +74,9 @@ export function ListKasForSelection({organisation, system, ...rest}: AiSuggested
                 debug('ListKasForSelection-chatCompletion', res)
                 setAiSuggestedKa(mapErrorsOr(res, r => {
                     selectedRowOps[1](0)
-                    if (isValue(kaDetails)) rest.onSelect(kaDetails.value[0])
+                    if (isValue(kaDetails)) {
+                        rest.onSelect(kaDetails.value[0])
+                    }
                     return r.content;
                 }));
 
@@ -113,18 +115,19 @@ function getTextForAiSuggestion(aiSuggestedKa: ErrorsOr<string>, index: number, 
 export function KaLoadTable({kaDetails, aiSuggestedKa, onSelect, selectedRowOps}: KaLoadTableProps) {
     const {Table} = useCommonComponents()
     const {DataLayout, Json} = useAttributeValueComponents()
-    const translate = useTranslation()
     if (isErrors(kaDetails)) return <div>{kaDetails.errors.join('\n')}</div>
     const name = isErrors(aiSuggestedKa) ? undefined : aiSuggestedKa.value
-    if (isErrors(kaDetails)) return <div>{kaDetails.errors.join('\n')}</div>
     const data = [...kaDetails.value]
     const index = data.findIndex(ka => ka.name === name)
+    useEffect(() => {
+        selectedRowOps[1](index)
+        if (index !== -1) onSelect(data[index])
+    }, [index]);
     const text = getTextForAiSuggestion(aiSuggestedKa, index, name, kaDetails.value)
-    const dataWithKa = index >= 0 ? [data[index], ...data.slice(0, index).concat(data.slice(index + 1))] : data
     const rootId = 'list-kas-for-selection'
     return <DataLayout rootId={rootId} layout={[1, 1, 1]}>
         <span>Ai suggests: {text}</span>
-        <Table titles={['Name', 'Description']} keys={['name', 'descriptionOrError']} data={dataWithKa} onRowSelect={onSelect} selectedRowOps={selectedRowOps}/>
+        <Table titles={['Name', 'Description']} keys={['name', 'descriptionOrError']} data={data} onRowSelect={onSelect} selectedRowOps={selectedRowOps}/>
     </DataLayout>
 
 }
