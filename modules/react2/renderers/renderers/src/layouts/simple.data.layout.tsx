@@ -30,10 +30,13 @@ export const SimpleDataLayout: DataLayout = ({rootId, layout, children, classNam
             >
                 {rows.map((row, rowIndex) => (
                     <div className="simple_data_rows" key={rowIndex} role="row" style={{...styles.dataLayoutRow, ...(row.length > 1 ? {display: "flex"} : null)}}>
-                        {row.map((child, colIndex) => (<>{child && (
-                                <div key={colIndex} role="cell" style={{...styles.dataLayoutItem, marginTop: "4px"}}>{child}</div>
-                            )}</>
-                        ))}
+                        {row.map((child, colIndex) =>
+                                child && (
+                                    <div key={colIndex} role="cell" style={{...styles.dataLayoutItem, marginTop: "4px"}}>
+                                        {child}
+                                    </div>
+                                )
+                        )}
                     </div>
                 ))}
             </div>

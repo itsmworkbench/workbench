@@ -21,7 +21,7 @@ function makePromptFor(kad: KADetails) {
 }
 
 async function makePrompt(urlStore: UrlStore, ntd: ItsmState) {
-    const kadse = await findKaDetails(urlStore, 'me', ntd.system)
+    const kadse = await findKaDetails({urlStore,org: 'me',system: ntd.system})
     const kaNames = mapErrorsOr(kadse, kads => kads.map(k => k.name))
     const rawPrompt = `
 I want you to give me a short name for a new knowledge article, and a description. The knowledge article is the 'abstraction' of a 

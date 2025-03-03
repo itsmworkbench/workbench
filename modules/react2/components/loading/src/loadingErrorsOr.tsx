@@ -9,7 +9,7 @@ export type LoadingErrorsOrProps<Input, Output> = {
     kleisli: Kleisli<Input, ErrorsOr<Output>>;
     Loading?: LoadingDisplay;
     Error?: DisplayLoadingErrors;
-    onUnmount?: (output: Output) => void;
+    onUnmount?: (output: ErrorsOr<Output>) => void;
     onLoad?: (output: Output) => void;
     children: (output: Output) => React.ReactNode;
 }
@@ -29,7 +29,8 @@ export function LoadingErrorsOr<Input, Output>({
                                                    onUnmount = () => {},
                                                }: LoadingErrorsOrProps<Input, Output>): React.ReactElement {
     function onLoadAdapter(output: ErrorsOr<Output>) {
-        if (isValue(output)) onLoad?.(output.value)
+        if (isValue(output))
+            onLoad?.(output.value)
     }
 
     // 1. Call your hooks unconditionally
@@ -38,7 +39,7 @@ export function LoadingErrorsOr<Input, Output>({
     useEffect(() => {
         return () => {
             if (hasData(state)) {
-                onUnmount(state.data as Output);
+                onUnmount(state.data);
             }
         };
     }, [state.data, onUnmount]);

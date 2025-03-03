@@ -47,7 +47,7 @@ const debugState = {
     [authenticateDebug]: false,
     [routingDebug]: false,
     [aiDebugName]: false,
-    [objectDefnDebugName]: true
+    [objectDefnDebugName]: false
 };
 
 const featureFlags: FeatureFlags = {

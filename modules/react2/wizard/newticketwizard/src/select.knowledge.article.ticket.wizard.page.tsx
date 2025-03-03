@@ -1,16 +1,19 @@
 import {nextWizardStep, WizardPanel, WizardPanelProps, WizardPrevButton} from "@itsmworkbench/wizard";
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 import {useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderers";
 import {useTranslation} from "@itsmworkbench/translation";
 import {Ticket} from "@itsmworkbench/tickets";
-import {ListKasForSelection2} from "./listKasForSelection";
+import {ListKasForSelection2, loadAiSuggestion, LoadAiSuggestionProps} from "./listKasForSelection";
 import {useItsmState, useItsmStateKaDetails, useItsmStateTicket} from "@itsmworkbench/itsm_state";
 import {DisplayKnowledgeArticleStatus, DisplayPhaseAction} from "@itsmworkbench/react_knowledgearticle";
 import {PhaseName, PhaseStatus} from "@itsmworkbench/domain";
 import {EntitiesForKa} from "./entities.for.ka";
 import {KADetails} from "@itsmworkbench/knowledgearticle";
 import {GetterSetter} from "@itsmworkbench/react_utils";
+import {useChatCompletion} from "@itsmworkbench/ai2_react";
+import {LoadingErrorsOr, useKleisli} from "@itsmworkbench/loading";
+import {NamedUrl} from "@itsmworkbench/urlstore";
 
 export type DisplayTicketProps = {
     rootId: string
@@ -85,20 +88,30 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
     const [newTicketData] = useItsmState()
     const [ticket] = useItsmStateTicket()
     const selectedKadOps = useItsmStateKaDetails()
+    const [kaDetail, setKaDetails] = selectedKadOps
     const translate = useTranslation()
     const selectedKaRowOps = useState(-1)
+    const chatCompletion = useChatCompletion()
+    const query: LoadAiSuggestionProps = useMemo(() => ({kaDetails: kads, ticket: ticket, chatCompletion}), [kads, ticket, chatCompletion])
+    const useAiSelection = (data: string) => () => {
+        const index = kads.findIndex(ka => ka.name === data)
+        selectedKaRowOps[1](index)
+        setKaDetails(kads[index])
+    }
     return <>
         <TwoColumnAndRestLayout>
             <div>
                 <DisplayTicket rootId={`select-knowledge-article-ticket-wizard.display-ticket`} ticket={ticket}/>
-                <PrevNextNew steps={steps} stepOps={stepOps} onFinish={onFinish} selected={selectedKadOps[0]} setSelect={selectedKadOps[1]}/>
+                <PrevNextNew steps={steps} stepOps={stepOps} onFinish={onFinish} selected={kaDetail} setSelect={setKaDetails}/>
             </div>
             <div>
                 <button onClick={() => {
                     selectedKaRowOps[1](-1)
                     selectedKadOps[1](old => ({...old, ka: undefined}));
                 }}>{translate('newTicket.reset')}</button>
-                <ListKasForSelection2 organisation={'me'} system={newTicketData.system} selectedRowOps={selectedKaRowOps} onSelect={selectedKadOps[1]} onLoad={setKads}/>
+                <LoadingErrorsOr input={query} kleisli={loadAiSuggestion}>{data => <div>Ai suggests: {data}
+                    <button onClick={useAiSelection(data)}>Use Ai Selection</button></div>}</LoadingErrorsOr>
+                <ListKasForSelection2 organisation={'me'} system={newTicketData.system} selectedRowOps={selectedKaRowOps} onSelect={setKaDetails} onLoad={setKads}/>
             </div>
         </TwoColumnAndRestLayout>
         <EntitiesForKa kaOps={selectedKadOps}/>

@@ -34,7 +34,7 @@ export function DisplayKnowledgeArticleStatus(props: DisplayKnowledgeArticleStat
     const {PanelWithWidth, PanelsInARow} = useCommonComponents()
     return <PanelsInARow width={220} panel={PanelWithWidth}>{
         Object.keys(props.ka.actions).map((phaseName) =>
-            <DisplayPhase {...props} phaseName={phaseName as PhaseName}/>
+            <DisplayPhase key={phaseName} {...props} phaseName={phaseName as PhaseName}/>
         )
     }</PanelsInARow>
 }

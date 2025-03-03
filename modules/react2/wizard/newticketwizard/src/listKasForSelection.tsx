@@ -1,5 +1,5 @@
 import {ChatCompletionFn} from "@itsmworkbench/ai2";
-import {mapErrorsOr} from "@itsmworkbench/errors";
+import {ErrorsOr, mapErrorsOr} from "@itsmworkbench/errors";
 import React, {useMemo} from "react";
 import {useAttributeValueComponents} from "@itsmworkbench/renderers";
 import {useUrlStore} from "@itsmworkbench/reacturlstore";
@@ -10,6 +10,7 @@ import {simpleTemplate} from "@itsmworkbench/utils";
 import {findKaDetails, KADetails, KaDetailsProps} from "@itsmworkbench/knowledgearticle";
 import {ItsmState} from "@itsmworkbench/itsm_state";
 import {LoadingErrorsOr} from "@itsmworkbench/loading";
+import {Ticket} from "@itsmworkbench/tickets";
 
 
 export type AiSuggestedKaProps = {
@@ -22,24 +23,6 @@ function makePromptFor(kad: KADetails) {
     return `* ${kad.name}: ${kad.descriptionOrError}`
 }
 
-export async function makePrompt(urlStore: UrlStore, ntd: ItsmState) {
-    const kadse = await findKaDetails({urlStore, org: 'me', system: ntd.system})
-    const kaPrompt = mapErrorsOr(kadse, kads =>
-        kads.filter(kad => kad.ka).map(kad => makePromptFor(kad)).join('\n')
-    )
-    const rawPrompt = `
-You are a categoriser. Your job is to work out which knowledge article the attached ticket is best described by
-
-The knowledge articles are
-{kas}
-The ticket is
-{ticket}
-
-In your answer just give the name of the knowledge article and nothing else. It is really important to us that if the 
-ticket is not matched by a knowledge article you respond 'unknown', so think carefully about your answer
-`
-    return mapErrorsOr(kaPrompt, kas => simpleTemplate(rawPrompt, {ticket: ntd.ticket.description, kas}))
-}
 
 const rawPrompt = `
 You are a categoriser. Your job is to work out which knowledge article the attached ticket is best described by
@@ -53,18 +36,19 @@ In your answer just give the name of the knowledge article and nothing else. It 
 ticket is not matched by a knowledge article you respond 'unknown', so think carefully about your answer
 `
 
-function makePrompt2(kads: KADetails[], ticket: string) {
+function makePrompt2(kads: KADetails[], ticket: Ticket) {
     const kas = kads.map(kad => `* ${kad.name}: ${kad.descriptionOrError}`).join('\n')
-    return simpleTemplate(rawPrompt, {ticket, kas})
+    return simpleTemplate(rawPrompt, {ticket: JSON.stringify(ticket, null, 2), kas})
 }
 
-type loadAiSuggestionProps = {
+export type LoadAiSuggestionProps = {
     kaDetails: KADetails[]
-    ticket: string
+    ticket: Ticket
     chatCompletion: ChatCompletionFn
 }
 
-async function loadAiSuggestion({kaDetails, ticket, chatCompletion}: loadAiSuggestionProps) {
+export async function loadAiSuggestion({kaDetails, ticket, chatCompletion}: LoadAiSuggestionProps): Promise<ErrorsOr<string>> {
+    // if (kaDetails.length === 0) return {errors: ['Cannot use AI to select a KA as there are no KAs']}
     const prompt = makePrompt2(kaDetails, ticket)
     const res = await chatCompletion([{role: 'assistant', content: prompt}])
     return mapErrorsOr(res, r => r.content)

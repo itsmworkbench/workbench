@@ -81,6 +81,7 @@ export function useKleisli<Input, Output>(
             .then((data) => {
                 if (isMounted) {
                     setState({data, loading: false, error: null});
+                    onLoad?.(data); // Call the onLoad handler
                 }
             })
             .catch((err) => {
