@@ -5,7 +5,6 @@
   "links": [
     "@itsmworkbench/react_utils",
     "@itsmworkbench/utils",
-    "@itsmworkbench/editors",
     "@itsmworkbench/optics",
     "@itsmworkbench/renderers",
     "@itsmworkbench/all_renderers",

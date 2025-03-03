@@ -13,7 +13,7 @@ export class ErrorsException extends Error {
 }
 
 export function isValue<T>(e: ErrorsOr<T>): e is Value<T> {
-    return 'value' in e;
+    return  e&&'value' in e;
 }
 
 export function isErrors<T>(e: ErrorsOr<T>): e is Errors {

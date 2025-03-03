@@ -2,12 +2,12 @@ import React from "react";
 import {createRoot} from "react-dom/client";
 import {Configuration, PublicClientApplication} from "@azure/msal-browser";
 import {loginUsingMsal} from "@itsmworkbench/msal_login";
-import {Authenticate, authenticateDebug, AuthenticationProvider, LoginConfig} from "@itsmworkbench/react_login_component";
+import {authenticateDebug, LoginConfig} from "@itsmworkbench/react_login_component";
 
 import {makeSovereignStatePlugin, SimpleSovereignAppComponents, SimpleUnknownDisplay, SovereignApp, SovereignAppComponentsProvider, SovereignStatePlugins, SovereignStatePluginsProvider, SovereignStateProvider} from "@itsmworkbench/sovereign";
 import {consoleErrorReporter, DebugStateProvider, FeatureFlags, NonFunctionalsProvider, routingDebug, useFeatureFlag, WindowUrlProvider} from "@itsmworkbench/react_utils";
 import {AttributeValueOrientation, AttributeValueOrientationProvider, AttributeValueOrientations, AttributeValueProvider, SimpleAttributeValueLayout, SimpleDataLayout} from "@itsmworkbench/renderers";
-import {DevModeComponentsProvider, DevModeStateForSearchProvider} from "@itsmworkbench/devmode";
+import {DevModeComponentsProvider, DevModeDebug, DevModeFeatureFlags, DevModeStateForSearchProvider} from "@itsmworkbench/devmode";
 import {ItsmSovereignPagePlugin} from "@itsmworkbench/itsmsovereign";
 import {HomeSovereignPagePlugin} from "@itsmworkbench/homesovereign";
 import {DevModeTranslate, emptyUsedAndNotFound, TranslationUsedAndNotFoundProvider} from "@itsmworkbench/translation";
@@ -30,13 +30,8 @@ import {defaultNameSpaceDetails} from "@itsmworkbench/defaultdomains";
 import {UrlStoreApiClientConfig, urlStoreFromApi} from "@itsmworkbench/browserurlstore";
 import {YamlCapability} from "@itsmworkbench/yaml";
 import {jsYaml} from "@itsmworkbench/jsyaml";
-import {AttributeEditorProvider} from "@itsmworkbench/editors";
-import {allEditors} from "@itsmworkbench/all_editors";
 import {LanguageProvider} from "@itsmworkbench/language";
 import {NameAnd} from "@itsmworkbench/utils";
-
-import {DevModeFeatureFlags} from "@itsmworkbench/devmode";
-import {DevModeDebug} from "@itsmworkbench/devmode";
 import {DevmodeSecretData, SecretDataProvider} from "@itsmworkbench/secrets";
 import {AuthenticationSovereignPagePlugin} from "@itsmworkbench/authentication_sovereign";
 import {defaultSecretData} from "@itsmworkbench/authentication";

@@ -1,0 +1,1 @@
+export * from './src/display.knowledge.article'

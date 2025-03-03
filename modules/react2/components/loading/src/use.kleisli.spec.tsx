@@ -1,4 +1,4 @@
-import { useKleisli } from "./use.kleisli";
+import {useChainedKleisli, useKleisli} from "./use.kleisli";
 import { act, renderHook, waitFor } from "@testing-library/react";
 
 describe("useKleisli", () => {
@@ -43,7 +43,7 @@ describe("useKleisli", () => {
         };
         const onErrorMock = jest.fn();
 
-        const { result } = renderHook(() => useKleisli(kleisli, 1, onErrorMock));
+        const { result } = renderHook(() => useKleisli(kleisli, 1, {onError:onErrorMock}));
 
         await waitFor(() => {
             expect(result.current.loading).toBe(false);
@@ -101,7 +101,7 @@ describe("useKleisli", () => {
         const onErrorMock = jest.fn();
 
         const { result, unmount } = renderHook(() =>
-            useKleisli(kleisli, 1, onErrorMock)
+            useKleisli(kleisli, 1,  {onError:onErrorMock})
         );
 
         expect(result.current.loading).toBe(true);
@@ -123,7 +123,7 @@ describe("useKleisli", () => {
         const onErrorMock = jest.fn();
 
         const { result, rerender } = renderHook(
-            ({ input }) => useKleisli(kleisli, input, onErrorMock),
+            ({ input }) => useKleisli(kleisli, input,  {onError:onErrorMock}),
             { initialProps: { input: 1 } }
         );
 
@@ -141,7 +141,7 @@ describe("useKleisli", () => {
         const onErrorMock = jest.fn();
 
         const { result, rerender } = renderHook(
-            ({ input }) => useKleisli(kleisli, input, onErrorMock),
+            ({ input }) => useKleisli(kleisli, input,  {onError:onErrorMock}),
             { initialProps: { input: 1 } }
         );
 
@@ -157,7 +157,7 @@ describe("useKleisli", () => {
         const kleisli = async (input: number) => `Resolved: ${input}`;
         const onErrorMock = jest.fn();
 
-        const { result } = renderHook(() => useKleisli(kleisli, 1, onErrorMock));
+        const { result } = renderHook(() => useKleisli(kleisli, 1,  {onError:onErrorMock}));
 
         await waitFor(() => expect(result.current.loading).toBe(false));
 
@@ -172,13 +172,118 @@ describe("useKleisli", () => {
         };
         const onErrorMock = jest.fn();
 
-        const { result } = renderHook(() => useKleisli(kleisli, 1, onErrorMock));
+        const { result } = renderHook(() => useKleisli(kleisli, 1,  {onError:onErrorMock}));
 
         await waitFor(() => expect(result.current.loading).toBe(false));
 
         expect(result.current.data).toBeNull();
         expect(result.current.error).toBe("Non-error exception");
         expect(onErrorMock).toHaveBeenCalledWith("Non-error exception");
+        expect(consoleErrorMock).not.toHaveBeenCalled();
+    });
+});
+
+
+describe("useChainedKleisli", () => {
+    let consoleErrorMock: jest.SpyInstance;
+
+    beforeEach(() => {
+        consoleErrorMock = jest.spyOn(console, "error").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+        consoleErrorMock.mockRestore();
+    });
+
+    it("should not run the chained kleisli if the input state is still loading", async () => {
+        const chainedKleisli = jest.fn(async (input: number) => `Chained: ${input}`);
+        // Provide an input state that is still loading
+        const inputState = { data: null, loading: true, error: null };
+
+        const { result } = renderHook(() =>
+            useChainedKleisli(chainedKleisli, inputState, {})
+        );
+
+        // The hook should remain in its initial state since the input is loading
+        expect(result.current.loading).toBe(true);
+        expect(result.current.data).toBeNull();
+        expect(result.current.error).toBeNull();
+        expect(chainedKleisli).not.toHaveBeenCalled();
+    });
+
+    it("should fetch data when input state is not loading", async () => {
+        const chainedKleisli = async (input: number) => `Chained: ${input}`;
+        const inputState = { data: 1, loading: false, error: null };
+
+        const { result } = renderHook(() =>
+            useChainedKleisli(chainedKleisli, inputState, {})
+        );
+
+        await waitFor(() => expect(result.current.loading).toBe(false));
+
+        expect(result.current.data).toBe("Chained: 1");
+        expect(result.current.error).toBeNull();
+    });
+
+    it("should call onError and not console.error when an error occurs", async () => {
+        const chainedKleisli = async (input: number) => {
+            throw new Error(`Chained error with input: ${input}`);
+        };
+        const onErrorMock = jest.fn();
+        const inputState = { data: 1, loading: false, error: null };
+
+        const { result } = renderHook(() =>
+            useChainedKleisli(chainedKleisli, inputState, { onError: onErrorMock })
+        );
+
+        await waitFor(() => expect(result.current.loading).toBe(false));
+
+        expect(result.current.data).toBeNull();
+        expect(result.current.error).toBe("Chained error with input: 1");
+        expect(onErrorMock).toHaveBeenCalledWith("Chained error with input: 1");
+        expect(consoleErrorMock).not.toHaveBeenCalled();
+    });
+
+    it("should update state when input state changes", async () => {
+        const chainedKleisli = async (input: number) => `Chained: ${input}`;
+        const { result, rerender } = renderHook(
+            ({ inputState }) => useChainedKleisli(chainedKleisli, inputState, {}),
+            { initialProps: { inputState: { data: 1, loading: false, error: null } } }
+        );
+
+        await waitFor(() => expect(result.current.data).toBe("Chained: 1"));
+
+        // Rerender with a new input state
+        rerender({ inputState: { data: 2, loading: false, error: null } });
+        await waitFor(() => expect(result.current.data).toBe("Chained: 2"));
+    });
+
+    it("should not update state or call onError after unmount", async () => {
+        const chainedKleisli = async (input: number) => {
+            return new Promise((resolve) =>
+                setTimeout(() => resolve(`Chained: ${input}`), 500)
+            );
+        };
+        const onErrorMock = jest.fn();
+        const inputState = { data: 1, loading: false, error: null };
+
+        const { result, unmount } = renderHook(() =>
+            useChainedKleisli(chainedKleisli, inputState, { onError: onErrorMock })
+        );
+
+        // Initially, the hook is loading
+        expect(result.current.loading).toBe(true);
+
+        unmount();
+
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 500));
+        });
+
+        // After unmount, the state should not update and onError should not be called
+        expect(result.current.data).toBeNull();
+        expect(result.current.error).toBeNull();
+        expect(onErrorMock).not.toHaveBeenCalled();
         expect(consoleErrorMock).not.toHaveBeenCalled();
     });
 });

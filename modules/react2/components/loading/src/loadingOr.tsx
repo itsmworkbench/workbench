@@ -1,30 +1,21 @@
 import React, {useEffect} from "react";
-import {hasData, hasError, isLoading, Kleisli, useKleisli} from "./use.kleisli";
+import {AsyncState, hasData, hasError, isLoading, Kleisli, useKleisli} from "./use.kleisli";
+import {defaultError, simpleLoadingDisplay} from "./helpers";
 
-export type LoadingOrErrorProps = {
-    error: string;
+export type DisplayLoadingErrorProps = {
+    error: string | string[];
 }
-export type LoadingOrErrorFn = (props: LoadingOrErrorProps) => React.ReactNode;
+export type DisplayLoadingErrors = (props: DisplayLoadingErrorProps) => React.ReactNode;
 
 export type LoadingDisplay = () => React.ReactElement;
 export type LoadingOrProps<Input, Output> = {
     input: Input;
     kleisli: Kleisli<Input, Output>;
     Loading?: LoadingDisplay;
-    Error?: LoadingOrErrorFn;
+    Error?: DisplayLoadingErrors;
     onUnmount?: (output: Output) => void;
     children: (output: Output) => React.ReactNode;
 }
-
-export function simpleLoadingDisplay(): React.ReactElement {
-    return <div>Loading...</div>;
-}
-
-
-export const defaultError: LoadingOrErrorFn = ({error}): React.ReactElement =>
-    <div>Error: {error}</div>;
-
-
 
 /**
  * The top-level function:
@@ -62,6 +53,14 @@ export function LoadingOr<Input, Output>({
     );
 }
 
+
+export type LoadingOrWrapperProps<Input, Output> = {
+    state: AsyncState<Output>;
+    Loading?: React.ComponentType | null;
+    Error?: DisplayLoadingErrors
+    childrenFn: (data: Output) => React.ReactNode;
+}
+
 /**
  * The wrapper that decides *what* to render
  * based on the provided `state` (loading, error, data).
@@ -74,23 +73,17 @@ function LoadingOrWrapper<Input, Output>({
                                              Loading,
                                              Error,
                                              childrenFn,
-                                         }: {
-    state: any;  // Replace `any` with your actual state type
-    Loading?: React.ComponentType | null;
-    Error?: LoadingOrErrorFn
-    childrenFn: (data: Output) => React.ReactNode;
-}) {
+                                         }: LoadingOrWrapperProps<Input, Output>) {
     // Conditionally render the content *within* a stable component structure:
     if (isLoading(state) && Loading) {
-        return <Loading />;
+        return <Loading/>;
     }
     if (hasError(state)) {
-        return Error ?  <Error error={state.error} />:<></> ;
+        return Error ? <Error error={state.error}/> : <></>;
     }
     if (hasData(state)) {
-        return <>{childrenFn(state.data as Output)}</>;
+        return <>{childrenFn(state.data)}</>;
     }
-
     console.error("This should never happen: invalid state =>", state);
     return <></>;
 }

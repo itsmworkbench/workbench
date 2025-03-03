@@ -17,7 +17,6 @@
   "dependencies": {
     "@itsmworkbench/react_utils": "1.0.0",
     "@itsmworkbench/utils": "1.0.0",
-    "@itsmworkbench/editors": "1.0.0",
     "@itsmworkbench/optics": "1.0.0",
     "@itsmworkbench/renderers": "1.0.0",
     "@itsmworkbench/all_renderers": "1.0.0",

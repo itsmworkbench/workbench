@@ -1,14 +1,13 @@
-import {FeatureFlag, flaggedValue} from "@itsmworkbench/react_utils";
+import {FeatureFlag, makeContextFor} from "@itsmworkbench/react_utils";
 import {SelectableButton, SimpleSelectableButton} from "@itsmworkbench/selectable_button";
 import {ClipHeight} from "@itsmworkbench/clip_height";
 import {SimpleTable, Table} from "@itsmworkbench/table";
-import {makeContextFor} from "@itsmworkbench/react_utils";
 import {Password, SimplePassword} from "@itsmworkbench/secrets";
 import {BgMouseOver, MouseOver, SimpleBgMouseOver, SimpleMouseOver} from "@itsmworkbench/mouse_over";
-import {OneNavigatorPanel, NavigatorPanelLayout, SimpleNavigatorPanel, SimpleNavigatorPanelLayout} from "@itsmworkbench/panelnavigator";
+import {NavigatorPanelLayout, OneNavigatorPanel, SimpleNavigatorPanel, SimpleNavigatorPanelLayout} from "@itsmworkbench/panelnavigator";
 import {SimpleTwoColumnAndRestLayout, TwoColumnAndRestLayout} from "@itsmworkbench/layouts";
-import {PanelWithWidth, SimplePanelWithWidth} from "@itsmworkbench/rows_and_panels";
-import {PanelsInARow, SimplePanelsInARow} from "@itsmworkbench/rows_and_panels";
+import {PanelsInARow, PanelWithWidth, SimplePanelsInARow, SimplePanelWithWidth} from "@itsmworkbench/rows_and_panels";
+import {LoadingDisplay, simpleLoadingDisplay} from "@itsmworkbench/loading";
 
 const componentsFlagName = "commonCommonComponents";
 const componentsFeatureFlag: FeatureFlag = {
@@ -29,6 +28,7 @@ export type CommonComponents = {
     TwoColumnAndRestLayout: TwoColumnAndRestLayout
     PanelWithWidth: PanelWithWidth
     PanelsInARow: PanelsInARow
+    LoadingDisplay: LoadingDisplay
 }
 export const commonComponents: CommonComponents = {
     SelectableButton: SimpleSelectableButton,
@@ -41,7 +41,8 @@ export const commonComponents: CommonComponents = {
     NavPanel: SimpleNavigatorPanel,
     TwoColumnAndRestLayout: SimpleTwoColumnAndRestLayout,
     PanelWithWidth: SimplePanelWithWidth,
-    PanelsInARow: SimplePanelsInARow
+    PanelsInARow: SimplePanelsInARow,
+    LoadingDisplay: simpleLoadingDisplay
 
 };
 export const {use: useCommonComponents, Provider: CommonComponentsProvider} = makeContextFor<CommonComponents, "commonComponents">("commonComponents", commonComponents);

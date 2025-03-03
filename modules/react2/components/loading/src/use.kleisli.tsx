@@ -55,11 +55,17 @@ const defaultErrorHandler = (error: string) => {
  *
  */
 
+type UseKleisliConfig<Output> = {
+    onError?: (error: string) => void;
+    onLoad?: (data: Output) => void;
+}
+
 export function useKleisli<Input, Output>(
     kleisli: Kleisli<Input, Output>,
     input: Input,
-    onError: (error: string) => void = defaultErrorHandler // Optional parameter with a default
-): AsyncState<Output> {
+    config?: UseKleisliConfig<Output>): AsyncState<Output> {
+    if (!kleisli || typeof kleisli!== 'function') throw new Error("kleisli must be a function");
+    const {onError = defaultErrorHandler, onLoad = () => {}} = config || {};
     const [state, setState] = useState<AsyncState<Output>>({
         data: null,
         loading: true,
@@ -89,6 +95,48 @@ export function useKleisli<Input, Output>(
             isMounted = false;
         };
     }, [kleisli, input, onError]);
+
+    return state;
+}
+
+
+export function useChainedKleisli<Input, Output>(
+    kleisli: (input: Input) => Promise<Output>,
+    inpState: AsyncState<Input>,
+    config: UseKleisliConfig<Output>,
+): AsyncState<Output> {
+    const {onError = defaultErrorHandler, onLoad = () => {}} = config;
+    const [state, setState] = useState<AsyncState<Output>>({
+        data: null,
+        loading: true,
+        error: null,
+    });
+
+    useEffect(() => {
+        let isMounted = true;
+
+        if (!inpState.loading) {
+
+            kleisli(inpState.data)
+                .then((data) => {
+                    if (isMounted) {
+                        setState({data, loading: false, error: null});
+                        onLoad(data);
+                    }
+                })
+                .catch((err) => {
+                    const errorMessage = err instanceof Error ? err.message : String(err);
+                    if (isMounted) {
+                        setState({data: null, loading: false, error: errorMessage});
+                        onError(errorMessage);
+                    }
+                });
+        }
+
+        return () => {
+            isMounted = false;
+        };
+    }, [inpState, kleisli, onError, onLoad]);
 
     return state;
 }

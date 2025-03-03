@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@itsmworkbench/clip_height": "1.0.0",
+    "@itsmworkbench/layouts": "1.0.0",
+    "@itsmworkbench/loading": "1.0.0",
     "@itsmworkbench/mouse_over": "1.0.0",
     "@itsmworkbench/panelnavigator": "1.0.0",
     "@itsmworkbench/react_utils": "1.0.0",
@@ -25,7 +27,6 @@
     "@itsmworkbench/system": "1.0.0",
     "@itsmworkbench/table": "1.0.0",
     "@itsmworkbench/translation": "1.0.0",
-    "@itsmworkbench/layouts": "1.0.0",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

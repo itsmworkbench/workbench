@@ -13,7 +13,14 @@ export function makeKaDetails(name: string, details: ErrorsAnd<NamedLoadResult<K
     if (hasErrors(details)) return {name, descriptionOrError: details.join('\n')}
     return {name, descriptionOrError: details.result.description, ka: details.result}
 }
-export async function findKaDetails(urlStore: UrlStore, org: string, system: string): Promise<ErrorsOr<KADetails[]>> {
+
+export type KaDetailsProps = {
+    urlStore: UrlStore
+    org: string
+    system: string
+}
+
+export async function findKaDetails({urlStore, org, system}: KaDetailsProps): Promise<ErrorsOr<KADetails[]>> {
     const urlQuery: UrlQuery = {
         org,
         namespace: 'ka',

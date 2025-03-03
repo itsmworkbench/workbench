@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@itsmworkbench/components": "1.0.0",
+    "@itsmworkbench/object_defn": "1.0.0",
+    "@itsmworkbench/viewobject": "1.0.0",
     "@itsmworkbench/knowledgearticle": "1.0.0",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",

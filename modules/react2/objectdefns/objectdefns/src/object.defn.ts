@@ -1,4 +1,4 @@
-import {LensAndPath, lensBuilder} from "@itsmworkbench/optics";
+import {LensAndPath} from "@itsmworkbench/optics";
 import {NameAnd} from "@itsmworkbench/utils";
 import {LabelDisplay} from "@itsmworkbench/renderers";
 
