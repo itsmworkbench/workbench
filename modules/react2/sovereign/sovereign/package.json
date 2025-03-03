@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/sovereign",
   "description": "A sovereign is something that takes up the whole display.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,12 +15,12 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/devmode": "1.0.0",
-    "@itsmworkbench/icons": "1.0.0",
-    "@itsmworkbench/translation": "1.0.0",
-    "@itsmworkbench/react_login_component": "1.0.0",
-    "@itsmworkbench/react_utils": "1.0.0",
-    "@itsmworkbench/utils": "1.0.0",
+    "@itsmworkbench/devmode": "1.0.1",
+    "@itsmworkbench/icons": "1.0.1",
+    "@itsmworkbench/translation": "1.0.1",
+    "@itsmworkbench/react_login_component": "1.0.1",
+    "@itsmworkbench/react_utils": "1.0.1",
+    "@itsmworkbench/utils": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

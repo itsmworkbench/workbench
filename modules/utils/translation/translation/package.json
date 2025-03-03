@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/translation",
   "description": "This is how we handle translations.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,9 +15,9 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/react_utils": "1.0.0",
-    "@itsmworkbench/devmode": "1.0.0",
-    "@itsmworkbench/language": "1.0.0",
+    "@itsmworkbench/react_utils": "1.0.1",
+    "@itsmworkbench/devmode": "1.0.1",
+    "@itsmworkbench/language": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

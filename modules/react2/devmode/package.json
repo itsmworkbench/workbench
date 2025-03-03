@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/devmode",
   "description": "components to support dev mode for gui state",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,12 +15,12 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/react_utils": "1.0.0",
-    "@itsmworkbench/utils": "1.0.0",
-    "@itsmworkbench/optics": "1.0.0",
-    "@itsmworkbench/renderers": "1.0.0",
-    "@itsmworkbench/all_renderers": "1.0.0",
-    "@itsmworkbench/selectable_button": "1.0.0",
+    "@itsmworkbench/react_utils": "1.0.1",
+    "@itsmworkbench/utils": "1.0.1",
+    "@itsmworkbench/optics": "1.0.1",
+    "@itsmworkbench/renderers": "1.0.1",
+    "@itsmworkbench/all_renderers": "1.0.1",
+    "@itsmworkbench/selectable_button": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

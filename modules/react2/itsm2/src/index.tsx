@@ -42,6 +42,7 @@ import {AzureChatCompletionProvider} from "@itsmworkbench/azureai2_react";
 import {aiDebugName, showAiPromptsFFName} from "@itsmworkbench/ai2";
 import {emptyItsmState, ItsmStateProvider} from "@itsmworkbench/itsm_state";
 import {objectDefnDebugName} from "@itsmworkbench/object_defn";
+import {YamlProvider} from "@itsmworkbench/components";
 
 const debugState = {
     [authenticateDebug]: false,
@@ -118,6 +119,7 @@ msal.initialize({}).then(() => {
 //we set up here: how we display the components, how we do state management and how we do authentication
 
     root.render(<React.StrictMode>
+        <YamlProvider yamlCapability={jsYaml()}>
             <NonFunctionalsProvider debugState={debugState} featureFlags={featureFlags} errorReporter={consoleErrorReporter}>
                 <WindowUrlProvider>
                     <ServiceCallerProvider serviceCaller={axiosServiceCaller}>
@@ -168,7 +170,7 @@ msal.initialize({}).then(() => {
                     </ServiceCallerProvider>
                 </WindowUrlProvider>
             </NonFunctionalsProvider>
-
+        </YamlProvider>
         </React.StrictMode>
     );
 })

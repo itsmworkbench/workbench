@@ -4,6 +4,7 @@
   "description": "the wizard for creating a new ticket",
   "links": [
     "@itsmworkbench/itsm_state",
+    "@itsmworkbench/json",
     "@itsmworkbench/react_utils",
     "@itsmworkbench/reacturlstore",
     "@itsmworkbench/react_knowledgearticle",

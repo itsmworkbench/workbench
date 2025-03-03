@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/itsm_state",
   "description": "The global state for the itsm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,7 +15,7 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/react_utils": "1.0.0",
+    "@itsmworkbench/react_utils": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

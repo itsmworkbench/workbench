@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/browserurlstore",
   "description": "how a browser uses a url store via an api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -22,9 +22,9 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/fileops": "1.4.51",
-    "@itsmworkbench/domain": "1.0.0",
-    "@itsmworkbench/urlstore": "1.0.0",
-    "@itsmworkbench/git": "1.0.0",
+    "@itsmworkbench/domain": "1.0.1",
+    "@itsmworkbench/urlstore": "1.0.1",
+    "@itsmworkbench/git": "1.0.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {

@@ -11,3 +11,4 @@ export interface CodecK<From, To> {
     from: (t: To) => Promise<From>
     to: (from: From) => Promise<To>
 }
+

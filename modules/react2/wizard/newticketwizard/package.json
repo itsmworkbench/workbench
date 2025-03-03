@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/newticket_wizard",
   "description": "the wizard for creating a new ticket",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,15 +15,16 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/itsm_state": "1.0.0",
-    "@itsmworkbench/react_utils": "1.0.0",
-    "@itsmworkbench/reacturlstore": "1.0.0",
-    "@itsmworkbench/react_knowledgearticle": "1.0.0",
-    "@itsmworkbench/sovereign": "1.0.0",
-    "@itsmworkbench/system": "1.0.0",
-    "@itsmworkbench/tickets": "1.0.0",
-    "@itsmworkbench/ticketsource": "1.0.0",
-    "@itsmworkbench/wizard": "1.0.0",
+    "@itsmworkbench/itsm_state": "1.0.1",
+    "@itsmworkbench/json": "1.0.1",
+    "@itsmworkbench/react_utils": "1.0.1",
+    "@itsmworkbench/reacturlstore": "1.0.1",
+    "@itsmworkbench/react_knowledgearticle": "1.0.1",
+    "@itsmworkbench/sovereign": "1.0.1",
+    "@itsmworkbench/system": "1.0.1",
+    "@itsmworkbench/tickets": "1.0.1",
+    "@itsmworkbench/ticketsource": "1.0.1",
+    "@itsmworkbench/wizard": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/create_ticketsource",
   "description": "Making a ticket manually",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browser": {
     "child_process": false
   },
@@ -18,11 +18,11 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/ticketsource": "1.0.0",
-    "@itsmworkbench/domain": "1.0.0",
-    "@itsmworkbench/tickets": "1.0.0",
-    "@itsmworkbench/utils": "1.0.0",
-    "@itsmworkbench/react_utils": "1.0.0",
+    "@itsmworkbench/ticketsource": "1.0.1",
+    "@itsmworkbench/domain": "1.0.1",
+    "@itsmworkbench/tickets": "1.0.1",
+    "@itsmworkbench/utils": "1.0.1",
+    "@itsmworkbench/react_utils": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

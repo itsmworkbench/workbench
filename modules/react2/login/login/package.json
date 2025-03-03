@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/login",
   "description": "An interface that abstracts over login",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -17,8 +17,8 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/loading": "1.0.0",
-    "@itsmworkbench/service_caller": "1.0.0",
+    "@itsmworkbench/loading": "1.0.1",
+    "@itsmworkbench/service_caller": "1.0.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {

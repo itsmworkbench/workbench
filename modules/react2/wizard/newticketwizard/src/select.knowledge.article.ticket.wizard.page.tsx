@@ -109,8 +109,10 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
                     selectedKaRowOps[1](-1)
                     selectedKadOps[1](old => ({...old, ka: undefined}));
                 }}>{translate('newTicket.reset')}</button>
-                <LoadingErrorsOr input={query} kleisli={loadAiSuggestion}>{data => <div>Ai suggests: {data}
-                    <button onClick={useAiSelection(data)}>Use Ai Selection</button></div>}</LoadingErrorsOr>
+                <LoadingErrorsOr input={query} kleisli={loadAiSuggestion}>{data =>
+                    <div>Ai suggests: {data}
+                        <button onClick={useAiSelection(data)}>Use Ai Selection</button>
+                    </div>}</LoadingErrorsOr>
                 <ListKasForSelection2 organisation={'me'} system={newTicketData.system} selectedRowOps={selectedKaRowOps} onSelect={setKaDetails} onLoad={setKads}/>
             </div>
         </TwoColumnAndRestLayout>

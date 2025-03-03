@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/record_utils",
   "description": "Utilities around record especially NameAnd",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",

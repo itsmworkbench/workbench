@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/react_authentication",
   "description": "Handling credentials",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browser": {
     "child_process": false
   },
@@ -18,8 +18,8 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/react_utils": "1.0.0",
-    "@itsmworkbench/authentication": "1.0.0",
+    "@itsmworkbench/react_utils": "1.0.1",
+    "@itsmworkbench/authentication": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

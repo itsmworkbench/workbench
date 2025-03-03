@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/authentication",
   "description": "Handling credentials",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index",
   "types": "dist/index",
   "browser": {
@@ -21,9 +21,9 @@
   },
   "dependencies": {
     "@laoban/utils": "1.4.51",
-    "@itsmworkbench/object_defn": "1.0.0",
-    "@itsmworkbench/utils": "1.0.0",
-    "@itsmworkbench/yaml": "1.0.0",
+    "@itsmworkbench/object_defn": "1.0.1",
+    "@itsmworkbench/utils": "1.0.1",
+    "@itsmworkbench/yaml": "1.0.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {

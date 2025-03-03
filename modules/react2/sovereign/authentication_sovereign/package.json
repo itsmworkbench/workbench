@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/authentication_sovereign",
   "description": "The sovereign pane that helps us manage credentials",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,17 +15,17 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/common_components": "1.0.0",
-    "@itsmworkbench/react_authentication": "1.0.0",
-    "@itsmworkbench/sovereign": "1.0.0",
-    "@itsmworkbench/login": "1.0.0",
-    "@itsmworkbench/secrets": "1.0.0",
-    "@itsmworkbench/system": "1.0.0",
-    "@itsmworkbench/react_utils": "1.0.0",
-    "@itsmworkbench/translation": "1.0.0",
-    "@itsmworkbench/viewobject": "1.0.0",
-    "@itsmworkbench/editobject": "1.0.0",
-    "@itsmworkbench/utils": "1.0.0",
+    "@itsmworkbench/common_components": "1.0.1",
+    "@itsmworkbench/react_authentication": "1.0.1",
+    "@itsmworkbench/sovereign": "1.0.1",
+    "@itsmworkbench/login": "1.0.1",
+    "@itsmworkbench/secrets": "1.0.1",
+    "@itsmworkbench/system": "1.0.1",
+    "@itsmworkbench/react_utils": "1.0.1",
+    "@itsmworkbench/translation": "1.0.1",
+    "@itsmworkbench/viewobject": "1.0.1",
+    "@itsmworkbench/editobject": "1.0.1",
+    "@itsmworkbench/utils": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

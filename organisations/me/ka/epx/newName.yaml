@@ -1,6 +1,14 @@
 capabilities:
   - Email
   - ReceiveEmail
+variables:
+  - correctedPrice
+  - currentPrice
+  - environment
+  - issuer
+  - itemId
+  - itemName
+  - ticketName  -
 actions:
   CheckTicket:
     SelectKnowledgeArticle:

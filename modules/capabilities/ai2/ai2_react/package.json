@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/ai2_react",
   "description": "Accessing ai",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -17,8 +17,8 @@
   "dependencies": {
     "@laoban/utils": "1.4.45",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/ai2": "1.0.0",
-    "@itsmworkbench/utils": "1.0.0",
+    "@itsmworkbench/ai2": "1.0.1",
+    "@itsmworkbench/utils": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

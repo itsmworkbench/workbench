@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/errors",
   "description": "How errors are represented",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -17,7 +17,7 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/utils": "1.0.0",
+    "@itsmworkbench/utils": "1.0.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {

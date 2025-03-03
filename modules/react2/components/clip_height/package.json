@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/clip_height",
   "description": "A component that clips the height of another component",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",

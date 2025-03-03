@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/optics",
   "description": "A simple implementation of optics and turning them into/from paths",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {

@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/viewobject",
   "description": "Allows us to view objects that have an object defn",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -15,11 +15,11 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/react_utils": "1.0.0",
-    "@itsmworkbench/secrets": "1.0.0",
-    "@itsmworkbench/object_defn": "1.0.0",
-    "@itsmworkbench/optics": "1.0.0",
-    "@itsmworkbench/errors": "1.0.0",
+    "@itsmworkbench/react_utils": "1.0.1",
+    "@itsmworkbench/secrets": "1.0.1",
+    "@itsmworkbench/object_defn": "1.0.1",
+    "@itsmworkbench/optics": "1.0.1",
+    "@itsmworkbench/errors": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

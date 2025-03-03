@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/layouts",
   "description": "Some basic layouts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browserslist": {
     "development": [
       "last 1 chrome version",

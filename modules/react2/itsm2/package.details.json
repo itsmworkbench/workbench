@@ -17,6 +17,7 @@
     "@itsmworkbench/newticket_wizard",
     "@itsmworkbench/panelnavigator",
     "@itsmworkbench/react_utils",
+    "@itsmworkbench/react_editors",
     "@itsmworkbench/secrets",
     "@itsmworkbench/sovereign",
     "@itsmworkbench/system",

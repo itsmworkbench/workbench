@@ -1,7 +1,7 @@
 {
   "name": "@itsmworkbench/ai2",
   "description": "Accessing ai",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index",
   "types": "dist/index",
   "browserslist": {
@@ -19,7 +19,7 @@
   "dependencies": {
     "@laoban/utils": "1.4.51",
     "@laoban/variables": "1.4.51",
-    "@itsmworkbench/utils": "1.0.0",
+    "@itsmworkbench/utils": "1.0.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {
