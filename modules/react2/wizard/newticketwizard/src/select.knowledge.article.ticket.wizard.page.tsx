@@ -6,14 +6,15 @@ import {useTranslation} from "@itsmworkbench/translation";
 import {Ticket} from "@itsmworkbench/tickets";
 import {ListKasForSelection2, loadAiSuggestion, LoadAiSuggestionProps} from "./listKasForSelection";
 import {useItsmState, useItsmStateKaDetails, useItsmStateTicket} from "@itsmworkbench/itsm_state";
-import {DisplayKnowledgeArticleStatus, DisplayPhaseAction} from "@itsmworkbench/react_knowledgearticle";
+import {DisplayKads, DisplayKnowledgeArticleStatus, DisplayPhaseAction} from "@itsmworkbench/react_knowledgearticle";
 import {PhaseName, PhaseStatus} from "@itsmworkbench/domain";
-import {EntitiesForKa} from "./entities.for.ka";
 import {KADetails} from "@itsmworkbench/knowledgearticle";
-import {GetterSetter} from "@itsmworkbench/react_utils";
+import {GetterSetter, useDebug} from "@itsmworkbench/react_utils";
 import {useChatCompletion} from "@itsmworkbench/ai2_react";
-import {LoadingErrorsOr, useKleisli} from "@itsmworkbench/loading";
-import {NamedUrl} from "@itsmworkbench/urlstore";
+import {LoadingErrorsOr} from "@itsmworkbench/loading";
+import {LoadAndEditItsmTicketAttributes} from "@itsmworkbench/itsm_state/src/itsmTicketAttributes";
+import {NameAnd} from "@itsmworkbench/utils";
+import {aiDebugName} from "@itsmworkbench/ai2";
 
 export type DisplayTicketProps = {
     rootId: string
@@ -35,45 +36,6 @@ export function DisplayTicket({rootId, ticket}: DisplayTicketProps) {
     </DataLayout>
 }
 
-export type PrevNextNewProps = {
-    steps: string[]
-    stepOps: GetterSetter<string>
-    onFinish: () => void
-    selected: KADetails | undefined
-    setSelect: (ka: KADetails | undefined) => void
-}
-
-function PrevNextNew({steps, stepOps, onFinish, selected, setSelect}: PrevNextNewProps) {
-    const translate = useTranslation()
-
-    function newKa() {
-        nextWizardStep(steps, stepOps)
-        setSelect(undefined)
-    }
-
-    return <div>
-        <WizardPrevButton steps={steps} stepOps={stepOps}/>
-        <button disabled={selected === undefined} onClick={onFinish}>Finished</button>
-        <button onClick={newKa}>{translate('newTicket.newKa')}</button>
-    </div>
-}
-
-export type KadsProps = {
-    selectedKadOps: GetterSetter<KADetails>
-}
-
-export function DisplayKads({selectedKadOps}: KadsProps) {
-    const [selPhase, setSelPhase] = useState<string | undefined>(undefined)
-    const [selAction, setSelAction] = useState<string | undefined>(undefined)
-    const [selectedKad, setSelect] = selectedKadOps
-    return <>   {selectedKad?.ka && <DisplayKnowledgeArticleStatus ka={selectedKad.ka} status={{} as PhaseStatus} onClick={(phase, action) => {
-        setSelPhase(phase)
-        setSelAction(action)
-    }}/>}
-        {selectedKad?.ka && selPhase && selAction && <DisplayPhaseAction ka={selectedKad.ka} phaseName={selPhase as PhaseName} action={selAction}/>}
-        <pre>{JSON.stringify(selectedKad)}</pre>
-    </>
-}
 
 export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
                                                                                 name,
@@ -83,40 +45,66 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
                                                                                 stepOps,
                                                                                 onFinish
                                                                             }: WizardPanelProps<Ticket>) => {
+    const debug = useDebug(aiDebugName)
     const {TwoColumnAndRestLayout} = useCommonComponents()
     const [kads, setKads] = useState<KADetails[]>([])
     const [newTicketData] = useItsmState()
-    const [ticket] = useItsmStateTicket()
+    const [ticket, setTicket] = useItsmStateTicket()
     const selectedKadOps = useItsmStateKaDetails()
     const [kaDetail, setKaDetails] = selectedKadOps
     const translate = useTranslation()
     const selectedKaRowOps = useState(-1)
+    const [selectedKaRow, setSelectedKaRow] = selectedKaRowOps
     const chatCompletion = useChatCompletion()
-    const query: LoadAiSuggestionProps = useMemo(() => ({kaDetails: kads, ticket: ticket, chatCompletion}), [kads, ticket, chatCompletion])
+    const aiSuggestionQuery: LoadAiSuggestionProps = useMemo(() => ({kaDetails: kads, ticket: ticket, chatCompletion}), [kads, ticket, chatCompletion])
+    const attributeOps = useState<NameAnd<string>>({})
+
     const useAiSelection = (data: string) => () => {
         const index = kads.findIndex(ka => ka.name === data)
         selectedKaRowOps[1](index)
         setKaDetails(kads[index])
     }
+
+    function PrevNextNew() {
+        function newKa() {
+            nextWizardStep(steps, stepOps)
+            setSelectedKaRow(undefined)
+        }
+
+        function finish() {
+            onFinish()
+            setTicket({...ticket, attributes: attributeOps[0]})
+        }
+
+        return <div>
+            <WizardPrevButton steps={steps} stepOps={stepOps}/>
+            <button disabled={kads[selectedKaRow] === undefined} onClick={finish}>Finished</button>
+            <button onClick={newKa}>{translate('newTicket.newKa')}</button>
+        </div>
+    }
+
+
     return <>
         <TwoColumnAndRestLayout>
             <div>
                 <DisplayTicket rootId={`select-knowledge-article-ticket-wizard.display-ticket`} ticket={ticket}/>
-                <PrevNextNew steps={steps} stepOps={stepOps} onFinish={onFinish} selected={kaDetail} setSelect={setKaDetails}/>
+                <PrevNextNew/>
             </div>
             <div>
                 <button onClick={() => {
                     selectedKaRowOps[1](-1)
                     selectedKadOps[1](old => ({...old, ka: undefined}));
                 }}>{translate('newTicket.reset')}</button>
-                <LoadingErrorsOr input={query} kleisli={loadAiSuggestion}>{data =>
+                <LoadingErrorsOr input={aiSuggestionQuery} kleisli={loadAiSuggestion}>{data =>
                     <div>Ai suggests: {data}
                         <button onClick={useAiSelection(data)}>Use Ai Selection</button>
                     </div>}</LoadingErrorsOr>
                 <ListKasForSelection2 organisation={'me'} system={newTicketData.system} selectedRowOps={selectedKaRowOps} onSelect={setKaDetails} onLoad={setKads}/>
             </div>
         </TwoColumnAndRestLayout>
-        <EntitiesForKa kaOps={selectedKadOps}/>
+        <TwoColumnAndRestLayout>
+            <LoadAndEditItsmTicketAttributes attributeNames={kaDetail.ka?.variables || []} ticket={ticket} rootId='itsm.ticket.attributes' attributeOps={attributeOps}/>
+        </TwoColumnAndRestLayout>
         <DisplayKads selectedKadOps={selectedKadOps}/>
     </>
 }

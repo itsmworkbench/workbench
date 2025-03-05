@@ -2,11 +2,13 @@
 import { idFrom, Render } from "../renderers";
 import React from "react";
 import {useTheme} from "@itsmworkbench/themes";
+import {useCommonComponents} from "@itsmworkbench/common_components";
 
 // Updated to Render<string>
-export const SimpleDateRenderer: Render<string> = ({ attribute, rootId, value, style={} }) => {
+export const SimpleDateRenderer: Render<string> = ({ attribute, rootId, value,clipboard }) => {
     const id = idFrom(rootId, attribute);
     const styles = useTheme().renderer.text;
+    const {ClipboardButton} = useCommonComponents()
 
     function asDate(value: string | undefined): string {
         if (!value) return "Invalid date";  // Handles undefined or empty string
@@ -33,6 +35,7 @@ export const SimpleDateRenderer: Render<string> = ({ attribute, rootId, value, s
             title={formattedDate}
         >
             {formattedDate}
+            {clipboard && <ClipboardButton text={formattedDate} />}
         </time>
     );
 };

@@ -5,6 +5,7 @@ import {useSystems} from "@itsmworkbench/system";
 import {useUrlStore} from "@itsmworkbench/reacturlstore";
 import {findKaDetails, KADetails,} from "@itsmworkbench/knowledgearticle";
 import {ErrorsOr, isErrors} from "@itsmworkbench/errors";
+import {DisplayKads} from "@itsmworkbench/react_knowledgearticle";
 
 
 export type KnowledgeArticlesProps = {
@@ -18,11 +19,12 @@ export function KnowledgeArticles({org, system}: KnowledgeArticlesProps) {
     const urlStore = useUrlStore()
     const {Table} = useCommonComponents()
     const [details, setDetails] = useState<ErrorsOr<KADetails[]> | undefined>(undefined)
-    const selectedRowOps = useState(0)
-    const [ka, setKa] = useState<KADetails | undefined>()
+    const selectedRowOps = useState(-1)
+    const kaOps = useState<KADetails | undefined>()
+    const [ka, setKa] = kaOps
     useEffect(() => {
         setKa(undefined)
-        findKaDetails(urlStore, org, system).then(d => setDetails(d))
+        findKaDetails({urlStore, org, system}).then(d => setDetails(d))
     }, [org, system])
     if (isErrors(details)) return <div>{details.errors.join('\n')}</div>
     return <div>
@@ -30,7 +32,7 @@ export function KnowledgeArticles({org, system}: KnowledgeArticlesProps) {
         <Table titles={['Name', 'Description']} keys={['name', 'descriptionOrError']} data={details ? details.value : []} selectedRowOps={selectedRowOps} onRowSelect={(row, index) => {
             setKa(row)
         }}/>
-        <pre>{JSON.stringify(ka, null, 2)}</pre>
+         <DisplayKads selectedKadOps={kaOps}/>
     </div>
 }
 

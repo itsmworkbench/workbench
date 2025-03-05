@@ -1,5 +1,5 @@
 
-import { useAttributeValueOrientation } from "@itsmworkbench/renderers";
+import {SimpleAttributeValueLayout, useAttributeValueOrientation} from "@itsmworkbench/renderers";
 import { useTranslation } from "@itsmworkbench/translation";
 import { camelCaseToWords } from "@itsmworkbench/utils";
 import { makeGetterSetterFrom } from "@itsmworkbench/react_utils";
@@ -20,7 +20,7 @@ export function SimpleEditBoolean<Main>(props: EditComponentProps<Main, boolean>
     const [value, setValue] = makeGetterSetterFrom(mainOps, lens);
 
     return (
-        <div className={`simple-boolean-editor-container ${orientation}`}>
+        <SimpleAttributeValueLayout orientation={orientation}>
             {showLabel && (
                 <label htmlFor={rootId} className="simple-boolean-editor-label">
                     {text}
@@ -35,6 +35,6 @@ export function SimpleEditBoolean<Main>(props: EditComponentProps<Main, boolean>
                 aria-label={!showLabel ? text : undefined}
                 className="simple-boolean-editor-input"
             />
-        </div>
+        </SimpleAttributeValueLayout>
     );
 }

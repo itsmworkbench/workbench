@@ -9,25 +9,29 @@ import {ErrorsOr} from "@itsmworkbench/errors";
 export interface SimpleYamlEditorProps {
     initial: string
     height?: string
-    onChange?: (json: any) => void
+    width?: string
+    onChange?: (json: ErrorsOr<any>) => void
     onError?: (errors: string[]) => void
 }
 
-export function SimpleYamlEditor({initial, height, onError, onChange}: SimpleYamlEditorProps) {
+export function SimpleYamlEditor({initial, width, height, onError, onChange}: SimpleYamlEditorProps) {
     const yamlCapability = useYaml()
     const [yaml, setYaml] = useState(initial)
     const monaco = useMonaco(); // needed to initialise
     const registerChange = (e: string) => {
         setYaml(e)
         const result: ErrorsAnd<any> = yamlCapability.parser(e)
-        if (hasErrors(result)) return onError?.(result)
-        else {
+        if (hasErrors(result)) {
+            onError?.(result)
+            onChange?.({errors: result})
+        } else {
             onError?.([])
-            onChange?.(result)
+            onChange?.({value: result})
         }
     };
     useEffect(() => registerChange(initial), []);
     return <Editor
+        width={width || '500px'}
         height={height || '200px'}
         language="yaml"
         value={yaml}

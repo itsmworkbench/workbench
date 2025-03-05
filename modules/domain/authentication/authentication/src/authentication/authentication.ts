@@ -2,6 +2,7 @@ import {NameAnd} from "@itsmworkbench/utils";
 import {ErrorsOr, isErrors} from "@itsmworkbench/errors";
 import {ObjectDefn} from "@itsmworkbench/object_defn";
 
+export const authenticationDebugName="authentication";
 
 export type DecryptFn = (encrypted: string) => Promise<string>
 export type AuthenticationPlugins = NameAnd<AuthenticationPlugin<any>>;

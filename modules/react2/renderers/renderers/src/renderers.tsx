@@ -12,6 +12,7 @@ export type RenderProps<T> = {
     label?: string;
     icon?: () => ReactElement;
     style?: React.CSSProperties;
+    clipboard?: boolean;
 };
 
 export type TitleAndUrl = {

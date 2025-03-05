@@ -1,21 +1,21 @@
-
-import { useAttributeValueOrientation } from "@itsmworkbench/renderers";
-import { useTranslation } from "@itsmworkbench/translation";
-import { camelCaseToWords } from "@itsmworkbench/utils";
-import { makeGetterSetterFrom } from "@itsmworkbench/react_utils";
-import React, { useEffect, useState } from "react";
-import { useSecretData } from "@itsmworkbench/secrets";
-import { hasEnteredPassword } from "@itsmworkbench/authentication";
-import { secretDataToEncypt, secretDataToDecrypt } from "@itsmworkbench/authentication";
+import {useAttributeValueOrientation} from "@itsmworkbench/renderers";
+import {useTranslation} from "@itsmworkbench/translation";
+import {camelCaseToWords} from "@itsmworkbench/utils";
+import {makeGetterSetterFrom} from "@itsmworkbench/react_utils";
+import React, {useEffect, useState} from "react";
+import {useSecretData} from "@itsmworkbench/secrets";
+import {hasEnteredPassword} from "@itsmworkbench/authentication";
+import {secretDataToEncypt, secretDataToDecrypt} from "@itsmworkbench/authentication";
 import {EditComponentProps} from "./simpleEditComponents";
+import {useCommonComponents} from "@itsmworkbench/common_components";
 
 export function SimpleEditEncryptedString<Main>(props: EditComponentProps<Main, string>) {
-    const { showLabel, fieldName, fieldDefn, rootId, mainOps, prefix } = props;
-    const { editable, fieldType, lens } = fieldDefn;
+    const {showLabel, fieldName, fieldDefn, rootId, mainOps, prefix, clipboard} = props;
+    const {editable, fieldType, lens} = fieldDefn;
     const orientation = useAttributeValueOrientation();
     const translation = useTranslation();
     const text = prefix ? translation(`${prefix}.${fieldName}`) : camelCaseToWords(fieldName);
-
+    const {ClipboardButton} = useCommonComponents()
     if (!editable) {
         throw new Error(`Field ${fieldType} is not editable`);
     }
@@ -82,7 +82,8 @@ export function SimpleEditEncryptedString<Main>(props: EditComponentProps<Main, 
                 className="simple-edit-string-input"
             />
             {/* Optionally display the encrypted value (debugging purposes) */}
-            <span className="encrypted-value-display">{encryptedValue}</span>
+            <span style={{flexGrow: 1}} className="encrypted-value-display">{encryptedValue}</span>
+            {clipboard && <ClipboardButton text={decryptedValue}/>}
         </div>
     );
 }

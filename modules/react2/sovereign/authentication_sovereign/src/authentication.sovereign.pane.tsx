@@ -13,6 +13,7 @@ import {useAuthFn} from "@itsmworkbench/react_authentication";
 import {ErrorsOr, isErrors} from "@itsmworkbench/errors";
 
 
+
 export type AuthenticationProps = {
     org: string
 }
@@ -27,7 +28,6 @@ export const loadAuthentication = (urlStore: UrlStore, authFn: AuthFn): Kleisli<
         }
         const names = await urlStore.list(query)
         if (hasErrors(names)) throw new Error(names.join("\n"))
-        const result: NameAnd<ErrorsAnd<AuthFnResult<any>>> = {}
         const res: NameAnd<ErrorsOr<AuthFnResult<any>>> = Object.fromEntries(await mapAsync(names.names,
             async name => ([name, await authFn(name)])));
         return res

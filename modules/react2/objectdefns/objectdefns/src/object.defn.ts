@@ -1,4 +1,4 @@
-import {LensAndPath} from "@itsmworkbench/optics";
+import {LensAndPath, lensBuilder} from "@itsmworkbench/optics";
 import {NameAnd} from "@itsmworkbench/utils";
 import {LabelDisplay} from "@itsmworkbench/renderers";
 
@@ -23,4 +23,18 @@ export type FieldDefn<Main, T> = SimpleFieldDefn<Main, T> | OptionsFieldDefn<Mai
 export type ObjectDefn<Main> = {
     fields: NameAnd<FieldDefn<Main, any>>
     layout: number[]
+}
+
+export function makeObjectDefnForRecordStringString(record: Record<string, string>) {
+    const fields: NameAnd<FieldDefn<Record<string, string>, any>> = {}
+    const lb = lensBuilder<Record<string, string>>()
+    for (const key in record) {
+        fields[key] = {
+            lens: lb.focusOn(key),
+            fieldType: 'string',
+            labelDisplay: 'raw'
+        }
+    }
+    return {fields, layout: Array(Object.keys(record).length).fill(1)}
+
 }

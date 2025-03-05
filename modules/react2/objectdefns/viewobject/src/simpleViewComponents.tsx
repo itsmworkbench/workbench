@@ -9,18 +9,18 @@ export function findAttribute(lens: LensAndPath<any, any>) {
     return lens.path.join('.')
 }
 
-export function SimpleStringView<Main>({rootId, main, fieldDefn, showLabel}: ViewComponentProps<Main, string>) {
+export function SimpleStringView<Main>({main, fieldDefn, showLabel, ...rest}: ViewComponentProps<Main, string>) {
     const {Text} = useRenderers();
     const {Text: TextAndLabel} = useAttributeValueComponents();
     const {lens} = fieldDefn;
     const value = lens.get(main);
     const attribute = findAttribute(lens)
     return showLabel ?
-        <TextAndLabel rootId={rootId} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
-        <Text rootId={rootId} attribute={attribute} value={value}/>
+        <TextAndLabel {...rest} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
+        <Text  {...rest} attribute={attribute} value={value}/>
 }
 
-export function SimpleEncryptedView<Main>({rootId, main, fieldDefn, showLabel}: ViewComponentProps<Main, string>) {
+export function SimpleEncryptedView<Main>({main, fieldDefn, showLabel, ...rest}: ViewComponentProps<Main, string>) {
     const {Text} = useRenderers();
     const {Text: TextAndLabel} = useAttributeValueComponents();
     const [SecretData] = useSecretData()
@@ -38,24 +38,24 @@ export function SimpleEncryptedView<Main>({rootId, main, fieldDefn, showLabel}: 
     const attribute = findAttribute(lens)
     return <div style={{display: 'flex', justifyContent: 'startpace-between', alignItems: 'center'}}>
         {showLabel ?
-            <TextAndLabel rootId={rootId} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
-            <Text rootId={rootId} attribute={attribute} value={value}/>}&nbsp;
+            <TextAndLabel {...rest} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
+            <Text {...rest} attribute={attribute} value={value}/>}&nbsp;
         <button onClick={() => setShow(!show)}>{show ? '🚫' : '👁️‍🗨️'}</button>
     </div>
 }
 
-export function SimpleBooleanView<Main>({rootId, main, fieldDefn, showLabel}: ViewComponentProps<Main, boolean>) {
+export function SimpleBooleanView<Main>({main, fieldDefn, showLabel, ...rest}: ViewComponentProps<Main, boolean>) {
     const {Text} = useRenderers();
     const {Text: TextAndLabel} = useAttributeValueComponents();
     const lens: LensAndPath<Main, boolean> = fieldDefn.lens;
     const value = lens.get(main);
     const attribute = findAttribute(lens)
     return showLabel ?
-        <TextAndLabel rootId={rootId} attribute={attribute} value={value?.toString()} labelDisplay={fieldDefn.labelDisplay}/> :
-        <Text rootId={rootId} attribute={attribute} value={value === undefined ? 'undefined' : value?.toString()}/>
+        <TextAndLabel {...rest} attribute={attribute} value={value?.toString()} labelDisplay={fieldDefn.labelDisplay}/> :
+        <Text {...rest} attribute={attribute} value={value === undefined ? 'undefined' : value?.toString()}/>
 }
 
-export function SimpleStatusView<Main>({rootId, main, fieldDefn, showLabel}: ViewComponentProps<Main, boolean>) {
+export function SimpleStatusView<Main>({main, fieldDefn, showLabel, ...rest}: ViewComponentProps<Main, boolean>) {
     const {Status} = useRenderers();
     const {Status: StatusAndLabel} = useAttributeValueComponents();
     const lens: LensAndPath<Main, boolean> = fieldDefn.lens;
@@ -63,8 +63,8 @@ export function SimpleStatusView<Main>({rootId, main, fieldDefn, showLabel}: Vie
     const attribute = findAttribute(lens)
 
     return showLabel ?
-        <StatusAndLabel rootId={rootId} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
-        <Status rootId={rootId} attribute={attribute} value={value}/>
+        <StatusAndLabel {...rest} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
+        <Status {...rest} attribute={attribute} value={value}/>
 }
 
 export const SimpleViewComponents: ViewComponents = {

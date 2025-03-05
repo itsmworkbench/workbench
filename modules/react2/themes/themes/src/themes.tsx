@@ -45,7 +45,8 @@ export const commonDataLayoutStyles: DataLayoutStyles = {
     dataLayoutItem: {
         flex: 1,  // Allow items to fill row space
         // padding: "0.5rem",
-        borderRadius: "4px",
+        borderRadius: "2px",
+        marginTop: "0px",
         whiteSpace: "break-spaces",  // Keep line breaks within items
     },
     mouseOverColor: "#f0f0f0",
@@ -61,15 +62,29 @@ export type ObjectDefnTheme = {
 export const commonObjectDefnTheme: ObjectDefnTheme = {
     notSelected: {
         border: 'none',
-        padding: '2px', // optional: add some padding so the border doesn't clash with the content
+        padding: '0px', // optional: add some padding so the border doesn't clash with the content
         display: 'inline-block',
+        width: '100%',
     },
     selected: {
         border: '2px solid #e0e0e0',
         padding: '2px', // optional: add some padding so the border doesn't clash with the content
         display: 'inline-block',
+        width: '100%',
     }
 
+}
+
+export type ButtonStyles = Record<'icon', CSSProperties>
+export const commonButtonStyles: ButtonStyles = {
+    icon: {
+        border: "none",
+        backgroundColor: "transparent",
+        cursor: "pointer",
+        verticalAlign: "middle",
+        color: "gray",
+        padding: "0 1px",
+    }
 }
 
 export type Theme = {
@@ -79,6 +94,7 @@ export type Theme = {
     renderer: RendererStyles
     dataLayout: DataLayoutStyles
     objectDefn: ObjectDefnTheme
+    buttonStyles: ButtonStyles
 }
 
 export const commonLink: CSSProperties = {
@@ -109,6 +125,10 @@ export const commonRendererStyles: RendererStyles = {
     text: {
         color: "#262626",
         fontSize: "14px",
+        display: 'inline-flex', //to support the clipboard button
+        alignItems: 'center',
+        width: '100%',
+        overflowWrap: "anywhere"
     },
     headerLink: {
         ...commonLink,
@@ -119,6 +139,8 @@ export const commonRendererStyles: RendererStyles = {
     link: {
         ...commonLink,
         fontSize: "16px",
+        display: 'inline-flex', //to support the clipboard button
+        alignItems: 'center',
     },
 };
 export const themeForTests: Theme = {
@@ -130,6 +152,7 @@ export const themeForTests: Theme = {
     renderer: commonRendererStyles,
     dataLayout: commonDataLayoutStyles,
     objectDefn: commonObjectDefnTheme,
+    buttonStyles: commonButtonStyles,
 };
 
 

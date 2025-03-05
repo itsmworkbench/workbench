@@ -6,11 +6,11 @@ import { useCommonComponents } from "@itsmworkbench/common_components";
 
 
 // Explicitly use Render<string> to handle URL rendering
-export const SimpleUrlRenderer: Render<string> = ({ attribute, rootId, value, label, icon }: RenderProps<string>) => {
+export const SimpleUrlRenderer: Render<string> = ({ attribute, rootId, value, label, icon,clipboard }: RenderProps<string>) => {
     const id = idFrom(rootId, attribute);
     const styles = useTheme().renderer.link;
     const linkHover = useTheme().dataLayout.linkMouseOverColor;
-
+    const {ClipboardButton} = useCommonComponents()
     const isValidUrl = (url: string) => {
         try {
             new URL(url);
@@ -38,6 +38,7 @@ export const SimpleUrlRenderer: Render<string> = ({ attribute, rootId, value, la
                 {icon && icon()}
                 {label || displayUrl}
             </a>
+            {clipboard && <ClipboardButton text={value} />}
         </MouseOver>
     );
 };

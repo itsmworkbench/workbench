@@ -50,7 +50,7 @@ export type LoadAiSuggestionProps = {
 export async function loadAiSuggestion({kaDetails, ticket, chatCompletion}: LoadAiSuggestionProps): Promise<ErrorsOr<string>> {
     // if (kaDetails.length === 0) return {errors: ['Cannot use AI to select a KA as there are no KAs']}
     const prompt = makePrompt2(kaDetails, ticket)
-    const res = await chatCompletion([{role: 'assistant', content: prompt}])
+    const res = await chatCompletion([{role: 'system', content: prompt}])
     return mapErrorsOr(res, r => r.content)
 }
 

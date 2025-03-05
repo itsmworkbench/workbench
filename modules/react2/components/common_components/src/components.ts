@@ -8,6 +8,7 @@ import {NavigatorPanelLayout, OneNavigatorPanel, SimpleNavigatorPanel, SimpleNav
 import {SimpleTwoColumnAndRestLayout, TwoColumnAndRestLayout} from "@itsmworkbench/layouts";
 import {PanelsInARow, PanelWithWidth, SimplePanelsInARow, SimplePanelWithWidth} from "@itsmworkbench/rows_and_panels";
 import {LoadingDisplay, simpleLoadingDisplay} from "@itsmworkbench/loading";
+import {ClipboardButton, SimpleClipboardButton} from "@itsmworkbench/buttons";
 
 const componentsFlagName = "commonCommonComponents";
 const componentsFeatureFlag: FeatureFlag = {
@@ -29,6 +30,7 @@ export type CommonComponents = {
     PanelWithWidth: PanelWithWidth
     PanelsInARow: PanelsInARow
     LoadingDisplay: LoadingDisplay
+    ClipboardButton: ClipboardButton
 }
 export const commonComponents: CommonComponents = {
     SelectableButton: SimpleSelectableButton,
@@ -42,7 +44,8 @@ export const commonComponents: CommonComponents = {
     TwoColumnAndRestLayout: SimpleTwoColumnAndRestLayout,
     PanelWithWidth: SimplePanelWithWidth,
     PanelsInARow: SimplePanelsInARow,
-    LoadingDisplay: simpleLoadingDisplay
+    LoadingDisplay: simpleLoadingDisplay,
+    ClipboardButton: SimpleClipboardButton
 
 };
 export const {use: useCommonComponents, Provider: CommonComponentsProvider} = makeContextFor<CommonComponents, "commonComponents">("commonComponents", commonComponents);

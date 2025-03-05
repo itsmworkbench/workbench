@@ -2,7 +2,8 @@ import React, {useMemo, useState} from "react";
 import {ViewObjectFromDefn} from "@itsmworkbench/viewobject";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 import {PhaseName, PhaseStatus} from "@itsmworkbench/domain";
-import {KnowledgeArticle, phaseStatusObjectDefn} from "@itsmworkbench/knowledgearticle";
+import {KADetails, KnowledgeArticle, phaseStatusObjectDefn} from "@itsmworkbench/knowledgearticle";
+import {GetterSetter} from "@itsmworkbench/react_utils";
 
 export type DisplayKnowledgeArticleStatusProps = {
     ka: KnowledgeArticle
@@ -50,6 +51,21 @@ export function DisplayPhaseAction(props: DisplayPhaseDetailsProps) {
     const {ka, phaseName, action} = props
     const actionDetails = ka.actions?.[phaseName]?.[action]
     return <pre>{JSON.stringify(actionDetails, null, 2)}</pre>
+}
 
+export type KadsProps = {
+    selectedKadOps: GetterSetter<KADetails>
+}
 
+export function DisplayKads({selectedKadOps}: KadsProps) {
+    const [selPhase, setSelPhase] = useState<string | undefined>(undefined)
+    const [selAction, setSelAction] = useState<string | undefined>(undefined)
+    const [selectedKad, setSelect] = selectedKadOps
+    return <>   {selectedKad?.ka && <DisplayKnowledgeArticleStatus ka={selectedKad.ka} status={{} as PhaseStatus} onClick={(phase, action) => {
+        setSelPhase(phase)
+        setSelAction(action)
+    }}/>}
+        {selectedKad?.ka && selPhase && selAction && <DisplayPhaseAction ka={selectedKad.ka} phaseName={selPhase as PhaseName} action={selAction}/>}
+        {/*<pre style={{overflowWrap: "anywhere",whiteSpace: "pre-wrap",}}>{JSON.stringify(selectedKad)}</pre>*/}
+    </>
 }

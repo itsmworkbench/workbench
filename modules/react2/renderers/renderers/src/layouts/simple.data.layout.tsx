@@ -19,17 +19,33 @@ export const SimpleDataLayout: DataLayout = ({rootId, layout, children, classNam
         }
         childIndex += itemsInRow;
     }
+
+    // Handle extra children by displaying them one per row
+    while (childIndex < childrenArray.length) {
+        rows.push([childrenArray[childIndex]]);
+        childIndex++;
+    }
+
     const {BgMouseOver} = useCommonComponents();
+
     return (
         <BgMouseOver bgHover={"var(--bg-hover-color)"}>
             <div
                 data-testid={`${rootId}-data-layout`}
                 className={className || "layout-container"}
-                role="presentation" // Suppresses unwanted semantics
+                role="presentation"
                 style={styles.dataLayoutContainer}
             >
                 {rows.map((row, rowIndex) => (
-                    <div className="simple_data_rows" key={rowIndex} role="row" style={{...styles.dataLayoutRow, ...(row.length > 1 ? {display: "flex"} : null)}}>
+                    <div
+                        className="simple_data_rows"
+                        key={rowIndex}
+                        role="row"
+                        style={{
+                            ...styles.dataLayoutRow,
+                            display: row.length > 1 ? "flex" : "block"
+                        }}
+                    >
                         {row.map((child, colIndex) =>
                                 child && (
                                     <div key={colIndex} role="cell" style={{...styles.dataLayoutItem, marginTop: "4px"}}>

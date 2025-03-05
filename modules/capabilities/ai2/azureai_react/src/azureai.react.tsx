@@ -1,5 +1,5 @@
 import React from 'react'
-import {ChatCompletionProvider} from "@itsmworkbench/ai2_react";
+import {ChatCompletionProvider, useRememberChatCompletionFn} from "@itsmworkbench/ai2_react";
 import {useSecretData} from "@itsmworkbench/secrets";
 import {aiDebugName, ChatCompletionFn, ChatCompletionMessage} from "@itsmworkbench/ai2";
 import {useServiceCaller} from "@itsmworkbench/react_service_caller";
@@ -24,6 +24,7 @@ export const rawHeaders: NameAnd<string> = {
 
 export function AzureChatCompletionProvider({children, authName = 'azureai', url = 'https://api.openai.com/v1/chat/completions'}: AzureChatCompletionProviderProps) {
     const serviceCaller = useServiceCaller()
+    const remember = useRememberChatCompletionFn()
     const authFn = useAuthFn()
     const [secretData] = useSecretData()
     const debug = useDebug(aiDebugName)
@@ -36,7 +37,7 @@ export function AzureChatCompletionProvider({children, authName = 'azureai', url
             messages: request
         }
         debug('AzureChatCompletionProvider', request, body)
-        const result: Promise<ErrorsOr<ChatCompletionMessage>> = flatMapErrorsOrK(await authFn(authName), async ({auth, authPlugin}) => {
+        const result: ErrorsOr<ChatCompletionMessage> = await flatMapErrorsOrK(await authFn(authName), async ({auth, authPlugin}) => {
             const sr: ServiceRequest<ChatCompletionResponse> = {
                 method: 'POST',
                 url: await authPlugin.modifyUrl(decrypt, url, auth),
@@ -48,11 +49,12 @@ export function AzureChatCompletionProvider({children, authName = 'azureai', url
                 async res => {
                     debug('AzureChatCompletionProvider', 'res', res)
                     const choices = res.body.choices
-                    const result =  !choices || choices.length === 0 ? {errors: ['No choices in response']} : {value: choices[0].message};
-                    debug ('AzureChatCompletionProvider', 'result', result)
+                    const result = !choices || choices.length === 0 ? {errors: ['No choices in response']} : {value: choices[0].message};
+                    debug('AzureChatCompletionProvider', 'result', result)
                     return result
                 })
         })
+        remember(request, result)
         return result
     }, [authFn, serviceCaller, secretData]);
     return <ChatCompletionProvider chatCompletion={completion}>{children}</ChatCompletionProvider>

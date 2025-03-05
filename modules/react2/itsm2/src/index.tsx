@@ -34,7 +34,7 @@ import {LanguageProvider} from "@itsmworkbench/language";
 import {NameAnd} from "@itsmworkbench/utils";
 import {DevmodeSecretData, SecretDataProvider} from "@itsmworkbench/secrets";
 import {AuthenticationSovereignPagePlugin} from "@itsmworkbench/authentication_sovereign";
-import {defaultSecretData} from "@itsmworkbench/authentication";
+import {authenticationDebugName, defaultSecretData} from "@itsmworkbench/authentication";
 import {ServiceCallerProvider} from "@itsmworkbench/react_service_caller";
 import {axiosServiceCaller} from "@itsmworkbench/axios_service_caller";
 import {AuthFnProviderFromUrlStore} from "@itsmworkbench/react_authentication";
@@ -43,12 +43,14 @@ import {aiDebugName, showAiPromptsFFName} from "@itsmworkbench/ai2";
 import {emptyItsmState, ItsmStateProvider} from "@itsmworkbench/itsm_state";
 import {objectDefnDebugName} from "@itsmworkbench/object_defn";
 import {YamlProvider} from "@itsmworkbench/components";
+import {DevModeAi, RememberChatCompletionProvider} from "@itsmworkbench/ai2_react";
 
 const debugState = {
     [authenticateDebug]: false,
     [routingDebug]: false,
-    [aiDebugName]: false,
-    [objectDefnDebugName]: false
+    [aiDebugName]: true,
+    [objectDefnDebugName]: false,
+    [authenticationDebugName]: false
 };
 
 const featureFlags: FeatureFlags = {
@@ -87,7 +89,7 @@ const sovereignStatePlugins: SovereignStatePlugins = {
         examineKnowledgeArticles: KnowledgeArticleSovereignPagePlugin,
         authentication: AuthenticationSovereignPagePlugin,
         itsm: ItsmSovereignPagePlugin,
-        askForHelp:makeSovereignStatePlugin(() => <span>Ask For Help</span>),
+        askForHelp: makeSovereignStatePlugin(() => <span>Ask For Help</span>),
     },
     UnknownDisplay: SimpleUnknownDisplay
 }
@@ -111,7 +113,8 @@ const devModeComponents: NameAnd<() => React.ReactElement> = {
     FeatureFlags: DevModeFeatureFlags,
     Translate: DevModeTranslate,
     SecretData: DevmodeSecretData,
-    [itsmState]: DevModeItsmState
+    [itsmState]: DevModeItsmState,
+    AI: DevModeAi
 };
 
 
@@ -119,58 +122,60 @@ msal.initialize({}).then(() => {
 //we set up here: how we display the components, how we do state management and how we do authentication
 
     root.render(<React.StrictMode>
-        <YamlProvider yamlCapability={jsYaml()}>
-            <NonFunctionalsProvider debugState={debugState} featureFlags={featureFlags} errorReporter={consoleErrorReporter}>
-                <WindowUrlProvider>
-                    <ServiceCallerProvider serviceCaller={axiosServiceCaller}>
-                        <SecretDataProvider secretData={defaultSecretData()}>
-                            <DevModeComponentsProvider components={devModeComponents}>
-                                <ItsmStateProvider state={emptyItsmState}>
-                                    <UrlStoreProvider urlStore={urlStore}>
-                                        <AuthFnProviderFromUrlStore>
-                                            <AzureChatCompletionProvider>
-                                                <AttributeValueProvider renderers={allRenderers} AttributeValueLayout={SimpleAttributeValueLayout} DataLayout={SimpleDataLayout}>
-                                                    <SystemsProvider systems={mockSystems}>
-                                                        <TicketSourceProvider ticketSource={AllTicketSources(mockTickets)}>
-                                                            <DebugStateProvider debugState={debugState}>
-                                                                <SovereignStatePluginsProvider plugins={sovereignStatePlugins}>
-                                                                    <SovereignStateProvider>
-                                                                        <LanguageProvider language='en'>
-                                                                            <TranslationUsedAndNotFoundProvider usedAndNotFound={emptyUsedAndNotFound()}>
-                                                                                <SimpleTranslationProvider translation={itsmTranslation}>
-                                                                                    <ThemeProvider themes={allThemes}>
-                                                                                        <DevModeStateForSearchProvider devModeState={{selected: '', visible: ''}}>
-                                                                                            {/*<AuthenticationProvider loginConfig={login}>*/}
-                                                                                            {/*    <Authenticate>*/}
-                                                                                            <SovereignAppComponentsProvider sovereignAppComponents={SimpleSovereignAppComponents}>
-                                                                                                <WizardComponentsProvider wizardComponents={SimpleWizardComponents}>
-                                                                                                    <SovereignApp/>
-                                                                                                </WizardComponentsProvider>
-                                                                                            </SovereignAppComponentsProvider>
+            <YamlProvider yamlCapability={jsYaml()}>
+                <NonFunctionalsProvider debugState={debugState} featureFlags={featureFlags} errorReporter={consoleErrorReporter}>
+                    <WindowUrlProvider>
+                        <ServiceCallerProvider serviceCaller={axiosServiceCaller}>
+                            <SecretDataProvider secretData={defaultSecretData()}>
+                                <DevModeComponentsProvider components={devModeComponents}>
+                                    <ItsmStateProvider state={emptyItsmState}>
+                                        <UrlStoreProvider urlStore={urlStore}>
+                                            <AuthFnProviderFromUrlStore>
+                                                <RememberChatCompletionProvider remember={[]}>
+                                                    <AzureChatCompletionProvider>
+                                                        <AttributeValueProvider renderers={allRenderers} AttributeValueLayout={SimpleAttributeValueLayout} DataLayout={SimpleDataLayout}>
+                                                            <SystemsProvider systems={mockSystems}>
+                                                                <TicketSourceProvider ticketSource={AllTicketSources(mockTickets)}>
+                                                                    <DebugStateProvider debugState={debugState}>
+                                                                        <SovereignStatePluginsProvider plugins={sovereignStatePlugins}>
+                                                                            <SovereignStateProvider>
+                                                                                <LanguageProvider language='en'>
+                                                                                    <TranslationUsedAndNotFoundProvider usedAndNotFound={emptyUsedAndNotFound()}>
+                                                                                        <SimpleTranslationProvider translation={itsmTranslation}>
+                                                                                            <ThemeProvider themes={allThemes}>
+                                                                                                <DevModeStateForSearchProvider devModeState={{selected: '', visible: ''}}>
+                                                                                                    {/*<AuthenticationProvider loginConfig={login}>*/}
+                                                                                                    {/*    <Authenticate>*/}
+                                                                                                    <SovereignAppComponentsProvider sovereignAppComponents={SimpleSovereignAppComponents}>
+                                                                                                        <WizardComponentsProvider wizardComponents={SimpleWizardComponents}>
+                                                                                                            <SovereignApp/>
+                                                                                                        </WizardComponentsProvider>
+                                                                                                    </SovereignAppComponentsProvider>
 
-                                                                                            {/*</Authenticate>*/}
-                                                                                            {/*</AuthenticationProvider>*/}
-                                                                                        </DevModeStateForSearchProvider>
-                                                                                    </ThemeProvider>
-                                                                                </SimpleTranslationProvider>
-                                                                            </TranslationUsedAndNotFoundProvider>
-                                                                        </LanguageProvider>
-                                                                    </SovereignStateProvider>
-                                                                </SovereignStatePluginsProvider>
-                                                            </DebugStateProvider>
-                                                        </TicketSourceProvider>
-                                                    </SystemsProvider>
-                                                </AttributeValueProvider>
-                                            </AzureChatCompletionProvider>
-                                        </AuthFnProviderFromUrlStore>
-                                    </UrlStoreProvider>
-                                </ItsmStateProvider>
-                            </DevModeComponentsProvider>
-                        </SecretDataProvider>
-                    </ServiceCallerProvider>
-                </WindowUrlProvider>
-            </NonFunctionalsProvider>
-        </YamlProvider>
+                                                                                                    {/*</Authenticate>*/}
+                                                                                                    {/*</AuthenticationProvider>*/}
+                                                                                                </DevModeStateForSearchProvider>
+                                                                                            </ThemeProvider>
+                                                                                        </SimpleTranslationProvider>
+                                                                                    </TranslationUsedAndNotFoundProvider>
+                                                                                </LanguageProvider>
+                                                                            </SovereignStateProvider>
+                                                                        </SovereignStatePluginsProvider>
+                                                                    </DebugStateProvider>
+                                                                </TicketSourceProvider>
+                                                            </SystemsProvider>
+                                                        </AttributeValueProvider>
+                                                    </AzureChatCompletionProvider>
+                                                </RememberChatCompletionProvider>
+                                            </AuthFnProviderFromUrlStore>
+                                        </UrlStoreProvider>
+                                    </ItsmStateProvider>
+                                </DevModeComponentsProvider>
+                            </SecretDataProvider>
+                        </ServiceCallerProvider>
+                    </WindowUrlProvider>
+                </NonFunctionalsProvider>
+            </YamlProvider>
         </React.StrictMode>
     );
 })

@@ -14,6 +14,7 @@ import {EditObjectFromDefn} from "@itsmworkbench/editobject";
 import {defaultKnowledgeArticleDetails, detailsToKnowledgeArticle, findKaDetails, KADetails, KnowledgeArticleDetails, knowledgeArticleDetailsObjectDefn} from "@itsmworkbench/knowledgearticle";
 import {WizardPrevButton} from "@itsmworkbench/wizard/src/simple.wizard.next.prev.footer";
 import {ItsmState, useItsmState, useItsmStateKaDetails} from "@itsmworkbench/itsm_state";
+import {DisplayKads} from "@itsmworkbench/react_knowledgearticle";
 
 
 function makePromptFor(kad: KADetails) {
@@ -142,8 +143,7 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
             <EditObjectFromDefn showLabel={true} rootId='new-knowledge-article' mainOps={kadOps} objectDefn={knowledgeArticleDetailsObjectDefn}/>
             <WizardPrevButton steps={steps} stepOps={stepOps}/>
             <button disabled={!valid} onClick={submit}>Finished</button>
-            <h1>Ka Details</h1>
-            <pre>{JSON.stringify(kadDetails, null, 2)}</pre>
+            <DisplayKads selectedKadOps={kaDetailsOps}/>
         </div>
     </>
 

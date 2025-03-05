@@ -1,12 +1,13 @@
 import React from "react";
-import { idFrom, Render } from "../renderers";
+import {idFrom, Render} from "../renderers";
+import {useCommonComponents} from "@itsmworkbench/common_components";
 
-export const SimpleJsonRenderer: Render<any> = ({ rootId, attribute, value }) => {
+export const SimpleJsonRenderer: Render<any> = ({rootId, attribute, value, clipboard}) => {
     const id = idFrom(rootId, attribute);
-
+    const {ClipboardButton} = useCommonComponents();
     const formattedValue = JSON.stringify(value, null, 2) || "null";
 
-    return (
+    return (<>
         <pre
             id={id}
             data-testid={id}
@@ -23,5 +24,6 @@ export const SimpleJsonRenderer: Render<any> = ({ rootId, attribute, value }) =>
         >
             {formattedValue}
         </pre>
+            {clipboard && <ClipboardButton text={formattedValue}/>}</>
     );
 };

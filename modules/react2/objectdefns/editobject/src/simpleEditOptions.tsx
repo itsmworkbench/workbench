@@ -1,26 +1,25 @@
-
-import {useAttributeValueOrientation} from "@itsmworkbench/renderers";
+import {SimpleAttributeValueLayout, useAttributeValueOrientation} from "@itsmworkbench/renderers";
 import {useTranslation} from "@itsmworkbench/translation";
 import {camelCaseToWords} from "@itsmworkbench/utils";
 import {makeGetterSetterFrom} from "@itsmworkbench/react_utils";
 import React from "react";
-import { EditComponentWithOptionsProps } from "./simpleEditComponents";
+import {EditComponentWithOptionsProps} from "./simpleEditComponents";
 
 export function SimpleEditOptions<Main>(props: EditComponentWithOptionsProps<Main, string>) {
-    const { showLabel, fieldName, fieldDefn, rootId, mainOps, prefix, options } = props;
-    const { editable, fieldType, lens } = fieldDefn;
+    const {showLabel, fieldName, fieldDefn, rootId, mainOps, prefix, options} = props;
+    const {editable, fieldType, lens} = fieldDefn;
     const orientation = useAttributeValueOrientation();
     const translation = useTranslation();
     const text = prefix ? translation(`${prefix}.${fieldName}`) : camelCaseToWords(fieldName);
 
-    if (editable===false) {
+    if (editable === false) {
         throw new Error(`Field ${fieldType} is not editable`);
     }
 
     const [value, setValue] = makeGetterSetterFrom(mainOps, lens);
 
     return (
-        <div className={`simple-options-editor-string-container ${orientation}`}>
+        <SimpleAttributeValueLayout orientation={orientation}>
             {showLabel && (
                 <label htmlFor={rootId} className="simple-options-editor-string-label">
                     {text}
@@ -40,6 +39,6 @@ export function SimpleEditOptions<Main>(props: EditComponentWithOptionsProps<Mai
                     </option>
                 ))}
             </select>
-        </div>
+        </SimpleAttributeValueLayout>
     );
 }

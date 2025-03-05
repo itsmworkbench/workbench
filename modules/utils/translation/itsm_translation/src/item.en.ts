@@ -76,5 +76,9 @@ export const itsmTranslation = {
             display: 'Oops! Something went wrong.\n An unknown url was requested\n\n',
             reload: 'Start again',
         }
+    },
+    ticket:{
+        variables: 'Variables'
+
     }
 }

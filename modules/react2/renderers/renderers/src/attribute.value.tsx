@@ -49,7 +49,7 @@ type AttributeValueRendererProps<T> = RenderProps<T> & {
     AttributeValueLayout: AttributeValueLayout
 }
 
-function AttributeValueRenderer<T>({Renderer, rootId, attribute, value, AttributeValueLayout, orientation, labelDisplay}: AttributeValueRendererProps<T>) {
+function AttributeValueRenderer<T>({Renderer, rootId, attribute, value, AttributeValueLayout, orientation, labelDisplay,clipboard}: AttributeValueRendererProps<T>) {
     const id = idFrom(rootId, attribute);
     const translation = useTranslation();
     const {Label} = useRenderers();
@@ -68,7 +68,7 @@ function AttributeValueRenderer<T>({Renderer, rootId, attribute, value, Attribut
     return (
         <AttributeValueLayout data-testid={`${id}-av`} orientation={orientation || defaultOrientation}>
             {label && <Label rootId={rootId} attribute={attribute} value={label}/>}
-            <Renderer rootId={rootId} attribute={attribute} value={value}/>
+            <Renderer rootId={rootId} attribute={attribute} value={value} clipboard={clipboard}/>
         </AttributeValueLayout>
     );
 }

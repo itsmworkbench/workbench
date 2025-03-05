@@ -14,4 +14,13 @@ export interface ChatCompletionMessage {
 
 export type ChatCompletionFn = (req: ChatCompletionMessage[]) => Promise<ErrorsOr<ChatCompletionMessage>>;
 
+export type RememberChatCompletion = {
+    req: ChatCompletionMessage[],
+    res: ErrorsOr<ChatCompletionMessage>
+}
+
+export type RememberChatCompletionFn = (req: ChatCompletionMessage[], res:  ErrorsOr<ChatCompletionMessage>) => void;
+export const noRememberChatCompletion: RememberChatCompletionFn = () => {}
+
+
 

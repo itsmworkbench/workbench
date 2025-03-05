@@ -1,0 +1,24 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/buttons",
+  "description": "Buttons for the itsmworkbench",
+  "links": [
+    "@itsmworkbench/login",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/translation"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

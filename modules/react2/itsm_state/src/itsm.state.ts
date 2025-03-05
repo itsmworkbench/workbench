@@ -11,6 +11,7 @@ export type ItsmState = {
     ticket: Ticket
     ka: KADetails
     status: PhaseStatus
+
 }
 export const emptyItsmState: ItsmState = {system: '', source: '', ticket: {} as Ticket, ka: {} as KADetails, status: {} as PhaseStatus}
 
@@ -18,5 +19,6 @@ export const {use: useItsmState, Provider: ItsmStateProvider} = makeContextForSt
 export const useItsmStateSource = makeUseStateChild(useItsmState, id => id.focusOn('source'))
 export const useItsmStateSystem = makeUseStateChild(useItsmState, id => id.focusOn('system'))
 export const useItsmStateTicket = makeUseStateChild(useItsmState, id => id.focusOn('ticket'))
+export const useItsmStateTicketAttributes = makeUseStateChild(useItsmState, id => id.focusOn('ticket').focusOn('attributes'))
 export const useItsmStateKaDetails = makeUseStateChild(useItsmState, id => id.focusOn('ka'))
 export const useItsmStateStatus = makeUseStateChild(useItsmState, id => id.focusOn('status'))

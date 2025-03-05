@@ -13,7 +13,7 @@ export type LoadingErrorsOrProps<Input, Output> = {
     onLoad?: (output: Output) => void;
     children: (output: Output) => React.ReactNode;
 }
-
+const emptyUnMount = () => {}
 /**
  * The top-level function:
  * - Unconditionally calls hooks.
@@ -26,7 +26,7 @@ export function LoadingErrorsOr<Input, Output>({
                                                    Error = defaultError,
                                                    children,
                                                    onLoad,
-                                                   onUnmount = () => {},
+                                                   onUnmount = emptyUnMount,
                                                }: LoadingErrorsOrProps<Input, Output>): React.ReactElement {
     function onLoadAdapter(output: ErrorsOr<Output>) {
         if (isValue(output))

@@ -14,6 +14,7 @@ export type EditComponentProps<Main, T> = {
     prefix?: string //if present we translate the name
     fieldDefn: FieldDefn<Main, T>
     showLabel?: boolean
+    clipboard?: boolean
 }
 export type EditComponent<T> = <Main, >(props: EditComponentProps<Main, T>) => React.ReactElement
 

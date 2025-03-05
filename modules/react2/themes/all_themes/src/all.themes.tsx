@@ -1,6 +1,6 @@
 import {OptionsFeatureFlag} from "@itsmworkbench/react_utils";
 import {Theme} from "@itsmworkbench/themes";
-import {itsmTheme} from "@itsmworkbench/itsm_themes/src/itsm.theme";
+import {itsmTheme} from "@itsmworkbench/itsm_themes";
 
 
 export const allThemes: Record<string, Theme> = {
