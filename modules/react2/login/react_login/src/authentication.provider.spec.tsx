@@ -1,6 +1,6 @@
 import {render, screen} from "@testing-library/react";
 import React from "react";
-import {AuthenticationProvider, LoginConfig, useLogin, UserDataProvider, useUserData} from "./authentication.provider";
+import {AuthenticationProvider, useLogin, UserDataProvider, useUserData} from "./authentication.provider";
 import {DebugStateProvider} from "@itsmworkbench/react_utils";
 import userEvent from "@testing-library/user-event";
 import '@testing-library/jest-dom';

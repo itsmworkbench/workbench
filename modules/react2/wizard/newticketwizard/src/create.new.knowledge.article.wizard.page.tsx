@@ -22,7 +22,7 @@ function makePromptFor(kad: KADetails) {
 }
 
 async function makePrompt(urlStore: UrlStore, ntd: ItsmState) {
-    const kadse = await findKaDetails({urlStore,org: 'me',system: ntd.system})
+    const kadse = await findKaDetails({urlStore, org: 'me', system: ntd.system})
     const kaNames = mapErrorsOr(kadse, kads => kads.map(k => k.name))
     const rawPrompt = `
 I want you to give me a short name for a new knowledge article, and a description. The knowledge article is the 'abstraction' of a 
@@ -70,7 +70,6 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
                                                                              name,
                                                                              description,
                                                                              steps,
-                                                                             ops,
                                                                              stepOps,
                                                                              onFinish
                                                                          }: WizardPanelProps<Ticket>) => {
@@ -132,7 +131,7 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
         urlStore.save(url, ka).then(res => {
             if (hasErrors(res)) setErrors(res.join('\n'))
             else onFinish()
-        }).catch(e=>setErrors(e.message))
+        }).catch(e => setErrors(e.message))
     }
 
     const valid = kad.name && kad.description

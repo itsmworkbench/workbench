@@ -36,13 +36,12 @@ export function DisplayTicket({rootId, ticket}: DisplayTicketProps) {
     </DataLayout>
 }
 
-const emptyVariables=[]
+const emptyVariables = []
 
 export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
                                                                                 name,
                                                                                 description,
                                                                                 steps,
-                                                                                ops,
                                                                                 stepOps,
                                                                                 onFinish
                                                                             }: WizardPanelProps<Ticket>) => {
@@ -73,8 +72,7 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
         }
 
         function finish() {
-            onFinish()
-            setTicket({...ticket, attributes: attributeOps[0]})
+            onFinish({...ticket, attributes: attributeOps[0]})
         }
 
         return <div>

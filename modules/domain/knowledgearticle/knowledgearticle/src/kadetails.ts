@@ -5,13 +5,14 @@ import {ErrorsOr} from "@itsmworkbench/errors";
 
 export type KADetails = {
     name: string
+    id?: string
     descriptionOrError: string
     ka?: KnowledgeArticle
 }
 
 export function makeKaDetails(name: string, details: ErrorsAnd<NamedLoadResult<KnowledgeArticle>>): KADetails {
     if (hasErrors(details)) return {name, descriptionOrError: details.join('\n')}
-    return {name, descriptionOrError: details.result.description, ka: details.result}
+    return {name, descriptionOrError: details.result.description, ka: details.result, id: details.id}
 }
 
 export type KaDetailsProps = {

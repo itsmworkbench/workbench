@@ -13,7 +13,6 @@ export const CreateTicketWizardPage: WizardPanel<Ticket> = ({
                                                                 name,
                                                                 description,
                                                                 steps,
-                                                                ops,
                                                                 stepOps
                                                             }: WizardPanelProps<Ticket>) => {
     const {H1} = useRenderers()
