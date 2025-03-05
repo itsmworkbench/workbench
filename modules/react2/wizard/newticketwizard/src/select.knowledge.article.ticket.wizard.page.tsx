@@ -36,6 +36,7 @@ export function DisplayTicket({rootId, ticket}: DisplayTicketProps) {
     </DataLayout>
 }
 
+const emptyVariables=[]
 
 export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
                                                                                 name,
@@ -103,7 +104,7 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
             </div>
         </TwoColumnAndRestLayout>
         <TwoColumnAndRestLayout>
-            <LoadAndEditItsmTicketAttributes attributeNames={kaDetail.ka?.variables || []} ticket={ticket} rootId='itsm.ticket.attributes' attributeOps={attributeOps}/>
+            <LoadAndEditItsmTicketAttributes attributeNames={kaDetail.ka?.variables || emptyVariables} ticket={ticket} rootId='itsm.ticket.attributes' attributeOps={attributeOps}/>
         </TwoColumnAndRestLayout>
         <DisplayKads selectedKadOps={selectedKadOps}/>
     </>
