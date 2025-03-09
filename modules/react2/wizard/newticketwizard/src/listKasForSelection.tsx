@@ -1,7 +1,7 @@
 import {ChatCompletionFn} from "@itsmworkbench/ai2";
 import {ErrorsOr, mapErrorsOr} from "@itsmworkbench/errors";
 import React, {useMemo} from "react";
-import {useAttributeValueComponents} from "@itsmworkbench/renderers";
+import {useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderers";
 import {useUrlStore} from "@itsmworkbench/reacturlstore";
 import {GetterSetter} from "@itsmworkbench/react_utils";
 import {useCommonComponents} from "@itsmworkbench/common_components";
@@ -11,6 +11,7 @@ import {findKaDetails, KADetails, KaDetailsProps} from "@itsmworkbench/knowledge
 import {ItsmState} from "@itsmworkbench/itsm_state";
 import {LoadingErrorsOr} from "@itsmworkbench/loading";
 import {Ticket} from "@itsmworkbench/tickets";
+import {useTranslation} from "@itsmworkbench/translation";
 
 
 export type AiSuggestedKaProps = {
@@ -61,17 +62,21 @@ export type ListKa2Props = {
     selectedRowOps: GetterSetter<number>
     onSelect: (ka: KADetails) => void
     onLoad: (kas: KADetails[]) => void
-
+    children?: React.ReactNode
 }
 
 
-export function ListKasForSelection2({organisation, system, onLoad, onSelect, selectedRowOps}: ListKa2Props) {
+export function ListKasForSelection2({organisation, system, onLoad, onSelect, selectedRowOps, children}: ListKa2Props) {
     const urlStore = useUrlStore();
     const kaDetailsQuery: KaDetailsProps = useMemo(() => ({org: organisation, system, urlStore}), [organisation, system, urlStore])
     const {Table} = useCommonComponents()
+    const {H1} = useRenderers()
+    const translate=useTranslation()
     const {DataLayout} = useAttributeValueComponents()
     return <LoadingErrorsOr input={kaDetailsQuery} kleisli={findKaDetails} onLoad={onLoad}>{
         kaDetails => <DataLayout rootId={'list-kas'} layout={[1, 1, 1]}>
+            <H1 rootId={'listKas'} attribute='knowledgeArticle.title' value={translate('knowledgeArticles.title')}/>
+            {children}
             <Table titles={['Name', 'Description']} keys={['name', 'descriptionOrError']} data={kaDetails} onRowSelect={onSelect} selectedRowOps={selectedRowOps}/>
         </DataLayout>
     }</LoadingErrorsOr>

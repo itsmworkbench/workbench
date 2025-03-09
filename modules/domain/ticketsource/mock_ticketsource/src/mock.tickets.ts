@@ -11,7 +11,7 @@ export const hcl01347: Ticket = {
     summary: 'Update price of discombobulator',
     description: `
 Issue:
-* In the epx the discombobulator (item code 1234-44) has an incorrect price.
+* In the epx the discombobulator (item id 1234-44) has an incorrect price.
 * The prices is currently 55.55.
 * The price should be 44.44.
 

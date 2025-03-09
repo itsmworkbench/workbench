@@ -29,6 +29,7 @@ export const itsmTranslation = {
         secretData: 'Secret Data',
         secretDataInLocalStorage: 'Secret Data In Local Storage',
     },
+
     knowledgeArticle: {
         phase: {
             Approval: {title: 'Approval'},
@@ -38,7 +39,7 @@ export const itsmTranslation = {
             Review: {title: 'Review'},
         }
     },
-
+    knowledgeArticles:{title: 'Knowledge Articles'},
     login: {
         login: "Login",
         logout: "Logout",

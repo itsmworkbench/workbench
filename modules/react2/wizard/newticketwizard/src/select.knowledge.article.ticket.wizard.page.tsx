@@ -15,6 +15,7 @@ import {LoadingErrorsOr} from "@itsmworkbench/loading";
 import {LoadAndEditItsmTicketAttributes} from "@itsmworkbench/itsm_state/src/itsmTicketAttributes";
 import {NameAnd} from "@itsmworkbench/utils";
 import {aiDebugName} from "@itsmworkbench/ai2";
+import {justErrors} from "@itsmworkbench/loading/src/helpers";
 
 export type DisplayTicketProps = {
     rootId: string
@@ -65,11 +66,12 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
         setKaDetails(kads[index])
     }
 
+    function newKa() {
+        nextWizardStep(steps, stepOps)
+        setSelectedKaRow(undefined)
+    }
+
     function PrevNextNew() {
-        function newKa() {
-            nextWizardStep(steps, stepOps)
-            setSelectedKaRow(undefined)
-        }
 
         function finish() {
             onFinish({...ticket, attributes: attributeOps[0]})
@@ -78,10 +80,16 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
         return <div>
             <WizardPrevButton steps={steps} stepOps={stepOps}/>
             <button disabled={kads[selectedKaRow] === undefined} onClick={finish}>Finished</button>
-            <button onClick={newKa}>{translate('newTicket.newKa')}</button>
+
         </div>
     }
 
+    function selectAiSuggestion(data: string) {
+        const index = kads.findIndex(ka => ka.name === data)
+        if (index === -1) return
+        selectedKaRowOps[1](index)
+        setKaDetails(kads[index])
+    }
 
     return <>
         <TwoColumnAndRestLayout>
@@ -90,15 +98,20 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
                 <PrevNextNew/>
             </div>
             <div>
-                <button onClick={() => {
-                    selectedKaRowOps[1](-1)
-                    selectedKadOps[1](old => ({...old, ka: undefined}));
-                }}>{translate('newTicket.reset')}</button>
-                <LoadingErrorsOr input={aiSuggestionQuery} kleisli={loadAiSuggestion}>{data =>
-                    <div>Ai suggests: {data}
-                        <button onClick={useAiSelection(data)}>Use Ai Selection</button>
-                    </div>}</LoadingErrorsOr>
-                <ListKasForSelection2 organisation={'me'} system={newTicketData.system} selectedRowOps={selectedKaRowOps} onSelect={setKaDetails} onLoad={setKads}/>
+
+                <ListKasForSelection2 organisation={'me'} system={newTicketData.system} selectedRowOps={selectedKaRowOps} onSelect={setKaDetails} onLoad={setKads}>
+                    <span>Ai suggests: <LoadingErrorsOr input={aiSuggestionQuery} Error={justErrors} onLoad={selectAiSuggestion} kleisli={loadAiSuggestion}>{data =>
+                        <>{data}
+                            <button onClick={useAiSelection(data)}>Use Ai Selection</button>
+                        </>
+                    }</LoadingErrorsOr>
+                    </span>
+                    <button onClick={newKa}>{translate('newTicket.newKa')}</button>
+                    <button onClick={() => {
+                        selectedKaRowOps[1](-1)
+                        selectedKadOps[1](old => ({...old, ka: undefined}));
+                    }}>{translate('newTicket.reset')}</button>
+                </ListKasForSelection2>
             </div>
         </TwoColumnAndRestLayout>
         <TwoColumnAndRestLayout>

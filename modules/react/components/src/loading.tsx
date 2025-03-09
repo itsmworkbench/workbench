@@ -2,6 +2,6 @@ import React from "react";
 
 
 export function Loading(){
-  return <div>Loading...</div>
+  return <span>Loading...</span>
 
 }
