@@ -32,6 +32,7 @@ export type Renderers = {
     Json: Render<any>
     Date: Render<string>
     Url: Render<string>
+    Markdown: Render<string>
     H1: Render<string>
     H1WithIconAndUrl: Render<IconTitleAndUrl>
     H1WithUrl: Render<TitleAndUrl>

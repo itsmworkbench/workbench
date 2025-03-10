@@ -1,8 +1,7 @@
 import React from "react";
 import {RawThemeProvider, themeForTests} from "@itsmworkbench/themes";
-import {AttributeValueProvider, Renderers, SimpleAttributeValueLayout, SimpleDataLayout, SimpleDateRenderer, SimpleH1Renderer, SimpleH1WithIconAndUrlRenderer, SimpleH1WithUrlRenderer, SimpleH2Renderer, SimpleH3Renderer, SimpleJsonRenderer, SimpleLabelRenderer, SimpleTextRenderer, SimpleUrlRenderer} from "@itsmworkbench/renderers";
-import {StatusRenderer} from "@itsmworkbench/renderers/src/renderers/simple.status.renderer";
-
+import {AttributeValueProvider, Renderers, SimpleAttributeValueLayout, SimpleDataLayout, SimpleDateRenderer, SimpleH1Renderer, SimpleH1WithIconAndUrlRenderer, SimpleH1WithUrlRenderer, SimpleH2Renderer, SimpleH3Renderer, SimpleJsonRenderer, SimpleLabelRenderer, SimpleTextRenderer, SimpleUrlRenderer, StatusRenderer} from "@itsmworkbench/renderers";
+import {MarkdownRenderer} from "@itsmworkbench/markdown_renderers"
 
 export const allRenderers: Renderers = {
     Text: SimpleTextRenderer,
@@ -15,6 +14,7 @@ export const allRenderers: Renderers = {
     H1WithUrl: SimpleH1WithUrlRenderer,
     H2: SimpleH2Renderer,
     H3: SimpleH3Renderer,
+    Markdown: MarkdownRenderer,
     Status: StatusRenderer
 };
 type AllrenderersSimpleProviderProps = {

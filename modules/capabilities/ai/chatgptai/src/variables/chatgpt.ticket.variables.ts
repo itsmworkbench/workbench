@@ -11,12 +11,14 @@ export type OpenAiMessage = {
 export async function getResponse ( messages: OpenAiMessage[] ) {
   try {
 
+    const headers = {
+      'Authorization': `Bearer ${clientSecret}`,
+      'Content-Type': 'application/json'
+    };
+    console.log(headers)
     const response = await fetch ( 'https://api.openai.com/v1/chat/completions', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${clientSecret}`,
-        'Content-Type': 'application/json'
-      },
+      headers: headers,
       body: JSON.stringify ( {
         model: 'gpt-3.5-turbo',
         messages,

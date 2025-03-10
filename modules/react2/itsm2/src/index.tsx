@@ -44,6 +44,7 @@ import {emptyItsmState, ItsmStateProvider} from "@itsmworkbench/itsm_state";
 import {objectDefnDebugName} from "@itsmworkbench/object_defn";
 import {YamlProvider} from "@itsmworkbench/components";
 import {DevModeAi, RememberChatCompletionProvider} from "@itsmworkbench/ai2_react";
+import {InformationSovereignPane} from "@itsmworkbench/info_sovereign";
 
 const debugState = {
     [authenticateDebug]: false,
@@ -70,13 +71,13 @@ const login: LoginConfig = loginUsingMsal({msal});
 
 export const navPanels: NavigatorPanelDefns = {
     getStarted: {icon: 'getStarted', descriptionKey: 'nav.getStarted'},
-    newTicket: {icon: 'new', descriptionKey: 'nav.newTicket'},
-    activeTickets: {icon: 'active', descriptionKey: 'nav.activeTickets'},
-    historicalTickets: {icon: 'historical', descriptionKey: 'nav.historicalTickets'},
-    examineKnowledgeArticles: {icon: 'knowledge', descriptionKey: 'nav.examineKnowledgeArticles'},
+    newTicket: {icon: 'newTicket', descriptionKey: 'nav.newTicket'},
+    activeTickets: {icon: 'activeTickets', descriptionKey: 'nav.activeTickets'},
+    examineKnowledgeArticles: {icon: 'knowledgeArticles', descriptionKey: 'nav.examineKnowledgeArticles'},
     systems: {icon: 'systems', descriptionKey: 'nav.systems'},
-    healthCheck: {icon: 'health', descriptionKey: 'nav.healthCheck'},
-    authentication: {icon: 'authentication', descriptionKey: 'nav.authentication'},
+    healthCheck: {icon: 'heartbeat', descriptionKey: 'nav.healthCheck'},
+    authentication: {icon: 'key', descriptionKey: 'nav.authentication'},
+    automation: {icon: 'automation', descriptionKey: 'nav.automation'},
     askForHelp: {icon: 'help', descriptionKey: 'nav.askForHelp'},
 }
 
@@ -84,7 +85,7 @@ export const navPanels: NavigatorPanelDefns = {
 const sovereignStatePlugins: SovereignStatePlugins = {
     plugins: {
         home: HomeSovereignPagePlugin(navPanels),
-        getStarted: makeSovereignStatePlugin(() => <span>Get Started</span>),
+        getStarted: InformationSovereignPane('getStarted.info'),
         newTicket: NewTicketSovereignPanePlugin,
         examineKnowledgeArticles: KnowledgeArticleSovereignPagePlugin,
         authentication: AuthenticationSovereignPagePlugin,

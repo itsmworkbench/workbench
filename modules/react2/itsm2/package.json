@@ -21,6 +21,7 @@
     "@itsmworkbench/browserurlstore": "1.0.1",
     "@itsmworkbench/authentication_sovereign": "1.0.1",
     "@itsmworkbench/homesovereign": "1.0.1",
+    "@itsmworkbench/info_sovereign": "1.0.1",
     "@itsmworkbench/itsmsovereign": "1.0.1",
     "@itsmworkbench/itsm_state": "1.0.1",
     "@itsmworkbench/itsm_translation": "1.0.1",

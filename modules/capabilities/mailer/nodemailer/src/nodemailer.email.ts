@@ -39,7 +39,6 @@ export async function mailerFromConfig(config: any): Promise<Mailer> {
 export async function mailerFromUrlStore(urlStore: any, organisation: string, name: string): Promise<ErrorsAnd<Mailer>> {
     return mapErrorsK(await emailConfigFromUrlStore(urlStore, organisation, name),
         config => {
-
             console.log('config', config)
             return mailerFromConfig(config)
         })

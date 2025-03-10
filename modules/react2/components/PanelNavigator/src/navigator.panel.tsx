@@ -54,10 +54,9 @@ export function NavigatorPanel({panels, ...rest}: NavigatorPanelProps) {
     const {NavPanelLayout, NavPanel} = useCommonComponents()
     return <NavPanelLayout size={rest.size}>
         {Object.entries(panels).map(([key, panel]) => {
-            const Icon = DecorativeIcon(panel.icon);
+            const Icon = DecorativeIcon(panel.icon, {size: "medium"});
             const description = translate(panel.descriptionKey);
             return <NavPanel key={key} name={key} description={description} Icon={Icon} {...rest}/>
         })}
     </NavPanelLayout>;
 }
-

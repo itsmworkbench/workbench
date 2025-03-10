@@ -9,6 +9,7 @@
     "@itsmworkbench/browserurlstore",
     "@itsmworkbench/authentication_sovereign",
     "@itsmworkbench/homesovereign",
+    "@itsmworkbench/info_sovereign",
     "@itsmworkbench/itsmsovereign",
     "@itsmworkbench/itsm_state",
     "@itsmworkbench/itsm_translation",

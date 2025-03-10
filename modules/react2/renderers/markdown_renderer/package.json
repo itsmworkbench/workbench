@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/all_renderers",
-  "description": "One stop shopping for renderers",
+  "name": "@itsmworkbench/markdown_renderers",
+  "description": "Components that allow us to render a string in markdown",
   "version": "1.0.1",
   "browserslist": {
     "development": [
@@ -15,9 +15,7 @@
     ]
   },
   "dependencies": {
-    "dompurify": "^3.2.3",
-    "@itsmworkbench/errors": "1.0.1",
-    "@itsmworkbench/markdown_renderers": "1.0.1",
+    "markdown-to-jsx": "^7.7.3",
     "@itsmworkbench/renderers": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",

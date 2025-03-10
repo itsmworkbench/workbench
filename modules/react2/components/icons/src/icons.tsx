@@ -1,50 +1,68 @@
 import React from "react";
 import {Errors} from "@itsmworkbench/errors";
 import {makeContextFor} from "@itsmworkbench/react_utils";
+
 import {useTranslation} from "@itsmworkbench/translation";
 
-// Types for decorative and meaningful icons
-export type DecorativeIconFn = (name: string, type?: string) => Icon;
-export type MeaningfulIconFn = (name: string, purpose: string, type?: string) => Icon;
-export type IconProps = React.HTMLProps<HTMLImageElement>
-export type Icon = (props: IconProps) => React.ReactElement;
-
-// Icon context type to manage both types of icons
+export type IconSize = 'small' | 'medium' | 'large';
 export type IconContextData = {
     DecorativeIcon: DecorativeIconFn;
     MeaningfulIcon: MeaningfulIconFn;
 };
+const sizeToPixels: Record<IconSize, number> = {
+    small: 16,
+    medium: 32,
+    large: 64,
+};
 
-// Accessible descriptions for meaningful icons
+// Optional config that now includes both type and size
+export type IconConfig = {
+    type?: string;
+    size?: IconSize;
+};
 
-function calculatePath(name: string, type: string) {
-    return name.indexOf('.') === -1 ? `icons/${name}.${type || 'png'}` : name
+// Modified types for the icon functions
+export type DecorativeIconFn = (name: string, config?: IconConfig) => Icon;
+export type MeaningfulIconFn = (name: string, purpose: string, config?: IconConfig) => Icon;
+export type IconProps = React.HTMLProps<HTMLImageElement>
+export type Icon = (props: IconProps) => React.ReactElement;
+
+// Update calculatePath to accept an optional type, defaulting to 'png'
+function calculatePath(name: string, type?: string) {
+    const ext = type || 'png';
+    const withType= name.indexOf('.') === -1 ? `${name}.${ext}` : name;
+    const withPath = name.indexOf('/') === -1 ? `icons/${withType}` : withType;
+    return withPath
 }
 
 // Decorative icons (non-interactive)
-export const decorativeIconFn: DecorativeIconFn = (name: string, type): Icon =>
-    (props) => {
-        const path = calculatePath(name, type);
-        return <img
-            src={`icons/${path}`}
+export const decorativeIconFn: DecorativeIconFn = (name: string, config) => (props) => {
+    const path = calculatePath(name, config?.type);
+    const size = config?.size ? sizeToPixels[config.size] : undefined;
+    return (
+        <img
+            src={path}
             role="presentation"
+            style={size ? {width: size, height: size} : {}}
             {...props}
-        />;
-    };
+        />
+    );
+};
 
 // Meaningful icons (interactive or informative)
-export const meaningfulIconFn: MeaningfulIconFn = (name: string, purpose: string, type = 'png'): Icon =>
-    (props) => {
-        const translation = useTranslation()
-        const path = calculatePath(name, type);
-        return (
-            <img
-                src={`icons/${path}`}
-                alt={translation(purpose)}
-                {...props}
-            />
-        );
-    };
+export const meaningfulIconFn: MeaningfulIconFn = (name: string, purpose: string, config) => (props) => {
+    const translation = useTranslation();
+    const path = calculatePath(name, config?.type);
+    const size = config?.size ? sizeToPixels[config.size] : undefined;
+    return (
+        <img
+            src={path}
+            alt={translation(purpose)}
+            style={size ? {width: size, height: size} : {}}
+            {...props}
+        />
+    );
+};
 
 // Error handling for missing icons
 export const simpleRecover = (e: Errors): Icon => {

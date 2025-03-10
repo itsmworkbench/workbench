@@ -1,3 +1,5 @@
+import {gettingStartedEn} from "./getting.started.en";
+
 export const itsmTranslation = {
     common: {
         select: 'Select',
@@ -9,6 +11,12 @@ export const itsmTranslation = {
         credentials: {
             apiKey: 'ApiKey'
         }
+    },
+
+    createTicket:{
+        systems: 'Systems',
+        tickets: 'Tickets',
+        ticketSources:'Ticket Sources',
     },
 
     devMode: {
@@ -30,6 +38,10 @@ export const itsmTranslation = {
         secretDataInLocalStorage: 'Secret Data In Local Storage',
     },
 
+    getStarted:{
+
+        info:gettingStartedEn
+    },
     knowledgeArticle: {
         phase: {
             Approval: {title: 'Approval'},
@@ -37,7 +49,8 @@ export const itsmTranslation = {
             Close: {title: 'Close'},
             Resolve: {title: 'Resolve'},
             Review: {title: 'Review'},
-        }
+        },
+        table: 'Knowledge Articles',
     },
     knowledgeArticles:{title: 'Knowledge Articles'},
     login: {
@@ -51,11 +64,11 @@ export const itsmTranslation = {
         newTicket: "Start processing a new ticket.\n\nImport from servicenow or just create a new one",
         activeTickets: "Find your started but not finished tickets here",
         authentication: "Storing and managing your passwords and tokens",
-        historicalTickets: "All your completed tickets can be found here",
         systems: "Describe the systems and services you are working with, and how they are connected",
         healthCheck: "Validates that the systems you want to link to are working",
         examineKnowledgeArticles: "Knowledge articles describe how to solve common problems.\n\nNormally when processing a ticket after the first time you will be using a knowledge article",
         askForHelp: "When you are stuck, talk to a human here",
+        automation: "Automate the processing of tickets",
     },
     newTicket: {
         wizard: {

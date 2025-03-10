@@ -12,6 +12,7 @@ export const ClipHeight:ClipHeight = ({ children, maxHeight, scrollable = false,
     const containerStyle: CSSProperties = {
         maxHeight,  // Applies maxHeight normally
         overflowY: scrollable ? 'auto' : 'hidden',
+        overflowX: 'hidden',
         height: force ? maxHeight : undefined,  // Force exact height when 'force' is true
     };
 

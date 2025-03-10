@@ -5,10 +5,8 @@ import {useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderer
 import {useUrlStore} from "@itsmworkbench/reacturlstore";
 import {GetterSetter} from "@itsmworkbench/react_utils";
 import {useCommonComponents} from "@itsmworkbench/common_components";
-import {UrlStore} from "@itsmworkbench/urlstore";
 import {simpleTemplate} from "@itsmworkbench/utils";
 import {findKaDetails, KADetails, KaDetailsProps} from "@itsmworkbench/knowledgearticle";
-import {ItsmState} from "@itsmworkbench/itsm_state";
 import {LoadingErrorsOr} from "@itsmworkbench/loading";
 import {Ticket} from "@itsmworkbench/tickets";
 import {useTranslation} from "@itsmworkbench/translation";

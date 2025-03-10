@@ -6,6 +6,7 @@ import React, {ReactNode} from "react";
 import {useTheme} from "@itsmworkbench/themes";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 import {useDevModeState, useDevModeVisible} from "@itsmworkbench/devmode";
+import {useSelectedSovereign} from "../sovereign.selection.state";
 
 const headerLayoutStyles: React.CSSProperties = {
     display: 'flex',
@@ -34,9 +35,10 @@ export const SimpleSovereignHeader: SovereignHeader = ({}) => {
     const {header} = useTheme()
     const {logoStyle, logoUrl} = header
     const HomeIcon = MeaningfulIcon(logoUrl, 'icon.homepage');
+    const [sp, setSp] = useSelectedSovereign()
     return (
         <SimpleHeaderLayout>
-            <a href='/' title={translate('header.home')}>
+            <a onClick={() => setSp('')} title={translate('header.home')}>
                 <HomeIcon style={logoStyle}/>
             </a>
             {devModeVisible

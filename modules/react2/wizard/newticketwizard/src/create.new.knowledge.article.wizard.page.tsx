@@ -130,7 +130,7 @@ export const CreateNewKnowledgeArticleWizardPage: WizardPanel<Ticket> = ({
         if (!ka) throw new Error('No ka')
         urlStore.save(url, ka).then(res => {
             if (hasErrors(res)) setErrors(res.join('\n'))
-            else onFinish()
+            else onFinish(newTicketData.ticket)
         }).catch(e => setErrors(e.message))
     }
 
