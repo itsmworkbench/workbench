@@ -10,7 +10,9 @@ export type RendererStyles = {
     text: CSSProperties
     link: CSSProperties
     headerLink: CSSProperties
+
 }
+
 
 export type HeaderTheme = {
     logoUrl: string
@@ -87,6 +89,22 @@ export const commonButtonStyles: ButtonStyles = {
     }
 }
 
+export const commonNavHeader: CSSProperties = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '0.5rem 1rem',
+    borderBottom: '1px solid #ddd',
+    backgroundColor: '#556CD6'
+}
+export type NavStyles = {
+    navHeader: CSSProperties
+}
+export const commonNavStyles: NavStyles = {
+    navHeader: commonNavHeader
+}
+
+
 export type Theme = {
     name: string
     description: string
@@ -95,6 +113,7 @@ export type Theme = {
     dataLayout: DataLayoutStyles
     objectDefn: ObjectDefnTheme
     buttonStyles: ButtonStyles
+    navStyles: NavStyles
 }
 
 export const commonLink: CSSProperties = {
@@ -153,6 +172,7 @@ export const themeForTests: Theme = {
     dataLayout: commonDataLayoutStyles,
     objectDefn: commonObjectDefnTheme,
     buttonStyles: commonButtonStyles,
+    navStyles: commonNavStyles
 };
 
 

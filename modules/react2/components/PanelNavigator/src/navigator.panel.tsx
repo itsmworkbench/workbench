@@ -3,17 +3,19 @@ import {NameAnd} from "@itsmworkbench/utils";
 import {Icon, useIcon} from "@itsmworkbench/icons";
 import {useTranslation} from "@itsmworkbench/translation";
 import {useCommonComponents} from "@itsmworkbench/common_components";
-import {GetterSetter} from "@itsmworkbench/react_utils";
+import {FeatureFlags, GetterSetter} from "@itsmworkbench/react_utils";
 
 export type NavSize = 'small' | 'medium' | 'large'
 
+export type OnSelectedWithFeatureFlags = (name: string, featureFlags: FeatureFlags) => void
 export type OneNavigatorPanelProps = {
     name: string
     Icon?: Icon
     description: string
     size?: NavSize
+    selected?: string
     ops: GetterSetter<string>
-    onSelected?: (name: string) => void
+    onSelected?: OnSelectedWithFeatureFlags
 }
 export type OneNavigatorPanel = (props: OneNavigatorPanelProps) => React.ReactNode
 export type NavigatorPanelLayoutProps = { children: React.ReactNode, size?: NavSize }
@@ -21,7 +23,8 @@ export type NavigatorPanelLayout = (props: NavigatorPanelLayoutProps) => React.R
 
 export type CommonNavigatorPanelProps = {
     ops: GetterSetter<string>
-    onSelected?: (name: string) => void
+    selected?:string
+    onSelected?: OnSelectedWithFeatureFlags
     size?: NavSize
 }
 export type NavigatorPanelProps = CommonNavigatorPanelProps & {
@@ -35,6 +38,8 @@ export type NavigatorPanelDefns = NameAnd<NavigatorPanelDefn>
 export type NavigatorPanelDefn = {
     icon: string
     descriptionKey: string
+    selected?:string
+    onSelected?:OnSelectedWithFeatureFlags
 }
 
 export function NavigatorPanelForStrings({panels, translatePrefix, ...rest}: NavigatorPanelPropsForStrings) {
@@ -42,7 +47,7 @@ export function NavigatorPanelForStrings({panels, translatePrefix, ...rest}: Nav
     const {NavPanelLayout, NavPanel} = useCommonComponents()
     return <NavPanelLayout size={rest.size}>
         {panels.map(name => {
-            const description = rest.size==='small'?undefined:translate(`${translatePrefix}.${name}`);
+            const description = rest.size === 'small' ? undefined : translate(`${translatePrefix}.${name}`);
             return <NavPanel key={name} name={name} description={description}  {...rest}/>
         })}
     </NavPanelLayout>;
@@ -56,7 +61,8 @@ export function NavigatorPanel({panels, ...rest}: NavigatorPanelProps) {
         {Object.entries(panels).map(([key, panel]) => {
             const Icon = DecorativeIcon(panel.icon, {size: "medium"});
             const description = translate(panel.descriptionKey);
-            return <NavPanel key={key} name={key} description={description} Icon={Icon} {...rest}/>
+            const onSelected = panel.onSelected || rest.onSelected;
+            return <NavPanel key={key} name={key} description={description} Icon={Icon} {...rest} selected={panel.selected} onSelected={onSelected}/>
         })}
     </NavPanelLayout>;
 }

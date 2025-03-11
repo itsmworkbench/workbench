@@ -31,7 +31,7 @@ import {UrlStoreApiClientConfig, urlStoreFromApi} from "@itsmworkbench/browserur
 import {YamlCapability} from "@itsmworkbench/yaml";
 import {jsYaml} from "@itsmworkbench/jsyaml";
 import {LanguageProvider} from "@itsmworkbench/language";
-import {NameAnd} from "@itsmworkbench/utils";
+import {delay, NameAnd} from "@itsmworkbench/utils";
 import {DevmodeSecretData, SecretDataProvider} from "@itsmworkbench/secrets";
 import {AuthenticationSovereignPagePlugin} from "@itsmworkbench/authentication_sovereign";
 import {authenticationDebugName, defaultSecretData} from "@itsmworkbench/authentication";
@@ -45,6 +45,7 @@ import {objectDefnDebugName} from "@itsmworkbench/object_defn";
 import {YamlProvider} from "@itsmworkbench/components";
 import {DevModeAi, RememberChatCompletionProvider} from "@itsmworkbench/ai2_react";
 import {InformationSovereignPane} from "@itsmworkbench/info_sovereign";
+import {activeTicketsFeatureFlag, activeTicketsFF, ActiveTicketsSovereignPagePlugin} from "@itsmworkbench/activetickets_sovereign";
 
 const debugState = {
     [authenticateDebug]: false,
@@ -56,7 +57,8 @@ const debugState = {
 
 const featureFlags: FeatureFlags = {
     hv: {value: 'horizontal', description: 'Show the attribute value horizontally or vertically', options: AttributeValueOrientations},
-    [showAiPromptsFFName]: {value: false, description: 'Show the AI prompts in the chat'}
+    [showAiPromptsFFName]: {value: false, description: 'Show the AI prompts in the chat'},
+    [activeTicketsFF]: activeTicketsFeatureFlag
 };
 export const exampleMsalConfig: Configuration = {
     auth: {
@@ -72,7 +74,14 @@ const login: LoginConfig = loginUsingMsal({msal});
 export const navPanels: NavigatorPanelDefns = {
     getStarted: {icon: 'getStarted', descriptionKey: 'nav.getStarted'},
     newTicket: {icon: 'newTicket', descriptionKey: 'nav.newTicket'},
-    activeTickets: {icon: 'activeTickets', descriptionKey: 'nav.activeTickets'},
+    activeTickets: {
+        icon: 'activeTickets', descriptionKey: 'nav.activeTickets',
+        // selected: '',
+        onSelected: (name, ff) => {
+            if (!ff[activeTicketsFF].value)
+                delay(0).then(() => window.location.href = 'http://localhost:1238');
+        }
+    },
     examineKnowledgeArticles: {icon: 'knowledgeArticles', descriptionKey: 'nav.examineKnowledgeArticles'},
     systems: {icon: 'systems', descriptionKey: 'nav.systems'},
     healthCheck: {icon: 'heartbeat', descriptionKey: 'nav.healthCheck'},
@@ -85,6 +94,7 @@ export const navPanels: NavigatorPanelDefns = {
 const sovereignStatePlugins: SovereignStatePlugins = {
     plugins: {
         home: HomeSovereignPagePlugin(navPanels),
+        activeTickets: ActiveTicketsSovereignPagePlugin,
         getStarted: InformationSovereignPane('getStarted.info'),
         newTicket: NewTicketSovereignPanePlugin,
         examineKnowledgeArticles: KnowledgeArticleSovereignPagePlugin,

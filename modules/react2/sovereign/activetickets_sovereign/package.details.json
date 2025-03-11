@@ -1,0 +1,31 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/activetickets_sovereign",
+  "description": "The experimental sovereign pane for active tickets",
+  "links": [
+    "@itsmworkbench/common_components",
+    "@itsmworkbench/react_authentication",
+    "@itsmworkbench/sovereign",
+    "@itsmworkbench/login",
+    "@itsmworkbench/secrets",
+    "@itsmworkbench/system",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/translation",
+    "@itsmworkbench/viewobject",
+    "@itsmworkbench/editobject",
+    "@itsmworkbench/utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

@@ -3,6 +3,7 @@
   "name": "@itsmworkbench/itsm2",
   "description": "ITSM Workbench",
   "links": [
+    "@itsmworkbench/activetickets_sovereign",
     "@itsmworkbench/all_ticketsources",
     "@itsmworkbench/axios_service_caller",
     "@itsmworkbench/azureai2_react",

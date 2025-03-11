@@ -2,6 +2,7 @@ import React from "react";
 import {NavigatorPanelLayout, OneNavigatorPanel} from "./navigator.panel";
 import {camelCaseToWords} from "@itsmworkbench/utils";
 import {useSelectedSovereign} from "@itsmworkbench/sovereign";
+import {useFeatureFlagsState} from "@itsmworkbench/react_utils";
 
 const styles: Record<string, React.CSSProperties> = {
     panel: {
@@ -70,11 +71,11 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 
-export const SimpleNavigatorPanel: OneNavigatorPanel = ({name, Icon, size = 'large', description, ops, onSelected}) => {
+export const SimpleNavigatorPanel: OneNavigatorPanel = ({name, Icon, size = 'large', description, ops, onSelected, selected: overridenSelected}) => {
     const [hovered, setHovered] = React.useState(false);
     const [selected, setSelected] = ops;
     const isSelected = selected === name;
-
+    const [featureFlags] = useFeatureFlagsState()
 
     const style = {
         ...styles.panel,
@@ -88,8 +89,9 @@ export const SimpleNavigatorPanel: OneNavigatorPanel = ({name, Icon, size = 'lar
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             onClick={() => {
-                setSelected(name);
-                onSelected?.(name)
+                const newSelected = overridenSelected === undefined ? name : overridenSelected;
+                setSelected(newSelected);
+                onSelected?.(newSelected, featureFlags)
             }}
         >
             {Icon && <Icon/>}
