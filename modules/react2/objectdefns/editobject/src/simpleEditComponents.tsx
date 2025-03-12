@@ -1,5 +1,5 @@
 import React from "react";
-import {DataLayout, SimpleDataLayout} from "@itsmworkbench/renderers";
+import {DataLayout, LabelDisplay, SimpleDataLayout} from "@itsmworkbench/renderers";
 import {SimpleEditString} from "./simpleEditString";
 import {SimpleEditEncryptedString} from "./simpleEditEncryptedString";
 import {SimpleEditBoolean} from "./simpleEditBoolean";
@@ -13,7 +13,7 @@ export type EditComponentProps<Main, T> = {
     fieldName: string
     prefix?: string //if present we translate the name
     fieldDefn: FieldDefn<Main, T>
-    showLabel?: boolean
+    showLabel?: LabelDisplay
     clipboard?: boolean
 }
 export type EditComponent<T> = <Main, >(props: EditComponentProps<Main, T>) => React.ReactElement

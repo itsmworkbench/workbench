@@ -1,14 +1,16 @@
-// Types for Lens Path
 import {pathToLens} from "./lens.serialisation";
 
 export type LensPathPart = string | number | ComposedPathPart;
 export type ComposedPathPart = Record<string, LensPath>;
-export type LensPath = LensPathPart[];
 
-// Types for Lens and Path
+
+export type LensPath = LensPathPart[];
+export type OpticsGetter<Main, Child> = (main: Main) => Child | undefined;
+export type OpticsSetter<Main, Child> = (main: Main, child: Child) => Main;
+
 export type LensAndPath<Main, Child> = {
-    get: (main: Main) => Child | undefined;
-    set: (main: Main, child: Child) => Main;
+    get: OpticsGetter<Main, Child>;
+    set: OpticsSetter<Main, Child>;
     path: LensPath;
 };
 
@@ -44,7 +46,7 @@ export function index<Main, T>(
 ): T extends Array<infer U> ? LensAndPath<Main, U> : never {
     return {
         //@ts-ignore the typechecker doesn't know that T extends Array<infer U> here
-        get: (main: Main) => lens.get(main)?.[idx] , // Get the array element. The any is needed to satisfy the type checker
+        get: (main: Main) => lens.get(main)?.[idx], // Get the array element. The any is needed to satisfy the type checker
         set: (main: Main, child: any) => {
             const parent = lens.get(main) || []; // Default parent to an empty array if undefined
             const updatedParent = [...(parent as Array<any>)]; // Clone the array
@@ -88,23 +90,6 @@ export function objectCompose<Main, T, Children extends Record<string, LensAndPa
     };
 }
 
-/* LensBuilder class for easier lens creation and focus chaining
-
- Example Usage
-const obj = { a: { b: [1, 2, 3] } };
-
-const lens = lensBuilder<typeof obj>()
-    .focusOn('a') // Focus on 'a'
-    .focusOn('b') // Focus on 'b'
-    .focusIndex(1) // Focus on the second element of the array
-    .build();
-
-console.log(lens.path); // Output: ['a', 'b', 1]
-console.log(lens.get(obj)); // Output: 2
-
-const updated = lens.set(obj, 42);
-console.log(updated); // Output: { a: { b: [1, 42, 3] } }
-*/
 export class LensBuilder<Main, Child> implements LensAndPath<Main, Child> {
     private _lens: LensAndPath<Main, Child>;
 
@@ -194,6 +179,20 @@ export class LensBuilder<Main, Child> implements LensAndPath<Main, Child> {
         }
         return new LensBuilder({get, set, path}) as any; // the typechecker is brutal here...
     }
+    projectToGetter<NewChild>(purpose: string,mapper: (child: Child) => NewChild): LensBuilder<Main, NewChild> {
+        const readOnlyLens: LensAndPath<Main, NewChild> = {
+            get: (main: Main) => {
+                const current = this._lens.get(main);
+                return current === undefined ? undefined : mapper(current);
+            },
+            set: (_main: Main, _child: NewChild) => {
+                throw new Error("This lens is read-only: setter is not available.");
+            },
+            path: [...this._lens.path,purpose]
+        };
+        return new LensBuilder(readOnlyLens);
+    }
+
 
     // Return the built lens
     build() {

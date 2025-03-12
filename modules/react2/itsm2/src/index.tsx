@@ -47,6 +47,7 @@ import {DevModeAi, RememberChatCompletionProvider} from "@itsmworkbench/ai2_reac
 import {InformationSovereignPane} from "@itsmworkbench/info_sovereign";
 import {activeTicketsFeatureFlag, activeTicketsFF, ActiveTicketsSovereignPagePlugin} from "@itsmworkbench/activetickets_sovereign";
 
+
 const debugState = {
     [authenticateDebug]: false,
     [routingDebug]: false,
@@ -188,6 +189,7 @@ msal.initialize({}).then(() => {
                 </NonFunctionalsProvider>
             </YamlProvider>
         </React.StrictMode>
-    );
+    )
+    ;
 })
 

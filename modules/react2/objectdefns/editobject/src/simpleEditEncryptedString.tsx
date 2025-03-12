@@ -1,4 +1,4 @@
-import {useAttributeValueOrientation} from "@itsmworkbench/renderers";
+import {labelText, useAttributeValueOrientation} from "@itsmworkbench/renderers";
 import {useTranslation} from "@itsmworkbench/translation";
 import {camelCaseToWords} from "@itsmworkbench/utils";
 import {makeGetterSetterFrom} from "@itsmworkbench/react_utils";
@@ -67,7 +67,7 @@ export function SimpleEditEncryptedString<Main>(props: EditComponentProps<Main, 
         <div className={`simple-edit-string-container ${orientation}`}>
             {showLabel && (
                 <label htmlFor={rootId} className="simple-edit-string-label">
-                    {text}
+                    {labelText(translation, showLabel)(text)}
                 </label>
             )}
             <input

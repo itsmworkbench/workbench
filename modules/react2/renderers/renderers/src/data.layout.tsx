@@ -2,7 +2,7 @@ import {ReactNode} from "react";
 
 export type DataLayoutProps = {
     rootId: string
-    layout: number[];  // Array specifying the number of items per row
+    layout?: number[];  // Array specifying the number of items per row
     children: ReactNode;
     className?: string;
 }

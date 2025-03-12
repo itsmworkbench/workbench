@@ -23,7 +23,7 @@ export function phaseStatusObjectDefn(ka: KnowledgeArticle, phaseName: PhaseName
     const actions = ka.actions[phaseName];
     const actionNames = Object.keys(actions);
     const length = actionNames.length
-    const fd: Partial<FieldDefn<PhaseStatus, boolean>> = {fieldType: "status", labelDisplay: 'camelToWords'}
+    const fd: Partial<FieldDefn<PhaseStatus, boolean>> = {fieldType: "status", showLabel: 'camelToWords'}
     const lb = lensBuilder<NameAnd<boolean>>()
     const defn: ObjectDefn<NameAnd<boolean>> = {
         layout: Array(length + 1).fill(1),

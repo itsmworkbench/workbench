@@ -1,5 +1,5 @@
 
-import {SimpleAttributeValueLayout, useAttributeValueOrientation} from "@itsmworkbench/renderers";
+import {labelText, SimpleAttributeValueLayout, useAttributeValueOrientation} from "@itsmworkbench/renderers";
 import { useTranslation } from "@itsmworkbench/translation";
 import { camelCaseToWords } from "@itsmworkbench/utils";
 import { makeGetterSetterFrom } from "@itsmworkbench/react_utils";
@@ -23,7 +23,7 @@ export function SimpleEditBoolean<Main>(props: EditComponentProps<Main, boolean>
         <SimpleAttributeValueLayout orientation={orientation}>
             {showLabel && (
                 <label htmlFor={rootId} className="simple-boolean-editor-label">
-                    {text}
+                    {labelText(translation, showLabel)(text)}
                 </label>
             )}
             <input

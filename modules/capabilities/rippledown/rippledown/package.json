@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/service_caller",
-  "description": "Thin wrapper around any library to call apis using http(s)",
+  "name": "@itsmworkbench/rippledown",
+  "description": "rippledown rules",
   "version": "1.0.1",
   "main": "dist/index",
   "types": "dist/index",
@@ -17,7 +17,6 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/actions": "1.0.1",
     "@itsmworkbench/errors": "1.0.1",
     "@itsmworkbench/record_utils": "1.0.1",
     "debug": "^4.3.4"

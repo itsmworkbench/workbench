@@ -13,10 +13,18 @@ export const itsmTranslation = {
         }
     },
 
-    createTicket:{
+    canvas: {
+        article: 'Article',
+        ticket: 'Ticket',
+        email: 'Email',
+        help: 'Help',
+        ldap: 'LDAP',
+        sql: 'SQL',
+    },
+    createTicket: {
         systems: 'Systems',
         tickets: 'Tickets',
-        ticketSources:'Ticket Sources',
+        ticketSources: 'Ticket Sources',
     },
 
     devMode: {
@@ -38,9 +46,9 @@ export const itsmTranslation = {
         secretDataInLocalStorage: 'Secret Data In Local Storage',
     },
 
-    getStarted:{
+    getStarted: {
 
-        info:gettingStartedEn
+        info: gettingStartedEn
     },
     knowledgeArticle: {
         phase: {
@@ -52,7 +60,7 @@ export const itsmTranslation = {
         },
         table: 'Knowledge Articles',
     },
-    knowledgeArticles:{title: 'Knowledge Articles'},
+    knowledgeArticles: {title: 'Knowledge Articles'},
     login: {
         login: "Login",
         logout: "Logout",
@@ -91,8 +99,9 @@ export const itsmTranslation = {
             reload: 'Start again',
         }
     },
-    ticket:{
-        variables: 'Variables'
+    ticket: {
+        variables: 'Variables',
+        progress: 'Progress',
 
     }
 }

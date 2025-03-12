@@ -3,7 +3,7 @@ import React, {ReactNode} from "react";
 import {useTheme} from "@itsmworkbench/themes";
 import {useCommonComponents} from "@itsmworkbench/common_components";
 
-export const SimpleDataLayout: DataLayout = ({rootId, layout, children, className}: DataLayoutProps) => {
+export const SimpleDataLayout: DataLayout = ({rootId, layout = [], children, className}: DataLayoutProps) => {
     const theme = useTheme();
     const {dataLayout: styles} = theme;
     const rows: ReactNode[][] = [];

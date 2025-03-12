@@ -20,6 +20,7 @@
     "@itsmworkbench/panelnavigator",
     "@itsmworkbench/react_utils",
     "@itsmworkbench/react_editors",
+    "@itsmworkbench/rippledown_react",
     "@itsmworkbench/secrets",
     "@itsmworkbench/sovereign",
     "@itsmworkbench/system",

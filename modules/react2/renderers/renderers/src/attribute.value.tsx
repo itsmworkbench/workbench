@@ -1,7 +1,7 @@
 import React, {createContext, ReactElement, ReactNode, useMemo} from "react";
 import {idFrom, Render, Renderers, RenderProps, RenderProvider, useRenderers} from "./renderers";
 import {DataLayout} from "./data.layout";
-import {useTranslation} from "@itsmworkbench/translation";
+import {TranslationFn, useTranslation} from "@itsmworkbench/translation";
 import {makeContextFor} from "@itsmworkbench/react_utils";
 import {mapRecord} from "@itsmworkbench/record_utils";
 import {camelCaseToWords} from "@itsmworkbench/utils";
@@ -40,7 +40,20 @@ export const AttributeValueContext = createContext<AttributeValueComponents | un
 
 export const {use: useAttributeValueOrientation, Provider: AttributeValueOrientationProvider} = makeContextFor<AttributeValueOrientation, 'orientation'>('orientation', 'horizontal');
 
-export type LabelDisplay = 'translate' | 'raw' | 'camelToWords'
+export type LabelDisplay = 'translate' | 'raw' | 'camelToWords' | 'camelLastPathPart'
+
+export function labelText(translate: TranslationFn, ld: LabelDisplay): (label: string) => string {
+    return label => {
+        if (ld === 'translate') return translate(label);
+        if (ld === 'camelToWords') return camelCaseToWords(label);
+        if (ld === 'camelLastPathPart')
+            {
+                const s = label.split('.').pop();
+                return camelCaseToWords(s || label);
+            }
+        return label;
+    }
+}
 
 type AttributeValueRendererProps<T> = RenderProps<T> & {
     orientation?: AttributeValueOrientation;
@@ -49,7 +62,7 @@ type AttributeValueRendererProps<T> = RenderProps<T> & {
     AttributeValueLayout: AttributeValueLayout
 }
 
-function AttributeValueRenderer<T>({Renderer, rootId, attribute, value, AttributeValueLayout, orientation, labelDisplay,clipboard}: AttributeValueRendererProps<T>) {
+function AttributeValueRenderer<T>({Renderer, rootId, attribute, value, AttributeValueLayout, orientation, labelDisplay, clipboard}: AttributeValueRendererProps<T>) {
     const id = idFrom(rootId, attribute);
     const translation = useTranslation();
     const {Label} = useRenderers();

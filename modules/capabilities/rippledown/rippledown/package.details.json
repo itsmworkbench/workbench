@@ -1,9 +1,8 @@
 {
   "template": "typescript",
-  "name": "@itsmworkbench/service_caller",
-  "description": "Thin wrapper around any library to call apis using http(s)",
+  "name": "@itsmworkbench/rippledown",
+  "description": "rippledown rules",
   "links": [
-    "@itsmworkbench/actions",
     "@itsmworkbench/errors",
     "@itsmworkbench/record_utils"
   ],

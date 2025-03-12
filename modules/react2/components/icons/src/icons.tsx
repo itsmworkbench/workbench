@@ -31,7 +31,7 @@ export type Icon = (props: IconProps) => React.ReactElement;
 function calculatePath(name: string, type?: string) {
     const ext = type || 'png';
     const withType= name.indexOf('.') === -1 ? `${name}.${ext}` : name;
-    const withPath = name.indexOf('/') === -1 ? `icons/${withType}` : withType;
+    const withPath = name.indexOf('/') === -1 ? `/icons/${withType}` : withType;
     return withPath
 }
 

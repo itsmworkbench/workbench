@@ -31,6 +31,6 @@ export function DevModeFeatureFlags() {
     const featureFlagOps = useFeatureFlagsState();
     const {containerStyle} = devModeStyles;
     const defns = useMemo(() => featureFlagsToObjectDefn(featureFlagOps[0]), [featureFlagOps[0]]);
-    return <EditObjectFromDefn showLabel={true} rootId='devmode.feature.flags' mainOps={featureFlagOps} objectDefn={defns}/>
+    return <EditObjectFromDefn showLabel='camelToWords' rootId='devmode.feature.flags' mainOps={featureFlagOps} objectDefn={defns}/>
 }
 

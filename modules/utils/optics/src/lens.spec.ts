@@ -367,5 +367,42 @@ describe('Lens functionality', () => {
             expect(() => compositeLens.focusOnPart('invalid' as any, 'key' as any)).toThrow('Invalid part [invalid] for focusOnPart.');
         });
     });
+    describe('LensBuilder - projectToGetter', () => {
+        it('should project the lens value using the provided mapper function', () => {
+            const obj = { a: { b: 10 } };
+            const originalLens = lensBuilder<typeof obj>().focusOn('a').focusOn('b');
+            const projectedLens = originalLens.projectToGetter((value: number) => value * 2).build();
+
+            expect(projectedLens.get(obj)).toEqual(20);
+            expect(projectedLens.path).toEqual(['a', 'b']);
+        });
+
+        it('should return undefined when the original getter returns undefined', () => {
+            const obj: any = { a: {} }; // 'b' is undefined
+            const originalLens = lensBuilder<typeof obj>().focusOn('a').focusOn('b');
+            const projectedLens = originalLens.projectToGetter((value: number) => value * 2).build();
+
+            expect(projectedLens.get(obj)).toBeUndefined();
+        });
+
+        it('should throw an error when attempting to set a value on a projected getter lens', () => {
+            const obj = { a: { b: 10 } };
+            const originalLens = lensBuilder<typeof obj>().focusOn('a').focusOn('b');
+            const projectedLens = originalLens.projectToGetter((value: number) => value * 2).build();
+
+            expect(() => projectedLens.set(obj, 42))
+                .toThrowError("This lens is read-only: setter is not available.");
+        });
+
+        it('should correctly transform the type when mapping the value', () => {
+            const obj = { a: { b: 123 } };
+            const projectedLens = lensBuilder<typeof obj>().focusOn('a').focusOn('b')
+                .projectToGetter((value: number) => `Number is ${value}`)
+                .build();
+
+            expect(projectedLens.get(obj)).toEqual("Number is 123");
+        });
+    });
+
 
 });

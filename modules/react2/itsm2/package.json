@@ -32,6 +32,7 @@
     "@itsmworkbench/panelnavigator": "1.0.1",
     "@itsmworkbench/react_utils": "1.0.1",
     "@itsmworkbench/react_editors": "1.0.1",
+    "@itsmworkbench/rippledown_react": "1.0.1",
     "@itsmworkbench/secrets": "1.0.1",
     "@itsmworkbench/sovereign": "1.0.1",
     "@itsmworkbench/system": "1.0.1",

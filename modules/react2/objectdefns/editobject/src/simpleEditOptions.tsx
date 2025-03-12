@@ -1,4 +1,4 @@
-import {SimpleAttributeValueLayout, useAttributeValueOrientation} from "@itsmworkbench/renderers";
+import {labelText, SimpleAttributeValueLayout, useAttributeValueOrientation} from "@itsmworkbench/renderers";
 import {useTranslation} from "@itsmworkbench/translation";
 import {camelCaseToWords} from "@itsmworkbench/utils";
 import {makeGetterSetterFrom} from "@itsmworkbench/react_utils";
@@ -22,7 +22,7 @@ export function SimpleEditOptions<Main>(props: EditComponentWithOptionsProps<Mai
         <SimpleAttributeValueLayout orientation={orientation}>
             {showLabel && (
                 <label htmlFor={rootId} className="simple-options-editor-string-label">
-                    {text}
+                    {labelText(translation, showLabel)(text)}
                 </label>
             )}
             <select

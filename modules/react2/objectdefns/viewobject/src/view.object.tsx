@@ -1,5 +1,5 @@
 import {FieldDefn, FieldType, FieldTypeAnd, ObjectDefn, objectDefnDebugName} from "@itsmworkbench/object_defn";
-import {DataLayout, useRenderers} from "@itsmworkbench/renderers";
+import {DataLayout, LabelDisplay, useRenderers} from "@itsmworkbench/renderers";
 import {GetterSetter, makeContextFor, useDebug} from "@itsmworkbench/react_utils";
 import React from "react";
 import {SimpleViewComponents} from "./simpleViewComponents";
@@ -11,7 +11,7 @@ export type ViewComponentProps<Main, T> = {
     rootId: string
     main: Main
     fieldDefn: FieldDefn<Main, T>
-    showLabel?: boolean
+    showLabel?: LabelDisplay
     clipboard?: boolean
 }
 export type ViewComponent<T> = <Main, >(props: ViewComponentProps<Main, T>) => React.ReactElement
@@ -30,7 +30,7 @@ export type ViewObjectProps<Main> = {
     main: Main
     title?: string
     objectDefn: ObjectDefn<Main>
-    showLabel?: boolean
+    showLabel?: LabelDisplay
     selectedOps?: GetterSetter<number> //same signature as useState
     onClick?: (fieldName: string, fieldDefn: FieldDefn<Main, unknown>, index: number) => void
     clipboard?: boolean

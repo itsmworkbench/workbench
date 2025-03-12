@@ -11,7 +11,7 @@ export type SimpleFieldDefn<Main, T> = {
     lens: LensAndPath<Main, T>
     fieldType?: FieldType //default is string
     editable?: boolean//default is true
-    labelDisplay?: LabelDisplay
+    showLabel?: LabelDisplay
 
 }
 export type OptionsFieldDefn<Main, T> = SimpleFieldDefn<Main, T> & {
@@ -32,7 +32,7 @@ export function makeObjectDefnForRecordStringString(record: Record<string, strin
         fields[key] = {
             lens: lb.focusOn(key),
             fieldType: 'string',
-            labelDisplay: 'raw'
+            showLabel: 'raw'
         }
     }
     return {fields, layout: Array(Object.keys(record).length).fill(1)}

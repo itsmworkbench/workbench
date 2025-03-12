@@ -20,6 +20,14 @@ export function makeWindowUrlData(form: string = window.location.href): WindowUr
     const parts = url.pathname.split('/').filter(Boolean)
     return {url, parts}
 }
+export function windowUrlDataWithPart(old: WindowUrlData, partNo:number, newPart: string): WindowUrlData {
+    const parts = [...old.parts]
+    parts[partNo] = newPart
+    const newUrl = new URL(old.url.href)
+    newUrl.pathname = '/' + parts.join('/')
+    return {url: newUrl, parts}
+}
+
 
 // Custom event trigger for pushState and replaceState
 function triggerUrlChange() {

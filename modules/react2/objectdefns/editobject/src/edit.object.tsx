@@ -1,5 +1,5 @@
 import {FieldDefn, ObjectDefn, OptionsFieldDefn} from "@itsmworkbench/object_defn";
-import {DataLayout, useRenderers} from "@itsmworkbench/renderers";
+import {DataLayout, LabelDisplay, useRenderers} from "@itsmworkbench/renderers";
 import {GetterSetter} from "@itsmworkbench/react_utils";
 import React from "react";
 import {findView, useViewComponents, ViewObjectFromDefn} from "@itsmworkbench/viewobject";
@@ -8,12 +8,13 @@ import {useTranslation} from "@itsmworkbench/translation";
 import {useTheme} from "@itsmworkbench/themes";
 
 
+
 export type EditObjectProps<Main> = {
     rootId: string
     title?: string
     mainOps: GetterSetter<Main>
     objectDefn: ObjectDefn<Main>
-    showLabel?: boolean
+    showLabel?: LabelDisplay
     clipboard?: boolean
     children?: React.ReactNode
 }
@@ -38,9 +39,9 @@ export function EditObjectFromDefn<Main>(props: EditObjectProps<Main>) {
     function findEdit(fieldName: string, fieldDefn: FieldDefn<Main, any>): React.ReactElement {
         const fieldType = fieldDefn.fieldType;
         const fieldProps = {...props, fieldName, fieldDefn,};
-        if (fieldDefn.editable === false) return findView(Views, fieldType, {rootId, main: mainOps[0], fieldDefn, showLabel: true})
+        if (fieldDefn.editable === false) return findView(Views, fieldType, {rootId, main: mainOps[0], fieldDefn, showLabel: fieldProps.showLabel})
         if (fieldType === 'encrypted') return <Edits.EditEncryptedString {...fieldProps}/>;
-        if (fieldType === 'string') return <Edits.EditString {...fieldProps}/>;
+        if (fieldType === 'string'||fieldType===undefined) return <Edits.EditString {...fieldProps}/>;
         if (fieldType === 'options') return <Edits.EditOptions {...fieldProps} options={(fieldDefn as OptionsFieldDefn<Main, any>).options}/>;
         if (fieldType === 'boolean') return <Edits.EditBoolean {...fieldProps}/>;
         if (fieldType === 'status') return <Edits.EditStatus {...fieldProps}/>;

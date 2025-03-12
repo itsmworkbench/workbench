@@ -42,7 +42,7 @@ export async function saveTicketToUrlStore(urlStore: UrlStore, ticket: Ticket, k
     const event1: SetValueEvent = {
         "event": "setValue", "path": "forTicket.tempData.ticketType", value: {//really want a type type details... if it's new... so consider this later
             ticketType: {
-                variable: kad.ka.variables,
+                variables: kad.ka.variables,
                 capabilities: kad.ka.capabilities,
                 actions: kad.ka.actions,
                 id: kad.id,

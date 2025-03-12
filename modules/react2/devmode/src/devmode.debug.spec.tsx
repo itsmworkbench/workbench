@@ -9,7 +9,8 @@ import { jest } from "@jest/globals";
 import { RawThemeProvider, themeForTests } from "@itsmworkbench/themes";
 import { AttributeValueProvider, SimpleAttributeValueLayout, SimpleDataLayout } from "@itsmworkbench/renderers";
 import { allRenderers } from "@itsmworkbench/all_renderers";
-import { DebugStateProvider } from "index";
+import {DebugStateProvider} from "@itsmworkbench/react_utils";
+
 
 // Mock react-markdown to render children directly
 jest.mock("react-markdown", () => (props: any) => <div>{props.children}</div>);

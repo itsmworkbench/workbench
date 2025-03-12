@@ -16,7 +16,7 @@ export function SimpleStringView<Main>({main, fieldDefn, showLabel, ...rest}: Vi
     const value = lens.get(main);
     const attribute = findAttribute(lens)
     return showLabel ?
-        <TextAndLabel {...rest} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
+        <TextAndLabel {...rest} attribute={attribute} value={value} labelDisplay={fieldDefn.showLabel}/> :
         <Text  {...rest} attribute={attribute} value={value}/>
 }
 
@@ -38,7 +38,7 @@ export function SimpleEncryptedView<Main>({main, fieldDefn, showLabel, ...rest}:
     const attribute = findAttribute(lens)
     return <div style={{display: 'flex', justifyContent: 'startpace-between', alignItems: 'center'}}>
         {showLabel ?
-            <TextAndLabel {...rest} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
+            <TextAndLabel {...rest} attribute={attribute} value={value} labelDisplay={fieldDefn.showLabel}/> :
             <Text {...rest} attribute={attribute} value={value}/>}&nbsp;
         <button onClick={() => setShow(!show)}>{show ? '🚫' : '👁️‍🗨️'}</button>
     </div>
@@ -51,7 +51,7 @@ export function SimpleBooleanView<Main>({main, fieldDefn, showLabel, ...rest}: V
     const value = lens.get(main);
     const attribute = findAttribute(lens)
     return showLabel ?
-        <TextAndLabel {...rest} attribute={attribute} value={value?.toString()} labelDisplay={fieldDefn.labelDisplay}/> :
+        <TextAndLabel {...rest} attribute={attribute} value={value?.toString()} labelDisplay={fieldDefn.showLabel}/> :
         <Text {...rest} attribute={attribute} value={value === undefined ? 'undefined' : value?.toString()}/>
 }
 
@@ -63,7 +63,7 @@ export function SimpleStatusView<Main>({main, fieldDefn, showLabel, ...rest}: Vi
     const attribute = findAttribute(lens)
 
     return showLabel ?
-        <StatusAndLabel {...rest} attribute={attribute} value={value} labelDisplay={fieldDefn.labelDisplay}/> :
+        <StatusAndLabel {...rest} attribute={attribute} value={value} labelDisplay={fieldDefn.showLabel}/> :
         <Status {...rest} attribute={attribute} value={value}/>
 }
 
