@@ -1,0 +1,22 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/phase_progress",
+  "description": "How do we show progress?",
+  "links": [
+    "@itsmworkbench/react_utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+      "@azure/msal-browser": "${properties.msal}"
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

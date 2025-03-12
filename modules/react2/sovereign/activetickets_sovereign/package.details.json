@@ -5,6 +5,7 @@
   "links": [
     "@itsmworkbench/common_components",
     "@itsmworkbench/react_authentication",
+    "@itsmworkbench/phase_progress",
     "@itsmworkbench/sovereign",
     "@itsmworkbench/login",
     "@itsmworkbench/secrets",
