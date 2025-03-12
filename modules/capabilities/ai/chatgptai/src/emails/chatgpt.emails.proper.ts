@@ -9,14 +9,15 @@ const requestClosure: EmailStringFn = async ( email: EmailData ): Promise<string
 const requestApproval: EmailStringFn = async ( email: EmailData ): Promise<string> => {
   return generateAllPurposeEmail(email);
 }
-const requestMoreData: EmailStringFn = async ( email: EmailData ): Promise<string> => {
+const RequestMoreData: EmailStringFn = async (email: EmailData ): Promise<string> => {
+  console.log('got here')
   return generateAllPurposeEmail(email);
 }
 
 export const chatGptEmailProcessors: EmailPurposeAnd<EmailStringFn> = {
   requestApproval,
   requestClosure,
-  requestMoreData
+  RequestMoreData: RequestMoreData
 }
 
 function extractEmailResultFromRagString(s: string): EmailResult{

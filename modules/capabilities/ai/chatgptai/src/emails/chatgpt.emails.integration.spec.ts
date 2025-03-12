@@ -21,7 +21,7 @@ Thanks`;
 describe('ChatGPTEmailGeneration', () => {
     test('should generate email content with specific markers from EmailData', async () => {
         const emailData: EmailDataWithMissingData = {
-            purpose: "requestMoreData",
+            purpose: "RequestMoreData",
             ticketId: "SR5542",
             ticket: sampleTicket,
             missingData: ['projectId', 'sqlData1', 'databaseName']

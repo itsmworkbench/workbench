@@ -19,7 +19,7 @@ export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicke
   const ticket: Ticket | undefined = state.optJson1 ()
   const variables = useAllVariables ( ticket )
   const ticketTypeVariables = useTicketTypeVariables ()
-  const missing = ticketTypeVariables.filter ( v => !variables[ v ] )
+  const missingData = ticketTypeVariables.filter ( v => !variables[ v ] )
   const actionState: LensState<S, any, any> = state.state2 ();
   const action = state.optJson2 ()
   console.log ( 'SuggestEmailForTicketButton - action', action )
@@ -34,7 +34,7 @@ export function SuggestEmailForTicketButton<S> ( { state }: SuggestEmailForTicke
       };
       const withMissingData = (action as any)?.withMissingData
       if ( !withMissingData ) return ai.emails ( emailParam );
-      let paramsWithMissing: EmailDataWithMissingData = { ...emailParam, missingData: missing };
+      let paramsWithMissing: EmailDataWithMissingData = { ...emailParam, missingData };
       return ai.emails ( paramsWithMissing )
     }
     callAi ().then ( res => {

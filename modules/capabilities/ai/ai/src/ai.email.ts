@@ -1,13 +1,13 @@
 import { NameAnd } from "@itsmworkbench/utils";
 
-export type EmailPurpose = 'requestApproval' | 'requestClosure' | 'requestMoreData'
+export type EmailPurpose = 'requestApproval' | 'requestClosure' | 'RequestMoreData'
 export type EmailData = {
   purpose: EmailPurpose
   ticketId: string,
   ticket: string
 }
 export function isEmailData ( t: any ): t is EmailData {
-  return t?.ticketId && t?.ticket && t?.purpose && [ 'requestApproval', 'requestClosure', 'requestMoreData' ].includes ( t.purpose )
+  return t?.ticketId && t?.ticket && t?.purpose && [ 'requestApproval', 'requestClosure', 'RequestMoreData' ].includes ( t.purpose )
 }
 export type EmailDataWithMissingData = EmailData & { missingData: string[] }
 export function isEmailDataWithMissingData ( t: any ): t is EmailDataWithMissingData {
@@ -16,7 +16,7 @@ export function isEmailDataWithMissingData ( t: any ): t is EmailDataWithMissing
 export type EmailPurposeAnd<T> = {
   requestApproval: T
   requestClosure: T
-  requestMoreData: T
+  RequestMoreData: T
 }
 
 
@@ -33,7 +33,7 @@ export type EmailStringFn = ( email: EmailData ) => Promise<string>
 export function processEmailsThatReturnAstring ( fns: EmailPurposeAnd<EmailStringFn>, fn: ( res: string ) => EmailResult ): AIEmailsFn {
   return async ( email: EmailData ) => {
     let emailFn = fns[ email.purpose ];
-    if ( !emailFn ) throw new Error ( `No function for email purpose ${email.purpose}` )
+    if ( !emailFn ) throw new Error ( `No function for email purpose ${email.purpose}. Legal values are ${Object.keys(fns)}` )
     return emailFn ( email ).then ( fn )
   }
 }

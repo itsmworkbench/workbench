@@ -19,7 +19,7 @@ const generateEmailPrompt = ( emailData: EmailData ): string => {
     case 'requestClosure':
       purposeDescription = 'to inform about the completion of a task or project and request its closure';
       break;
-    case 'requestMoreData':
+    case 'RequestMoreData':
       if ( !isEmailDataWithMissingData ( emailData ) ) throw new Error ( 'Email data is missing missingData field' );
       purposeDescription = 'to request additional information or data for completing a work ticket. The specific details needed are: ' + emailData.missingData.join ( ', ' );
       break;
