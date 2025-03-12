@@ -1,4 +1,3 @@
-
 import React, {Context, ReactElement, ReactNode, useContext, useMemo} from "react";
 import {uppercaseFirstLetter} from "@itsmworkbench/utils";
 import {useWindowUrlData} from "./path.name.provider";
@@ -21,7 +20,8 @@ type RoutingProviderProps = { children: ReactNode, updateWindowsState?: boolean 
 
 export function makeRoutingSegmentContextFor(
     field: string,
-    segment: number
+    segment: number,
+    trimAfter: boolean = false
 ): RoutingContextResults {
 
     const context = React.createContext<RoutingSegmentOps | undefined>(undefined);
@@ -47,8 +47,10 @@ export function makeRoutingSegmentContextFor(
         debug('RoutingProvider', segment, field, '=', value)
         const ops: GetterSetter<string> = useMemo(() => [value, name => {
             const actualName = typeof name === 'function' ? name(value) : name
-            const newParts = [...parts];
-            newParts[segment] = actualName;
+            const newParts = [...parts.slice(0, segment), actualName];
+            if (!trimAfter)
+                newParts.push(...parts.slice(segment + 1))
+
             const newUrl = new URL(url.toString());
             newUrl.pathname = `/${newParts.join('/')}`;  // bit dirty...
             debug('RoutingProvider', segment, actualName, 'pushState', newUrl.toString())

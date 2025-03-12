@@ -139,9 +139,7 @@ export function CanvasWindow({ops, ticket}: CanvasWindowProps) {
     const {activeCanvas} = state
     const {H1} = useRenderers()
     const rootId = 'canvas-window'
-    const ticketProgressOps = useItsmState()
     return <div>
-        <DisplayTicketProcess ops={ticketProgressOps}/>
         <H1 rootId={rootId} attribute={`canvas.${activeCanvas}`} value={camelCaseToWords(activeCanvas)}/>
         {activeCanvas === 'help' && <HelpCanvas/>}
         {activeCanvas === 'ticket' && <TicketCanvas ticket={ticket}/>}
@@ -171,7 +169,9 @@ export function ActiveWindows({ticket}: ActiveWindowsProps) {
     const ticketStateOps = useItsmTicketState()
     const {TwoColumnAndRestLayout} = useCommonComponents()
     const rootId = 'ticket';
+    const ticketProgressOps = useItsmState()
     return <DataLayout rootId={rootId}>
+        <DisplayTicketProcess ops={ticketProgressOps}/>
         <TwoColumnAndRestLayout>
             <ChatWindow ops={ticketStateOps}/>
             <CanvasWindow ticket={ticket} ops={ticketStateOps}/>
