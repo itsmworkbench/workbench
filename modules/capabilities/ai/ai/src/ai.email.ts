@@ -7,6 +7,7 @@ export type EmailData = {
   ticket: string
 }
 export function isEmailData ( t: any ): t is EmailData {
+  t.ticketId = 'ticket-id';
   return t?.ticketId && t?.ticket && t?.purpose && [ 'requestApproval', 'requestClosure', 'RequestMoreData' ].includes ( t.purpose )
 }
 export type EmailDataWithMissingData = EmailData & { missingData: string[] }
