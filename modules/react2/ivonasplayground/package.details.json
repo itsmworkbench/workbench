@@ -1,0 +1,46 @@
+{
+  "template": "react",
+  "name": "@itsmworkbench/ivonasplayground",
+  "description": "ITSM Workbench",
+  "links": [
+    "@itsmworkbench/activetickets_sovereign",
+    "@itsmworkbench/all_ticketsources",
+    "@itsmworkbench/axios_service_caller",
+    "@itsmworkbench/azureai2_react",
+    "@itsmworkbench/browserurlstore",
+    "@itsmworkbench/authentication_sovereign",
+    "@itsmworkbench/homesovereign",
+    "@itsmworkbench/info_sovereign",
+    "@itsmworkbench/itsmsovereign",
+    "@itsmworkbench/itsm_state",
+    "@itsmworkbench/itsm_translation",
+    "@itsmworkbench/jsyaml",
+    "@itsmworkbench/knowledgearticle",
+    "@itsmworkbench/newticket_wizard",
+    "@itsmworkbench/panelnavigator",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/react_editors",
+    "@itsmworkbench/rippledown_react",
+    "@itsmworkbench/secrets",
+    "@itsmworkbench/sovereign",
+    "@itsmworkbench/system",
+    "@itsmworkbench/ticketsource",
+    "@itsmworkbench/utils",
+    "@itsmworkbench/wizard"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+      "parcel-reporter-static-files-copy": "^1.5.3",
+      "@parcel/transformer-raw": "^2.13.3"
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

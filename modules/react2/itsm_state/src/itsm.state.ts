@@ -3,6 +3,7 @@ import {KADetails} from "@itsmworkbench/knowledgearticle";
 import {makeContextForState, makeUseStateChild} from "@itsmworkbench/react_utils";
 import {PhaseStatus} from "@itsmworkbench/domain";
 import {ChatCompletionMessage} from "@itsmworkbench/ai2";
+import {lensBuilder} from "@itsmworkbench/optics";
 
 export type ApprovedState = 'preApproved' | 'noApprovalNeeded' | 'needsApproval' | 'approved' | 'rejected'
 
@@ -27,8 +28,8 @@ export type ItsmState = {
     ticketState: ActiveTicketState
     ka: KADetails
     status: PhaseStatus
-
 }
+export const itsmStateLB = lensBuilder<ItsmState>()
 export type ActiveTicketState = {
     query: string
     activeCanvas: string

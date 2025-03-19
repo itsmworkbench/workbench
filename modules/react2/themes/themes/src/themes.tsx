@@ -19,6 +19,7 @@ export type HeaderTheme = {
     logoStyle?: CSSProperties
 }
 
+
 export type DataLayoutStyles = {
     dataLayoutContainer: CSSProperties,
     dataLayoutRow: CSSProperties,
@@ -26,7 +27,10 @@ export type DataLayoutStyles = {
     mouseOverColor: string,
     linkMouseOverColor: string,
     themedIconColor: string,
+
+
 }
+
 export const commonDataLayoutStyles: DataLayoutStyles = {
     dataLayoutContainer: {
         display: "flex",  // Change to flex to allow stretching
@@ -104,6 +108,33 @@ export const commonNavStyles: NavStyles = {
     navHeader: commonNavHeader
 }
 
+export type PhaseStyles = {
+    statusToStyle: Record<string, CSSProperties>
+    basePhaseStyle: CSSProperties
+    layout: CSSProperties
+}
+
+export const commonPhaseStyles: PhaseStyles = {
+    statusToStyle: {
+        completed: {backgroundColor: 'lightgreen'},
+        'in-progress': {backgroundColor: 'lightblue'},
+        failed: {backgroundColor: 'salmon'},
+        waiting: {backgroundColor: 'lightgray'},
+    },
+    basePhaseStyle: {
+        padding: '8px 16px',
+        borderRadius: '4px',
+        marginBottom: '8px', // Helps when wrapping on small screens.
+        textAlign: 'center',
+        minWidth: '120px',
+    },
+    layout: {
+        display: 'flex',
+        flexWrap: 'wrap',  // This allows overflow to next line when too wide.
+        gap: '8px',        // Consistent spacing between items.
+        alignItems: 'center'
+    }
+}
 
 export type Theme = {
     name: string
@@ -114,6 +145,7 @@ export type Theme = {
     objectDefn: ObjectDefnTheme
     buttonStyles: ButtonStyles
     navStyles: NavStyles
+    phaseStyles: PhaseStyles
 }
 
 export const commonLink: CSSProperties = {
@@ -172,7 +204,8 @@ export const themeForTests: Theme = {
     dataLayout: commonDataLayoutStyles,
     objectDefn: commonObjectDefnTheme,
     buttonStyles: commonButtonStyles,
-    navStyles: commonNavStyles
+    navStyles: commonNavStyles,
+    phaseStyles: commonPhaseStyles
 };
 
 
