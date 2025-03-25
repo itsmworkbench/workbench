@@ -4166,6 +4166,7 @@ __metadata:
     "@mui/icons-material": "npm:^5.15.10"
     "@mui/material": "npm:^5.15.10"
     "@parcel/transformer-raw": "npm:^2.13.3"
+    "@types/js-yaml": "npm:^4.0.9"
     "@types/react": "npm:^18.2.56"
     "@types/react-dom": "npm:^18.2.19"
     debug: "npm:^4.3.4"
@@ -8035,6 +8036,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@parcel/transformer-yaml@npm:2.13.3":
+  version: 2.13.3
+  resolution: "@parcel/transformer-yaml@npm:2.13.3"
+  dependencies:
+    "@parcel/plugin": "npm:2.13.3"
+    js-yaml: "npm:^4.1.0"
+  checksum: 25d6968455c295c5626076706df0e37c76ec3e0d047d238d02c1ddc3c5c57e6228008aa9cb0ba0a1d184446a364b07db38e521e4181e63be3d86147f270ae0de
+  languageName: node
+  linkType: hard
+
 "@parcel/types-internal@npm:2.13.3":
   version: 2.13.3
   resolution: "@parcel/types-internal@npm:2.13.3"
@@ -9502,6 +9513,13 @@ __metadata:
     jest-matcher-utils: "npm:^27.0.0"
     pretty-format: "npm:^27.0.0"
   checksum: 29ef3da9b94a15736a67fc13956f385ac2ba2c6297f50d550446842c278f2e0d9f343dcd8e31c321ada5d8a1bd67bc1d79c7b6ff1802d55508c692123b3d9794
+  languageName: node
+  linkType: hard
+
+"@types/js-yaml@npm:^4.0.9":
+  version: 4.0.9
+  resolution: "@types/js-yaml@npm:4.0.9"
+  checksum: 24de857aa8d61526bbfbbaa383aa538283ad17363fcd5bb5148e2c7f604547db36646440e739d78241ed008702a8920665d1add5618687b6743858fae00da211
   languageName: node
   linkType: hard
 
@@ -12855,6 +12873,7 @@ __metadata:
   resolution: "frontend@workspace:modules/react2/ivonasplayground/src/frontend"
   dependencies:
     "@itsmworkbench/shared": "npm:*"
+    "@types/js-yaml": "npm:^4.0.9"
     "@types/react": "npm:^18.2.0"
     "@types/react-dom": "npm:^18.2.0"
     axios: "npm:^1.8.0"
@@ -13687,7 +13706,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:^2.0.4, inherits@npm:~2.0.3":
+"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:^2.0.4, inherits@npm:~2.0.3, inherits@npm:~2.0.4":
   version: 2.0.4
   resolution: "inherits@npm:2.0.4"
   checksum: 4e531f648b29039fb7426fb94075e6545faa1eb9fe83c29f0b6d9e7263aceb4289d2d4557db0d428188eeb449cc7c5e77b0a0b2c4e248ff2a65933a0dee49ef2
@@ -17707,7 +17726,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^3.1.1, readable-stream@npm:^3.4.0, readable-stream@npm:^3.6.0":
+"readable-stream@npm:^3.1.1, readable-stream@npm:^3.4.0, readable-stream@npm:^3.5.0, readable-stream@npm:^3.6.0":
   version: 3.6.2
   resolution: "readable-stream@npm:3.6.2"
   dependencies:
@@ -18054,6 +18073,7 @@ __metadata:
   dependencies:
     "@parcel/packager-raw-url": "npm:^2.11.0"
     "@parcel/transformer-webmanifest": "npm:^2.11.0"
+    "@parcel/transformer-yaml": "npm:2.13.3"
     assert: "npm:^2.0.0"
     buffer: "npm:^5.5.0||^6.0.0"
     cross-env: "npm:^7.0.3"
@@ -18065,11 +18085,13 @@ __metadata:
     process: "npm:^0.11.10"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
+    stream-browserify: "npm:^3.0.0"
     stream-http: "npm:^3.1.0"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.7.3"
     url: "npm:^0.11.0"
     util: "npm:^0.12.3"
+    vm-browserify: "npm:^1.1.2"
   languageName: unknown
   linkType: soft
 
@@ -18594,6 +18616,16 @@ __metadata:
   version: 1.5.0
   resolution: "statuses@npm:1.5.0"
   checksum: e433900956357b3efd79b1c547da4d291799ac836960c016d10a98f6a810b1b5c0dcc13b5a7aa609a58239b5190e1ea176ad9221c2157d2fd1c747393e6b2940
+  languageName: node
+  linkType: hard
+
+"stream-browserify@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "stream-browserify@npm:3.0.0"
+  dependencies:
+    inherits: "npm:~2.0.4"
+    readable-stream: "npm:^3.5.0"
+  checksum: ec3b975a4e0aa4b3dc5e70ffae3fc8fd29ac725353a14e72f213dff477b00330140ad014b163a8cbb9922dfe90803f81a5ea2b269e1bbfd8bd71511b88f889ad
   languageName: node
   linkType: hard
 
@@ -19744,6 +19776,13 @@ __metadata:
     "@types/unist": "npm:^3.0.0"
     vfile-message: "npm:^4.0.0"
   checksum: e5d9eb4810623f23758cfc2205323e33552fb5972e5c2e6587babe08fe4d24859866277404fb9e2a20afb71013860d96ec806cb257536ae463c87d70022ab9ef
+  languageName: node
+  linkType: hard
+
+"vm-browserify@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "vm-browserify@npm:1.1.2"
+  checksum: 0cc1af6e0d880deb58bc974921320c187f9e0a94f25570fca6b1bd64e798ce454ab87dfd797551b1b0cc1849307421aae0193cedf5f06bdb5680476780ee344b
   languageName: node
   linkType: hard
 

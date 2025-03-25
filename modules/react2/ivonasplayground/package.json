@@ -59,6 +59,7 @@
     "@babel/preset-env": "^7.24.7",
     "@babel/preset-react": "^7.24.7",
     "@parcel/transformer-raw": "^2.13.3",
+    "@types/js-yaml": "^4.0.9",
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
     "parcel": "^2.13.3",

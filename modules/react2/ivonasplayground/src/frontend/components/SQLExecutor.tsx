@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AxiosHttpClient } from "../api/AxiosHttpClient";
 import { FetchHttpClient } from "../api/FetchHttpClient";
 import { Button, TextField, MenuItem, Box, Typography } from "@mui/material";
 import { PlayArrow, Refresh, Link } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import { SecretDataProvider, SimplePassword, useSecretData } from "@itsmworkbench/secrets";
+import { decryptString, defaultSecretData, hasEnteredPassword } from "@itsmworkbench/authentication";
+import yaml from "js-yaml";
+import encryptedConfig from '../config/encrypted-passwords.yaml';
 
 const SQLExecutor: React.FC = () => {
+    return (
+        <SecretDataProvider secretData={defaultSecretData()}>
+            <SimplePassword />
+            <SQLExecutorInner />
+        </SecretDataProvider>
+    );
+};
+
+const SQLExecutorInner: React.FC = () => {
+    const [sad] = useSecretData();
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const [decryptedDbPassword, setDecryptedDbPassword] = useState<string | null>(null);
 
     const [httpClientType, setHttpClientType] = useState<"axios" | "fetch">("axios");
     const [sqlQuery, setSqlQuery] = useState("");
@@ -18,21 +34,45 @@ const SQLExecutor: React.FC = () => {
         fetch: FetchHttpClient,
     } as const;
 
+    const encryptedPasswords: Record<string, string> = {
+        postgres: "Yephqygytl+J6XRO:EzNtP8pcQc7cSw0ZhVEdMv4U9tLX13e/",
+        mariadb: "AwDYwBO7jL6DzIzy:26bIJP70iwnEVSWE5/Vsgyd7EjE=",
+    };
+
+    useEffect(() => {
+        if (hasEnteredPassword(sad)) {
+            const encrypted = encryptedPasswords[dbType];
+            console.log(encrypted);
+            decryptString(sad.cryptoKeyString)(encrypted)
+                .then((decrypted) => {
+                    setDecryptedDbPassword(decrypted);
+                    console.log(decrypted);
+                    setIsPasswordValid(true);
+                })
+                .catch(() => setIsPasswordValid(false));
+        }
+    }, [sad, dbType]);
+
     const handleExecute = async () => {
+        if (!isPasswordValid || !decryptedDbPassword) {
+            toast.error("Invalid password, cannot run query!");
+            return;
+        }
         try {
             setError(null);
-            let response;
             const httpClient = clients[httpClientType];
+            let response;
             if (sqlQuery.trim().toLowerCase().startsWith("select")) {
-                response = await httpClient.select({ query: sqlQuery }, dbType);
+                response = await httpClient.select({ query: sqlQuery }, dbType, decryptedDbPassword);
             } else {
-                response = await httpClient.update({ query: sqlQuery }, dbType);
+                response = await httpClient.update({ query: sqlQuery }, dbType, decryptedDbPassword);
             }
             if (response.type === "select") {
                 setResult(response.rows);
             } else if (response.type === "update") {
                 setResult({ affectedRows: response.affectedRows });
-            }            toast.success("Query executed successfully!");
+            }
+            toast.success("Query executed successfully!");
         } catch (err: any) {
             setError(err);
             toast.error(err);
@@ -40,9 +80,13 @@ const SQLExecutor: React.FC = () => {
     };
 
     const handleTestConnection = async () => {
+        if (!isPasswordValid || !decryptedDbPassword) {
+            toast.error("Invalid password, cannot run query!");
+            return;
+        }
         try {
             const httpClient = clients[httpClientType];
-            const message = await httpClient.testConnection(dbType);
+            const message = await httpClient.testConnection(dbType, decryptedDbPassword);
             toast.success(message);
         } catch (error) {
             toast.error("Connection failed!");
@@ -58,7 +102,6 @@ const SQLExecutor: React.FC = () => {
     return (
         <Box sx={{ maxWidth: 700, margin: "auto", textAlign: "center", p: 3 }}>
             <Typography variant="h4" gutterBottom>SQL</Typography>
-            <Typography variant="subtitle1">SQL to execute</Typography>
             <TextField
                 select
                 label="Environment"
@@ -108,8 +151,8 @@ const SQLExecutor: React.FC = () => {
 
             <Typography variant="h6" sx={{ mt: 3 }}>SQL Result</Typography>
             <pre style={{ textAlign: "left", background: "#f4f4f4", padding: "10px", borderRadius: "5px" }}>
-        {JSON.stringify(result, null, 2)}
-      </pre>
+                {JSON.stringify(result, null, 2)}
+            </pre>
             {error && <Typography color="error">Error: {typeof error === "string" ? error : JSON.stringify(error)}</Typography>}
         </Box>
     );

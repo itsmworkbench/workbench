@@ -4,10 +4,10 @@ import {createDb} from "../db/DbFactoy";
 const router = express.Router();
 
 router.post("/select", async (req, res) => {
-    const { query, dbType } = req.body;
+    const { query, dbType, dbPassword } = req.body;
 
     try {
-        const db = createDb(dbType);
+        const db = createDb(dbType, dbPassword);
         const result = await db.select(query);
         res.json(result);
     } catch (error) {
@@ -20,10 +20,10 @@ router.post("/select", async (req, res) => {
 });
 
 router.post("/update", async (req, res) => {
-    const { query, dbType } = req.body;
+    const { query, dbType, dbPassword } = req.body;
 
     try {
-        const db = createDb(dbType);
+        const db = createDb(dbType, dbPassword);
         const result = await db.update(query);
         res.json(result);
     } catch (error) {
@@ -38,7 +38,8 @@ router.post("/update", async (req, res) => {
 router.get("/test", async (req, res) => {
     try {
         const dbType = req.query.dbType as string;
-        const db = createDb(dbType);
+        const dbPassword = req.query.dbPassword as string;
+        const db = createDb(dbType, dbPassword);
 
         const message = await db.testConnection();
         res.json({ message });
