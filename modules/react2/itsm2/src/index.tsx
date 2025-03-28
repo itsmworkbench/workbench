@@ -38,7 +38,7 @@ import {authenticationDebugName, defaultSecretData} from "@itsmworkbench/authent
 import {ServiceCallerProvider} from "@itsmworkbench/react_service_caller";
 import {axiosServiceCaller} from "@itsmworkbench/axios_service_caller";
 import {AuthFnProviderFromUrlStore} from "@itsmworkbench/react_authentication";
-import {AzureChatCompletionProvider} from "@itsmworkbench/azureai2_react";
+import {AzureChatCompletionProvider, AzureChatCompletionProviderWithCache} from "@itsmworkbench/azureai2_react";
 import {aiDebugName, showAiPromptsFFName} from "@itsmworkbench/ai2";
 import {emptyItsmState, ItsmStateProvider} from "@itsmworkbench/itsm_state";
 import {objectDefnDebugName} from "@itsmworkbench/object_defn";
@@ -144,7 +144,7 @@ msal.initialize({}).then(() => {
                                         <UrlStoreProvider urlStore={urlStore}>
                                             <AuthFnProviderFromUrlStore>
                                                 <RememberChatCompletionProvider remember={[]}>
-                                                    <AzureChatCompletionProvider>
+                                                    <AzureChatCompletionProviderWithCache>
                                                         <AttributeValueProvider renderers={allRenderers} AttributeValueLayout={SimpleAttributeValueLayout} DataLayout={SimpleDataLayout}>
                                                             <SystemsProvider systems={mockSystems}>
                                                                 <TicketSourceProvider ticketSource={AllTicketSources(mockTickets)}>
@@ -177,7 +177,7 @@ msal.initialize({}).then(() => {
                                                                 </TicketSourceProvider>
                                                             </SystemsProvider>
                                                         </AttributeValueProvider>
-                                                    </AzureChatCompletionProvider>
+                                                    </AzureChatCompletionProviderWithCache>
                                                 </RememberChatCompletionProvider>
                                             </AuthFnProviderFromUrlStore>
                                         </UrlStoreProvider>
