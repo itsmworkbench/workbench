@@ -1,5 +1,6 @@
 // Define the three possible roles that a message can have
 import {ErrorsOr} from "@itsmworkbench/errors";
+import {NameAnd} from "@itsmworkbench/utils";
 
 export const aiDebugName = 'ai'
 export const showAiPromptsFFName = 'showAiPrompts'
@@ -19,8 +20,10 @@ export type RememberChatCompletion = {
     res: ErrorsOr<ChatCompletionMessage>
 }
 
-export type RememberChatCompletionFn = (req: ChatCompletionMessage[], res:  ErrorsOr<ChatCompletionMessage>) => void;
+export type RememberChatCompletionFn = (req: ChatCompletionMessage[], res: ErrorsOr<ChatCompletionMessage>) => void;
 export const noRememberChatCompletion: RememberChatCompletionFn = () => {}
 
 
 
+
+}

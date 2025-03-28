@@ -6,10 +6,9 @@ import {useTranslation} from "@itsmworkbench/translation";
 import {Ticket} from "@itsmworkbench/tickets";
 import {ListKasForSelection2, loadAiSuggestion, LoadAiSuggestionProps} from "./listKasForSelection";
 import {useItsmState, useItsmStateKaDetails, useItsmStateTicket} from "@itsmworkbench/itsm_state";
-import {DisplayKads, DisplayKnowledgeArticleStatus, DisplayPhaseAction} from "@itsmworkbench/react_knowledgearticle";
-import {PhaseName, PhaseStatus} from "@itsmworkbench/domain";
+import {DisplayKads} from "@itsmworkbench/react_knowledgearticle";
 import {KADetails} from "@itsmworkbench/knowledgearticle";
-import {GetterSetter, useDebug} from "@itsmworkbench/react_utils";
+import {useDebug} from "@itsmworkbench/react_utils";
 import {useChatCompletion} from "@itsmworkbench/ai2_react";
 import {LoadingErrorsOr} from "@itsmworkbench/loading";
 import {LoadAndEditItsmTicketAttributes} from "@itsmworkbench/itsm_state/src/itsmTicketAttributes";
@@ -100,9 +99,9 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
             <div>
 
                 <ListKasForSelection2 organisation={'me'} system={newTicketData.system} selectedRowOps={selectedKaRowOps} onSelect={setKaDetails} onLoad={setKads}>
-                    <span>Ai suggests: <LoadingErrorsOr input={aiSuggestionQuery} Error={justErrors} onLoad={selectAiSuggestion} kleisli={loadAiSuggestion}>{data =>
-                        <>{data}
-                            <button onClick={useAiSelection(data)}>Use Ai Selection</button>
+                    <span>Ai suggests: <LoadingErrorsOr input={aiSuggestionQuery} Error={justErrors} onLoad={selectAiSuggestion} kleisli={loadAiSuggestion}>{aiSuggestion =>
+                        <>{aiSuggestion}
+                            <button onClick={useAiSelection(aiSuggestion)}>Use Ai Selection</button>
                         </>
                     }</LoadingErrorsOr>
                     </span>
