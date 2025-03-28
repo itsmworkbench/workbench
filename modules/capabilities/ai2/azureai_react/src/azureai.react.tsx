@@ -10,7 +10,7 @@ import {ErrorsOr, flatMapErrorsOrK} from "@itsmworkbench/errors";
 import {decryptString, hasEnteredPassword} from "@itsmworkbench/authentication";
 import {NameAnd} from "@itsmworkbench/utils";
 import {ChatCompletionResponse} from "@itsmworkbench/azureai2/src/azureai";
-import {useDebug} from "@itsmworkbench/react_utils";
+import {BooleanFeatureFlag, useDebug, useFeatureFlag} from "@itsmworkbench/react_utils";
 import {cacheErrorsOrKleisli, CacheItem} from "@itsmworkbench/errors/src/error.or.cache";
 
 export type AzureChatCompletionProviderProps = {
@@ -23,18 +23,24 @@ export const rawHeaders: NameAnd<string> = {
     'Content-Type': 'application/json',
 }
 
+export const useAiCacheFFName = 'useAiCache'
+export const useAiCacheFeatureFlag: BooleanFeatureFlag = {
+    description: 'Use the cache for Azure AI',
+    value: true
+}
+
 export function AzureChatCompletionProviderWithCache({
                                                 children,
                                                 authName = 'azureai',
                                                 url = 'https://api.openai.com/v1/chat/completions'
                                             }: AzureChatCompletionProviderProps) {
+    const ff = useFeatureFlag(useAiCacheFFName);
     const serviceCaller = useServiceCaller();
     const remember = useRememberChatCompletionFn();
     const authFn = useAuthFn();
     const [secretData] = useSecretData();
     const debug = useDebug(aiDebugName);
 
-    // Stable cache instance:
     const cacheRef = useRef(new Map<string, CacheItem<ChatCompletionMessage>>());
 
     const fetchCompletion: ChatCompletionFn = useCallback(async (request) => {
@@ -79,53 +85,18 @@ export function AzureChatCompletionProviderWithCache({
         return result;
     }, [authFn, serviceCaller, secretData]);
 
-    const cachedCompletion = cacheErrorsOrKleisli<ChatCompletionMessage[], ChatCompletionMessage>(
-        fetchCompletion,
-        {
-            reqToString: req => JSON.stringify(req),
-            ttl: 600000 , // 10mins
-            cache: cacheRef.current,
-        }
-    ) as ChatCompletionFn;
-
-    return <ChatCompletionProvider chatCompletion={cachedCompletion}>{children}</ChatCompletionProvider>;
-}
-
-
-export function AzureChatCompletionProvider({children, authName = 'azureai', url = 'https://api.openai.com/v1/chat/completions'}: AzureChatCompletionProviderProps) {
-    const serviceCaller = useServiceCaller()
-    const remember = useRememberChatCompletionFn()
-    const authFn = useAuthFn()
-    const [secretData] = useSecretData()
-    const debug = useDebug(aiDebugName)
-
-    const completion: ChatCompletionFn = useCallback(async (request) => {
-        if (!hasEnteredPassword(secretData)) return {errors: ['No password entered']}
-        const decrypt = decryptString(secretData.cryptoKeyString)
-        const body = {
-            model: "gpt-4o-mini",
-            messages: request
-        }
-        debug('AzureChatCompletionProvider', request, body)
-        const result: ErrorsOr<ChatCompletionMessage> = await flatMapErrorsOrK(await authFn(authName), async ({auth, authPlugin}) => {
-            const sr: ServiceRequest<ChatCompletionResponse> = {
-                method: 'POST',
-                url: await authPlugin.modifyUrl(decrypt, url, auth),
-                body: JSON.stringify(body),
-                headers: await authPlugin.addToHeaders(decrypt, auth, rawHeaders),
+    if (ff) {
+        const cachedCompletion = cacheErrorsOrKleisli<ChatCompletionMessage[], ChatCompletionMessage>(
+            fetchCompletion,
+            {
+                reqToString: req => JSON.stringify(req),
+                ttl: 600000 , // 10mins
+                cache: cacheRef.current,
             }
-            debug('AzureChatCompletionProvider', sr)
-            return flatMapErrorsOrK<ServiceResponse<ChatCompletionResponse>, ChatCompletionMessage>(await serviceCaller(sr, debug),
-                async res => {
-                    debug('AzureChatCompletionProvider', 'res', res)
-                    const choices = res.body.choices
-                    const result = !choices || choices.length === 0 ? {errors: ['No choices in response']} : {value: choices[0].message};
-                    debug('AzureChatCompletionProvider', 'result', result)
-                    return result
-                })
-        })
-        remember(request, result)
-        return result
-    }, [authFn, serviceCaller, secretData]);
-    return <ChatCompletionProvider chatCompletion={completion}>{children}</ChatCompletionProvider>
+        ) as ChatCompletionFn;
+
+        return <ChatCompletionProvider chatCompletion={cachedCompletion}>{children}</ChatCompletionProvider>;
+    } else {
+        return <ChatCompletionProvider chatCompletion={fetchCompletion}>{children}</ChatCompletionProvider>
+    }
 }

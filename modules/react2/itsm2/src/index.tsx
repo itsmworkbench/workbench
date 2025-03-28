@@ -38,7 +38,10 @@ import {authenticationDebugName, defaultSecretData} from "@itsmworkbench/authent
 import {ServiceCallerProvider} from "@itsmworkbench/react_service_caller";
 import {axiosServiceCaller} from "@itsmworkbench/axios_service_caller";
 import {AuthFnProviderFromUrlStore} from "@itsmworkbench/react_authentication";
-import {AzureChatCompletionProvider, AzureChatCompletionProviderWithCache} from "@itsmworkbench/azureai2_react";
+import {
+    AzureChatCompletionProviderWithCache,
+    useAiCacheFeatureFlag, useAiCacheFFName
+} from "@itsmworkbench/azureai2_react";
 import {aiDebugName, showAiPromptsFFName} from "@itsmworkbench/ai2";
 import {emptyItsmState, ItsmStateProvider} from "@itsmworkbench/itsm_state";
 import {objectDefnDebugName} from "@itsmworkbench/object_defn";
@@ -59,7 +62,8 @@ const debugState = {
 const featureFlags: FeatureFlags = {
     hv: {value: 'horizontal', description: 'Show the attribute value horizontally or vertically', options: AttributeValueOrientations},
     [showAiPromptsFFName]: {value: false, description: 'Show the AI prompts in the chat'},
-    [activeTicketsFF]: activeTicketsFeatureFlag
+    [activeTicketsFF]: activeTicketsFeatureFlag,
+    [useAiCacheFFName]: useAiCacheFeatureFlag
 };
 export const exampleMsalConfig: Configuration = {
     auth: {
