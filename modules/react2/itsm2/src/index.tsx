@@ -10,6 +10,7 @@ import {AttributeValueOrientation, AttributeValueOrientationProvider, AttributeV
 import {DevModeComponentsProvider, DevModeDebug, DevModeFeatureFlags, DevModeStateForSearchProvider} from "@itsmworkbench/devmode";
 import {ItsmSovereignPagePlugin} from "@itsmworkbench/itsmsovereign";
 import {HomeSovereignPagePlugin} from "@itsmworkbench/homesovereign";
+import {WorkbenchesSovereignPagePlugin} from "@itsmworkbench/workbenchessovereign";
 import {DevModeTranslate, emptyUsedAndNotFound, TranslationUsedAndNotFoundProvider} from "@itsmworkbench/translation";
 import {SimpleTranslationProvider} from "@itsmworkbench/simple_translation";
 import {NavigatorPanelDefns} from "@itsmworkbench/panelnavigator";
@@ -93,6 +94,7 @@ export const navPanels: NavigatorPanelDefns = {
     authentication: {icon: 'key', descriptionKey: 'nav.authentication'},
     automation: {icon: 'automation', descriptionKey: 'nav.automation'},
     askForHelp: {icon: 'help', descriptionKey: 'nav.askForHelp'},
+    workbenches: {icon: 'wrench', descriptionKey: 'nav.workbenches'}
 }
 
 
@@ -106,6 +108,7 @@ const sovereignStatePlugins: SovereignStatePlugins = {
         authentication: AuthenticationSovereignPagePlugin,
         itsm: ItsmSovereignPagePlugin,
         askForHelp: makeSovereignStatePlugin(() => <span>Ask For Help</span>),
+        workbenches: WorkbenchesSovereignPagePlugin
     },
     UnknownDisplay: SimpleUnknownDisplay
 }

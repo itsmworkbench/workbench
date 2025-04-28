@@ -22,8 +22,3 @@ export type RememberChatCompletion = {
 
 export type RememberChatCompletionFn = (req: ChatCompletionMessage[], res: ErrorsOr<ChatCompletionMessage>) => void;
 export const noRememberChatCompletion: RememberChatCompletionFn = () => {}
-
-
-
-
-}

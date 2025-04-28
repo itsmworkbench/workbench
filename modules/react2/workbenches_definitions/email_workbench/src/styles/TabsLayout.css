@@ -1,0 +1,238 @@
+.container {
+    max-width: 900px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    padding: 1rem;
+    background-color: #fff;
+}
+
+.tab-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 0.5rem;
+}
+
+.tab-header .button {
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.tab-header .button:hover {
+    background: #ddd;
+}
+
+.tab-content {
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+.section {
+    margin-top: 1.5rem;
+}
+
+.button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.email-textbox {
+    width: 100%;
+    min-height: 150px;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    font-family: monospace;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+.missing {
+    color: red;
+}
+
+.summary-box {
+    background: #f3f3f3;
+    border: 1px dashed #ccc;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+
+.mcp-listing ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.mcp-listing li {
+    margin: 0.3rem 0;
+    padding: 0.3rem;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.mcp-listing li:hover {
+    background-color: #e6f0ff;
+}
+:root {
+    --bg-color: #fff;
+    --text-color: #000;
+    --primary-color: #007bff;
+    --hover-color: #0056b3;
+    --border-color: #ddd;
+    --section-bg: #fafafa;
+    --highlight-bg: #f5f5f5;
+    --summary-bg: #f3f3f3;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #121212;
+        --text-color: #e0e0e0;
+        --primary-color: #1e88e5;
+        --hover-color: #1565c0;
+        --border-color: #333;
+        --section-bg: #1e1e1e;
+        --highlight-bg: #2a2a2a;
+        --summary-bg: #252525;
+    }
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    padding: 1rem;
+    background-color: var(--bg-color);
+}
+
+.tab-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.tab-header .button {
+    background: var(--highlight-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: var(--text-color);
+}
+
+.tab-header .button:hover {
+    background: var(--section-bg);
+}
+
+.tab-content {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--section-bg);
+}
+
+.section {
+    margin-top: 1.5rem;
+}
+
+.button {
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.button:hover {
+    background-color: var(--hover-color);
+}
+
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.email-textbox {
+    width: 100%;
+    min-height: 150px;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    font-family: monospace;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--highlight-bg);
+    color: var(--text-color);
+    resize: vertical;
+}
+
+.missing {
+    color: red;
+}
+
+.summary-box {
+    background: var(--summary-bg);
+    border: 1px dashed var(--border-color);
+    padding: 1rem;
+    margin-top: 0.5rem;
+    white-space: pre-wrap;
+    font-family: monospace;
+    color: var(--text-color);
+}
+
+.mcp-listing ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.mcp-listing li {
+    margin: 0.3rem 0;
+    padding: 0.3rem;
+    background-color: var(--highlight-bg);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.mcp-listing li:hover {
+    background-color: var(--section-bg);
+}
