@@ -1,0 +1,26 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/sql_workbench",
+  "description": "An email workbench that allows us to execute sql statements",
+  "links": [
+    "@itsmworkbench/common_components",
+    "@itsmworkbench/icons",
+    "@itsmworkbench/workbenches",
+    "@itsmworkbench/translation",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

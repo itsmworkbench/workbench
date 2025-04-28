@@ -1,0 +1,26 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/workbench_sovereign",
+  "description": "The sovereign pane for looking at the workbenches",
+  "links": [
+    "@itsmworkbench/common_components",
+    "@itsmworkbench/workbenches",
+    "@itsmworkbench/sovereign",
+    "@itsmworkbench/translation",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}
