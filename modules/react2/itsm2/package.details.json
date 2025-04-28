@@ -5,6 +5,7 @@
   "links": [
     "@itsmworkbench/activetickets_sovereign",
     "@itsmworkbench/all_ticketsources",
+    "@itsmworkbench/all_workbenches",
     "@itsmworkbench/axios_service_caller",
     "@itsmworkbench/azureai2_react",
     "@itsmworkbench/browserurlstore",
@@ -26,10 +27,13 @@
     "@itsmworkbench/system",
     "@itsmworkbench/ticketsource",
     "@itsmworkbench/utils",
-    "@itsmworkbench/wizard"
+    "@itsmworkbench/wizard",
+    "@itsmworkbench/workbench_sovereign"
   ],
   "packageJson": {
-    "files": ["build/"],
+    "files": [
+      "build/"
+    ],
     "dependencies": {
     },
     "devDependencies": {

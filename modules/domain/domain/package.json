@@ -20,23 +20,23 @@
     ]
   },
   "dependencies": {
+    "@laoban/utils": "1.4.51",
     "@focuson/lens": "1.44.3",
     "@focuson/state": "1.44.3",
+    "@itsmworkbench/utils": "1.0.1",
     "@itsmworkbench/events": "1.0.1",
     "@itsmworkbench/eventstore": "1.0.1",
-    "@itsmworkbench/utils": "1.0.1",
     "@itsmworkbench/variables": "1.0.1",
     "@itsmworkbench/yaml": "1.0.1",
-    "@laoban/utils": "1.4.51",
     "debug": "^4.3.4"
   },
   "devDependencies": {
+    "typescript": "^5.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.0.0",
     "@types/node": "^14.0.0",
     "jest": "^29.0.0",
-    "ts-jest": "^29.0.0",
-    "typescript": "^5.2.2"
+    "ts-jest": "^29.0.0"
   },
   "eslintConfig": {
     "extends": [

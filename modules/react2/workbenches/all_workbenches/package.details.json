@@ -1,11 +1,8 @@
 {
   "template": "react_library",
-  "name": "@itsmworkbench/homesovereign",
-  "description": "The sovereign pane for a home page that lists what we can do",
+  "name": "@itsmworkbench/all_workbenches",
+  "description": "A one stop shopping for all of the workbenches",
   "links": [
-    "@itsmworkbench/common_components",
-    "@itsmworkbench/sovereign",
-    "@itsmworkbench/translation",
     "@itsmworkbench/react_utils",
     "@itsmworkbench/utils"
   ],

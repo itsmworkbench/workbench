@@ -36,7 +36,7 @@ function calculatePath(name: string, type?: string) {
 }
 
 // Decorative icons (non-interactive)
-export const decorativeIconFn: DecorativeIconFn = (name: string, config) => (props) => {
+export const decorativeIconFn: DecorativeIconFn = (name: string, config):Icon => (props) => {
     const path = calculatePath(name, config?.type);
     const size = config?.size ? sizeToPixels[config.size] : undefined;
     return (

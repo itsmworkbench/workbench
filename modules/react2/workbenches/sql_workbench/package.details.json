@@ -1,10 +1,11 @@
 {
   "template": "react_library",
-  "name": "@itsmworkbench/homesovereign",
-  "description": "The sovereign pane for a home page that lists what we can do",
+  "name": "@itsmworkbench/sql_workbench",
+  "description": "An email workbench that allows us to execute sql statements",
   "links": [
     "@itsmworkbench/common_components",
-    "@itsmworkbench/sovereign",
+    "@itsmworkbench/icons",
+    "@itsmworkbench/workbenches",
     "@itsmworkbench/translation",
     "@itsmworkbench/react_utils",
     "@itsmworkbench/utils"
