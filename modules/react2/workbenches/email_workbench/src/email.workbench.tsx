@@ -1,4 +1,4 @@
-import {WorkbenchPlugin} from '@itsmworkbench/workbenches';
+import {WorkbenchPlugin} from 'modules/react2/workbenches/workbenches';
 import React from 'react';
 import {decorativeIconFn} from "@itsmworkbench/icons";
 

@@ -51,7 +51,7 @@ import {DevModeAi, RememberChatCompletionProvider} from "@itsmworkbench/ai2_reac
 import {InformationSovereignPane} from "@itsmworkbench/info_sovereign";
 import {activeTicketsFeatureFlag, activeTicketsFF, ActiveTicketsSovereignPagePlugin} from "@itsmworkbench/activetickets_sovereign";
 import {WorkbenchPluginsProvider} from "@itsmworkbench/workbenches";
-import {allWorkbenchPlugins} from "../../workbenches/all_workbenches/src/all.workbenches";
+import {allWorkbenchPlugins} from "@itsmworkbench/all_workbenches";
 
 
 const debugState = {

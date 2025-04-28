@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@itsmworkbench/common_components": "1.0.1",
+    "@itsmworkbench/icons": "1.0.1",
     "@itsmworkbench/workbenches": "1.0.1",
     "@itsmworkbench/translation": "1.0.1",
     "@itsmworkbench/react_utils": "1.0.1",

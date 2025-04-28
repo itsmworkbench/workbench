@@ -28,6 +28,7 @@
     "@itsmworkbench/ticketsource",
     "@itsmworkbench/utils",
     "@itsmworkbench/wizard",
+    "@itsmworkbench/workbenches",
     "@itsmworkbench/workbench_sovereign"
   ],
   "packageJson": {
