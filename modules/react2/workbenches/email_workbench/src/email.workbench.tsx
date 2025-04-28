@@ -6,7 +6,7 @@ export const emailWorkbenchName = 'email';
 export const emailWorkbenchPlugin: WorkbenchPlugin = ({
     plugin: 'workbench',
     name: emailWorkbenchName,
-    icon: decorativeIconFn('email'),
+    icon: decorativeIconFn('email', {size: 'small'}),
     description: 'Allows the sending of emails',
     Display: () => <span>{emailWorkbenchName}</span>,
 });

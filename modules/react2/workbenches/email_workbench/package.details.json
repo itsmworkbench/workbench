@@ -1,0 +1,25 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/email_workbench",
+  "description": "An email workbench that allows us to send emails",
+  "links": [
+    "@itsmworkbench/common_components",
+    "@itsmworkbench/workbenches",
+    "@itsmworkbench/translation",
+    "@itsmworkbench/react_utils",
+    "@itsmworkbench/utils"
+  ],
+  "packageJson": {
+    "files": ["build/"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  },
+  "guards": {
+    "compile": true,
+    "publish": false,
+    "test": true,
+    "react": false
+  }
+}

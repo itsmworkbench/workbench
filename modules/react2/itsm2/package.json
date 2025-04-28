@@ -94,6 +94,7 @@
   "repository": "git@github.com:intellimaintain/intellimaintain.git",
   "scripts": {
     "start": "parcel src/index.html",
+    "serve": "parcel serve src/index.html",
     "build": "parcel build src/index.html",
     "test": "jest --config jest.config.json",
     "test:watch": "npm run test -- --watch",
