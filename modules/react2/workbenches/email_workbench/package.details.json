@@ -1,11 +1,12 @@
 {
   "template": "react_library",
-  "name": "@itsmworkbench/all_workbenches",
-  "description": "A one stop shopping for all of the workbenches",
+  "name": "@itsmworkbench/email_workbench",
+  "description": "An email workbench that allows us to send emails",
   "links": [
+    "@itsmworkbench/common_components",
+    "@itsmworkbench/workbenches",
+    "@itsmworkbench/translation",
     "@itsmworkbench/react_utils",
-    "@itsmworkbench/utils"
-    "@itsmworkbench/utils"
     "@itsmworkbench/utils"
   ],
   "packageJson": {

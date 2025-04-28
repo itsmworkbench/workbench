@@ -1,6 +1,6 @@
-import {WorkbenchPlugin} from 'modules/react2/workbenches/workbenches';
 import React from 'react';
 import {decorativeIconFn} from "@itsmworkbench/icons";
+import {WorkbenchPlugin} from "@itsmworkbench/workbenches";
 
 export const emailWorkbenchName = 'email';
 export const emailWorkbenchPlugin: WorkbenchPlugin = ({
