@@ -60,6 +60,7 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
     const attributeOps = useState<NameAnd<string>>({})
 
     const useAiSelection = (data: string) => () => {
+        debug('useAiSelection', data)
         const index = kads.findIndex(ka => ka.name === data)
         selectedKaRowOps[1](index)
         setKaDetails(kads[index])
@@ -71,7 +72,6 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
     }
 
     function PrevNextNew() {
-
         function finish() {
             onFinish({...ticket, attributes: attributeOps[0]})
         }
@@ -90,6 +90,8 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
         setKaDetails(kads[index])
     }
 
+    const actualLoadAiSuggestion = useMemo(() => loadAiSuggestion(debug), [debug])
+
     return <>
         <TwoColumnAndRestLayout>
             <div>
@@ -99,7 +101,7 @@ export const SelectKnowledgeArticleTicketWizardPage: WizardPanel<Ticket> = ({
             <div>
 
                 <ListKasForSelection2 organisation={'me'} system={newTicketData.system} selectedRowOps={selectedKaRowOps} onSelect={setKaDetails} onLoad={setKads}>
-                    <span>Ai suggests: <LoadingErrorsOr input={aiSuggestionQuery} Error={justErrors} onLoad={selectAiSuggestion} kleisli={loadAiSuggestion}>{aiSuggestion =>
+                    <span>Ai suggests: <LoadingErrorsOr input={aiSuggestionQuery} Error={justErrors} onLoad={selectAiSuggestion} kleisli={actualLoadAiSuggestion}>{aiSuggestion =>
                         <>{aiSuggestion}
                             <button onClick={useAiSelection(aiSuggestion)}>Use Ai Selection</button>
                         </>

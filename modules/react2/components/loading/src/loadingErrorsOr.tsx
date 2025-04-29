@@ -33,7 +33,6 @@ export function LoadingErrorsOr<Input, Output>({
             onLoad?.(output.value)
     }
 
-    // 1. Call your hooks unconditionally
     const state = useKleisli<Input, ErrorsOr<Output>>(kleisli, input, {onLoad: onLoadAdapter});
 
     useEffect(() => {
@@ -44,8 +43,7 @@ export function LoadingErrorsOr<Input, Output>({
         };
     }, [state.data, onUnmount]);
 
-    // 2. Always return the same top-level component:
-    //    The conditional logic will happen *inside* the wrapper.
+
     return (
         <LoadingErrorsOrWrapper
             state={state}
