@@ -1,6 +1,6 @@
 {
-  "name": "@itsmworkbench/sql_workbench",
-  "description": "An email workbench that allows us to execute sql statements",
+  "name": "@itsmworkbench/all_workbenches",
+  "description": "A one stop shopping for all of the workbenches",
   "version": "1.0.1",
   "browserslist": {
     "development": [
@@ -15,11 +15,9 @@
     ]
   },
   "dependencies": {
-    "@itsmworkbench/common_components": "1.0.1",
-    "@itsmworkbench/icons": "1.0.1",
-    "@itsmworkbench/workbenches": "1.0.1",
-    "@itsmworkbench/translation": "1.0.1",
+    "@itsmworkbench/email_workbench": "1.0.1",
     "@itsmworkbench/react_utils": "1.0.1",
+    "@itsmworkbench/sql_workbench": "1.0.1",
     "@itsmworkbench/utils": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",

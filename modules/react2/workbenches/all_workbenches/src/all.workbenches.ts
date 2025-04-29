@@ -1,4 +1,4 @@
-import {WorkbenchPlugins} from "@itsmworkbench/workbenches";
+import {WorkbenchPlugins} from "modules/react2/workbenches/workbenches";
 import {sqlWorkbenchPlugin} from "@itsmworkbench/sql_workbench";
 import {emailWorkbenchPlugin} from "@itsmworkbench/email_workbench";
 

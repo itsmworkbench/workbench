@@ -1,6 +1,6 @@
-import {WorkbenchPlugin} from '@itsmworkbench/workbenches';
 import React from 'react';
-import {decorativeIconFn, DecorativeIconFn} from "@itsmworkbench/icons";
+import {decorativeIconFn} from "@itsmworkbench/icons";
+import {WorkbenchPlugin} from "@itsmworkbench/workbenches";
 
 export const sqlWorkbenchName = 'sql';
 export const sqlWorkbenchPlugin: WorkbenchPlugin = ({

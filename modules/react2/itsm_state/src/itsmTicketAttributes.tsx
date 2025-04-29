@@ -42,17 +42,16 @@ export type LoadEntitiesProps = {
 }
 
 export async function loadEntities({chatCompletion, attributeNames, ticket, sad, debug}: LoadEntitiesProps): Promise<ErrorsOr<string>> {
+    debug('loadEntities', ticket)
     if (!hasEnteredPassword(sad)) return {errors: ['No password entered']}
     if (attributeNames === undefined) return {errors: ['waiting for Knowledge Article to be selected']}
     const content = prompt(attributeNames);
-    debug('prompt', content, ticket)
-    return mapErrorsOr(await chatCompletion([
-            {role: 'system', content: content},
-            {role: 'user', content: JSON.stringify(ticket, null, 2)}]),
-        c => {
-            debug('loadEntities', c);
-            return c.content;
-        })
+    debug('loadEntities', 'prompt', content)
+    const res = await chatCompletion([
+        {role: 'system', content: content},
+        {role: 'user', content: JSON.stringify(ticket, null, 2)}]);
+    debug('loadEntities', 'chatCompletion', ticket)
+    return mapErrorsOr(res, c => c.content)
 }
 
 export type ItsmTicketVariablesProps = {
@@ -79,17 +78,20 @@ export function LoadAndEditItsmTicketAttributes({rootId, attributeOps, ticket, a
     const [sad] = useSecretData()
     const debug = useDebug(aiDebugName)
     const query: LoadEntitiesProps = useMemo(() => {
-        debug('LoadAndEditItsmTicketAttributes','LoadEntitiesProps', {chatCompletion, attributeNames, ticket, sad, debug: debug.debug});
-        return ({chatCompletion, attributeNames, ticket, sad, debug}); },
+            debug('LoadAndEditItsmTicketAttributes', 'LoadEntitiesProps', {chatCompletion, attributeNames, ticket, sad, debug: debug.debug});
+            return ({chatCompletion, attributeNames, ticket, sad, debug});
+        },
         // [])
         [chatCompletion, attributeNames, sad, debug.debug]) //adding ticket would cause infinite loop, and isn't needed
     const objectDefn = useMemo(() => makeObjectDefn(attributeNames), [attributeNames])
     const yaml = useYaml()
+
     function onLoad(content: string) {
         const json = yaml.parser(content)
         ops[1](json)
     }
+
     return <LoadingErrorsOr input={query} kleisli={loadEntities} onLoad={onLoad}>{_ =>
-        <EditObjectFromDefn clipboard={true} showLabel={true} title={'ticket.variables'} objectDefn={objectDefn} rootId={rootId} mainOps={ops}/>
+        <EditObjectFromDefn clipboard={true} showLabel='camelLastPathPart' title={'ticket.variables'} objectDefn={objectDefn} rootId={rootId} mainOps={ops}/>
     }</LoadingErrorsOr>
 }

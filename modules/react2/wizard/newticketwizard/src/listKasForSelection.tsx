@@ -5,7 +5,7 @@ import {useAttributeValueComponents, useRenderers} from "@itsmworkbench/renderer
 import {useUrlStore} from "@itsmworkbench/reacturlstore";
 import {GetterSetter} from "@itsmworkbench/react_utils";
 import {useCommonComponents} from "@itsmworkbench/common_components";
-import {simpleTemplate} from "@itsmworkbench/utils";
+import {DebugLog, simpleTemplate} from "@itsmworkbench/utils";
 import {findKaDetails, KADetails, KaDetailsProps} from "@itsmworkbench/knowledgearticle";
 import {LoadingErrorsOr} from "@itsmworkbench/loading";
 import {Ticket} from "@itsmworkbench/tickets";
@@ -46,12 +46,16 @@ export type LoadAiSuggestionProps = {
     chatCompletion: ChatCompletionFn
 }
 
-export async function loadAiSuggestion({kaDetails, ticket, chatCompletion}: LoadAiSuggestionProps): Promise<ErrorsOr<string>> {
+export const loadAiSuggestion = (debug: DebugLog) =>async ({ kaDetails, ticket, chatCompletion}: LoadAiSuggestionProps): Promise<ErrorsOr<string>> => {
     // if (kaDetails.length === 0) return {errors: ['Cannot use AI to select a KA as there are no KAs']}
+    debug('loadAiSuggestion', kaDetails, ticket)
     const prompt = makePrompt2(kaDetails, ticket)
+    debug('loadAiSuggestion - prompt', prompt)
     const res = await chatCompletion([{role: 'system', content: prompt}])
-    return mapErrorsOr(res, r => r.content)
-}
+    const result = mapErrorsOr(res, r => r.content);
+    debug('loadAiSuggestion - res', result)
+    return result
+};
 
 
 export type ListKa2Props = {
@@ -69,7 +73,7 @@ export function ListKasForSelection2({organisation, system, onLoad, onSelect, se
     const kaDetailsQuery: KaDetailsProps = useMemo(() => ({org: organisation, system, urlStore}), [organisation, system, urlStore])
     const {Table} = useCommonComponents()
     const {H1} = useRenderers()
-    const translate=useTranslation()
+    const translate = useTranslation()
     const {DataLayout} = useAttributeValueComponents()
     return <LoadingErrorsOr input={kaDetailsQuery} kleisli={findKaDetails} onLoad={onLoad}>{
         kaDetails => <DataLayout rootId={'list-kas'} layout={[1, 1, 1]}>

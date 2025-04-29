@@ -40,6 +40,7 @@
     "@itsmworkbench/ticketsource": "1.0.1",
     "@itsmworkbench/utils": "1.0.1",
     "@itsmworkbench/wizard": "1.0.1",
+    "@itsmworkbench/workbenches": "1.0.1",
     "@itsmworkbench/workbench_sovereign": "1.0.1",
     "debug": "^4.3.4",
     "@emotion/react": "^11.11.3",
