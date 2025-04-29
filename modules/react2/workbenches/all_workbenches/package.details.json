@@ -3,13 +3,15 @@
   "name": "@itsmworkbench/all_workbenches",
   "description": "A one stop shopping for all of the workbenches",
   "links": [
+    "@itsmworkbench/email_workbench",
     "@itsmworkbench/react_utils",
-    "@itsmworkbench/utils"
-    "@itsmworkbench/utils"
+    "@itsmworkbench/sql_workbench",
     "@itsmworkbench/utils"
   ],
   "packageJson": {
-    "files": ["build/"],
+    "files": [
+      "build/"
+    ],
     "dependencies": {
     },
     "devDependencies": {
