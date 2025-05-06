@@ -52,7 +52,13 @@ import {InformationSovereignPane} from "@itsmworkbench/info_sovereign";
 import {activeTicketsFeatureFlag, activeTicketsFF, ActiveTicketsSovereignPagePlugin} from "@itsmworkbench/activetickets_sovereign";
 import {WorkbenchPluginsProvider} from "@itsmworkbench/workbenches";
 import {allWorkbenchPlugins} from "@itsmworkbench/all_workbenches";
+import { McpClientProvider } from "@itsmworkbench/mcp"
+import { emailServerTransport, sqlServerTransport } from "@itsmworkbench/mcp/src/connection/loopbackConnection"; //not ok
+import { mcpEmailServer } from "@itsmworkbench/emailserver";
+import { mcpSqlServer } from "@itsmworkbench/sqlserver";
 
+mcpEmailServer.connect(emailServerTransport);
+mcpSqlServer.connect(sqlServerTransport);
 
 const debugState = {
     [authenticateDebug]: false,
@@ -146,6 +152,7 @@ msal.initialize({}).then(() => {
             <YamlProvider yamlCapability={jsYaml()}>
                 <NonFunctionalsProvider debugState={debugState} featureFlags={featureFlags} errorReporter={consoleErrorReporter}>
                     <WindowUrlProvider>
+                        <McpClientProvider>
                         <WorkbenchPluginsProvider workbenchPlugins={allWorkbenchPlugins}>
                             <ServiceCallerProvider serviceCaller={axiosServiceCaller}>
                                 <SecretDataProvider secretData={defaultSecretData()}>
@@ -196,6 +203,7 @@ msal.initialize({}).then(() => {
                                 </SecretDataProvider>
                             </ServiceCallerProvider>
                         </WorkbenchPluginsProvider>
+                        </McpClientProvider>
                     </WindowUrlProvider>
                 </NonFunctionalsProvider>
             </YamlProvider>

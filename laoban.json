@@ -21,7 +21,7 @@
     "react_library": "templates/react_library"
   },
   "defaultEnv": {
-    "NPM_TOKEN": ""
+    "NPM_TOKEN": "value"
   },
   "scripts": {
     "rmDist": {

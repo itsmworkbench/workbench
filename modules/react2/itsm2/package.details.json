@@ -17,6 +17,7 @@
     "@itsmworkbench/itsm_translation",
     "@itsmworkbench/jsyaml",
     "@itsmworkbench/knowledgearticle",
+    "@itsmworkbench/mcp",
     "@itsmworkbench/newticket_wizard",
     "@itsmworkbench/panelnavigator",
     "@itsmworkbench/react_utils",

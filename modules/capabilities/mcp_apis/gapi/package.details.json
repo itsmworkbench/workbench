@@ -1,0 +1,20 @@
+{
+  "template": "react_library",
+  "name": "@itsmworkbench/gmail_service",
+  "description": "This is a module for the gmail api used by MCP",
+  "packageJson": {
+    "dependencies":    {
+      "@laoban/utils":      "${properties.laobanVersion}",
+      "@laoban/variables":  "${properties.laobanVersion}"
+    },
+    "devDependencies": {}
+  },
+  "links":       [
+    "@itsmworkbench/utils"
+  ],
+  "guards":      {
+    "compile": true,
+    "publish": true,
+    "test":    false
+  }
+}
