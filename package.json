@@ -9,6 +9,9 @@
     "start": "cd modules/react/react && yarn start --port 1238",
     "itsm": "cd modules/react2/itsm2 && yarn start"
   },
+  "alias": {
+    "@modelcontextprotocol/sdk/server/mcp.js": "@modelcontextprotocol/sdk/dist/esm/server/mcp.js"
+  },
   "staticFiles": {
     "staticPath": "public"
   },
