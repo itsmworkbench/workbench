@@ -3,6 +3,7 @@ import React from "react";
 import {makeContextFor, makeContextForState, makeUseStateChild} from "@itsmworkbench/react_utils";
 import {NameAnd} from "@itsmworkbench/utils";
 import {NavigatorPanelForStrings} from "@itsmworkbench/panelnavigator";
+import {ClipHeight} from "@itsmworkbench/clip_height";
 
 export type DevModeComponent = () => React.ReactElement;
 export type DevModeComponents = NameAnd<DevModeComponent>
@@ -30,6 +31,8 @@ export function DevMode() {
     const panels = Object.keys(components);
     return <div className="dev-mode">
         <NavigatorPanelForStrings size='small' ops={selectedOps} translatePrefix='devMode' panels={panels}/>
-        <Component/>
+        <ClipHeight maxHeight="200px" scrollable>
+            <Component/>
+        </ClipHeight>
     </div>;
 }

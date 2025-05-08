@@ -1,5 +1,6 @@
 import { gapi } from "gapi-script";
 
+export const CLIENT_ID = "522748034581-k40pgt86pok3ktvnbfepoernm641ksh6.apps.googleusercontent.com";
 const SCOPES = "https://www.googleapis.com/auth/gmail.readonly";
 
 let tokenClient: google.accounts.oauth2.TokenClient | null = null;
