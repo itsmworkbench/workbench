@@ -4,10 +4,19 @@ import {WorkbenchPlugin} from "@itsmworkbench/workbenches";
 import {EmailWorkbench} from "./components/email.workbench.component";
 
 export const emailWorkbenchName = 'email';
-export const emailWorkbenchPlugin: WorkbenchPlugin = ({
+
+export type EmailWorkbenchData = {
+    purpose: string
+    to: string;
+    subject: string;
+    body: string;
+}
+
+export const emailWorkbenchPlugin: WorkbenchPlugin<EmailWorkbenchData> = ({
     plugin: 'workbench',
     name: emailWorkbenchName,
     icon: decorativeIconFn('email', {size: 'small'}),
     description: 'Allows the sending of emails',
-    Display: () => <EmailWorkbench/>,
+    empty: {body:'', subject:'', to:'', purpose:''},
+    Display: EmailWorkbench
 });

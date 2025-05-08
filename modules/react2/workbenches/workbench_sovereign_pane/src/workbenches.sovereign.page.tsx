@@ -14,7 +14,8 @@ export function WorkbenchesList({selectedOps}: WorkbenchsListProps) {
     return <NavPanelLayout size='small'>
         {Object.entries(workbenchPanels).map(([name, plugin]) => {
             const description = plugin.description || '';
-            return <NavPanel key={name} name={name} description={description} Icon={plugin.icon} ops={selectedOps}  size='medium'/>;
+            return <NavPanel key={name} name={name} description={description} Icon={plugin.icon} ops={selectedOps}
+                             size='medium'/>;
         })}
     </NavPanelLayout>
 }
@@ -24,10 +25,10 @@ export function WorkbenchesSovereignPane() {
     const [selected] = selectedOps;
     const workbenchPanels = useWorkbenchPlugins()
     const plugin = workbenchPanels[selected];
-    const {Display: Pane} = plugin || {};
+    const {Display: Pane, empty: initial} = plugin || {};
     return <>
         <WorkbenchesList selectedOps={selectedOps}/>
-        {Pane && <Pane/>}
+        {Pane && <Pane initial={initial}/>}
     </>
 }
 

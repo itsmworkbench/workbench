@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
     Box,
     Button,
@@ -12,20 +12,37 @@ import {
     Select,
     SelectChangeEvent
 } from "@mui/material";
-import { useMcpClient } from "@itsmworkbench/mcp";
+import {useMcpClient} from "@itsmworkbench/mcp";
 import {useItsmStateTicket, useItsmTicketState} from "@itsmworkbench/itsm_state";
+import {DisplayWorkbench} from "@itsmworkbench/workbenches";
+import {EmailWorkbenchData} from "../email.workbench";
+import {makeGetterSetterFrom, makeGetterSetterForChild, makeUseStateChild} from "@itsmworkbench/react_utils";
+import {lensBuilder} from "@itsmworkbench/optics";
+import {EditObjectFromDefn, useEditComponents} from "@itsmworkbench/editobject";
+import {ObjectDefn} from "@itsmworkbench/object_defn";
 
 const PURPOSE_OPTIONS = [
     "Request More Data",
     "Request Approval",
     "Request Closure"
 ];
+const lb = lensBuilder<EmailWorkbenchData>()
+const emailObjectDefn: ObjectDefn<EmailWorkbenchData> = {
+    layout: [1, 1, 1, 1, 1],
+    fields: {
+        purpose: {lens: lb.focusOn('purpose'), fieldType: 'options', options: []},
+        subject: {lens: lb.focusOn('subject'), fieldType: 'string'},
+        body: {lens: lb.focusOn('body'), fieldType: 'string'}, //make this big string
+    }
+}
+export const EmailWorkbench: DisplayWorkbench<EmailWorkbenchData> = ({initial}) => {
+    const {emailClient, connected} = useMcpClient();
+    const dataOps = useState(initial)
+    const [purpose, setPurpose] = makeGetterSetterFrom(dataOps, lb.focusOn('purpose'))
+    const [subject, setSubject] = makeGetterSetterFrom(dataOps, lb.focusOn('subject'))
+    const [body, setBody] = makeGetterSetterFrom(dataOps, lb.focusOn('body'))
 
-export const EmailWorkbench: React.FC = () => {
-    const { emailClient, connected } = useMcpClient();
-    const [purpose, setPurpose] = useState(PURPOSE_OPTIONS[0]);
-    const [subject, setSubject] = useState("");
-    const [body, setBody] = useState("");
+
     const [loading, setLoading] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -54,7 +71,7 @@ export const EmailWorkbench: React.FC = () => {
                 content: m.content.text
             }));
 
-            const result = await emailClient.callTool("call-openai", { messages });
+            const result = await emailClient.callTool("call-openai", {messages});
             const generated = result.content.find((c: any) => c.type === "text")?.text;
 
             setBody(generated || "");
@@ -81,8 +98,16 @@ export const EmailWorkbench: React.FC = () => {
         }
     };
 
+    const rootId = "email-workbench";
+
+
+    return <EditObjectFromDefn rootId={rootId} mainOps={dataOps} objectDefn={emailObjectDefn}>
+        <button name='suggest from ai'/>
+        <button name='send'/>
+    </EditObjectFromDefn>
+
     return (
-        <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: "2rem auto" }}>
+        <Paper elevation={3} sx={{padding: 4, maxWidth: 800, margin: "2rem auto"}}>
             <Typography variant="h5" gutterBottom>
                 Email Workbench (MCP Connected: {connected ? "YES" : "NO"})
             </Typography>
@@ -129,7 +154,7 @@ export const EmailWorkbench: React.FC = () => {
                         onClick={handleGenerate}
                         disabled={loading || !connected}
                     >
-                        {loading ? <CircularProgress size={24} color="inherit" /> : "Generate Email"}
+                        {loading ? <CircularProgress size={24} color="inherit"/> : "Generate Email"}
                     </Button>
 
                     <Button

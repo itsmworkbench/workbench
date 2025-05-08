@@ -1,4 +1,4 @@
-import {LensAndPath} from "@itsmworkbench/optics";
+import {LensAndPath, lensBuilder, LensBuilder} from "@itsmworkbench/optics";
 import {GetterSetter, Setter} from "./react_utils";
 
 export function makeGetterSetterFrom<Main, T>(mainOps: GetterSetter<Main>, lens: LensAndPath<Main, T>): GetterSetter<T> {
